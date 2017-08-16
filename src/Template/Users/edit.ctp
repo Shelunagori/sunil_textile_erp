@@ -13,6 +13,8 @@
             )
         ?></li>
         <li><?= $this->Html->link(__('List Users'), ['action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('List Company Users'), ['controller' => 'CompanyUsers', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New Company User'), ['controller' => 'CompanyUsers', 'action' => 'add']) ?></li>
     </ul>
 </nav>
 <div class="users form large-9 medium-8 columns content">
@@ -21,9 +23,9 @@
         <legend><?= __('Edit User') ?></legend>
         <?php
             echo $this->Form->control('name');
-            echo $this->Form->control('mobile');
-            echo $this->Form->control('email');
+            echo $this->Form->control('username');
             echo $this->Form->control('password');
+            echo $this->Form->control('active');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

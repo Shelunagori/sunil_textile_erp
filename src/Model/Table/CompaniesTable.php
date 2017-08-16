@@ -5,13 +5,12 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
-use Cake\Event\Event;
-use ArrayObject;
 
 /**
  * Companies Model
  *
  * @property \App\Model\Table\StatesTable|\Cake\ORM\Association\BelongsTo $States
+ * @property \App\Model\Table\CompanyUsersTable|\Cake\ORM\Association\HasMany $CompanyUsers
  *
  * @method \App\Model\Entity\Company get($primaryKey, $options = [])
  * @method \App\Model\Entity\Company newEntity($data = null, array $options = [])
@@ -42,17 +41,11 @@ class CompaniesTable extends Table
             'foreignKey' => 'state_id',
             'joinType' => 'INNER'
         ]);
-		$this->belongsTo('Users', [
-            'foreignKey' => 'user_id',
-            'joinType' => 'INNER'
+        $this->hasMany('CompanyUsers', [
+            'foreignKey' => 'company_id'
         ]);
     }
 
-	public function beforeMarshal(Event $event, ArrayObject $data, ArrayObject $options) {
-		$data['financial_year_begins_from'] = date('Y-m-d',strtotime($data['financial_year_begins_from']));
-		$data['books_beginning_from'] = date('Y-m-d',strtotime($data['books_beginning_from']));
-	}
-	
     /**
      * Default validation rules.
      *
@@ -65,30 +58,48 @@ class CompaniesTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create');
 
-		$validator
-            ->integer('user_id')
-            ->requirePresence('user_id', 'create')
-            ->notEmpty('user_id');
-			
-		$validator
-            ->integer('state_id')
-            ->requirePresence('state_id', 'create')
-            ->notEmpty('state_id');
-			
         $validator
             ->requirePresence('name', 'create')
             ->notEmpty('name');
-		
-		$validator
+
+        $validator
             ->date('financial_year_begins_from')
             ->requirePresence('financial_year_begins_from', 'create')
             ->notEmpty('financial_year_begins_from');
-			
-		$validator
+
+        $validator
             ->date('books_beginning_from')
             ->requirePresence('books_beginning_from', 'create')
             ->notEmpty('books_beginning_from');
-        
+
+        $validator
+            ->requirePresence('address', 'create')
+            ->notEmpty('address');
+
+        $validator
+            ->requirePresence('phone_no', 'create')
+            ->notEmpty('phone_no');
+
+        $validator
+            ->requirePresence('mobile', 'create')
+            ->notEmpty('mobile');
+
+        $validator
+            ->requirePresence('fax_no', 'create')
+            ->notEmpty('fax_no');
+
+        $validator
+            ->email('email')
+            ->requirePresence('email', 'create')
+            ->notEmpty('email');
+
+        $validator
+            ->requirePresence('gstin', 'create')
+            ->notEmpty('gstin');
+
+        $validator
+            ->requirePresence('pan', 'create')
+            ->notEmpty('pan');
 
         return $validator;
     }
@@ -102,8 +113,8 @@ class CompaniesTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
+        $rules->add($rules->isUnique(['email']));
         $rules->add($rules->existsIn(['state_id'], 'States'));
-        $rules->add($rules->existsIn(['user_id'], 'Users'));
 
         return $rules;
     }

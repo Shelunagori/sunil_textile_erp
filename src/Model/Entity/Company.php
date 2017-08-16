@@ -7,17 +7,20 @@ use Cake\ORM\Entity;
  * Company Entity
  *
  * @property int $id
- * @property int $name
+ * @property string $name
  * @property int $state_id
- * @property int $address
+ * @property \Cake\I18n\FrozenDate $financial_year_begins_from
+ * @property \Cake\I18n\FrozenDate $books_beginning_from
+ * @property string $address
  * @property string $phone_no
  * @property string $mobile
  * @property string $fax_no
  * @property string $email
- * @property string $website
  * @property string $gstin
+ * @property string $pan
  *
  * @property \App\Model\Entity\State $state
+ * @property \App\Model\Entity\CompanyUser[] $company_users
  */
 class Company extends Entity
 {

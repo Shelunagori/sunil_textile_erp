@@ -50,7 +50,7 @@ class AppController extends Controller
 		 'authenticate' => [
                 'Form' => [
                     'fields' => [
-                        'username' => 'email',
+                        'username' => 'username',
                         'password' => 'password'
                     ],
                       'userModel' => 'Users'
@@ -63,21 +63,7 @@ class AppController extends Controller
 			'unauthorizedRedirect' => $this->referer(),
         ]);
 		
-		$controller = $this->request->params['controller'];
-		$action = $this->request->params['action'];
-		$location=$controller.$action;
-		if($this->Auth->User('id')){
-			$allowedLocations=['Usersregistration','Userslogin','Userslogout','Companiesadd'];
-			if(!in_array($location,$allowedLocations)){
-				$this->loadModel('Companies');
-				$IsCompany = $this->Companies->exists(['user_id' => $this->Auth->User('id')]);
-				if((!$IsCompany)){
-					$this->response = $this->redirect(['controller' => 'Companies','action' => 'add']) ;
-					$this->response->send () ;
-					die ();
-				}
-			}
-		}
+		
         /*
          * Enable the following components for recommended CakePHP security settings.
          * see http://book.cakephp.org/3.0/en/controllers/components/security.html

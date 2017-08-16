@@ -15,7 +15,7 @@ class UsersController extends AppController
 	public function beforeFilter(Event $event)
     {
         parent::beforeFilter($event);
-        $this->Auth->allow([ 'logout', 'registration']);
+        $this->Auth->allow([ 'logout', 'add']);
     }
 
 	public function logout()
@@ -63,7 +63,7 @@ class UsersController extends AppController
     public function view($id = null)
     {
         $user = $this->Users->get($id, [
-            'contain' => []
+            'contain' => ['CompanyUsers']
         ]);
 
         $this->set('user', $user);
@@ -75,16 +75,15 @@ class UsersController extends AppController
      *
      * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function registration()
+    public function add()
     {
-		$this->viewBuilder()->layout('login');
         $user = $this->Users->newEntity();
         if ($this->request->is('post')) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
 
-                return $this->redirect(['action' => 'login']);
+                return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
@@ -117,9 +116,15 @@ class UsersController extends AppController
         $this->set('_serialize', ['user']);
     }
 
+    /**
+     * Delete method
+     *
+     * @param string|null $id User id.
+     * @return \Cake\Http\Response|null Redirects to index.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
     public function dashboard()
     {
         $this->viewBuilder()->layout('index_layout');
     }
-    
 }
