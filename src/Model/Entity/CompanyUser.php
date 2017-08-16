@@ -4,25 +4,16 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Company Entity
+ * CompanyUser Entity
  *
  * @property int $id
- * @property string $name
- * @property int $state_id
- * @property \Cake\I18n\FrozenDate $financial_year_begins_from
- * @property \Cake\I18n\FrozenDate $books_beginning_from
- * @property string $address
- * @property string $phone_no
- * @property string $mobile
- * @property string $fax_no
- * @property string $email
- * @property string $gstin
- * @property string $pan
+ * @property int $company_id
+ * @property int $user_id
  *
- * @property \App\Model\Entity\State $state
- * @property \App\Model\Entity\CompanyUser[] $company_users
+ * @property \App\Model\Entity\Company $company
+ * @property \App\Model\Entity\User $user
  */
-class Company extends Entity
+class CompanyUser extends Entity
 {
 
     /**

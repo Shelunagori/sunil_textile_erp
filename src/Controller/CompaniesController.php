@@ -39,7 +39,7 @@ class CompaniesController extends AppController
     public function view($id = null)
     {
         $company = $this->Companies->get($id, [
-            'contain' => ['States']
+            'contain' => ['States', 'CompanyUsers']
         ]);
 
         $this->set('company', $company);
@@ -53,20 +53,13 @@ class CompaniesController extends AppController
      */
     public function add()
     {
-		$IsCompany = $this->Companies->exists(['user_id' => $this->Auth->User('id')]);
-		if($IsCompany){
-			return $this->redirect(['controller' => 'Users','action' => 'Dashboard']);
-		}
-		
-		$this->viewBuilder()->layout('index_layout');
         $company = $this->Companies->newEntity();
         if ($this->request->is('post')) {
             $company = $this->Companies->patchEntity($company, $this->request->getData());
-			$company->user_id=$this->Auth->User('id');
             if ($this->Companies->save($company)) {
                 $this->Flash->success(__('The company has been saved.'));
 
-                return $this->redirect(['controller' => 'Users','action' => 'Dashboard']);
+                return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The company could not be saved. Please, try again.'));
         }

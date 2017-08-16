@@ -9,6 +9,8 @@ use Cake\Validation\Validator;
 /**
  * Users Model
  *
+ * @property \App\Model\Table\CompanyUsersTable|\Cake\ORM\Association\HasMany $CompanyUsers
+ *
  * @method \App\Model\Entity\User get($primaryKey, $options = [])
  * @method \App\Model\Entity\User newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\User[] newEntities(array $data, array $options = [])
@@ -33,8 +35,8 @@ class UsersTable extends Table
         $this->setTable('users');
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
-		
-		$this->hasOne('Companies', [
+
+        $this->hasMany('CompanyUsers', [
             'foreignKey' => 'user_id'
         ]);
     }
@@ -56,17 +58,16 @@ class UsersTable extends Table
             ->notEmpty('name');
 
         $validator
-            ->requirePresence('mobile', 'create')
-            ->notEmpty('mobile');
-
-        $validator
-            ->email('email')
-            ->requirePresence('email', 'create')
-            ->notEmpty('email');
+            ->requirePresence('username', 'create')
+            ->notEmpty('username');
 
         $validator
             ->requirePresence('password', 'create')
             ->notEmpty('password');
+
+        $validator
+            ->requirePresence('active', 'create')
+            ->notEmpty('active');
 
         return $validator;
     }
@@ -80,7 +81,7 @@ class UsersTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->isUnique(['email']));
+        $rules->add($rules->isUnique(['username']));
 
         return $rules;
     }

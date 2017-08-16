@@ -8,9 +8,11 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string $name
- * @property string $mobile
- * @property string $email
+ * @property string $username
  * @property string $password
+ * @property string $active
+ *
+ * @property \App\Model\Entity\CompanyUser[] $company_users
  */
 class User extends Entity
 {

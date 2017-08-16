@@ -1,22 +1,22 @@
 <?php
 namespace App\Test\TestCase\Model\Table;
 
-use App\Model\Table\CompaniesTable;
+use App\Model\Table\CompanyUsersTable;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 
 /**
- * App\Model\Table\CompaniesTable Test Case
+ * App\Model\Table\CompanyUsersTable Test Case
  */
-class CompaniesTableTest extends TestCase
+class CompanyUsersTableTest extends TestCase
 {
 
     /**
      * Test subject
      *
-     * @var \App\Model\Table\CompaniesTable
+     * @var \App\Model\Table\CompanyUsersTable
      */
-    public $Companies;
+    public $CompanyUsers;
 
     /**
      * Fixtures
@@ -24,9 +24,10 @@ class CompaniesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
+        'app.company_users',
         'app.companies',
         'app.states',
-        'app.company_users'
+        'app.users'
     ];
 
     /**
@@ -37,8 +38,8 @@ class CompaniesTableTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = TableRegistry::exists('Companies') ? [] : ['className' => CompaniesTable::class];
-        $this->Companies = TableRegistry::get('Companies', $config);
+        $config = TableRegistry::exists('CompanyUsers') ? [] : ['className' => CompanyUsersTable::class];
+        $this->CompanyUsers = TableRegistry::get('CompanyUsers', $config);
     }
 
     /**
@@ -48,7 +49,7 @@ class CompaniesTableTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->Companies);
+        unset($this->CompanyUsers);
 
         parent::tearDown();
     }

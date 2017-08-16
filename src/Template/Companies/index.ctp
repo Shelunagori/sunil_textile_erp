@@ -10,6 +10,8 @@
         <li><?= $this->Html->link(__('New Company'), ['action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List States'), ['controller' => 'States', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New State'), ['controller' => 'States', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('List Company Users'), ['controller' => 'CompanyUsers', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New Company User'), ['controller' => 'CompanyUsers', 'action' => 'add']) ?></li>
     </ul>
 </nav>
 <div class="companies index large-9 medium-8 columns content">
@@ -20,13 +22,14 @@
                 <th scope="col"><?= $this->Paginator->sort('id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('name') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('state_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('address') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('financial_year_begins_from') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('books_beginning_from') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('phone_no') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('mobile') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('fax_no') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('email') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('website') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('gstin') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('pan') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
@@ -34,15 +37,16 @@
             <?php foreach ($companies as $company): ?>
             <tr>
                 <td><?= $this->Number->format($company->id) ?></td>
-                <td><?= $this->Number->format($company->name) ?></td>
+                <td><?= h($company->name) ?></td>
                 <td><?= $company->has('state') ? $this->Html->link($company->state->name, ['controller' => 'States', 'action' => 'view', $company->state->id]) : '' ?></td>
-                <td><?= $this->Number->format($company->address) ?></td>
+                <td><?= h($company->financial_year_begins_from) ?></td>
+                <td><?= h($company->books_beginning_from) ?></td>
                 <td><?= h($company->phone_no) ?></td>
                 <td><?= h($company->mobile) ?></td>
                 <td><?= h($company->fax_no) ?></td>
                 <td><?= h($company->email) ?></td>
-                <td><?= h($company->website) ?></td>
                 <td><?= h($company->gstin) ?></td>
+                <td><?= h($company->pan) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $company->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $company->id]) ?>
