@@ -53,6 +53,7 @@ class StockGroupsController extends AppController
      */
     public function add()
     {
+		$this->viewBuilder()->layout('index_layout');
         $stockGroup = $this->StockGroups->newEntity();
         if ($this->request->is('post')) {
             $stockGroup = $this->StockGroups->patchEntity($stockGroup, $this->request->getData());
@@ -64,8 +65,7 @@ class StockGroupsController extends AppController
             $this->Flash->error(__('The stock group could not be saved. Please, try again.'));
         }
         $parentStockGroups = $this->StockGroups->ParentStockGroups->find('list', ['limit' => 200]);
-        $companies = $this->StockGroups->Companies->find('list', ['limit' => 200]);
-        $this->set(compact('stockGroup', 'parentStockGroups', 'companies'));
+        $this->set(compact('stockGroup', 'parentStockGroups'));
         $this->set('_serialize', ['stockGroup']);
     }
 
