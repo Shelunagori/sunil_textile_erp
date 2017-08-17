@@ -20,6 +20,7 @@ class StockGroupsController extends AppController
      */
     public function index()
     {
+		$this->viewBuilder()->layout('index_layout');
         $this->paginate = [
             'contain' => ['ParentStockGroups', 'Companies']
         ];
