@@ -18,11 +18,30 @@ class UnitsController extends AppController
      *
      * @return \Cake\Http\Response|void
      */
-    public function index()
+    public function index($id=null)
     {
+		$this->viewBuilder()->layout('index_layout');
+		if(!empty($id)){ 
+			$unit = $this->Units->get($id, [
+            'contain' => []
+			]);
+		}else{
+			 $unit = $this->Units->newEntity();
+		}
+		
+		if ($this->request->is(['patch', 'post', 'put'])) {
+            $unit = $this->Units->patchEntity($unit, $this->request->getData());
+            if ($this->Units->save($unit)) {
+                $this->Flash->success(__('The unit has been saved.'));
+
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('The unit could not be saved. Please, try again.'));
+        }
+		
         $units = $this->paginate($this->Units);
 
-        $this->set(compact('units'));
+        $this->set(compact('units','unit'));
         $this->set('_serialize', ['units']);
     }
 
