@@ -21,7 +21,7 @@ $this->set('title', 'Edit Supplier | Sunil Textile ERP');
 					<div class="col-md-6">
 						<div class="form-group">
 							<label>Suppiler Name <span class="required">*</span></label>
-							<?php echo $this->Form->control('name',['class'=>'form-control input-sm','placeholder'=>'Customer Name','label'=>false,'autofocus']); ?>
+							<?php echo $this->Form->control('name',['class'=>'form-control input-sm','placeholder'=>'Supplier Name','label'=>false,'autofocus']); ?>
 						</div>
 						<div class="form-group">
 							<label>Gstin <span class="required">*</span></label>

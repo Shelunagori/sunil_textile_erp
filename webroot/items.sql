@@ -23,37 +23,35 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `customers`
+-- Table structure for table `items`
 --
 
-CREATE TABLE `customers` (
+CREATE TABLE `items` (
   `id` int(10) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `state_id` int(10) NOT NULL,
+  `hsn_code` varchar(30) NOT NULL,
+  `item_code` int(10) NOT NULL,
   `company_id` int(10) NOT NULL,
-  `gstin` varchar(20) NOT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `mobile` varchar(10) DEFAULT NULL,
-  `address` text,
-  `freeze` tinyint(1) NOT NULL DEFAULT '0'
+  `unit_id` int(10) NOT NULL,
+  `stock_group_id` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `customers`
+-- Dumping data for table `items`
 --
 
-INSERT INTO `customers` (`id`, `name`, `state_id`, `company_id`, `gstin`, `email`, `mobile`, `address`, `freeze`) VALUES
-(1, 'ramesh patel', 1, 0, '1223233dsds', 'ramesh@gmail.com', '9837376665', 'dcdcxcxzczxc', 0),
-(2, 'kalia', 1, 1, '34353', 'kalu@kir.com', '3454554534', 'vfgdfgfdg', 0);
+INSERT INTO `items` (`id`, `name`, `hsn_code`, `item_code`, `company_id`, `unit_id`, `stock_group_id`) VALUES
+(1, 'Raymand ', 'code123', 1, 1, 1, 1),
+(2, 'liance textile', 'sxasxsx', 2, 1, 2, 2);
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `customers`
+-- Indexes for table `items`
 --
-ALTER TABLE `customers`
+ALTER TABLE `items`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -61,9 +59,9 @@ ALTER TABLE `customers`
 --
 
 --
--- AUTO_INCREMENT for table `customers`
+-- AUTO_INCREMENT for table `items`
 --
-ALTER TABLE `customers`
+ALTER TABLE `items`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

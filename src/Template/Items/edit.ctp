@@ -1,35 +1,53 @@
 <?php
 /**
-  * @var \App\View\AppView $this
-  */
+ * @Author: Kounty
+ */
+$this->set('title', 'Edit Item | Sunil Textile ERP');
 ?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Form->postLink(
-                __('Delete'),
-                ['action' => 'delete', $item->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $item->id)]
-            )
-        ?></li>
-        <li><?= $this->Html->link(__('List Items'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Units'), ['controller' => 'Units', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Unit'), ['controller' => 'Units', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Stock Groups'), ['controller' => 'StockGroups', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Stock Group'), ['controller' => 'StockGroups', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="items form large-9 medium-8 columns content">
-    <?= $this->Form->create($item) ?>
-    <fieldset>
-        <legend><?= __('Edit Item') ?></legend>
-        <?php
-            echo $this->Form->control('name');
-            echo $this->Form->control('hsn_code');
-            echo $this->Form->control('unit_id', ['options' => $units]);
-            echo $this->Form->control('stock_group_id', ['options' => $stockGroups]);
-        ?>
-    </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
-    <?= $this->Form->end() ?>
+<div class="row">
+	<div class="col-md-6">
+		<div class="portlet light ">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="icon-bar-chart font-green-sharp hide"></i>
+					<span class="caption-subject font-green-sharp bold ">Edit Item</span>
+				</div>
+			</div>
+			<div class="portlet-body">
+				<?= $this->Form->create($item) ?>
+				<div class="row">
+					 <div class="col-md-12">
+						<div class="form-group">
+									<label>Item Name <span class="required">*</span></label>
+									<?php echo $this->Form->control('name',['class'=>'form-control input-sm','placeholder'=>'Item Name','label'=>false,'autofocus']); ?>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Stock Group <span class="required">*</span></label>
+									<?php echo $this->Form->control('stock_group_id',['class'=>'form-control input-sm','label'=>false,'empty'=>'-Stock Group-', 'options' => $stockGroups,'required'=>'required']); ?>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>HSN Code <span class="required">*</span></label>
+									<?php echo $this->Form->control('hsn_code',['class'=>'form-control input-sm','label'=>false,'placeholder'=>'HSN Code']); ?>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Unit <span class="required">*</span></label>
+									<?php echo $this->Form->control('unit_id',['class'=>'form-control input-sm','label'=>false,'empty'=>'-Unit-', 'options' => $units,'required'=>'required']); ?>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<?= $this->Form->button(__('Submit'),['class'=>'btn btn-success']) ?>
+				<?= $this->Form->end() ?>
+			</div>
+		</div>
+	</div>
 </div>

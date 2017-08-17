@@ -56,6 +56,7 @@ class CustomersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $customer = $this->Customers->newEntity();
+		$this->request->data['company_id'] =1;
         if ($this->request->is('post')) {
             $customer = $this->Customers->patchEntity($customer, $this->request->getData());
             if ($this->Customers->save($customer)) {

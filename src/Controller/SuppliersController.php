@@ -55,6 +55,7 @@ class SuppliersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $supplier = $this->Suppliers->newEntity();
+		$this->request->data['company_id'] =1;
         if ($this->request->is('post')) {
             $supplier = $this->Suppliers->patchEntity($supplier, $this->request->getData());
             if ($this->Suppliers->save($supplier)) {

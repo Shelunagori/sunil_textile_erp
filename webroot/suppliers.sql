@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.4.1deb2ubuntu2
--- http://www.phpmyadmin.net
+-- version 4.6.5.2
+-- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Aug 14, 2017 at 06:37 AM
--- Server version: 5.7.19-0ubuntu0.16.04.1
--- PHP Version: 7.0.22-0ubuntu0.16.04.1
+-- Host: 127.0.0.1
+-- Generation Time: Aug 17, 2017 at 12:57 PM
+-- Server version: 10.1.21-MariaDB
+-- PHP Version: 5.6.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `mewar_hitech`
+-- Database: `sunil_textile_erp`
 --
 
 -- --------------------------------------------------------
@@ -27,32 +27,24 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `suppliers` (
-  `id` int(11) NOT NULL,
+  `id` int(10) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `tin` varchar(255) NOT NULL,
-  `pan` varchar(255) NOT NULL,
-  `cin` varchar(255) NOT NULL,
-  `gst` varchar(255) NOT NULL,
-  `address` text NOT NULL,
-  `address1` text NOT NULL,
-  `address2` text NOT NULL,
-  `address3` text NOT NULL,
-  `address4` text NOT NULL,
-  `mobile_no` varchar(25) NOT NULL,
-  `state` varchar(100) NOT NULL,
-  `pin_code` varchar(50) NOT NULL,
-  `is_deleted` int(11) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `gst_registration_type` varchar(50) NOT NULL
+  `state_id` int(10) NOT NULL,
+  `company_id` int(10) NOT NULL,
+  `gstin` varchar(20) NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `mobile` varchar(10) DEFAULT NULL,
+  `address` text,
+  `freeze` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `suppliers`
 --
 
-INSERT INTO `suppliers` (`id`, `name`, `tin`, `pan`, `cin`, `gst`, `address`, `address1`, `address2`, `address3`, `address4`, `mobile_no`, `state`, `pin_code`, `is_deleted`, `email`, `gst_registration_type`) VALUES
-(1, 'test supplier', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', ''),
-(2, 'neel kant', '', '', '', '12345678', 'erw', 'wsw', 'w', 'w', 'w', '9999999999', 'rajasthan', '123454', 0, 'neel@gmail.com', '');
+INSERT INTO `suppliers` (`id`, `name`, `state_id`, `company_id`, `gstin`, `email`, `mobile`, `address`, `freeze`) VALUES
+(1, 'nirma pvt ltd', 1, 0, 'dsfdsgf4545345tgdfg', 'niru@gmail.com', '2345466666', 'zxczxcxczxczxczx\r\nudaipur(raj)', 0),
+(2, 'papu gaba wala', 1, 1, 'x zxc xcxxcx', 'papu@yahoo.com', '1232323344', 'sxsxsx', 0);
 
 --
 -- Indexes for dumped tables
@@ -72,7 +64,7 @@ ALTER TABLE `suppliers`
 -- AUTO_INCREMENT for table `suppliers`
 --
 ALTER TABLE `suppliers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

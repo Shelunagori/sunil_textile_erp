@@ -53,9 +53,18 @@ class ItemsController extends AppController
      */
     public function add()
     {
+		$this->viewBuilder()->layout('index_layout');
         $item = $this->Items->newEntity();
-        if ($this->request->is('post')) {
-            $item = $this->Items->patchEntity($item, $this->request->getData());
+		$this->request->data['company_id'] =1;
+		if ($this->request->is('post')) {
+			$item = $this->Items->patchEntity($item, $this->request->getData());
+			//item code Increment
+			$last_item_code=$this->Items->find()->select(['item_code'])->order(['item_code' => 'DESC'])->first();
+			if($last_item_code){
+				$item->item_code=$last_item_code->item_code+1;
+			}else{
+				$item->item_code=1;
+			} 
             if ($this->Items->save($item)) {
                 $this->Flash->success(__('The item has been saved.'));
 
@@ -78,6 +87,7 @@ class ItemsController extends AppController
      */
     public function edit($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
         $item = $this->Items->get($id, [
             'contain' => []
         ]);
