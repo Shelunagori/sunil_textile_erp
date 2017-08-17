@@ -1,38 +1,57 @@
 <?php
 /**
-  * @var \App\View\AppView $this
-  */
+ * @Author: Kounty
+ */
+$this->set('title', 'Edit Customer | Sunil Textile ERP');
 ?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Form->postLink(
-                __('Delete'),
-                ['action' => 'delete', $customer->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $customer->id)]
-            )
-        ?></li>
-        <li><?= $this->Html->link(__('List Customers'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List States'), ['controller' => 'States', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New State'), ['controller' => 'States', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Ledgers'), ['controller' => 'Ledgers', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Ledger'), ['controller' => 'Ledgers', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="customers form large-9 medium-8 columns content">
-    <?= $this->Form->create($customer) ?>
-    <fieldset>
-        <legend><?= __('Edit Customer') ?></legend>
-        <?php
-            echo $this->Form->control('name');
-            echo $this->Form->control('state_id', ['options' => $states]);
-            echo $this->Form->control('gstin');
-            echo $this->Form->control('email');
-            echo $this->Form->control('mobile');
-            echo $this->Form->control('address');
-            echo $this->Form->control('freeze');
-        ?>
-    </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
-    <?= $this->Form->end() ?>
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet light ">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="icon-bar-chart font-green-sharp hide"></i>
+					<span class="caption-subject font-green-sharp bold ">Edit Customer</span>
+				</div>
+			</div>
+			<div class="portlet-body">
+				<?= $this->Form->create($customer) ?>
+				<div class="row">
+					<div class="col-md-12">
+					<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>Customer Name <span class="required">*</span></label>
+							<?php echo $this->Form->control('name',['class'=>'form-control input-sm','placeholder'=>'Customer Name','label'=>false,'autofocus']); ?>
+						</div>
+						<div class="form-group">
+							<label>Gstin <span class="required">*</span></label>
+							<?php echo $this->Form->control('gstin',['class'=>'form-control input-sm','placeholder'=>'','label'=>false,'autofocus']); ?>
+						</div>
+						<div class="form-group">
+							<label>Mobile </label>
+							<?php echo $this->Form->control('mobile',['class'=>'form-control input-sm','placeholder'=>'9867123456','label'=>false,'autofocus','maxlength'=>10]); ?>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label>State <span class="required">*</span></label>
+							<?php echo $this->Form->control('state_id',['class'=>'form-control input-sm','label'=>false,'empty'=>'-State-', 'options' => $states,'required'=>'required']); ?>
+						</div>
+						<div class="form-group">
+							<label>Email</label>
+							<?php echo $this->Form->control('email',['class'=>'form-control input-sm','label'=>false]); ?>
+						</div>
+						<div class="form-group">
+							<label>Address</label>
+							<?php echo $this->Form->control('address',['class'=>'form-control input-sm','label'=>false]); ?>
+						</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<?= $this->Form->button(__('Submit'),['class'=>'btn btn-success']) ?>
+				<?= $this->Form->end() ?>
+			</div>
+		</div>
+	</div>
 </div>

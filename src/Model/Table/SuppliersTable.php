@@ -7,20 +7,20 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * Customers Model
+ * Suppliers Model
  *
  * @property \App\Model\Table\StatesTable|\Cake\ORM\Association\BelongsTo $States
  * @property \App\Model\Table\LedgersTable|\Cake\ORM\Association\HasMany $Ledgers
  *
- * @method \App\Model\Entity\Customer get($primaryKey, $options = [])
- * @method \App\Model\Entity\Customer newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\Customer[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\Customer|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Customer patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\Customer[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\Customer findOrCreate($search, callable $callback = null, $options = [])
+ * @method \App\Model\Entity\Supplier get($primaryKey, $options = [])
+ * @method \App\Model\Entity\Supplier newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\Supplier[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\Supplier|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\Supplier patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\Supplier[] patchEntities($entities, array $data, array $options = [])
+ * @method \App\Model\Entity\Supplier findOrCreate($search, callable $callback = null, $options = [])
  */
-class CustomersTable extends Table
+class SuppliersTable extends Table
 {
 
     /**
@@ -33,7 +33,7 @@ class CustomersTable extends Table
     {
         parent::initialize($config);
 
-        $this->setTable('customers');
+        $this->setTable('suppliers');
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
@@ -42,7 +42,7 @@ class CustomersTable extends Table
             'joinType' => 'INNER'
         ]);
         $this->hasMany('Ledgers', [
-            'foreignKey' => 'customer_id'
+            'foreignKey' => 'supplier_id'
         ]);
     }
 
@@ -76,7 +76,7 @@ class CustomersTable extends Table
         $validator
             ->allowEmpty('address');
 
-       
+        
 
         return $validator;
     }

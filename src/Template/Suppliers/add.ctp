@@ -2,7 +2,7 @@
 /**
  * @Author: Kounty
  */
-$this->set('title', 'Create Customer | Sunil Textile ERP');
+$this->set('title', 'Create Supplier | Sunil Textile ERP');
 ?>
 <div class="row">
 	<div class="col-md-12">
@@ -10,17 +10,17 @@ $this->set('title', 'Create Customer | Sunil Textile ERP');
 			<div class="portlet-title">
 				<div class="caption">
 					<i class="icon-bar-chart font-green-sharp hide"></i>
-					<span class="caption-subject font-green-sharp bold ">Create Customer</span>
+					<span class="caption-subject font-green-sharp bold ">Create Supplier</span>
 				</div>
 			</div>
 			<div class="portlet-body">
-				<?= $this->Form->create($customer) ?>
+				<?= $this->Form->create($supplier) ?>
 				<div class="row">
 					<div class="col-md-12">
 					<div class="row">
 					<div class="col-md-6">
 						<div class="form-group">
-							<label>Customer Name <span class="required">*</span></label>
+							<label>Suppiler Name <span class="required">*</span></label>
 							<?php echo $this->Form->control('name',['class'=>'form-control input-sm','placeholder'=>'Customer Name','label'=>false,'autofocus']); ?>
 						</div>
 						<div class="form-group">

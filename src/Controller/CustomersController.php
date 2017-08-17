@@ -18,35 +18,15 @@ class CustomersController extends AppController
      *
      * @return \Cake\Http\Response|void
      */
-    public function index($id=null)
+    public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-		/* if(!empty($id))
-		{
-			$customer = $this->Customers->get($id, [
-				'contain' => ['States']
-			]);
-		}
-		else{
-			$customer = $this->Customers->patchEntity();
-		} */
-		
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $customer = $this->Customers->patchEntity($customer, $this->request->getData());
-            if ($this->Customers->save($customer)) {
-                $this->Flash->success(__('The customer has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The customer could not be saved. Please, try again.'));
-        }
-		
-        $this->paginate = [
+		 $this->paginate = [
             'contain' => ['States']
         ];
         $customers = $this->paginate($this->Customers);
 
-        $this->set(compact('customers','customer'));
+        $this->set(compact('customers'));
         $this->set('_serialize', ['customers']);
     }
 
@@ -74,6 +54,7 @@ class CustomersController extends AppController
      */
     public function add()
     {
+		$this->viewBuilder()->layout('index_layout');
         $customer = $this->Customers->newEntity();
         if ($this->request->is('post')) {
             $customer = $this->Customers->patchEntity($customer, $this->request->getData());
@@ -98,6 +79,7 @@ class CustomersController extends AppController
      */
     public function edit($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
         $customer = $this->Customers->get($id, [
             'contain' => []
         ]);

@@ -1,19 +1,9 @@
 <?php
 /**
-  * @var \App\View\AppView $this
-  * @var \App\Model\Entity\Customer[]|\Cake\Collection\CollectionInterface $customers
-  */
+ * @Author: Kounty
+ */
+$this->set('title', 'Create Customer | Sunil Textile ERP');
 ?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Customer'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List States'), ['controller' => 'States', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New State'), ['controller' => 'States', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Ledgers'), ['controller' => 'Ledgers', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Ledger'), ['controller' => 'Ledgers', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
 <div class="customers index large-9 medium-8 columns content">
     <h3><?= __('Customers') ?></h3>
     <table cellpadding="0" cellspacing="0">
