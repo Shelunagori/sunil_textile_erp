@@ -90,7 +90,6 @@ class SuppliersTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->isUnique(['email']));
         $rules->add($rules->existsIn(['state_id'], 'States'));
 
         return $rules;
