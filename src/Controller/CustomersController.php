@@ -101,6 +101,11 @@ class CustomersController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $customer = $this->Customers->patchEntity($customer, $this->request->getData());
             if ($this->Customers->save($customer)) {
+				$query = $this->Customers->Ledgers->query();
+					$query->update()
+						->set(['name' => $customer->name])
+						->where(['customer_id' => $id])
+						->execute();
                 $this->Flash->success(__('The customer has been saved.'));
 
                 return $this->redirect(['action' => 'index']);

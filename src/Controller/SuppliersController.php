@@ -98,6 +98,11 @@ class SuppliersController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $supplier = $this->Suppliers->patchEntity($supplier, $this->request->getData());
             if ($this->Suppliers->save($supplier)) {
+				$query = $this->Suppliers->Ledgers->query();
+					$query->update()
+						->set(['name' => $supplier->name])
+						->where(['supplier_id' => $id])
+						->execute();
                 $this->Flash->success(__('The supplier has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
