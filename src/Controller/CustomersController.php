@@ -72,6 +72,7 @@ class CustomersController extends AppController
 				$ledger->accounting_group_id = $accounting_group->id;
 				$ledger->company_id =$company_id;
 				$ledger->customer_id=$customer->id;
+				$ledger->bill_to_bill_accounting=$customer->bill_to_bill_accounting;
 				
 				$this->Customers->Ledgers->save($ledger);
                 $this->Flash->success(__('The customer has been saved.'));

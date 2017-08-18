@@ -69,6 +69,7 @@ class SuppliersController extends AppController
 				$ledger->accounting_group_id = $accounting_group->id;
 				$ledger->company_id=$company_id;
 				$ledger->supplier_id=$supplier->id;
+				$ledger->bill_to_bill_accounting=$supplier->bill_to_bill_accounting;
 				
 				$this->Suppliers->Ledgers->save($ledger);
                 $this->Flash->success(__('The supplier has been saved.'));

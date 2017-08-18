@@ -31,6 +31,12 @@ $this->set('title', 'Edit Supplier | Sunil Textile ERP');
 							<label>Mobile </label>
 							<?php echo $this->Form->control('mobile',['class'=>'form-control input-sm','placeholder'=>'9867123456','label'=>false,'autofocus','maxlength'=>10]); ?>
 						</div>
+						<div class="form-group">
+							<label>Bill to Bill Accounting </label>
+							<?php 
+							$option =[['value'=>'yes','text'=>'yes'],['value'=>'no','text'=>'no']];
+							echo $this->Form->control('bill_to_bill_accounting',['class'=>'form-control input-sm','label'=>false, 'options' => $option,'required'=>'required']); ?>
+						</div>
 					</div>
 					<div class="col-md-6">
 						<div class="form-group">
