@@ -41,7 +41,7 @@ class CustomersTable extends Table
             'foreignKey' => 'state_id',
             'joinType' => 'INNER'
         ]);
-        $this->hasMany('Ledgers', [
+       $this->hasOne('Ledgers', [
             'foreignKey' => 'customer_id'
         ]);
     }
@@ -90,7 +90,6 @@ class CustomersTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->isUnique(['email']));
         $rules->add($rules->existsIn(['state_id'], 'States'));
 
         return $rules;

@@ -59,13 +59,23 @@ class CustomersController extends AppController
         $customer = $this->Customers->newEntity();
 		$this->request->data['company_id'] = $company_id;
         if ($this->request->is('post')) {
-            $customer = $this->Customers->patchEntity($customer, $this->request->getData());
-            if ($this->Customers->save($customer)) {
+			
+			$customer = $this->Customers->patchEntity($customer, $this->request->data);
+			//Create Ledger//
+				$ledger = $this->Customers->Ledgers->newEntity();
+				$ledger->name = $customer->name;
+				$ledger->accounting_group_id = 1;
+				$ledger->company_id=1;
+				
+				$this->Customers->Ledgers->save($ledger);
+				
+		    if ($this->Customers->save($customer)) {
+				
                 $this->Flash->success(__('The customer has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The customer could not be saved. Please, try again.'));
+			$this->Flash->error(__('The customer could not be saved. Please, try again.'));
         }
         $states = $this->Customers->States->find('list', ['limit' => 200]);
         $this->set(compact('customer', 'states'));
