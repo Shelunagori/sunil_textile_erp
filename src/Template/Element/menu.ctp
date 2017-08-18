@@ -23,7 +23,7 @@ echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-home']
 
 <li class="start ">
 	<a href="javascript:;">
-	<i class="fa fa-sitemap"></i>
+	<i class="fa fa-user"></i>
 	<span class="title">Customers</span>
 	<span class="arrow "></span>
 	</a>
@@ -35,7 +35,7 @@ echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-home']
 
 <li class="start ">
 	<a href="javascript:;">
-	<i class="fa fa-sitemap"></i>
+	<i class="fa fa-building-o"></i>
 	<span class="title">Suppliers</span>
 	<span class="arrow "></span>
 	</a>
@@ -47,7 +47,7 @@ echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-home']
 
 <li class="start ">
 	<a href="javascript:;">
-	<i class="fa fa-sitemap"></i>
+	<i class="fa fa-bars"></i>
 	<span class="title">Items</span>
 	<span class="arrow "></span>
 	</a>
