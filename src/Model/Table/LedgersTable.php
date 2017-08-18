@@ -62,6 +62,10 @@ class LedgersTable extends Table
 		$this->belongsTo('Customers', [
 			'foreignKey' => 'customer_id'
 		]);
+		$this->belongsTo('AccountingGroups', [
+            'foreignKey' => 'accounting_group_id',
+            'joinType' => 'INNER'
+        ]);
     }
 
     /**

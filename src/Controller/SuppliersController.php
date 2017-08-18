@@ -55,10 +55,22 @@ class SuppliersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $supplier = $this->Suppliers->newEntity();
-		$this->request->data['company_id'] =1;
+		$company_id=$this->Auth->User('session_company_id');
+		$this->request->data['company_id'] =$company_id;
         if ($this->request->is('post')) {
             $supplier = $this->Suppliers->patchEntity($supplier, $this->request->getData());
+			
             if ($this->Suppliers->save($supplier)) {
+				//Create Ledger//
+			$accounting_group = $this->Suppliers->Ledgers->AccountingGroups->find()->where(['company_id'=>$company_id,'supplier'=>1])->first();
+			
+				$ledger = $this->Suppliers->Ledgers->newEntity();
+				$ledger->name = $supplier->name;
+				$ledger->accounting_group_id = $accounting_group->id;
+				$ledger->company_id=$company_id;
+				$ledger->supplier_id=$supplier->id;
+				
+				$this->Suppliers->Ledgers->save($ledger);
                 $this->Flash->success(__('The supplier has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
