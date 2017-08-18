@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 17, 2017 at 09:30 AM
+-- Generation Time: Aug 18, 2017 at 09:44 AM
 -- Server version: 10.1.13-MariaDB
 -- PHP Version: 7.0.8
 
@@ -114,45 +114,46 @@ CREATE TABLE `accounting_groups` (
   `parent_id` int(11) DEFAULT NULL,
   `lft` int(10) DEFAULT NULL,
   `rght` int(10) DEFAULT NULL,
-  `company_id` int(10) NOT NULL
+  `company_id` int(10) NOT NULL,
+  `customer` tinyint(1) DEFAULT NULL,
+  `supplier` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `accounting_groups`
 --
 
-INSERT INTO `accounting_groups` (`id`, `nature_of_group_id`, `name`, `parent_id`, `lft`, `rght`, `company_id`) VALUES
-(1, 2, 'Branch / Divisions', NULL, 1, 2, 1),
-(2, 2, 'Capital Account', NULL, 3, 6, 0),
-(3, 1, 'Current Assets', NULL, 7, 20, 0),
-(4, 2, 'Current Liabilities', NULL, 21, 32, 0),
-(5, 4, 'Direct Expenses', NULL, 33, 34, 0),
-(6, 3, 'Direct Incomes', NULL, 35, 36, 0),
-(7, 1, 'Fixed Assets', NULL, 37, 38, 0),
-(8, 4, 'Indirect Expenses', NULL, 39, 40, 0),
-(9, 3, 'Indirect Incomes', NULL, 41, 42, 0),
-(10, 1, 'Investments', NULL, 43, 44, 0),
-(11, 2, 'Loans (Liability)', NULL, 45, 52, 0),
-(12, 1, 'Misc. Expenses (ASSET)', NULL, 53, 54, 0),
-(13, 4, 'Purchase Accounts', NULL, 55, 56, 0),
-(14, 3, 'Sales Accounts', NULL, 57, 58, 0),
-(15, 2, 'Suspense A/c', NULL, 59, 60, 0),
-(16, NULL, 'Reserves & Surplus', 2, 4, 5, 1),
-(17, NULL, 'Bank Accounts', 3, 8, 9, 1),
-(18, NULL, 'Cash-in-hand', 3, 10, 11, 1),
-(19, NULL, 'Deposits (Asset)', 3, 12, 13, 1),
-(20, NULL, 'Loans & Advances (Asset)', 3, 14, 15, 1),
-(21, NULL, 'Stock-in-hand', 3, 16, 17, 1),
-(22, NULL, 'Sundry Debtors', 3, 18, 19, 1),
-(23, NULL, 'Duties & Taxes', 4, 22, 27, 1),
-(24, NULL, 'Provisions', 4, 28, 29, 1),
-(25, NULL, 'Sundry Creditors', 4, 30, 31, 1),
-(26, NULL, 'Bank OD A/c', 11, 46, 47, 1),
-(27, NULL, 'Secured Loans', 11, 48, 49, 1),
-(28, NULL, 'Unsecured Loans', 11, 50, 51, 1),
-(29, NULL, 'Input GST', 23, 23, 24, 0),
-(30, NULL, 'Output GST', 23, 25, 26, 0),
-(31, NULL, 'Petty Cash', 0, 0, 0, 1);
+INSERT INTO `accounting_groups` (`id`, `nature_of_group_id`, `name`, `parent_id`, `lft`, `rght`, `company_id`, `customer`, `supplier`) VALUES
+(1, 2, 'Branch / Divisions', NULL, 1, 2, 1, NULL, NULL),
+(2, 2, 'Capital Account', NULL, 3, 6, 1, NULL, NULL),
+(3, 1, 'Current Assets', NULL, 7, 20, 1, NULL, NULL),
+(4, 2, 'Current Liabilities', NULL, 21, 32, 1, NULL, NULL),
+(5, 4, 'Direct Expenses', NULL, 33, 34, 1, NULL, NULL),
+(6, 3, 'Direct Incomes', NULL, 35, 36, 1, NULL, NULL),
+(7, 1, 'Fixed Assets', NULL, 37, 38, 1, NULL, NULL),
+(8, 4, 'Indirect Expenses', NULL, 39, 40, 1, NULL, NULL),
+(9, 3, 'Indirect Incomes', NULL, 41, 42, 1, NULL, NULL),
+(10, 1, 'Investments', NULL, 43, 44, 1, NULL, NULL),
+(11, 2, 'Loans (Liability)', NULL, 45, 52, 1, NULL, NULL),
+(12, 1, 'Misc. Expenses (ASSET)', NULL, 53, 54, 1, NULL, NULL),
+(13, 4, 'Purchase Accounts', NULL, 55, 56, 1, NULL, NULL),
+(14, 3, 'Sales Accounts', NULL, 57, 58, 1, NULL, NULL),
+(15, 2, 'Suspense A/c', NULL, 59, 60, 1, NULL, NULL),
+(16, NULL, 'Reserves & Surplus', 2, 4, 5, 1, NULL, NULL),
+(17, NULL, 'Bank Accounts', 3, 8, 9, 1, NULL, NULL),
+(18, NULL, 'Cash-in-hand', 3, 10, 11, 1, NULL, NULL),
+(19, NULL, 'Deposits (Asset)', 3, 12, 13, 1, NULL, NULL),
+(20, NULL, 'Loans & Advances (Asset)', 3, 14, 15, 1, NULL, NULL),
+(21, NULL, 'Stock-in-hand', 3, 16, 17, 1, NULL, NULL),
+(22, NULL, 'Sundry Debtors', 3, 18, 19, 1, 1, NULL),
+(23, NULL, 'Duties & Taxes', 4, 22, 27, 1, NULL, NULL),
+(24, NULL, 'Provisions', 4, 28, 29, 1, NULL, NULL),
+(25, NULL, 'Sundry Creditors', 4, 30, 31, 1, NULL, 1),
+(26, NULL, 'Bank OD A/c', 11, 46, 47, 1, NULL, NULL),
+(27, NULL, 'Secured Loans', 11, 48, 49, 1, NULL, NULL),
+(28, NULL, 'Unsecured Loans', 11, 50, 51, 1, NULL, NULL),
+(29, NULL, 'Input GST', 23, 23, 24, 1, NULL, NULL),
+(30, NULL, 'Output GST', 23, 25, 26, 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -175,6 +176,14 @@ CREATE TABLE `companies` (
   `pan` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `companies`
+--
+
+INSERT INTO `companies` (`id`, `name`, `state_id`, `financial_year_begins_from`, `books_beginning_from`, `address`, `phone_no`, `mobile`, `fax_no`, `email`, `gstin`, `pan`) VALUES
+(1, 'Company 1', 1, '2017-04-01', '2017-04-01', '', '', '', '', '', '0834523523', ''),
+(2, 'Company 2', 1, '2017-04-01', '2017-04-01', '', '', '', '', '', '0834523523', '');
+
 -- --------------------------------------------------------
 
 --
@@ -186,6 +195,14 @@ CREATE TABLE `company_users` (
   `company_id` int(10) NOT NULL,
   `user_id` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `company_users`
+--
+
+INSERT INTO `company_users` (`id`, `company_id`, `user_id`) VALUES
+(1, 1, 3),
+(2, 2, 4);
 
 -- --------------------------------------------------------
 
@@ -310,6 +327,13 @@ CREATE TABLE `stock_groups` (
   `company_id` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `stock_groups`
+--
+
+INSERT INTO `stock_groups` (`id`, `name`, `parent_id`, `lft`, `rght`, `company_id`) VALUES
+(1, 'Group 1', NULL, 1, 2, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -348,7 +372,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `username`, `password`, `active`) VALUES
-(2, 'Abhilash Lohar', 'hello', '$2y$10$byO0PcIW4AN3Vr4XV756K.3tt4XO.vVJKJUgp75NhQ11aQ79LoYGa', 'yes');
+(3, 'company1', 'company1', '$2y$10$Asq6ce7MpgbK/.ByOYY25e0oBiHS/6eW27VLfLgZqFQGvy0CVGvRu', 'yes'),
+(4, 'company2', 'company2', '$2y$10$AK/JEB.mGCfJn.hxMmoieepiCMhjuYPtdM3eyMO1IDqOZDeJHHeYC', 'yes');
 
 --
 -- Indexes for dumped tables
@@ -438,12 +463,12 @@ ALTER TABLE `accounting_groups`
 -- AUTO_INCREMENT for table `companies`
 --
 ALTER TABLE `companies`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `company_users`
 --
 ALTER TABLE `company_users`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `items`
 --
@@ -468,7 +493,7 @@ ALTER TABLE `states`
 -- AUTO_INCREMENT for table `stock_groups`
 --
 ALTER TABLE `stock_groups`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `units`
 --
@@ -478,7 +503,7 @@ ALTER TABLE `units`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

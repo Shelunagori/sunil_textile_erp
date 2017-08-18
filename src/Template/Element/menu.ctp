@@ -1,7 +1,5 @@
 <?php
-/**
- * @Author: Kounty
- */
+
 if(!isset($active_menu))
 {
     $active_menu = '';
