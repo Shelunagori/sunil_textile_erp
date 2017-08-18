@@ -31,6 +31,10 @@ class UsersController extends AppController
             $user = $this->Auth->identify();
             if ($user) 
 			{
+				$user=$this->Users->get($user['id'], [
+					'contain' => ['CompanyUsers']
+				]);
+				$user->session_company_id=$user->company_users[0]->company_id;
                 $this->Auth->setUser($user);
 				return $this->redirect(['controller'=>'Users','action' => 'Dashboard']);
             }
