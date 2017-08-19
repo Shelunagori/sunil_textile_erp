@@ -40,6 +40,7 @@ class ItemLedgersTable extends Table
             'foreignKey' => 'item_id',
             'joinType' => 'INNER'
         ]);
+		
     }
 
     /**

@@ -5,7 +5,7 @@
 $this->set('title', 'Create Item | Sunil Textile ERP');
 ?>
 <div class="row">
-	<div class="col-md-6">
+	<div class="col-md-12">
 		<div class="portlet light ">
 			<div class="portlet-title">
 				<div class="caption">
@@ -16,43 +16,17 @@ $this->set('title', 'Create Item | Sunil Textile ERP');
 			<div class="portlet-body">
 				<?= $this->Form->create($item) ?>
 				<div class="row">
-					 <div class="col-md-12">
+				
+					 <div class="col-md-6">
 						<div class="form-group">
 									<label>Item Name <span class="required">*</span></label>
 									<?php echo $this->Form->control('name',['class'=>'form-control input-sm','placeholder'=>'Item Name','label'=>false,'autofocus']); ?>
 						</div>
+						
 						<div class="row">
 							<div class="col-md-6">
 								<div class="form-group">
-									<label>Quantity <span class="required">*</span></label>
-									<?php echo $this->Form->control('quantity',['class'=>'form-control input-sm qty calculation','label'=>false,'placeholder'=>'Quantity']); ?>
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<label>Rate <span class="required">*</span></label>
-									<?php echo $this->Form->control('rate',['class'=>'form-control input-sm rate calculation','label'=>false,'placeholder'=>'Rate']); ?>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-						    <div class="col-md-6">
-								<div class="form-group">
-									<label>Amount <span class="required">*</span></label>
-									<?php echo $this->Form->control('amount',['class'=>'form-control input-sm amt','label'=>false,'placeholder'=>'Amount']); ?>
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<label>Unit <span class="required">*</span></label>
-									<?php echo $this->Form->control('unit_id',['class'=>'form-control input-sm','label'=>false,'empty'=>'-Unit-', 'options' => $units,'required'=>'required']); ?>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-6">
-								<div class="form-group">
-									<label>Stock Group <span class="required">*</span></label>
+									<label>Stock Group </label>
 									<?php echo $this->Form->control('stock_group_id',['class'=>'form-control input-sm','label'=>false,'empty'=>'-Stock Group-', 'options' => $stockGroups]); ?>
 								</div>
 							</div>
@@ -68,6 +42,29 @@ $this->set('title', 'Create Item | Sunil Textile ERP');
 								<div class="form-group">
 									<label>Unit <span class="required">*</span></label>
 									<?php echo $this->Form->control('unit_id',['class'=>'form-control input-sm','label'=>false,'empty'=>'-Unit-', 'options' => $units,'required'=>'required']); ?>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+					<span class="caption-subject bold " style="float:center;">Opening Balance</span>
+					<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label>Quantity </label>
+									<?php echo $this->Form->control('quantity',['class'=>'form-control input-sm qty calculation','label'=>false,'placeholder'=>'Quantity']); ?>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label>Rate </label>
+									<?php echo $this->Form->control('rate',['class'=>'form-control input-sm rate calculation','label'=>false,'placeholder'=>'Rate']); ?>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label>Amount </label>
+									<?php echo $this->Form->control('amount',['class'=>'form-control input-sm amt','label'=>false,'placeholder'=>'Amount']); ?>
 								</div>
 							</div>
 						</div>
