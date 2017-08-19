@@ -25,7 +25,7 @@ $this->set('title', 'Edit Item | Sunil Textile ERP');
 							<div class="col-md-6">
 								<div class="form-group">
 									<label>Stock Group <span class="required">*</span></label>
-									<?php echo $this->Form->control('stock_group_id',['class'=>'form-control input-sm','label'=>false,'empty'=>'-Stock Group-', 'options' => $stockGroups,'required'=>'required']); ?>
+									<?php echo $this->Form->control('stock_group_id',['class'=>'form-control input-sm','label'=>false,'empty'=>'-Stock Group-', 'options' => $stockGroups]); ?>
 								</div>
 							</div>
 							<div class="col-md-6">

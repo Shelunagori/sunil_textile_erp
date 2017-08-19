@@ -94,7 +94,7 @@ class SuppliersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $supplier = $this->Suppliers->get($id, [
-            'contain' => []
+            'contain' => ['Ledgers']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $supplier = $this->Suppliers->patchEntity($supplier, $this->request->getData());
@@ -110,7 +110,7 @@ class SuppliersController extends AppController
             }
             $this->Flash->error(__('The supplier could not be saved. Please, try again.'));
         }
-        $states = $this->Suppliers->States->find('list', ['limit' => 200]);
+		$states = $this->Suppliers->States->find('list', ['limit' => 200]);
         $this->set(compact('supplier', 'states'));
         $this->set('_serialize', ['supplier']);
     }

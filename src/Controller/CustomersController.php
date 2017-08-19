@@ -97,7 +97,7 @@ class CustomersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $customer = $this->Customers->get($id, [
-            'contain' => []
+            'contain' => ['Ledgers']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $customer = $this->Customers->patchEntity($customer, $this->request->getData());
@@ -114,7 +114,7 @@ class CustomersController extends AppController
             $this->Flash->error(__('The customer could not be saved. Please, try again.'));
         }
         $states = $this->Customers->States->find('list', ['limit' => 200]);
-        $this->set(compact('customer', 'states'));
+		$this->set(compact('customer', 'states'));
         $this->set('_serialize', ['customer']);
     }
 

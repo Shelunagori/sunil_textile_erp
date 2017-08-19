@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
+-- version 4.6.5.2
+-- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 18, 2017 at 09:44 AM
--- Server version: 10.1.13-MariaDB
--- PHP Version: 7.0.8
+-- Generation Time: Aug 19, 2017 at 07:52 AM
+-- Server version: 10.1.21-MariaDB
+-- PHP Version: 5.6.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -207,16 +207,56 @@ INSERT INTO `company_users` (`id`, `company_id`, `user_id`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `customers`
+--
+
+CREATE TABLE `customers` (
+  `id` int(10) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `state_id` int(10) NOT NULL,
+  `company_id` int(10) NOT NULL,
+  `gstin` varchar(20) NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `mobile` varchar(10) DEFAULT NULL,
+  `address` text,
+  `freeze` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `customers`
+--
+
+INSERT INTO `customers` (`id`, `name`, `state_id`, `company_id`, `gstin`, `email`, `mobile`, `address`, `freeze`) VALUES
+(1, 'naman kumar', 1, 1, 'dfdsfdsfdsfdsfdsfdsf', '', '', '', 0),
+(2, 'patel', 1, 1, 'cxxczxcz', '', '', '', 0),
+(4, 'nukul', 1, 1, 'csdxcd34343432', 'nukul@gmail.com', '3356756757', 'udaipur', 0),
+(5, 'sunney deol', 1, 1, 'dcdcdssdasd12122', '', '', '', 0),
+(6, 'kapil', 1, 1, 'sacxsd232', '', '', '', 0),
+(7, 'nagarjun ji', 1, 1, 'dcvdsf5454', '', '', '', 0),
+(8, 'abhiram gut', 1, 1, 'gfert54t5', '', '', '', 0),
+(9, 'harish suthar', 1, 1, 'cdscdscdsc234', '', '', '', 0);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `items`
 --
 
 CREATE TABLE `items` (
   `id` int(10) NOT NULL,
   `name` varchar(255) NOT NULL,
+  `item_code` int(10) NOT NULL,
   `hsn_code` varchar(30) NOT NULL,
   `unit_id` int(10) NOT NULL,
   `stock_group_id` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `items`
+--
+
+INSERT INTO `items` (`id`, `name`, `item_code`, `hsn_code`, `unit_id`, `stock_group_id`) VALUES
+(1, 'kapda', 1, '12s', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -233,45 +273,54 @@ CREATE TABLE `ledgers` (
   `supplier_id` int(10) NOT NULL,
   `customer_id` int(10) NOT NULL,
   `tax_percentage` decimal(5,2) NOT NULL,
-  `gst_type` varchar(10) DEFAULT NULL
+  `gst_type` varchar(10) DEFAULT NULL,
+  `bill_to_bill_accounting` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `ledgers`
 --
 
-INSERT INTO `ledgers` (`id`, `name`, `accounting_group_id`, `freeze`, `company_id`, `supplier_id`, `customer_id`, `tax_percentage`, `gst_type`) VALUES
-(3, 'Purchase Account', 13, 0, 0, 0, 0, '0.00', ''),
-(4, '0% CGST', 29, 0, 1, 0, 0, '0.00', 'CGST'),
-(5, '2.5% CGST', 29, 0, 1, 0, 0, '2.50', 'CGST'),
-(6, '6% CGST', 29, 0, 1, 0, 0, '6.00', 'CGST'),
-(7, '9% CGST', 29, 0, 1, 0, 0, '9.00', 'CGST'),
-(8, '14% CGST', 29, 0, 1, 0, 0, '14.00', 'CGST'),
-(9, '0% SGST', 29, 0, 1, 0, 0, '0.00', 'SGST'),
-(10, '2.5% SGST', 29, 0, 1, 0, 0, '2.50', 'SGST'),
-(12, '6% SGST', 29, 0, 1, 0, 0, '6.00', 'SGST'),
-(13, '9% SGST', 29, 0, 1, 0, 0, '9.00', 'SGST'),
-(14, '14% SGST', 29, 0, 1, 0, 0, '14.00', 'SGST'),
-(18, 'Sales Accounts', 14, 0, 0, 0, 0, '0.00', ''),
-(19, '0% SGST', 30, 0, 1, 0, 0, '0.00', 'SGST'),
-(20, '2.5% SGST', 30, 0, 1, 0, 0, '2.50', 'SGST'),
-(21, '6% SGST', 30, 0, 1, 0, 0, '6.00', 'SGST'),
-(22, '9% SGST', 30, 0, 1, 0, 0, '9.00', 'SGST'),
-(23, '0% CGST', 30, 0, 1, 0, 0, '0.00', 'CGST'),
-(24, '2.5% CGST', 30, 0, 1, 0, 0, '2.50', 'CGST'),
-(25, '6% CGST', 30, 0, 1, 0, 0, '6.00', 'CGST'),
-(26, '9% CGST', 30, 0, 1, 0, 0, '9.00', 'CGST'),
-(27, '14%CGST', 30, 0, 1, 0, 0, '14.00', 'CGST'),
-(28, '14% SGST', 30, 0, 1, 0, 0, '14.00', 'SGST'),
-(29, 'Petty Cash', 31, 0, 1, 0, 0, '0.00', ''),
-(30, 'customer3', 22, 1, 1, 0, 3, '0.00', NULL),
-(31, 'customer1', 22, 0, 1, 0, 1, '0.00', NULL),
-(32, 'customer2', 22, 0, 1, 0, 2, '0.00', NULL),
-(33, 'customer3', 22, 1, 1, 0, 3, '0.00', NULL),
-(34, 'customer4', 22, 0, 1, 0, 4, '0.00', NULL),
-(35, 'supplier1', 25, 0, 1, 1, 0, '0.00', NULL),
-(36, 'supplier2', 25, 1, 1, 2, 0, '0.00', NULL),
-(37, 'supplier3', 25, 0, 1, 3, 0, '0.00', NULL);
+INSERT INTO `ledgers` (`id`, `name`, `accounting_group_id`, `freeze`, `company_id`, `supplier_id`, `customer_id`, `tax_percentage`, `gst_type`, `bill_to_bill_accounting`) VALUES
+(3, 'Purchase Account', 13, 0, 0, 0, 0, '0.00', '', ''),
+(4, '0% CGST', 29, 0, 1, 0, 0, '0.00', 'CGST', ''),
+(5, '2.5% CGST', 29, 0, 1, 0, 0, '2.50', 'CGST', ''),
+(6, '6% CGST', 29, 0, 1, 0, 0, '6.00', 'CGST', ''),
+(7, 'nagarjun ji', 29, 0, 1, 0, 0, '9.00', 'CGST', ''),
+(8, '14% CGST', 29, 0, 1, 0, 0, '14.00', 'CGST', ''),
+(9, '0% SGST', 29, 0, 1, 0, 0, '0.00', 'SGST', ''),
+(10, '2.5% SGST', 29, 0, 1, 0, 0, '2.50', 'SGST', ''),
+(12, '6% SGST', 29, 0, 1, 0, 0, '6.00', 'SGST', ''),
+(13, '9% SGST', 29, 0, 1, 0, 0, '9.00', 'SGST', ''),
+(14, '14% SGST', 29, 0, 1, 0, 0, '14.00', 'SGST', ''),
+(18, 'Sales Accounts', 14, 0, 0, 0, 0, '0.00', '', ''),
+(19, '0% SGST', 30, 0, 1, 0, 0, '0.00', 'SGST', ''),
+(20, '2.5% SGST', 30, 0, 1, 0, 0, '2.50', 'SGST', ''),
+(21, '6% SGST', 30, 0, 1, 0, 0, '6.00', 'SGST', ''),
+(22, '9% SGST', 30, 0, 1, 0, 0, '9.00', 'SGST', ''),
+(23, '0% CGST', 30, 0, 1, 0, 0, '0.00', 'CGST', ''),
+(24, '2.5% CGST', 30, 0, 1, 0, 0, '2.50', 'CGST', ''),
+(25, '6% CGST', 30, 0, 1, 0, 0, '6.00', 'CGST', ''),
+(26, '9% CGST', 30, 0, 1, 0, 0, '9.00', 'CGST', ''),
+(27, '14%CGST', 30, 0, 1, 0, 0, '14.00', 'CGST', ''),
+(28, '14% SGST', 30, 0, 1, 0, 0, '14.00', 'SGST', ''),
+(29, 'Petty Cash', 31, 0, 1, 0, 0, '0.00', '', ''),
+(30, 'customer3', 22, 1, 1, 0, 3, '0.00', NULL, ''),
+(31, 'customer1', 22, 0, 1, 0, 1, '0.00', NULL, ''),
+(32, 'customer2', 22, 0, 1, 0, 2, '0.00', NULL, ''),
+(33, 'customer3', 22, 1, 1, 0, 3, '0.00', NULL, ''),
+(34, 'customer4', 22, 0, 1, 0, 4, '0.00', NULL, ''),
+(35, 'supplier1', 25, 0, 1, 1, 0, '0.00', NULL, ''),
+(36, 'supplier2', 25, 1, 1, 2, 0, '0.00', NULL, ''),
+(37, 'supplier3', 25, 0, 1, 3, 0, '0.00', NULL, ''),
+(38, 'kapil', 22, 0, 1, 0, 0, '0.00', NULL, ''),
+(39, 'gopal dla', 25, 0, 1, 0, 0, '0.00', NULL, ''),
+(40, 'man\'sa  ji', 25, 0, 1, 6, 0, '0.00', NULL, ''),
+(41, 'nagarjun ji', 22, 0, 1, 0, 7, '0.00', NULL, ''),
+(42, 'abhiram gut', 22, 0, 1, 0, 8, '0.00', NULL, 'yes'),
+(43, 'harish suthar', 22, 0, 1, 0, 9, '0.00', NULL, 'no'),
+(44, 'choudhhary supplier', 25, 0, 1, 7, 0, '0.00', NULL, 'yes'),
+(45, 'kaka fuka supplier', 25, 0, 1, 8, 0, '0.00', NULL, 'no');
 
 -- --------------------------------------------------------
 
@@ -333,6 +382,38 @@ CREATE TABLE `stock_groups` (
 
 INSERT INTO `stock_groups` (`id`, `name`, `parent_id`, `lft`, `rght`, `company_id`) VALUES
 (1, 'Group 1', NULL, 1, 2, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `suppliers`
+--
+
+CREATE TABLE `suppliers` (
+  `id` int(10) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `state_id` int(10) NOT NULL,
+  `company_id` int(10) NOT NULL,
+  `gstin` varchar(20) NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `mobile` varchar(10) DEFAULT NULL,
+  `address` text,
+  `freeze` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `suppliers`
+--
+
+INSERT INTO `suppliers` (`id`, `name`, `state_id`, `company_id`, `gstin`, `email`, `mobile`, `address`, `freeze`) VALUES
+(1, 'nirma pvt ltd', 1, 0, 'dsfdsgf4545345tgdfg', 'niru@gmail.com', '2345466666', 'zxczxcxczxczxczx\r\nudaipur(raj)', 0),
+(2, 'papu gaba wala', 1, 1, 'x zxc xcxxcx', 'papu@yahoo.com', '1232323344', 'sxsxsx', 0),
+(3, 'bh', 1, 1, 'njm', '', '', '', 0),
+(4, 'bh', 1, 1, 'njm', '', '', '', 0),
+(5, 'gopal dla', 1, 1, 'cdcdcd232313', '', '', '', 0),
+(6, 'man\'sa  ji', 1, 1, 'vfdg545', '', '', '', 0),
+(7, 'choudhhary supplier', 1, 1, 'cvdfvgd45r4354', '', '3434343432', '23434224', 0),
+(8, 'kaka fuka supplier', 1, 1, 'dcvcvdcv', '', '', '', 0);
 
 -- --------------------------------------------------------
 
@@ -404,6 +485,12 @@ ALTER TABLE `company_users`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `customers`
+--
+ALTER TABLE `customers`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `items`
 --
 ALTER TABLE `items`
@@ -434,6 +521,12 @@ ALTER TABLE `stock_groups`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `suppliers`
+--
+ALTER TABLE `suppliers`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `units`
 --
 ALTER TABLE `units`
@@ -458,7 +551,7 @@ ALTER TABLE `accounting_entries`
 -- AUTO_INCREMENT for table `accounting_groups`
 --
 ALTER TABLE `accounting_groups`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 --
 -- AUTO_INCREMENT for table `companies`
 --
@@ -470,15 +563,20 @@ ALTER TABLE `companies`
 ALTER TABLE `company_users`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
+-- AUTO_INCREMENT for table `customers`
+--
+ALTER TABLE `customers`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+--
 -- AUTO_INCREMENT for table `items`
 --
 ALTER TABLE `items`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `ledgers`
 --
 ALTER TABLE `ledgers`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 --
 -- AUTO_INCREMENT for table `nature_of_groups`
 --
@@ -494,6 +592,11 @@ ALTER TABLE `states`
 --
 ALTER TABLE `stock_groups`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `suppliers`
+--
+ALTER TABLE `suppliers`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `units`
 --
