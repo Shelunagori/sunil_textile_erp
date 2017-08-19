@@ -32,7 +32,7 @@ class UsersController extends AppController
             if ($user) 
 			{
 				$user=$this->Users->get($user['id'], [
-					'contain' => ['CompanyUsers']
+					'contain' => ['CompanyUsers'=>['Companies']]
 				]);
 				$user->session_company_id=$user->company_users[0]->company_id;
                 $this->Auth->setUser($user);

@@ -56,3 +56,7 @@ echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-home']
 		<li><?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-list-ul']).' List', '/Items',['escape' => false]); ?></li>
 	</ul>
 </li>
+
+<?php 
+echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-home']).'Logout', '/Users/logout',['escape' => false]).'</li>';
+?>
