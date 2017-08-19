@@ -44,6 +44,9 @@ class CompaniesTable extends Table
         $this->hasMany('CompanyUsers', [
             'foreignKey' => 'company_id'
         ]);
+		$this->hasMany('FinancialYears', [
+            'foreignKey' => 'company_id'
+        ]);
     }
 
     /**

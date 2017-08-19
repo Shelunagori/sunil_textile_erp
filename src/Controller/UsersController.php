@@ -36,7 +36,18 @@ class UsersController extends AppController
 				]);
 				$user->session_company_id=$user->company_users[0]->company_id;
 				unset($user->company_users);
-				$company=$this->Users->CompanyUsers->Companies->get($user->session_company_id);
+				$company=$this->Users->CompanyUsers->Companies->get($user->session_company_id, [
+					'contain' => ['FinancialYears'=>function($q){
+						return $q->where(['FinancialYears.status'=>'open'])->order(['FinancialYears.fy_from'=>'ASC']);
+					}]
+				]);
+				$fyValidFrom=$company->financial_years[0]->fy_from;
+				foreach($company->financial_years as $financial_year){
+					$fyValidTo=$financial_year->fy_to;
+				}
+				$user->fyValidFrom=$fyValidFrom;
+				$user->fyValidTo=$fyValidTo;
+				unset($company->financial_years);
 				$user->session_company=$company;
                 $this->Auth->setUser($user);
 				return $this->redirect(['controller'=>'Users','action' => 'Dashboard']);
