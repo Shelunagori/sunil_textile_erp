@@ -24,12 +24,12 @@ $this->set('title', 'Edit Supplier | Sunil Textile ERP');
 							<?php echo $this->Form->control('name',['class'=>'form-control input-sm','placeholder'=>'Supplier Name','label'=>false,'autofocus']); ?>
 						</div>
 						<div class="form-group">
-							<label>Gstin <span class="required">*</span></label>
-							<?php echo $this->Form->control('gstin',['class'=>'form-control input-sm','placeholder'=>'','label'=>false,'autofocus']); ?>
+							<label>Gst In <span class="required">*</span></label>
+							<?php echo $this->Form->control('gstin',['class'=>'form-control input-sm','placeholder'=>'Gst In','label'=>false,'autofocus']); ?>
 						</div>
 						<div class="form-group">
 							<label>Mobile </label>
-							<?php echo $this->Form->control('mobile',['class'=>'form-control input-sm','placeholder'=>'9867123456','label'=>false,'autofocus','maxlength'=>10]); ?>
+							<?php echo $this->Form->control('mobile',['class'=>'form-control input-sm','placeholder'=>'Mobile no','label'=>false,'autofocus','maxlength'=>10]); ?>
 						</div>
 						<div class="form-group">
 							<label>Bill to Bill Accounting </label>
