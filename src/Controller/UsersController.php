@@ -32,9 +32,12 @@ class UsersController extends AppController
             if ($user) 
 			{
 				$user=$this->Users->get($user['id'], [
-					'contain' => ['CompanyUsers'=>['Companies']]
+					'contain' => ['CompanyUsers']
 				]);
 				$user->session_company_id=$user->company_users[0]->company_id;
+				unset($user->company_users);
+				$company=$this->Users->CompanyUsers->Companies->get($user->session_company_id);
+				$user->session_company=$company;
                 $this->Auth->setUser($user);
 				return $this->redirect(['controller'=>'Users','action' => 'Dashboard']);
             }
