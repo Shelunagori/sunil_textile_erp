@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 19, 2017 at 07:52 AM
+-- Generation Time: Aug 21, 2017 at 11:45 AM
 -- Server version: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -126,34 +126,42 @@ CREATE TABLE `accounting_groups` (
 INSERT INTO `accounting_groups` (`id`, `nature_of_group_id`, `name`, `parent_id`, `lft`, `rght`, `company_id`, `customer`, `supplier`) VALUES
 (1, 2, 'Branch / Divisions', NULL, 1, 2, 1, NULL, NULL),
 (2, 2, 'Capital Account', NULL, 3, 6, 1, NULL, NULL),
-(3, 1, 'Current Assets', NULL, 7, 20, 1, NULL, NULL),
-(4, 2, 'Current Liabilities', NULL, 21, 32, 1, NULL, NULL),
-(5, 4, 'Direct Expenses', NULL, 33, 34, 1, NULL, NULL),
-(6, 3, 'Direct Incomes', NULL, 35, 36, 1, NULL, NULL),
-(7, 1, 'Fixed Assets', NULL, 37, 38, 1, NULL, NULL),
-(8, 4, 'Indirect Expenses', NULL, 39, 40, 1, NULL, NULL),
-(9, 3, 'Indirect Incomes', NULL, 41, 42, 1, NULL, NULL),
-(10, 1, 'Investments', NULL, 43, 44, 1, NULL, NULL),
-(11, 2, 'Loans (Liability)', NULL, 45, 52, 1, NULL, NULL),
-(12, 1, 'Misc. Expenses (ASSET)', NULL, 53, 54, 1, NULL, NULL),
-(13, 4, 'Purchase Accounts', NULL, 55, 56, 1, NULL, NULL),
-(14, 3, 'Sales Accounts', NULL, 57, 58, 1, NULL, NULL),
-(15, 2, 'Suspense A/c', NULL, 59, 60, 1, NULL, NULL),
+(3, 1, 'Current Assets', NULL, 7, 30, 1, NULL, NULL),
+(4, 2, 'Current Liabilities', NULL, 31, 42, 1, NULL, NULL),
+(5, 4, 'Direct Expenses', NULL, 43, 44, 1, NULL, NULL),
+(6, 3, 'Direct Incomes', NULL, 45, 46, 1, NULL, NULL),
+(7, 1, 'Fixed Assets', NULL, 47, 48, 1, NULL, NULL),
+(8, 4, 'Indirect Expenses', NULL, 49, 50, 1, NULL, NULL),
+(9, 3, 'Indirect Incomes', NULL, 51, 52, 1, NULL, NULL),
+(10, 1, 'Investments', NULL, 53, 54, 1, NULL, NULL),
+(11, 2, 'Loans (Liability)', NULL, 55, 62, 1, NULL, NULL),
+(12, 1, 'Misc. Expenses (ASSET)', NULL, 63, 64, 1, NULL, NULL),
+(13, 4, 'Purchase Accounts', NULL, 65, 66, 1, NULL, NULL),
+(14, 3, 'Sales Accounts', NULL, 67, 68, 1, NULL, NULL),
+(15, 2, 'Suspense A/c', NULL, 69, 72, 1, NULL, NULL),
 (16, NULL, 'Reserves & Surplus', 2, 4, 5, 1, NULL, NULL),
 (17, NULL, 'Bank Accounts', 3, 8, 9, 1, NULL, NULL),
 (18, NULL, 'Cash-in-hand', 3, 10, 11, 1, NULL, NULL),
 (19, NULL, 'Deposits (Asset)', 3, 12, 13, 1, NULL, NULL),
 (20, NULL, 'Loans & Advances (Asset)', 3, 14, 15, 1, NULL, NULL),
 (21, NULL, 'Stock-in-hand', 3, 16, 17, 1, NULL, NULL),
-(22, NULL, 'Sundry Debtors', 3, 18, 19, 1, 1, NULL),
-(23, NULL, 'Duties & Taxes', 4, 22, 27, 1, NULL, NULL),
-(24, NULL, 'Provisions', 4, 28, 29, 1, NULL, NULL),
-(25, NULL, 'Sundry Creditors', 4, 30, 31, 1, NULL, 1),
-(26, NULL, 'Bank OD A/c', 11, 46, 47, 1, NULL, NULL),
-(27, NULL, 'Secured Loans', 11, 48, 49, 1, NULL, NULL),
-(28, NULL, 'Unsecured Loans', 11, 50, 51, 1, NULL, NULL),
-(29, NULL, 'Input GST', 23, 23, 24, 1, NULL, NULL),
-(30, NULL, 'Output GST', 23, 25, 26, 1, NULL, NULL);
+(22, NULL, 'Sundry Debtors', 3, 18, 29, 1, 1, NULL),
+(23, NULL, 'Duties & Taxes', 4, 32, 37, 1, NULL, NULL),
+(24, NULL, 'Provisions', 4, 38, 39, 1, NULL, NULL),
+(25, NULL, 'Sundry Creditors', 4, 40, 41, 1, NULL, 1),
+(26, NULL, 'Bank OD A/c', 11, 56, 57, 1, NULL, NULL),
+(27, NULL, 'Secured Loans', 11, 58, 59, 1, NULL, NULL),
+(28, NULL, 'Unsecured Loans', 11, 60, 61, 1, NULL, NULL),
+(29, NULL, 'Input GST', 23, 33, 34, 1, NULL, NULL),
+(30, NULL, 'Output GST', 23, 35, 36, 1, NULL, NULL),
+(31, NULL, 'dd', NULL, 73, 74, 0, NULL, NULL),
+(32, 1, 'bill1', NULL, 75, 76, 0, NULL, NULL),
+(33, NULL, 'account12', 15, 70, 71, 0, NULL, NULL),
+(34, NULL, 'Type 1 customers', 22, 19, 28, 0, NULL, NULL),
+(35, NULL, 'type 2 customers', 34, 20, 27, 0, NULL, NULL),
+(36, NULL, 'type 3 customers', 35, 21, 26, 0, NULL, NULL),
+(37, NULL, 'type 4 customers', 36, 22, 25, 0, NULL, NULL),
+(38, NULL, 'type 5 customers', 37, 23, 24, 0, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -239,6 +247,28 @@ INSERT INTO `customers` (`id`, `name`, `state_id`, `company_id`, `gstin`, `email
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `financial_years`
+--
+
+CREATE TABLE `financial_years` (
+  `id` int(10) NOT NULL,
+  `fy_from` date NOT NULL,
+  `fy_to` date NOT NULL,
+  `status` varchar(10) NOT NULL,
+  `company_id` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `financial_years`
+--
+
+INSERT INTO `financial_years` (`id`, `fy_from`, `fy_to`, `status`, `company_id`) VALUES
+(1, '2017-04-01', '2018-03-31', 'open', 1),
+(2, '2018-04-01', '2019-03-31', 'closed', 1);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `items`
 --
 
@@ -256,7 +286,42 @@ CREATE TABLE `items` (
 --
 
 INSERT INTO `items` (`id`, `name`, `item_code`, `hsn_code`, `unit_id`, `stock_group_id`) VALUES
-(1, 'kapda', 1, '12s', 1, 1);
+(1, 'kapda', 1, '12s', 1, 1),
+(2, 'iwerjk', 2, '32432', 1, 0),
+(3, 'iwerjk', 3, '32432', 1, 0),
+(4, 'dsfsdf', 4, 'werwr', 1, 0),
+(5, 'dsfsdf', 5, 'werwr', 1, 0),
+(6, 'dsfsdf', 6, 'werwr', 1, 0),
+(7, 'd', 7, 'e3', 1, 0),
+(8, 'wsx', 8, 'dsfdsfs3342', 1, 1),
+(9, 'wsx', 9, 'dsfdsfs3342', 1, 1),
+(10, 'dd', 10, 'ddfd123', 1, 1),
+(11, 'qazxs', 11, 'dfes3', 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `item_ledgers`
+--
+
+CREATE TABLE `item_ledgers` (
+  `id` int(10) NOT NULL,
+  `item_id` int(10) NOT NULL,
+  `transaction_date` date NOT NULL,
+  `quantity` decimal(10,2) NOT NULL,
+  `rate` decimal(15,2) NOT NULL,
+  `amount` decimal(15,2) NOT NULL,
+  `status` varchar(10) NOT NULL,
+  `is_opening_balance` varchar(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `item_ledgers`
+--
+
+INSERT INTO `item_ledgers` (`id`, `item_id`, `transaction_date`, `quantity`, `rate`, `amount`, `status`, `is_opening_balance`) VALUES
+(1, 9, '2017-04-01', '5.00', '6.00', '30.00', 'in', 'yes'),
+(2, 11, '2017-04-01', '12.00', '10.00', '120.00', 'in', 'yes');
 
 -- --------------------------------------------------------
 
@@ -318,9 +383,11 @@ INSERT INTO `ledgers` (`id`, `name`, `accounting_group_id`, `freeze`, `company_i
 (40, 'man\'sa  ji', 25, 0, 1, 6, 0, '0.00', NULL, ''),
 (41, 'nagarjun ji', 22, 0, 1, 0, 7, '0.00', NULL, ''),
 (42, 'abhiram gut', 22, 0, 1, 0, 8, '0.00', NULL, 'yes'),
-(43, 'harish suthar', 22, 0, 1, 0, 9, '0.00', NULL, 'no'),
+(43, 'harish suthar', 37, 0, 1, 0, 9, '0.00', NULL, 'no'),
 (44, 'choudhhary supplier', 25, 0, 1, 7, 0, '0.00', NULL, 'yes'),
-(45, 'kaka fuka supplier', 25, 0, 1, 8, 0, '0.00', NULL, 'no');
+(45, 'kaka fuka supplier', 25, 0, 1, 8, 0, '0.00', NULL, 'no'),
+(46, 'ravish kumar', 1, 0, 0, 0, 0, '0.00', NULL, ''),
+(47, 'cxzc', 2, 0, 0, 0, 0, '0.00', NULL, '');
 
 -- --------------------------------------------------------
 
@@ -491,9 +558,21 @@ ALTER TABLE `customers`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `financial_years`
+--
+ALTER TABLE `financial_years`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `items`
 --
 ALTER TABLE `items`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `item_ledgers`
+--
+ALTER TABLE `item_ledgers`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -551,7 +630,7 @@ ALTER TABLE `accounting_entries`
 -- AUTO_INCREMENT for table `accounting_groups`
 --
 ALTER TABLE `accounting_groups`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 --
 -- AUTO_INCREMENT for table `companies`
 --
@@ -568,15 +647,25 @@ ALTER TABLE `company_users`
 ALTER TABLE `customers`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
+-- AUTO_INCREMENT for table `financial_years`
+--
+ALTER TABLE `financial_years`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
 -- AUTO_INCREMENT for table `items`
 --
 ALTER TABLE `items`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+--
+-- AUTO_INCREMENT for table `item_ledgers`
+--
+ALTER TABLE `item_ledgers`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `ledgers`
 --
 ALTER TABLE `ledgers`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 --
 -- AUTO_INCREMENT for table `nature_of_groups`
 --
