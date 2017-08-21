@@ -20,6 +20,7 @@ class LedgersController extends AppController
      */
     public function index()
     {
+		$this->viewBuilder()->layout('index_layout');
         $this->paginate = [
             'contain' => ['AccountingGroups', 'Companies', 'Suppliers', 'Customers']
         ];
@@ -53,6 +54,7 @@ class LedgersController extends AppController
      */
     public function add()
     {
+		$this->viewBuilder()->layout('index_layout');
         $ledger = $this->Ledgers->newEntity();
         if ($this->request->is('post')) {
             $ledger = $this->Ledgers->patchEntity($ledger, $this->request->getData());
@@ -80,6 +82,7 @@ class LedgersController extends AppController
      */
     public function edit($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
         $ledger = $this->Ledgers->get($id, [
             'contain' => []
         ]);

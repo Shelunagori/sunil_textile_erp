@@ -85,16 +85,6 @@ class LedgersTable extends Table
             ->notEmpty('name');
 
         $validator
-            ->boolean('freeze')
-            ->requirePresence('freeze', 'create')
-            ->notEmpty('freeze');
-
-        $validator
-            ->decimal('tax_percentage')
-            ->requirePresence('tax_percentage', 'create')
-            ->notEmpty('tax_percentage');
-
-        $validator
             ->allowEmpty('gst_type');
 
         return $validator;
