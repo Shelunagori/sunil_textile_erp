@@ -25,7 +25,7 @@ class LedgersController extends AppController
             'contain' => ['AccountingGroups', 'Companies', 'Suppliers', 'Customers']
         ];
         $ledgers = $this->paginate($this->Ledgers);
-
+        //pr($ledgers->toArray());exit;
         $this->set(compact('ledgers'));
         $this->set('_serialize', ['ledgers']);
     }

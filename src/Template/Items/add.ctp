@@ -18,7 +18,7 @@ $this->set('title', 'Create Item | Sunil Textile ERP');
 				<div class="row">
 				
 					 <div class="col-md-6">
-						<div class="form-group">
+					    <div class="form-group">
 									<label>Item Name <span class="required">*</span></label>
 									<?php echo $this->Form->control('name',['class'=>'form-control input-sm','placeholder'=>'Item Name','label'=>false,'autofocus']); ?>
 						</div>
@@ -26,8 +26,8 @@ $this->set('title', 'Create Item | Sunil Textile ERP');
 						<div class="row">
 							<div class="col-md-6">
 								<div class="form-group">
-									<label>Stock Group </label>
-									<?php echo $this->Form->control('stock_group_id',['class'=>'form-control input-sm','label'=>false,'empty'=>'-Stock Group-', 'options' => $stockGroups]); ?>
+									<label>Under Stock Group </label>
+									<?php echo $this->Form->control('stock_group_id',['class'=>'form-control input-sm','label'=>false,'empty'=>'-Primary-', 'options' => $stockGroups]); ?>
 								</div>
 							</div>
 							<div class="col-md-6">
@@ -47,12 +47,12 @@ $this->set('title', 'Create Item | Sunil Textile ERP');
 						</div>
 					</div>
 					<div class="col-md-6">
-					<span class="caption-subject bold " style="float:center;">Opening Balance</span>
+					<span class="caption-subject bold " style="float:center;">Opening Balance</span><hr style="margin: 6px 0;">
 					<div class="row">
 							<div class="col-md-4">
 								<div class="form-group">
 									<label>Quantity </label>
-									<?php echo $this->Form->control('quantity',['class'=>'form-control input-sm qty calculation','label'=>false,'placeholder'=>'Quantity']); ?>
+									<?php echo $this->Form->control('quantity',['class'=>'form-control input-sm qty ','label'=>false,'placeholder'=>'Quantity']); ?>
 								</div>
 							</div>
 							<div class="col-md-4">
@@ -64,7 +64,7 @@ $this->set('title', 'Create Item | Sunil Textile ERP');
 							<div class="col-md-4">
 								<div class="form-group">
 									<label>Amount </label>
-									<?php echo $this->Form->control('amount',['class'=>'form-control input-sm amt','label'=>false,'placeholder'=>'Amount']); ?>
+									<?php echo $this->Form->control('amount',['class'=>'form-control input-sm amt reverseCalculation','label'=>false,'placeholder'=>'Amount']); ?>
 								</div>
 							</div>
 						</div>
@@ -82,14 +82,25 @@ $this->set('title', 'Create Item | Sunil Textile ERP');
 	  $('.calculation').die().live('keyup',function(){
 		  amt_calc();
 	  });
+	  $('.reverseCalculation').die().live('keyup',function(){
+		   reverce_amt_calc();
+	  });
 	  function amt_calc()
 	  {
 		  var qty = $('.qty').val();
 		  var rate = $('.rate').val();
-		  var amt = qty*rate
+          var amt = qty*rate
 		  $('.amt').val(amt.toFixed(2)); 
 	  }
 	  
+	  function reverce_amt_calc()
+	  {
+		  var qty = $('.qty').val();
+		  var amt = $('.amt').val();
+		  if(qty){
+		  var rate = amt/qty;
+		  $('.rate').val(rate.toFixed(2));  }
+	  }
     });
 	";
 
