@@ -26,7 +26,7 @@ $this->set('title', 'Create Ledger | Sunil Textile ERP');
 							<div class="col-md-6">
 								<div class="form-group">
 									<label>Under Accounting Group</label>
-									<?php echo $this->Form->control('accounting_group_id',['class'=>'form-control input-sm','label'=>false,'empty'=>'-Primary Group-', 'options' => $accountingGroups]); ?>
+									<?php echo $this->Form->control('accounting_group_id',['class'=>'form-control input-sm','label'=>false,'empty'=>'-Primary Group-', 'options' => $accountingGroups,'required'=>'required']); ?>
 								</div>
 							</div>
 						</div>

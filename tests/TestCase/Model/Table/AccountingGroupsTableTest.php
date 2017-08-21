@@ -30,6 +30,7 @@ class AccountingGroupsTableTest extends TestCase
         'app.states',
         'app.company_users',
         'app.users',
+        'app.financial_years',
         'app.ledgers',
         'app.suppliers',
         'app.customers',
