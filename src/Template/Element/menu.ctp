@@ -82,5 +82,5 @@ echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-home']
 </li>
 
 <?php 
-echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-home']).'Logout', '/Users/logout',['escape' => false]).'</li>';
+echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-lock']).'Logout', '/Users/logout',['escape' => false]).'</li>';
 ?>
