@@ -65,11 +65,10 @@ class CustomersController extends AppController
 			if ($this->Customers->save($customer)) {
 				
 				//Create Ledger//
-			$accounting_group = $this->Customers->Ledgers->AccountingGroups->find()->where(['company_id'=>$company_id,'customer'=>1])->first();
 			
 				$ledger = $this->Customers->Ledgers->newEntity();
 				$ledger->name = $customer->name;
-				$ledger->accounting_group_id = $accounting_group->id;
+				$ledger->accounting_group_id = $customer->accounting_group_id;
 				$ledger->company_id =$company_id;
 				$ledger->customer_id=$customer->id;
 				$ledger->bill_to_bill_accounting=$customer->bill_to_bill_accounting;
@@ -81,9 +80,15 @@ class CustomersController extends AppController
             }
 			$this->Flash->error(__('The customer could not be saved. Please, try again.'));
         }
+		    $SundryDebtor = $this->Customers->AccountingGroups->find()->where(['customer'=>1,'company_id'=>$company_id])->first();
+			$accountingGroups = $this->Customers->AccountingGroups
+								->find('children', ['for' => $SundryDebtor->id])
+								->find('List')->toArray();
+			$accountingGroups[$SundryDebtor->id]=$SundryDebtor->name;
+			ksort($accountingGroups);
         $states = $this->Customers->States->find('list', ['limit' => 200]);
-        $this->set(compact('customer', 'states'));
-        $this->set('_serialize', ['customer']);
+        $this->set(compact('customer', 'states','accountingGroups'));
+        $this->set('_serialize', ['customer', 'accountingGroups']);
     }
 
     /**
@@ -99,12 +104,13 @@ class CustomersController extends AppController
         $customer = $this->Customers->get($id, [
             'contain' => ['Ledgers']
         ]);
+		$company_id=$this->Auth->User('session_company_id');
         if ($this->request->is(['patch', 'post', 'put'])) {
             $customer = $this->Customers->patchEntity($customer, $this->request->getData());
             if ($this->Customers->save($customer)) {
 				$query = $this->Customers->Ledgers->query();
 					$query->update()
-						->set(['name' => $customer->name])
+						->set(['name' => $customer->name,'accounting_group_id'=>$customer->accounting_group_id])
 						->where(['customer_id' => $id])
 						->execute();
                 $this->Flash->success(__('The customer has been saved.'));
@@ -113,8 +119,15 @@ class CustomersController extends AppController
             }
             $this->Flash->error(__('The customer could not be saved. Please, try again.'));
         }
+		
+		$SundryDebtor = $this->Customers->AccountingGroups->find()->where(['customer'=>1,'company_id'=>$company_id])->first();
+			$accountingGroups = $this->Customers->AccountingGroups
+								->find('children', ['for' => $SundryDebtor->id])
+								->find('List')->toArray();
+			$accountingGroups[$SundryDebtor->id]=$SundryDebtor->name;
+			ksort($accountingGroups);
         $states = $this->Customers->States->find('list', ['limit' => 200]);
-		$this->set(compact('customer', 'states'));
+		$this->set(compact('customer', 'states','accountingGroups'));
         $this->set('_serialize', ['customer']);
     }
 
