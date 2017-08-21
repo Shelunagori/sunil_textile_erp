@@ -1,6 +1,6 @@
 <?php
 /**
- * @Author: Kounty
+ * @Author: PHP Poets IT Solutions Pvt. Ltd.
  */
 $this->set('title', 'Edit Customer | Sunil Textile ERP');
 ?>
