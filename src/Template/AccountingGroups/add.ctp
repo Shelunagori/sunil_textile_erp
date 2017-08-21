@@ -23,14 +23,16 @@ $this->set('title', 'Create Accounting Group | Sunil Textile ERP');
 						</div>
 						
 						<div class="row">
+						    <div class="col-md-6">
+								<div class="form-group">
+									<label>Under</label>
+									<?php echo $this->Form->control('parent_id',['class'=>'form-control input-sm calculation','label'=>false,'empty'=>'-Primary-', 'options' => $parentAccountingGroups]); ?>
+								</div>
+							</div>
 							<div class="col-md-6">
 							    <div class="form-group hide_group">
 									<label>Nature of Group</label>
 									<?php echo $this->Form->control('nature_of_group_id',['class'=>'form-control input-sm ','label'=>false,'empty'=>'-Nature of Group-', 'options' => $natureOfGroups]); ?>
-								</div>
-								<div class="form-group">
-									<label>Under</label>
-									<?php echo $this->Form->control('parent_id',['class'=>'form-control input-sm calculation','label'=>false,'empty'=>'-Primary-', 'options' => $parentAccountingGroups]); ?>
 								</div>
 							</div>
 						</div>
