@@ -53,19 +53,19 @@ $this->set('title', 'Edit Item | Sunil Textile ERP');
 								<div class="form-group">
 									<label>Quantity </label>
 									<?php 
-									echo $this->Form->control('quantity',['class'=>'form-control input-sm qty calculation','label'=>false,'placeholder'=>'Quantity','value'=>$item->item_ledgers[0]->quantity]); ?>
+									echo $this->Form->control('quantity',['class'=>'form-control input-sm qty calculation','label'=>false,'placeholder'=>'Quantity','value'=>@$item->item_ledgers[0]->quantity]); ?>
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
 									<label>Rate </label>
-									<?php echo $this->Form->control('rate',['class'=>'form-control input-sm rate calculation','label'=>false,'placeholder'=>'Rate','value'=>$item->item_ledgers[0]->rate]); ?>
+									<?php echo $this->Form->control('rate',['class'=>'form-control input-sm rate calculation','label'=>false,'placeholder'=>'Rate','value'=>@$item->item_ledgers[0]->rate]); ?>
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
 									<label>Amount </label>
-									<?php echo $this->Form->control('amount',['class'=>'form-control input-sm amt','label'=>false,'placeholder'=>'Amount','value'=>$item->item_ledgers[0]->amount]); ?>
+									<?php echo $this->Form->control('amount',['class'=>'form-control input-sm amt','label'=>false,'placeholder'=>'Amount','value'=>@$item->item_ledgers[0]->amount]); ?>
 								</div>
 							</div>
 						</div>

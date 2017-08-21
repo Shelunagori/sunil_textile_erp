@@ -56,7 +56,8 @@ class ItemsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $item = $this->Items->newEntity();
-		$this->request->data['company_id'] =1;
+		$company_id=$this->Auth->User('session_company_id');
+		$this->request->data['company_id'] =$company_id;
 		if ($this->request->is('post')) {
 			$item = $this->Items->patchEntity($item, $this->request->getData());
 			//item code Increment

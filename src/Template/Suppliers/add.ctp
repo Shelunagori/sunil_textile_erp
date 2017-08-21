@@ -5,7 +5,7 @@
 $this->set('title', 'Create Supplier | Sunil Textile ERP');
 ?>
 <div class="row">
-	<div class="col-md-12">
+	<div class="col-md-8">
 		<div class="portlet light ">
 			<div class="portlet-title">
 				<div class="caption">
@@ -31,7 +31,7 @@ $this->set('title', 'Create Supplier | Sunil Textile ERP');
 									<label>Mobile </label>
 									<?php echo $this->Form->control('mobile',['class'=>'form-control input-sm','placeholder'=>'Mobile no','label'=>false,'autofocus','maxlength'=>10]); ?>
 								</div>
-								<div class="form-group">
+								<div class="form-group" style="display:none;">
 									<label>Bill to Bill Accounting </label>
 									<?php 
 									$option =[['value'=>'yes','text'=>'yes'],['value'=>'no','text'=>'no']];
