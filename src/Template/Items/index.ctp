@@ -14,33 +14,35 @@ $this->set('title', 'Items | Sunil Textile ERP');
 				</div>
 			</div>
 			<div class="portlet-body">
-				<?php $page_no=$this->Paginator->current('Items'); $page_no=($page_no-1)*20; ?>
-				<table class="table table-bordered table-hover table-condensed">
-					<thead>
-						<tr>
-							<th scope="col" class="actions"><?= __('Sr') ?></th>
-							<th scope="col"><?= $this->Paginator->sort('name') ?></th>
-							<th scope="col"><?= $this->Paginator->sort('hsn_code') ?></th>
-							<th scope="col"><?= $this->Paginator->sort('unit_id') ?></th>
-							<th scope="col"><?= $this->Paginator->sort('stock_group_id') ?></th>
-							<th scope="col" class="actions"><?= __('Actions') ?></th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php foreach ($items as $item): ?>
-						<tr>
-							<td><?= h(++$page_no) ?></td>
-							<td><?= h($item->name) ?></td>
-							<td><?= h($item->hsn_code) ?></td>
-							<td><?= $item->unit->name ?></td>
-							<td><?= $item->stock_group->name ?></td>
-							<td class="actions">
-								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $item->id]) ?>
-							</td>
-						</tr>
-						<?php endforeach; ?>
-					</tbody>
-				</table>
+				<div class="table-responsive">
+					<?php $page_no=$this->Paginator->current('Items'); $page_no=($page_no-1)*20; ?>
+					<table class="table table-bordered table-hover table-condensed">
+						<thead>
+							<tr>
+								<th scope="col" class="actions"><?= __('Sr') ?></th>
+								<th scope="col"><?= $this->Paginator->sort('name') ?></th>
+								<th scope="col"><?= $this->Paginator->sort('hsn_code') ?></th>
+								<th scope="col"><?= $this->Paginator->sort('unit_id') ?></th>
+								<th scope="col"><?= $this->Paginator->sort('stock_group_id') ?></th>
+								<th scope="col" class="actions"><?= __('Actions') ?></th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach ($items as $item): ?>
+							<tr>
+								<td><?= h(++$page_no) ?></td>
+								<td><?= h($item->name) ?></td>
+								<td><?= h($item->hsn_code) ?></td>
+								<td><?= $item->unit->name ?></td>
+								<td><?= $item->stock_group->name ?></td>
+								<td class="actions">
+									<?= $this->Html->link(__('Edit'), ['action' => 'edit', $item->id]) ?>
+								</td>
+							</tr>
+							<?php endforeach; ?>
+						</tbody>
+					</table>
+				</div>
 				<div class="paginator">
 					<ul class="pagination">
 						<?= $this->Paginator->first('<< ' . __('first')) ?>
