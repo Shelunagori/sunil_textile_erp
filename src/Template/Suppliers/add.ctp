@@ -24,7 +24,7 @@ $this->set('title', 'Create Supplier | Sunil Textile ERP');
 									<?php echo $this->Form->control('name',['class'=>'form-control input-sm','placeholder'=>'Supplier Name','label'=>false,'autofocus']); ?>
 								</div>
 								<div class="form-group">
-									<label>Gst In <span class="required">*</span></label>
+									<label>GSTIN <span class="required">*</span></label>
 									<?php echo $this->Form->control('gstin',['class'=>'form-control input-sm','placeholder'=>'Gst In','label'=>false,'autofocus']); ?>
 								</div>
 								<div class="form-group">

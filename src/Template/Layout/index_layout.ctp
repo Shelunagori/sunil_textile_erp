@@ -61,9 +61,10 @@ License: You must have a valid license purchased only from themeforest(the above
 	<!-- BEGIN HEADER INNER -->
 	<div class="page-header-inner">
 		<!-- BEGIN LOGO -->
-		<div class="page-logo">
-			<a href="javascript:" style="margin-top: 11px;font-size: 16px;font-weight: bold;color: white;text-decoration: none;">
-				<span>Sunil Textile ERP</span>
+		<div class="page-logo" style="padding-left:2px;">
+			<a href="javascript:" style="margin-top: 5px;font-size: 16px;font-weight: bold;color: white;text-decoration: none;line-height: 15px;">
+				<span style="font-size:13px;"><?php echo $coreVariable['company_name']; ?></span><br/>
+				<span style="font-size:10px;">(<?php echo $coreVariable['fyValidFrom']; ?> to <?php echo $coreVariable['fyValidTo']; ?>)</span>
 			</a>
 			<div class="menu-toggler sidebar-toggler hide">
 				<!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->

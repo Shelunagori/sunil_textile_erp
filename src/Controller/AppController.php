@@ -63,6 +63,15 @@ class AppController extends Controller
 			'unauthorizedRedirect' => $this->referer(),
         ]);
 		
+		if($this->Auth->User('session_company')){
+			$coreVariable = [
+				'company_name' => $this->Auth->User('session_company')->name,
+				'fyValidFrom' => $this->Auth->User('fyValidFrom'),
+				'fyValidTo' => $this->Auth->User('fyValidTo'),
+			];
+			$this->coreVariable = $coreVariable;
+			$this->set(compact('coreVariable'));
+		}
 		
         /*
          * Enable the following components for recommended CakePHP security settings.
