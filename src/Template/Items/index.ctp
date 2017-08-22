@@ -5,7 +5,7 @@
 $this->set('title', 'Items | Sunil Textile ERP');
 ?>
 <div class="row">
-	<div class="col-md-12">
+	<div class="col-md-6">
 		<div class="portlet light ">
 			<div class="portlet-title">
 				<div class="caption">
@@ -21,9 +21,8 @@ $this->set('title', 'Items | Sunil Textile ERP');
 							<tr>
 								<th scope="col" class="actions"><?= __('Sr') ?></th>
 								<th scope="col"><?= $this->Paginator->sort('name') ?></th>
-								<th scope="col"><?= $this->Paginator->sort('hsn_code') ?></th>
 								<th scope="col"><?= $this->Paginator->sort('unit_id') ?></th>
-								<th scope="col"><?= $this->Paginator->sort('stock_group_id') ?></th>
+								<th scope="col"><?= $this->Paginator->sort('hsn_code') ?></th>
 								<th scope="col" class="actions"><?= __('Actions') ?></th>
 							</tr>
 						</thead>
@@ -32,9 +31,8 @@ $this->set('title', 'Items | Sunil Textile ERP');
 							<tr>
 								<td><?= h(++$page_no) ?></td>
 								<td><?= h($item->name) ?></td>
-								<td><?= h($item->hsn_code) ?></td>
 								<td><?= $item->unit->name ?></td>
-								<td><?= $item->stock_group->name ?></td>
+								<td><?= h($item->hsn_code) ?></td>
 								<td class="actions">
 									<?= $this->Html->link(__('Edit'), ['action' => 'edit', $item->id]) ?>
 								</td>

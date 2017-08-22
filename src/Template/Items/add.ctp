@@ -19,8 +19,8 @@ $this->set('title', 'Create Item | Sunil Textile ERP');
 				
 					 <div class="col-md-6">
 					    <div class="form-group">
-									<label>Item Name <span class="required">*</span></label>
-									<?php echo $this->Form->control('name',['class'=>'form-control input-sm','placeholder'=>'Item Name','label'=>false,'autofocus']); ?>
+							<label>Item Name <span class="required">*</span></label>
+							<?php echo $this->Form->control('name',['class'=>'form-control input-sm','placeholder'=>'Item Name','label'=>false,'autofocus']); ?>
 						</div>
 						
 						<div class="row">
@@ -63,8 +63,8 @@ $this->set('title', 'Create Item | Sunil Textile ERP');
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
-									<label>Amount </label>
-									<?php echo $this->Form->control('amount',['class'=>'form-control input-sm amt reverseCalculation','label'=>false,'placeholder'=>'Amount']); ?>
+									<label>Value </label>
+									<?php echo $this->Form->control('amount',['class'=>'form-control input-sm amt reverseCalculation','label'=>false,'placeholder'=>'Value']); ?>
 								</div>
 							</div>
 						</div>
@@ -104,5 +104,5 @@ $this->set('title', 'Create Item | Sunil Textile ERP');
     });
 	";
 
-echo $this->Html->scriptBlock($js, array('block' => 'jsPageLevelPluginsComponentsPickers')); 
+echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 
 ?>

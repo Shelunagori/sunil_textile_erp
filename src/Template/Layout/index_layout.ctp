@@ -150,6 +150,7 @@ License: You must have a valid license purchased only from themeforest(the above
 
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <?= $this->fetch('jsPageLevelScriptsComponentsPickers')?>
+<?= $this->fetch('scriptBottom')?>
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>
 jQuery(document).ready(function() {  
