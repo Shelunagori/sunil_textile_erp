@@ -17,6 +17,7 @@ $this->set('title', 'Edit Customer | Sunil Textile ERP');
 				<?= $this->Form->create($customer) ?>
 				<div class="row">
 					<div class="col-md-12">
+
 						<div class="row">
 							<div class="col-md-6">
 								<div class="form-group">
@@ -24,11 +25,11 @@ $this->set('title', 'Edit Customer | Sunil Textile ERP');
 									<?php echo $this->Form->control('name',['class'=>'form-control input-sm','placeholder'=>'Customer Name','label'=>false,'autofocus']); ?>
 								</div>
 								<div class="form-group">
-									<label>Create Ledger Under <span class="required">*</span></label>
+									<label>Under  Accounting Group <span class="required">*</span></label>
 									<?php echo $this->Form->control('accounting_group_id',['class'=>'form-control input-sm','label'=>false,'options' => $accountingGroups,'required'=>'required','value'=>$customer->ledger->accounting_group_id]); ?>
 								</div>
 								<div class="form-group">
-									<label>Gst In <span class="required">*</span></label>
+									<label>GSTIN <span class="required">*</span></label>
 									<?php echo $this->Form->control('gstin',['class'=>'form-control input-sm','placeholder'=>'Gst In','label'=>false,'autofocus']); ?>
 								</div>
 								<div class="form-group">
@@ -69,7 +70,7 @@ $this->set('title', 'Edit Customer | Sunil Textile ERP');
 									}
 									else
 									{
-										$value =$account_entry->credit;
+										$value =@$account_entry->credit;
 									}
 									echo $this->Form->control('opening_balance_value',['class'=>'form-control input-sm','label'=>false,'value'=>$value]);
 									?>
@@ -87,8 +88,9 @@ $this->set('title', 'Edit Customer | Sunil Textile ERP');
 									{
 										$check ='creditor';
 									}
-									echo $this->Form->control('debit_credit',['class'=>'form-control input-sm','label'=>false, 'options' => $option,'value'=>$check]);
+									echo $this->Form->control('debit_credit',['class'=>'form-control input-sm','label'=>false, 'options' => $option,'value'=>@$check]);
 									?>
+
 							</div>
 						</div>
 				   </div>

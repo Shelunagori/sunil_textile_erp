@@ -65,7 +65,6 @@ class CustomersController extends AppController
 			if ($this->Customers->save($customer)) {
 				
 				//Create Ledger//
-			
 				$ledger = $this->Customers->Ledgers->newEntity();
 				$ledger->name = $customer->name;
 				$ledger->accounting_group_id = $customer->accounting_group_id;
@@ -78,20 +77,21 @@ class CustomersController extends AppController
 					//Create Accounting Entry//
 			        $transaction_date=$this->Auth->User('session_company')->books_beginning_from;
 					$AccountingEntry = $this->Customers->Ledgers->AccountingEntries->newEntity();
-					$AccountingEntry->ledger_id        = $ledger->id;
+					$AccountingEntry->ledger_id = $ledger->id;
 					if($customer->debit_credit=="debitor")
 					{
-						$AccountingEntry->debit        = $customer->opening_balance_value;
+						$AccountingEntry->debit = $customer->opening_balance_value;
 					}
 					if($customer->debit_credit=="creditor")
 					{
-						$AccountingEntry->credit       = $customer->opening_balance_value;
+						$AccountingEntry->credit = $customer->opening_balance_value;
 					}
 					$AccountingEntry->customer_id      = $customer->id;
 					$AccountingEntry->transaction_date = date("Y-m-d",strtotime($transaction_date));
 					$AccountingEntry->company_id       = $company_id;
 					$this->Customers->Ledgers->AccountingEntries->save($AccountingEntry);
 				}
+
                 $this->Flash->success(__('The customer has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
