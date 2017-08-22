@@ -52,7 +52,8 @@ class StockGroupsTable extends Table
             'joinType' => 'INNER'
         ]);
         $this->hasMany('Items', [
-            'foreignKey' => 'stock_group_id'
+            'foreignKey' => 'stock_group_id',
+			'joinType' => 'LEFT'
         ]);
         $this->hasMany('ChildStockGroups', [
             'className' => 'StockGroups',

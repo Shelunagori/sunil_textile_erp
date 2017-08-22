@@ -24,6 +24,10 @@ $this->set('title', 'Create Supplier | Sunil Textile ERP');
 									<?php echo $this->Form->control('name',['class'=>'form-control input-sm','placeholder'=>'Supplier Name','label'=>false,'autofocus']); ?>
 								</div>
 								<div class="form-group">
+									<label>Create Ledger Under  <span class="required">*</span></label>
+									<?php echo $this->Form->control('accounting_group_id',['class'=>'form-control input-sm','label'=>false, 'options' => $accountingGroups,'required'=>'required']); ?>
+								</div>
+								<div class="form-group">
 									<label>Gst In <span class="required">*</span></label>
 									<?php echo $this->Form->control('gstin',['class'=>'form-control input-sm','placeholder'=>'Gst In','label'=>false,'autofocus']); ?>
 								</div>
@@ -53,6 +57,21 @@ $this->set('title', 'Create Supplier | Sunil Textile ERP');
 								</div>
 						   </div>
 						</div>
+						<div class="row">
+							<div class="col-md-3" style="padding-right: 0px;">
+								<div class="form-group" >
+									<label>Opening balance value</label>
+									<?php echo $this->Form->control('opening_balance_value',['class'=>'form-control input-sm','label'=>false]);
+									?>
+								</div>
+							</div>
+							<div class="col-md-2" style="padding-left: 0px;padding-right:0;">
+							    <label style="visibility:hidden;">s</label>
+								<?php $option =[['value'=>'debitor','text'=>'Debitor'],['value'=>'creditor','text'=>'Creditor']];
+									echo $this->Form->control('debit_credit',['class'=>'form-control input-sm','label'=>false, 'options' => $option,'value'=>'creditor']);
+									?>
+							</div>
+						</
 					</div>
 				</div>
 				<?= $this->Form->button(__('Submit'),['class'=>'btn btn-success']) ?>

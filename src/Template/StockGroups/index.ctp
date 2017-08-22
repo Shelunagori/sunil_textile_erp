@@ -17,7 +17,7 @@ $this->set('title', 'Stock Groups | Sunil Textile ERP');
 				<table class="table table-condensed table-hover table-bordered">
 					<thead>
 						<tr>
-							<th scope="col"><?= $this->Paginator->sort('id') ?></th>
+							<th scope="col"><?= $this->Paginator->sort('Sr') ?></th>
 							<th scope="col"><?= $this->Paginator->sort('name') ?></th>
 							<th scope="col"><?= $this->Paginator->sort('parent_id') ?></th>
 							<th scope="col"><?= $this->Paginator->sort('company_id') ?></th>

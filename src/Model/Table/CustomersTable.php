@@ -44,10 +44,7 @@ class CustomersTable extends Table
        $this->hasOne('Ledgers', [
             'foreignKey' => 'customer_id'
         ]);
-		$this->belongsTo('AccountingGroups', [
-            'foreignKey' => 'state_id',
-            'joinType' => 'INNER'
-        ]);
+		
     }
 
     /**
@@ -65,10 +62,6 @@ class CustomersTable extends Table
         $validator
             ->requirePresence('name', 'create')
             ->notEmpty('name');
-
-        $validator
-            ->requirePresence('gstin', 'create')
-            ->notEmpty('gstin');
 
         $validator
             ->email('email')

@@ -43,7 +43,7 @@ class ItemsTable extends Table
         ]);
         $this->belongsTo('StockGroups', [
             'foreignKey' => 'stock_group_id',
-            'joinType' => 'INNER'
+            'joinType' => 'LEFT'
         ]);
 		 $this->belongsTo('Companies', [
             'foreignKey' => 'company_id',

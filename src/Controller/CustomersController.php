@@ -71,17 +71,35 @@ class CustomersController extends AppController
 				$ledger->accounting_group_id = $customer->accounting_group_id;
 				$ledger->company_id =$company_id;
 				$ledger->customer_id=$customer->id;
-				$ledger->bill_to_bill_accounting=$customer->bill_to_bill_accounting;
+				$ledger->bill_to_bill_accounting='no';//$customer->bill_to_bill_accounting;
 				
-				$this->Customers->Ledgers->save($ledger);
+				if($this->Customers->Ledgers->save($ledger))
+				{
+					//Create Accounting Entry//
+			        $transaction_date=$this->Auth->User('session_company')->books_beginning_from;
+					$AccountingEntry = $this->Customers->Ledgers->AccountingEntries->newEntity();
+					$AccountingEntry->ledger_id        = $ledger->id;
+					if($customer->debit_credit=="debitor")
+					{
+						$AccountingEntry->debit        = $customer->opening_balance_value;
+					}
+					if($customer->debit_credit=="creditor")
+					{
+						$AccountingEntry->credit       = $customer->opening_balance_value;
+					}
+					$AccountingEntry->customer_id      = $customer->id;
+					$AccountingEntry->transaction_date = date("Y-m-d",strtotime($transaction_date));
+					$AccountingEntry->company_id       = $company_id;
+					$this->Customers->Ledgers->AccountingEntries->save($AccountingEntry);
+				}
                 $this->Flash->success(__('The customer has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
 			$this->Flash->error(__('The customer could not be saved. Please, try again.'));
         }
-		    $SundryDebtor = $this->Customers->AccountingGroups->find()->where(['customer'=>1,'company_id'=>$company_id])->first();
-			$accountingGroups = $this->Customers->AccountingGroups
+		    $SundryDebtor = $this->Customers->Ledgers->AccountingGroups->find()->where(['customer'=>1,'company_id'=>$company_id])->first();
+			$accountingGroups = $this->Customers->Ledgers->AccountingGroups
 								->find('children', ['for' => $SundryDebtor->id])
 								->find('List')->toArray();
 			$accountingGroups[$SundryDebtor->id]=$SundryDebtor->name;
@@ -111,8 +129,31 @@ class CustomersController extends AppController
 				$query = $this->Customers->Ledgers->query();
 					$query->update()
 						->set(['name' => $customer->name,'accounting_group_id'=>$customer->accounting_group_id])
-						->where(['customer_id' => $id])
+						->where(['customer_id' => $id,'company_id'=>$company_id,'bill_to_bill_accounting'=>'yes'])
 						->execute();
+						
+					//Accounting Entry
+					$query_delete = $this->Customers->Ledgers->AccountingEntries->query();
+					$query_delete->delete()
+					->where(['ledger_id' => $customer->ledger->id,'company_id'=>$company_id])
+					->execute();
+					
+					$transaction_date=$this->Auth->User('session_company')->books_beginning_from;
+					$AccountingEntry = $this->Customers->Ledgers->AccountingEntries->newEntity();
+					$AccountingEntry->ledger_id        = $customer->ledger->id;
+					if($customer->debit_credit=="debitor")
+					{
+						$AccountingEntry->debit        = $customer->opening_balance_value;
+					}
+					if($customer->debit_credit=="creditor")
+					{
+						$AccountingEntry->credit       = $customer->opening_balance_value;
+					}
+					$AccountingEntry->customer_id      = $customer->id;
+					$AccountingEntry->transaction_date = date("Y-m-d",strtotime($transaction_date));
+					$AccountingEntry->company_id       = $company_id;
+					$this->Customers->Ledgers->AccountingEntries->save($AccountingEntry);
+					
                 $this->Flash->success(__('The customer has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -120,14 +161,16 @@ class CustomersController extends AppController
             $this->Flash->error(__('The customer could not be saved. Please, try again.'));
         }
 		
-		$SundryDebtor = $this->Customers->AccountingGroups->find()->where(['customer'=>1,'company_id'=>$company_id])->first();
-			$accountingGroups = $this->Customers->AccountingGroups
+		$SundryDebtor = $this->Customers->Ledgers->AccountingGroups->find()->where(['customer'=>1,'company_id'=>$company_id])->first();
+			$accountingGroups = $this->Customers->Ledgers->AccountingGroups
 								->find('children', ['for' => $SundryDebtor->id])
 								->find('List')->toArray();
 			$accountingGroups[$SundryDebtor->id]=$SundryDebtor->name;
 			ksort($accountingGroups);
-        $states = $this->Customers->States->find('list', ['limit' => 200]);
-		$this->set(compact('customer', 'states','accountingGroups'));
+		$account_entry  = $this->Customers->Ledgers->AccountingEntries->find()->where(['ledger_id'=>$customer->ledger->id,'company_id'=>$company_id])->first();
+		//pr($account_entry->toArray());exit;
+        $states = $this->Customers->States->find('list');
+		$this->set(compact('customer', 'states','accountingGroups','account_entry'));
         $this->set('_serialize', ['customer']);
     }
 
