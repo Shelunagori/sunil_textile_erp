@@ -53,6 +53,7 @@ class StockJournalsController extends AppController
      */
     public function add()
     {
+		$this->viewBuilder()->layout('index_layout');
         $stockJournal = $this->StockJournals->newEntity();
         if ($this->request->is('post')) {
             $stockJournal = $this->StockJournals->patchEntity($stockJournal, $this->request->getData());
@@ -63,8 +64,9 @@ class StockJournalsController extends AppController
             }
             $this->Flash->error(__('The stock journal could not be saved. Please, try again.'));
         }
+		$items     = $this->StockJournals->Inwards->Items->find('list');
         $companies = $this->StockJournals->Companies->find('list', ['limit' => 200]);
-        $this->set(compact('stockJournal', 'companies'));
+        $this->set(compact('stockJournal', 'companies','items'));
         $this->set('_serialize', ['stockJournal']);
     }
 
