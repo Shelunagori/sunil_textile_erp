@@ -65,15 +65,14 @@ class CustomersController extends AppController
 			if ($this->Customers->save($customer)) {
 				
 				//Create Ledger//
-			
 				$ledger = $this->Customers->Ledgers->newEntity();
 				$ledger->name = $customer->name;
 				$ledger->accounting_group_id = $customer->accounting_group_id;
 				$ledger->company_id =$company_id;
 				$ledger->customer_id=$customer->id;
 				$ledger->bill_to_bill_accounting=$customer->bill_to_bill_accounting;
-				
 				$this->Customers->Ledgers->save($ledger);
+				
                 $this->Flash->success(__('The customer has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
