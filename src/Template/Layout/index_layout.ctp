@@ -30,7 +30,7 @@ License: You must have a valid license purchased only from themeforest(the above
 	<?php echo $this->Html->css('/assets/global/plugins/uniform/css/uniform.default.css'); ?>
 	<?php echo $this->Html->css('/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css'); ?>
 	<!-- END GLOBAL MANDATORY STYLES -->
-	<?= $this->fetch('cssComponentsPickers')?>
+	<?= $this->fetch('PAGE_LEVEL_CSS')?>
 	<!-- BEGIN THEME STYLES -->
 	<?php echo $this->Html->css('/assets/global/css/components.css'); ?>
 	<?php echo $this->Html->css('/assets/global/css/plugins.css'); ?>
@@ -141,24 +141,20 @@ License: You must have a valid license purchased only from themeforest(the above
 <?php echo $this->Html->script('/assets/global/plugins/uniform/jquery.uniform.min.js'); ?>
 <?php echo $this->Html->script('/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js'); ?>
 <!-- END CORE PLUGINS -->
-<?= $this->fetch('jsPageLevelPluginsComponentsPickers')?>
+<?= $this->fetch('PAGE_LEVEL_PLUGINS_JS')?>
 
 <?php echo $this->Html->script('/assets/global/scripts/metronic.js'); ?>
 <?php echo $this->Html->script('/assets/admin/layout/scripts/layout.js'); ?>
-<?php echo $this->Html->script('/assets/admin/layout/scripts/quick-sidebar.js'); ?>
-<?php echo $this->Html->script('/assets/admin/layout/scripts/demo.js'); ?>
 
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
-<?= $this->fetch('jsPageLevelScriptsComponentsPickers')?>
+<?= $this->fetch('PAGE_LEVEL_SCRIPTS_JS')?>
 
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>
 jQuery(document).ready(function() {  
 	Metronic.init(); // init metronic core components
 	Layout.init(); // init current layout
-	QuickSidebar.init(); // init quick sidebar
-	Demo.init(); // init demo features
-	ComponentsPickers.init();
+	
 });
 </script>
 <?= $this->fetch('scriptBottom')?>

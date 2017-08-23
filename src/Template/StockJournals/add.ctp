@@ -96,13 +96,56 @@ $this->set('title', 'Create Stock Journal | Sunil Textile ERP');
 		</div>
 	</div>
 </div>
+
 <!-- BEGIN PAGE LEVEL STYLES -->
-<?php echo $this->Html->css('/assets/global/plugins/bootstrap-datepicker/css/datepicker3.css', ['block' => 'cssComponentsPickers']); ?>
+	<!-- BEGIN COMPONENTS PICKERS -->
+	<?php echo $this->Html->css('/assets/global/plugins/clockface/css/clockface.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+	<?php echo $this->Html->css('/assets/global/plugins/bootstrap-datepicker/css/datepicker3.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+	<?php echo $this->Html->css('/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+	<?php echo $this->Html->css('/assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+	<?php echo $this->Html->css('/assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+	<?php echo $this->Html->css('/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+	<!-- END COMPONENTS PICKERS -->
+
+	<!-- BEGIN COMPONENTS DROPDOWNS -->
+	<?php echo $this->Html->css('/assets/global/plugins/bootstrap-select/bootstrap-select.min.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+	<?php echo $this->Html->css('/assets/global/plugins/select2/select2.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+	<?php echo $this->Html->css('/assets/global/plugins/jquery-multi-select/css/multi-select.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+	<!-- END COMPONENTS DROPDOWNS -->
 <!-- END PAGE LEVEL STYLES -->
 
 <!-- BEGIN PAGE LEVEL PLUGINS -->
-<?php echo $this->Html->script('/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js', ['block' => 'jsPageLevelPluginsComponentsPickers']); ?>
+	<!-- BEGIN COMPONENTS PICKERS -->
+	<?php echo $this->Html->script('/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+	<?php echo $this->Html->script('/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+	<?php echo $this->Html->script('/assets/global/plugins/clockface/js/clockface.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+	<?php echo $this->Html->script('/assets/global/plugins/bootstrap-daterangepicker/moment.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+	<?php echo $this->Html->script('/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+	<?php echo $this->Html->script('/assets/global/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+	<?php echo $this->Html->script('/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+	<!-- END COMPONENTS PICKERS -->
+	
+	<!-- BEGIN COMPONENTS DROPDOWNS -->
+	<?php echo $this->Html->script('/assets/global/plugins/bootstrap-select/bootstrap-select.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+	<?php echo $this->Html->script('/assets/global/plugins/select2/select2.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+	<?php echo $this->Html->script('/assets/global/plugins/jquery-multi-select/js/jquery.multi-select.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+	<!-- END COMPONENTS DROPDOWNS -->
 <!-- END PAGE LEVEL PLUGINS -->
+
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+	<!-- BEGIN COMPONENTS PICKERS -->
+	<?php echo $this->Html->script('/assets/admin/pages/scripts/components-pickers.js', ['block' => 'PAGE_LEVEL_SCRIPTS_JS']); ?>
+	<!-- END COMPONENTS PICKERS -->
+
+	<!-- BEGIN COMPONENTS DROPDOWNS -->
+	<?php echo $this->Html->script('/assets/global/scripts/metronic.js', ['block' => 'PAGE_LEVEL_SCRIPTS_JS']); ?>
+	<?php echo $this->Html->script('/assets/admin/layout/scripts/layout.js', ['block' => 'PAGE_LEVEL_SCRIPTS_JS']); ?>
+	<?php echo $this->Html->script('/assets/admin/layout/scripts/quick-sidebar.js', ['block' => 'PAGE_LEVEL_SCRIPTS_JS']); ?>
+	<?php echo $this->Html->script('/assets/admin/layout/scripts/demo.js', ['block' => 'PAGE_LEVEL_SCRIPTS_JS']); ?>
+	<?php echo $this->Html->script('/assets/admin/pages/scripts/components-dropdowns.js', ['block' => 'PAGE_LEVEL_SCRIPTS_JS']); ?>
+	<!-- END COMPONENTS DROPDOWNS -->
+<!-- END PAGE LEVEL SCRIPTS -->
+
 <?php
 	$js="
 	$(document).ready(function() {
@@ -133,6 +176,8 @@ $this->set('title', 'Create Stock Journal | Sunil Textile ERP');
 	  {
 		$(this).closest('tr').remove();
       });
+	  
+		ComponentsPickers.init();
     });
 	
 	$('.add_inward').click(function(){
@@ -187,27 +232,27 @@ $this->set('title', 'Create Stock Journal | Sunil Textile ERP');
 	
 	";
 
-echo $this->Html->scriptBlock($js, array('block' => 'jsPageLevelPluginsComponentsPickers')); 
+echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 
 ?>
-<table id="sample_table" style="display:none;" width="100%">
-			<tbody>
-				<tr class="main_tr" class="tab">
-				    <td width="7%"></td>
-				    <td width="25%">
-						<?php echo $this->Form->input('item_id', ['empty'=>'--Select--','options'=>$items,'label' => false,'class' => 'form-control input-sm ','required'=>'required']); ?>
-					</td>
-					<td width="15%">
-						<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm','id'=>'check','required'=>'required']); ?>
-					</td>
-					<td width="20%">
-						<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm','required'=>'required']); ?>
-					</td>
-                    <td width="25%">
-						<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm','required'=>'required']); ?>	
-					</td>
-                    <td align="center">
-						<a class="btn btn-danger delete-tr btn-xs" href="#" role="button" style="margin-bottom: 5px;"><i class="fa fa-times"></i></a>
-					</td>
-				</tr>
-			</tbody>
+<table id="sample_table" style="display:;" width="100%">
+	<tbody>
+		<tr class="main_tr" class="tab">
+			<td width="7%"></td>
+			<td width="25%">
+				<?php echo $this->Form->input('item_id', ['empty'=>'--Select--','options'=>$items,'label' => false,'class' => 'form-control input-sm select2me','required'=>'required']); ?>
+			</td>
+			<td width="15%">
+				<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm','id'=>'check','required'=>'required']); ?>
+			</td>
+			<td width="20%">
+				<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm','required'=>'required']); ?>
+			</td>
+			<td width="25%">
+				<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm','required'=>'required']); ?>	
+			</td>
+			<td align="center">
+				<a class="btn btn-danger delete-tr btn-xs" href="#" role="button" style="margin-bottom: 5px;"><i class="fa fa-times"></i></a>
+			</td>
+		</tr>
+	</tbody>
 </table>
