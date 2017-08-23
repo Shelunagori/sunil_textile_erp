@@ -239,7 +239,7 @@ echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 		<tr class="main_tr" class="tab">
 			<td width="7%"></td>
 			<td width="25%">
-				<?php echo $this->Form->input('item_id', ['empty'=>'--Select--','options'=>$items,'label' => false,'class' => 'form-control input-sm select2me','required'=>'required']); ?>
+				<?php echo $this->Form->input('item_id', ['empty'=>'--Select--','options'=>$items,'label' => false,'class' => 'form-control input-sm','required'=>'required']); ?>
 			</td>
 			<td width="15%">
 				<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm','id'=>'check','required'=>'required']); ?>
