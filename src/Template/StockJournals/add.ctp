@@ -128,6 +128,11 @@ $this->set('title', 'Create Stock Journal | Sunil Textile ERP');
 		  var rate = amt/qty;
 		  $('.rate').val(rate.toFixed(2));  }
 	  }
+	  
+	  $('.delete-tr').die().live('click',function() 
+	  {
+		$(this).closest('tr').remove();
+      });
     });
 	
 	$('.add_inward').click(function(){
@@ -146,14 +151,14 @@ $this->set('title', 'Create Stock Journal | Sunil Textile ERP');
 				add_row_outward();
 		});
 		
-		function add_row_outward(){
+	function add_row_outward(){
 				var tr=$('#sample_table tbody tr.main_tr').clone();
 				$('#main_table2 tbody#main_tbody2').append(tr);
 				rename_outward_rows();
 				
 			}
 			
-		function rename_inward_rows(){
+	function rename_inward_rows(){
 				var i=0;
 				$('#main_table tbody#main_tbody tr.main_tr').each(function(){ 
 					$(this).find('td:nth-child(1)').html(i+1);
@@ -162,7 +167,7 @@ $this->set('title', 'Create Stock Journal | Sunil Textile ERP');
 				});
 			}
 		
-		function rename_outward_rows(){
+	function rename_outward_rows(){
 				var j=0;
 				$('#main_table2 tbody#main_tbody2 tr.main_tr').each(function(){ 
 					$(this).find('td:nth-child(1)').html(j+1);
@@ -170,6 +175,9 @@ $this->set('title', 'Create Stock Journal | Sunil Textile ERP');
 					j++;
 				});
 			}
+	
+	
+	
 	";
 
 echo $this->Html->scriptBlock($js, array('block' => 'jsPageLevelPluginsComponentsPickers')); 
