@@ -163,7 +163,17 @@ $this->set('title', 'Create Stock Journal | Sunil Textile ERP');
 				$('#main_table tbody#main_tbody tr.main_tr').each(function(){ 
 					$(this).find('td:nth-child(1)').html(i+1);
 					
-					i++;
+				$(this).find('td:nth-child(3) input').attr({name:'inwards['+i+'][quantity]', id:'inwards-'+i+'-quantity'}).rules('add', {
+								required: true
+							});		
+				$(this).find('td:nth-child(4) input').attr({name:'inwards['+i+'][rate]', id:'inwards-'+i+'-rate'}).rules('add', {
+							required: true
+						});
+				$(this).find('td:nth-child(5) input').attr({name:'inwards['+i+'][amount]', id:'inwards-'+i+'-amount'}).rules('add', {
+							required: true
+						});
+				
+				i++;
 				});
 			}
 		
