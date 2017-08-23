@@ -150,18 +150,18 @@ License: You must have a valid license purchased only from themeforest(the above
 
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <?= $this->fetch('jsPageLevelScriptsComponentsPickers')?>
-<?= $this->fetch('scriptBottom')?>
+
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>
 jQuery(document).ready(function() {  
 	Metronic.init(); // init metronic core components
 	Layout.init(); // init current layout
-	//QuickSidebar.init(); // init quick sidebar
-	//Demo.init(); // init demo features
-	//ComponentsPickers.init();
+	QuickSidebar.init(); // init quick sidebar
+	Demo.init(); // init demo features
+	ComponentsPickers.init();
 });
 </script>
-
+<?= $this->fetch('scriptBottom')?>
 <!-- END JAVASCRIPTS -->
 </body>
 <!-- END BODY -->
