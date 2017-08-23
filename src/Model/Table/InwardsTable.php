@@ -45,6 +45,10 @@ class InwardsTable extends Table
             'foreignKey' => 'stock_journal_id',
             'joinType' => 'INNER'
         ]);
+		$this->hasMany('ItemLedgers', [
+            'foreignKey' => 'inward_id',
+            'joinType' => 'INNER'
+        ]);
     }
 
     /**

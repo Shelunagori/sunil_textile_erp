@@ -43,10 +43,16 @@ class StockJournalsTable extends Table
             'joinType' => 'INNER'
         ]);
         $this->hasMany('Inwards', [
-            'foreignKey' => 'stock_journal_id'
+            'foreignKey' => 'stock_journal_id',
+			'saveStrategy' => 'replace'
         ]);
         $this->hasMany('Outwards', [
-            'foreignKey' => 'stock_journal_id'
+            'foreignKey' => 'stock_journal_id',
+			'saveStrategy' => 'replace'
+        ]);
+		$this->hasMany('ItemLedgers', [
+            'foreignKey' => 'stock_journal_id',
+            'joinType' => 'INNER'
         ]);
     }
 
@@ -62,24 +68,17 @@ class StockJournalsTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create');
 
-        $validator
+       /* $validator
             ->integer('voucher_no')
             ->requirePresence('voucher_no', 'create')
-            ->notEmpty('voucher_no');
+            ->notEmpty('voucher_no');*/
 
         $validator
             ->date('transaction_date')
             ->requirePresence('transaction_date', 'create')
             ->notEmpty('transaction_date');
 
-        $validator
-            ->integer('reference_no')
-            ->requirePresence('reference_no', 'create')
-            ->notEmpty('reference_no');
-
-        $validator
-            ->requirePresence('narration', 'create')
-            ->notEmpty('narration');
+        
 
         return $validator;
     }

@@ -56,9 +56,53 @@ class StockJournalsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $stockJournal = $this->StockJournals->newEntity();
+		$company_id=$this->Auth->User('session_company_id');
+		$user_id=$this->Auth->User('id');
         if ($this->request->is('post')) {
             $stockJournal = $this->StockJournals->patchEntity($stockJournal, $this->request->getData());
+			//pr($stockJournal);exit;
+			$Voucher_no=$this->StockJournals->find()->select(['voucher_no'])->where(['company_id'=>$company_id])->order(['voucher_no' => 'DESC'])->first();
+			if($Voucher_no){
+				$stockJournal->voucher_no=$Voucher_no->voucher_no+1;
+			}else{
+				$stockJournal->voucher_no=1;
+			} 
+			
+			$stockJournal->company_id = $company_id;
+			$stockJournal->created_by = $user_id;
+			$stockJournal->created_on = date('Y-m-d');
             if ($this->StockJournals->save($stockJournal)) {
+				    
+					foreach($stockJournal->inwards as $inward)
+					{
+						$itemLedger = $this->StockJournals->ItemLedgers->newEntity();
+						$itemLedger->item_id            = $inward->item_id;
+						$itemLedger->transaction_date   = date("Y-m-d",strtotime($stockJournal->transaction_date));
+						$itemLedger->quantity           = $inward->quantity;
+						$itemLedger->rate               = $inward->rate;
+						$itemLedger->amount             = $inward->amount;
+						$itemLedger->status             = 'in';
+						$itemLedger->is_opening_balance = 'yes';
+						$itemLedger->stock_journal_id   = $stockJournal->id;
+						$itemLedger->inward_id          = $inward->id;
+						
+						$this->StockJournals->ItemLedgers->save($itemLedger);
+				    }
+					foreach($stockJournal->outwards as $outward)
+					{
+						$itemLedger = $this->StockJournals->ItemLedgers->newEntity();
+						$itemLedger->item_id            = $outward->item_id;
+						$itemLedger->transaction_date   = date("Y-m-d",strtotime($stockJournal->transaction_date));
+						$itemLedger->quantity           = $outward->quantity;
+						$itemLedger->rate               = $outward->rate;
+						$itemLedger->amount             = $outward->amount;
+						$itemLedger->status             = 'in';
+						$itemLedger->is_opening_balance = 'yes';
+						$itemLedger->stock_journal_id   = $stockJournal->id;
+						$itemLedger->outward_id          = $outward->id;
+						
+						$this->StockJournals->ItemLedgers->save($itemLedger);
+				    }
                 $this->Flash->success(__('The stock journal has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -66,8 +110,14 @@ class StockJournalsController extends AppController
             $this->Flash->error(__('The stock journal could not be saved. Please, try again.'));
         }
 		$items     = $this->StockJournals->Inwards->Items->find('list');
-        $companies = $this->StockJournals->Companies->find('list', ['limit' => 200]);
-        $this->set(compact('stockJournal', 'companies','items'));
+        $companies = $this->StockJournals->Companies->find('list');
+		$Voucher_no=$this->StockJournals->find()->select(['voucher_no'])->where(['company_id'=>$company_id])->order(['voucher_no' => 'DESC'])->first();
+		if($Voucher_no){
+			$voucher_no=$Voucher_no->voucher_no+1;
+		}else{
+			$voucher_no=1;
+		} 
+        $this->set(compact('stockJournal', 'companies','items','voucher_no'));
         $this->set('_serialize', ['stockJournal']);
     }
 
@@ -82,19 +132,29 @@ class StockJournalsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $stockJournal = $this->StockJournals->get($id, [
-            'contain' => []
+            'contain' => ['Inwards'=>['Items'],'Outwards'=>['Items']]
         ]);
+		$company_id=$this->Auth->User('session_company_id');
+		$user_id=$this->Auth->User('id');
+		
         if ($this->request->is(['patch', 'post', 'put'])) {
             $stockJournal = $this->StockJournals->patchEntity($stockJournal, $this->request->getData());
+			$stockJournal->edited_by = $user_id;
+			$stockJournal->edited_on = date('Y-m-d');
+			//pr($stockJournal);exit;
             if ($this->StockJournals->save($stockJournal)) {
                 $this->Flash->success(__('The stock journal has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
-            }
+            }else{
+				pr($stockJournal);exit;
             $this->Flash->error(__('The stock journal could not be saved. Please, try again.'));
+			}
         }
-        $companies = $this->StockJournals->Companies->find('list', ['limit' => 200]);
-        $this->set(compact('stockJournal', 'companies'));
+		
+		$items     = $this->StockJournals->Inwards->Items->find('list');
+        $companies = $this->StockJournals->Companies->find('list');
+        $this->set(compact('stockJournal', 'companies','items'));
         $this->set('_serialize', ['stockJournal']);
     }
 

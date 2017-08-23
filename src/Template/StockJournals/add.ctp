@@ -19,7 +19,7 @@ $this->set('title', 'Create Stock Journal | Sunil Textile ERP');
 						<div class="col-md-3">
 							<div class="form-group">
 								<label>Voucher No :</label>&nbsp;&nbsp;
-								<?= h('#'.str_pad(1, 4, '0', STR_PAD_LEFT)) ?>
+								<?= h('#'.str_pad($voucher_no, 4, '0', STR_PAD_LEFT)) ?>
 							</div>
 						</div>
 						<div class="col-md-3">
@@ -37,12 +37,13 @@ $this->set('title', 'Create Stock Journal | Sunil Textile ERP');
 					</div>
 					<br>
                   <div class="row">
+				  <div class="table-responsive">
 					<table width="100%" class="table  table-bordered">
 						<tr>
 							<td width="50%">
 								<table id="main_table" class="table table-condensed table-bordered" style="margin-bottom: 4px;" width="100%">
 								<thead>
-								<tr><td align="center" colspan="6">Inward/Source</td></tr>
+								<tr><td align="center" colspan="6">Inward</td></tr>
 								<tr align="center">
 									<td><label>Sr<label></td>
 									<td><label>Item<label></td>
@@ -61,7 +62,7 @@ $this->set('title', 'Create Stock Journal | Sunil Textile ERP');
 							<td width="50%">
 								<table id="main_table2" class="table table-condensed table-bordered" style="margin-bottom: 4px;" width="100%">
 								<thead>
-								<tr><td align="center" colspan="6">Outward/Destination</td></tr>
+								<tr><td align="center" colspan="6">Outward</td></tr>
 								<tr align="center">
 									<td><label>Sr<label></td>
 									<td><label>Item<label></td>
@@ -79,6 +80,7 @@ $this->set('title', 'Create Stock Journal | Sunil Textile ERP');
 							</td>
 						</tr>
 					</table>
+				   </div>
 				  </div>
 				  
 				 <div class="row">
@@ -149,29 +151,75 @@ $this->set('title', 'Create Stock Journal | Sunil Textile ERP');
 <?php
 	$js="
 	$(document).ready(function() {
-	  $('.calculation').die().live('keyup',function(){
-		  amt_calc();
+	  $('.inward_calculation').die().live('keyup',function(){
+		  inward_amt_calc();
 	  });
-	  $('.reverseCalculation').die().live('keyup',function(){
-		   reverce_amt_calc();
+	  $('.inward_reverseCalculation').die().live('keyup',function(){
+		   inward_reverce_amt_calc();
 	  });
-	  function amt_calc()
+	  function inward_amt_calc()
 	  {
-		  var qty = $('.qty').val();
-		  var rate = $('.rate').val();
-          var amt = qty*rate
-		  $('.amt').val(amt.toFixed(2)); 
+		  $('#main_table tbody#main_tbody tr.main_tr').each(function()
+		  {
+			  var amount=0;
+			  var qty  = parseFloat($(this).find('td:nth-child(3) input').val());
+			  var rate = parseFloat($(this).find('td:nth-child(4) input').val());
+			  amount   = qty*rate;
+			  if(amount){
+			      $(this).find('td:nth-child(5) input').val(amount.toFixed(2));
+		      }
+		  });
 	  }
 	  
-	  function reverce_amt_calc()
+	  function inward_reverce_amt_calc()
 	  {
-		  var qty = $('.qty').val();
-		  var amt = $('.amt').val();
-		  if(qty){
-		  var rate = amt/qty;
-		  $('.rate').val(rate.toFixed(2));  }
+		  $('#main_table tbody#main_tbody tr.main_tr').each(function()
+		  {
+			  var rate=0;
+			  var qty  = parseFloat($(this).find('td:nth-child(3) input').val());
+			  var amount = parseFloat($(this).find('td:nth-child(5) input').val());
+			  var rate = amount/qty;
+			  if(qty){
+				  if(rate){
+					  $(this).find('td:nth-child(4) input').val(rate.toFixed(2));
+				  }
+			  }
+		  });
 	  }
 	  
+	  $('.outward_calculation').die().live('keyup',function(){
+		  outward_amt_calc();
+	  });
+	  $('.outward_reverseCalculation').die().live('keyup',function(){
+		   outward_reverce_amt_calc();
+	  });
+	  function outward_amt_calc()
+	  {
+		  $('#main_table2 tbody#main_tbody2 tr.main_tr').each(function(){
+			  var amount=0;
+			  var qty  = parseFloat($(this).find('td:nth-child(3) input').val());
+			  var rate = parseFloat($(this).find('td:nth-child(4) input').val());
+			  amount   = qty*rate;
+			  if(amount){
+			      $(this).find('td:nth-child(5) input').val(amount.toFixed(2));
+		      }
+		  });
+	  }
+	  
+	  function outward_reverce_amt_calc()
+	  {
+		  $('#main_table2 tbody#main_tbody2 tr.main_tr').each(function(){
+			  var rate=0;
+			  var qty  = parseFloat($(this).find('td:nth-child(3) input').val());
+			  var amount = parseFloat($(this).find('td:nth-child(5) input').val());
+			  var rate = amount/qty;
+			  if(qty){
+				  if(rate){
+					  $(this).find('td:nth-child(4) input').val(rate.toFixed(2));
+				  }
+			  }
+		  });
+	  }
 	  $('.delete-tr').die().live('click',function() 
 	  {
 		$(this).closest('tr').remove();
@@ -208,9 +256,9 @@ $this->set('title', 'Create Stock Journal | Sunil Textile ERP');
 		 $('#main_table tbody#main_tbody tr.main_tr').each(function(){ 
 		  $(this).find('td:nth-child(1)').html(i+1);
 		  $(this).find('td:nth-child(2) select').attr({name:'inwards['+i+'][item_id]', id:'inwards-'+i+'-item_id'});
-		  $(this).find('td:nth-child(3) input').attr({name:'inwards['+i+'][quantity]',id:'inwards-'+i+'-quantity'});		
-		  $(this).find('td:nth-child(4) input').attr({name:'inwards['+i+'][rate]', id:'inwards-'+i+'-rate'});
-		  $(this).find('td:nth-child(5) input').attr({name:'inwards['+i+'][amount]', id:'inwards-'+i+'-amount'});
+		  $(this).find('td:nth-child(3) input').attr({name:'inwards['+i+'][quantity]',id:'inwards-'+i+'-quantity',class:'inward_reverseCalculation   form-control input-sm'});		
+		  $(this).find('td:nth-child(4) input').attr({name:'inwards['+i+'][rate]', id:'inwards-'+i+'-rate',class:'inward_calculation form-control input-sm'});
+		  $(this).find('td:nth-child(5) input').attr({name:'inwards['+i+'][amount]', id:'inwards-'+i+'-amount',class:'inward_reverseCalculation form-control input-sm'});
 			
 			i++;
 			});
@@ -221,9 +269,9 @@ $this->set('title', 'Create Stock Journal | Sunil Textile ERP');
 		  $('#main_table2 tbody#main_tbody2 tr.main_tr').each(function(){ 
 		   $(this).find('td:nth-child(1)').html(j+1);
 		   $(this).find('td:nth-child(2) select').attr({name:'outwards['+j+'][item_id]', id:'outwards-'+j+'-item_id'});
-		   $(this).find('td:nth-child(3) input').attr({name:'outwards['+j+'][quantity]',id:'outwards-'+j+'-quantity'});		
-		   $(this).find('td:nth-child(4) input').attr({name:'outwards['+j+'][rate]', id:'outwards-'+j+'-rate'});
-		   $(this).find('td:nth-child(5) input').attr({name:'outwards['+j+'][amount]', id:'outwards-'+j+'-amount'});
+		   $(this).find('td:nth-child(3) input').attr({name:'outwards['+j+'][quantity]',id:'outwards-'+j+'-quantity',class:'outward_reverseCalculation   form-control input-sm'});		
+		   $(this).find('td:nth-child(4) input').attr({name:'outwards['+j+'][rate]', id:'outwards-'+j+'-rate',class:'outward_calculation form-control input-sm'});
+		   $(this).find('td:nth-child(5) input').attr({name:'outwards['+j+'][amount]', id:'outwards-'+j+'-amount',class:'outward_reverseCalculation form-control input-sm'});
 				j++;
 			});
 			}

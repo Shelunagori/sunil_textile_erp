@@ -41,6 +41,22 @@ class ItemLedgersTable extends Table
             'joinType' => 'INNER'
         ]);
 		
+		$this->belongsTo('StockJournals', [
+            'foreignKey' => 'stock_journal_id',
+            'joinType' => 'INNER'
+        ]);
+		
+		$this->belongsTo('Inwards', [
+            'foreignKey' => 'inward_id',
+            'joinType' => 'INNER'
+        ]);
+		
+		$this->belongsTo('Outwards', [
+            'foreignKey' => 'outward_id',
+            'joinType' => 'INNER'
+        ]);
+		
+		
     }
 
     /**
