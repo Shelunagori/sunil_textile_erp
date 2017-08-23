@@ -39,10 +39,11 @@ class StockJournalsController extends AppController
      */
     public function view($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
         $stockJournal = $this->StockJournals->get($id, [
-            'contain' => ['Companies', 'Inwards', 'Outwards']
+            'contain' => ['Companies', 'Inwards'=>['Items'], 'Outwards'=>['Items']]
         ]);
-
+       // pr($stockJournal->toArray());exit;
         $this->set('stockJournal', $stockJournal);
         $this->set('_serialize', ['stockJournal']);
     }
