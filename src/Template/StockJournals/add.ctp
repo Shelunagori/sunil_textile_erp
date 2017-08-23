@@ -25,7 +25,7 @@ $this->set('title', 'Create Stock Journal | Sunil Textile ERP');
 						<div class="col-md-3">
 							<div class="form-group">
 								<label>Reference No </label>
-								<?php echo $this->Form->control('reference_no',['class'=>'form-control input-sm','label'=>false,'placeholder'=>'Reference No']); ?>
+								<?php echo $this->Form->control('reference_no',['class'=>'form-control input-sm','label'=>false,'placeholder'=>'Reference No','autofocus']); ?>
 							</div>
 						</div>
 						<div class="col-md-2">

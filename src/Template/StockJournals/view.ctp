@@ -84,7 +84,7 @@ $this->set('title', 'Stock Journal View| Sunil Textile ERP');
 								</tr>
 								</thead>
 								<tbody id='main_tbody2' class="tab">
-								  <?php if(!empty($stockJournal->inwards))
+								  <?php if(!empty($stockJournal->outwards))
                                          $j=0;									
 								         foreach($stockJournal->outwards as $outward)
 									     {
