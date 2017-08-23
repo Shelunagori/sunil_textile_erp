@@ -290,13 +290,13 @@ echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 				<?php echo $this->Form->input('item_id', ['empty'=>'--Select--','options'=>$items,'label' => false,'class' => 'form-control input-sm','required'=>'required']); ?>
 			</td>
 			<td width="15%">
-				<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm','id'=>'check','required'=>'required']); ?>
+				<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm','id'=>'check','required'=>'required','placeholder'=>'Quantity']); ?>
 			</td>
 			<td width="20%">
-				<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm','required'=>'required']); ?>
+				<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm','required'=>'required','placeholder'=>'Rate']); ?>
 			</td>
 			<td width="25%">
-				<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm','required'=>'required']); ?>	
+				<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm','required'=>'required','placeholder'=>'Amount']); ?>	
 			</td>
 			<td align="center">
 				<a class="btn btn-danger delete-tr btn-xs" href="#" role="button" style="margin-bottom: 5px;"><i class="fa fa-times"></i></a>
