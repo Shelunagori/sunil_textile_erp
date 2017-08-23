@@ -182,7 +182,7 @@ echo $this->Html->scriptBlock($js, array('block' => 'jsPageLevelPluginsComponent
 						<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm']); ?>	
 					</td>
                     <td>
-						<a class="btn btn-danger delete-tr input-sm" href="#" role="button" style="margin-bottom: 1px;"><i class="fa fa-times"></i></a>
+						<a class="btn btn-danger delete-tr input-sm" href="#" role="button" style="margin-bottom: 5px;"><i class="fa fa-times"></i></a>
 					</td>
 				</tr>
 			</tbody>
