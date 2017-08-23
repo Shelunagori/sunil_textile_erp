@@ -67,13 +67,13 @@ $this->set('title', 'Edit Stock Journal | Sunil Textile ERP');
 											<?php echo $this->Form->input('inwards.'.$i.'.item_id', ['empty'=>'--Select--','options'=>$items,'label' => false,'class' => 'form-control input-sm ','required'=>'required','value'=>$inward->item->id]); ?>
 										</td>
 										<td width="15%">
-											<?php echo $this->Form->input('inwards.'.$i.'.quantity', ['label' => false,'class' => 'form-control input-sm','id'=>'check','required'=>'required','value'=>$inward->quantity]); ?>
+											<?php echo $this->Form->input('inwards.'.$i.'.quantity', ['label' => false,'class' => 'inward_reverseCalculation form-control input-sm','id'=>'check','required'=>'required','value'=>$inward->quantity]); ?>
 										</td>
 										<td width="20%">
-											<?php echo $this->Form->input('inwards.'.$i.'.rate', ['label' => false,'class' => 'form-control input-sm','required'=>'required','value'=>$inward->rate]); ?>
+											<?php echo $this->Form->input('inwards.'.$i.'.rate', ['label' => false,'class' => 'inward_calculation form-control input-sm','required'=>'required','value'=>$inward->rate]); ?>
 										</td>
 										<td width="25%">
-											<?php echo $this->Form->input('inwards.'.$i.'.amount', ['label' => false,'class' => 'form-control input-sm','required'=>'required','value'=>$inward->amount]); ?>	
+											<?php echo $this->Form->input('inwards.'.$i.'.amount', ['label' => false,'class' => 'inward_reverseCalculation form-control input-sm','required'=>'required','value'=>$inward->amount]); ?>	
 										</td>
 										<td align="center">
 											<a class="btn btn-danger delete-tr btn-xs" href="#" role="button" style="margin-bottom: 5px;"><i class="fa fa-times"></i></a>
@@ -111,13 +111,13 @@ $this->set('title', 'Edit Stock Journal | Sunil Textile ERP');
 											<?php echo $this->Form->input('inwards.'.$j.'.item_id', ['empty'=>'--Select--','options'=>$items,'label' => false,'class' => 'form-control input-sm ','required'=>'required','value'=>$outward->item->id]); ?>
 										</td>
 										<td width="15%">
-											<?php echo $this->Form->input('inwards.'.$j.'.quantity', ['label' => false,'class' => 'form-control input-sm','id'=>'check','required'=>'required','value'=>$outward->quantity]); ?>
+											<?php echo $this->Form->input('inwards.'.$j.'.quantity', ['label' => false,'class' => 'outward_reverseCalculation form-control input-sm','id'=>'check','required'=>'required','value'=>$outward->quantity]); ?>
 										</td>
 										<td width="20%">
-											<?php echo $this->Form->input('inwards.'.$j.'.rate', ['label' => false,'class' => 'form-control input-sm','required'=>'required','value'=>$outward->rate]); ?>
+											<?php echo $this->Form->input('inwards.'.$j.'.rate', ['label' => false,'class' => 'outward_calculation form-control input-sm','required'=>'required','value'=>$outward->rate]); ?>
 										</td>
 										<td width="25%">
-											<?php echo $this->Form->input('inwards.'.$j.'.amount', ['label' => false,'class' => 'form-control input-sm','required'=>'required','value'=>$outward->amount]); ?>	
+											<?php echo $this->Form->input('inwards.'.$j.'.amount', ['label' => false,'class' => 'outward_reverseCalculation form-control input-sm','required'=>'required','value'=>$outward->amount]); ?>	
 										</td>
 										<td align="center">
 											<a class="btn btn-danger delete-tr btn-xs" href="#" role="button" style="margin-bottom: 5px;"><i class="fa fa-times"></i></a>
