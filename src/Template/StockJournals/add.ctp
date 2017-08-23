@@ -159,33 +159,28 @@ $this->set('title', 'Create Stock Journal | Sunil Textile ERP');
 			}
 			
 	function rename_inward_rows(){
-				var i=0;
-				$('#main_table tbody#main_tbody tr.main_tr').each(function(){ 
-					$(this).find('td:nth-child(1)').html(i+1);
-				$(this).find('td:nth-child(2) select').select2().attr({name:'inwards['+i+'][item_id]', id:'inwards-'+i+'-item_id'}).rules('add', {
-								required: true
-							});
-				$(this).find('td:nth-child(3) input').attr({name:'inwards['+i+'][quantity]', id:'inwards-'+i+'-quantity'}).rules('add', {
-								required: true
-							});		
-				$(this).find('td:nth-child(4) input').attr({name:'inwards['+i+'][rate]', id:'inwards-'+i+'-rate'}).rules('add', {
-							required: true
-						});
-				$(this).find('td:nth-child(5) input').attr({name:'inwards['+i+'][amount]', id:'inwards-'+i+'-amount'}).rules('add', {
-							required: true
-						});
-				
-				i++;
-				});
-			}
+		var i=0;
+		 $('#main_table tbody#main_tbody tr.main_tr').each(function(){ 
+		  $(this).find('td:nth-child(1)').html(i+1);
+		  $(this).find('td:nth-child(2) select').attr({name:'inwards['+i+'][item_id]', id:'inwards-'+i+'-item_id'});
+		  $(this).find('td:nth-child(3) input').attr({name:'inwards['+i+'][quantity]',id:'inwards-'+i+'-quantity'});		
+		  $(this).find('td:nth-child(4) input').attr({name:'inwards['+i+'][rate]', id:'inwards-'+i+'-rate'});
+		  $(this).find('td:nth-child(5) input').attr({name:'inwards['+i+'][amount]', id:'inwards-'+i+'-amount'});
+			
+			i++;
+			});
+		}
 		
 	function rename_outward_rows(){
-				var j=0;
-				$('#main_table2 tbody#main_tbody2 tr.main_tr').each(function(){ 
-					$(this).find('td:nth-child(1)').html(j+1);
-					
-					j++;
-				});
+		 var j=0;
+		  $('#main_table2 tbody#main_tbody2 tr.main_tr').each(function(){ 
+		   $(this).find('td:nth-child(1)').html(j+1);
+		   $(this).find('td:nth-child(2) select').attr({name:'outwards['+j+'][item_id]', id:'outwards-'+j+'-item_id'});
+		   $(this).find('td:nth-child(3) input').attr({name:'outwards['+j+'][quantity]',id:'outwards-'+j+'-quantity'});		
+		   $(this).find('td:nth-child(4) input').attr({name:'outwards['+j+'][rate]', id:'outwards-'+j+'-rate'});
+		   $(this).find('td:nth-child(5) input').attr({name:'outwards['+j+'][amount]', id:'outwards-'+j+'-amount'});
+				j++;
+			});
 			}
 	
 	
@@ -199,16 +194,16 @@ echo $this->Html->scriptBlock($js, array('block' => 'jsPageLevelPluginsComponent
 				<tr class="main_tr" class="tab">
 				    <td width="7%"></td>
 				    <td width="25%">
-						<?php echo $this->Form->input('item_id', ['empty'=>'--Select--','options'=>$items,'label' => false,'class' => 'form-control input-sm ']); ?>
+						<?php echo $this->Form->input('item_id', ['empty'=>'--Select--','options'=>$items,'label' => false,'class' => 'form-control input-sm ','required'=>'required']); ?>
 					</td>
 					<td width="15%">
-						<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm','id'=>'check']); ?>
+						<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm','id'=>'check','required'=>'required']); ?>
 					</td>
 					<td width="20%">
-						<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm']); ?>
+						<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm','required'=>'required']); ?>
 					</td>
                     <td width="25%">
-						<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm']); ?>	
+						<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm','required'=>'required']); ?>	
 					</td>
                     <td align="center">
 						<a class="btn btn-danger delete-tr btn-xs" href="#" role="button" style="margin-bottom: 5px;"><i class="fa fa-times"></i></a>
