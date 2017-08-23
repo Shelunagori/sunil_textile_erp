@@ -18,7 +18,7 @@ $this->set('title', 'Create Stock Journal | Sunil Textile ERP');
 					<div class="row">
 						<div class="col-md-3">
 							<div class="form-group">
-								<label>Voucher No </label>&nbsp;&nbsp;
+								<label>Voucher No :</label>&nbsp;&nbsp;
 								<?= h('#'.str_pad(1, 4, '0', STR_PAD_LEFT)) ?>
 							</div>
 						</div>
@@ -28,7 +28,7 @@ $this->set('title', 'Create Stock Journal | Sunil Textile ERP');
 								<?php echo $this->Form->control('reference_no',['class'=>'form-control input-sm','label'=>false,'placeholder'=>'Reference No']); ?>
 							</div>
 						</div>
-						<div class="col-md-3">
+						<div class="col-md-2">
 							<div class="form-group">
 								<label>Transaction Date <span class="required">*</span></label>
 								<?php echo $this->Form->control('transaction_date',['class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'placeholder'=>'DD-MM-YYYY','type'=>'text']); ?>
@@ -139,7 +139,7 @@ $this->set('title', 'Create Stock Journal | Sunil Textile ERP');
 				var tr=$('#sample_table tbody tr.main_tr').clone();
 				$('#main_table tbody#main_tbody').append(tr);
 				
-				rename_rows();
+				rename_inward_rows();
 			}
 			
 	$('.add_outward').click(function(){
@@ -149,16 +149,25 @@ $this->set('title', 'Create Stock Journal | Sunil Textile ERP');
 		function add_row_outward(){
 				var tr=$('#sample_table tbody tr.main_tr').clone();
 				$('#main_table2 tbody#main_tbody2').append(tr);
-				
+				rename_outward_rows();
 				
 			}
 			
-		function rename_rows(){
+		function rename_inward_rows(){
 				var i=0;
 				$('#main_table tbody#main_tbody tr.main_tr').each(function(){ 
 					$(this).find('td:nth-child(1)').html(i+1);
 					
 					i++;
+				});
+			}
+		
+		function rename_outward_rows(){
+				var j=0;
+				$('#main_table2 tbody#main_tbody2 tr.main_tr').each(function(){ 
+					$(this).find('td:nth-child(1)').html(j+1);
+					
+					j++;
 				});
 			}
 	";
@@ -181,8 +190,8 @@ echo $this->Html->scriptBlock($js, array('block' => 'jsPageLevelPluginsComponent
                     <td width="25%">
 						<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm']); ?>	
 					</td>
-                    <td>
-						<a class="btn btn-danger delete-tr input-sm" href="#" role="button" style="margin-bottom: 5px;"><i class="fa fa-times"></i></a>
+                    <td align="center">
+						<a class="btn btn-danger delete-tr btn-xs" href="#" role="button" style="margin-bottom: 5px;"><i class="fa fa-times"></i></a>
 					</td>
 				</tr>
 			</tbody>

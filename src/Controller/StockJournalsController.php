@@ -20,6 +20,7 @@ class StockJournalsController extends AppController
      */
     public function index()
     {
+		$this->viewBuilder()->layout('index_layout');
         $this->paginate = [
             'contain' => ['Companies']
         ];
@@ -79,6 +80,7 @@ class StockJournalsController extends AppController
      */
     public function edit($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
         $stockJournal = $this->StockJournals->get($id, [
             'contain' => []
         ]);
