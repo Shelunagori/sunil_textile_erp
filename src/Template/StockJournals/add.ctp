@@ -282,7 +282,7 @@ $this->set('title', 'Create Stock Journal | Sunil Textile ERP');
 
 echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 
 ?>
-<table id="sample_table" style="display:;" width="100%">
+<table id="sample_table" style="display:none;" width="100%">
 	<tbody>
 		<tr class="main_tr" class="tab">
 			<td width="7%"></td>

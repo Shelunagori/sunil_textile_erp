@@ -67,10 +67,10 @@ class StockJournalsController extends AppController
 			}else{
 				$stockJournal->voucher_no=1;
 			} 
-			
-			$stockJournal->company_id = $company_id;
-			$stockJournal->created_by = $user_id;
-			$stockJournal->created_on = date('Y-m-d');
+			$stockJournal->transaction_date = date("Y-m-d",strtotime($this->request->data['transaction_date']));
+			$stockJournal->company_id       = $company_id;
+			$stockJournal->created_by       = $user_id;
+			$stockJournal->created_on       = date('Y-m-d');
             if ($this->StockJournals->save($stockJournal)) {
 				    
 					foreach($stockJournal->inwards as $inward)
@@ -82,7 +82,6 @@ class StockJournalsController extends AppController
 						$itemLedger->rate               = $inward->rate;
 						$itemLedger->amount             = $inward->amount;
 						$itemLedger->status             = 'in';
-						$itemLedger->is_opening_balance = 'yes';
 						$itemLedger->stock_journal_id   = $stockJournal->id;
 						$itemLedger->inward_id          = $inward->id;
 						
@@ -96,8 +95,7 @@ class StockJournalsController extends AppController
 						$itemLedger->quantity           = $outward->quantity;
 						$itemLedger->rate               = $outward->rate;
 						$itemLedger->amount             = $outward->amount;
-						$itemLedger->status             = 'in';
-						$itemLedger->is_opening_balance = 'yes';
+						$itemLedger->status             = 'out';
 						$itemLedger->stock_journal_id   = $stockJournal->id;
 						$itemLedger->outward_id          = $outward->id;
 						
@@ -141,8 +139,40 @@ class StockJournalsController extends AppController
             $stockJournal = $this->StockJournals->patchEntity($stockJournal, $this->request->getData());
 			$stockJournal->edited_by = $user_id;
 			$stockJournal->edited_on = date('Y-m-d');
-			//pr($stockJournal);exit;
+			$stockJournal->transaction_date = date("Y-m-d",strtotime($this->request->data['transaction_date']));
             if ($this->StockJournals->save($stockJournal)) {
+				 $query_delete = $this->StockJournals->ItemLedgers->query();
+					$query_delete->delete()
+					->where(['stock_journal_id' => $stockJournal->id])
+					->execute();
+				    foreach($stockJournal->inwards as $inward)
+					{
+						$itemLedger = $this->StockJournals->ItemLedgers->newEntity();
+						$itemLedger->item_id            = $inward->item_id;
+						$itemLedger->transaction_date   = date("Y-m-d",strtotime($stockJournal->transaction_date));
+						$itemLedger->quantity           = $inward->quantity;
+						$itemLedger->rate               = $inward->rate;
+						$itemLedger->amount             = $inward->amount;
+						$itemLedger->status             = 'in';
+						$itemLedger->stock_journal_id   = $stockJournal->id;
+						$itemLedger->inward_id          = $inward->id;
+						
+						$this->StockJournals->ItemLedgers->save($itemLedger);
+				    }
+					foreach($stockJournal->outwards as $outward)
+					{
+						$itemLedger = $this->StockJournals->ItemLedgers->newEntity();
+						$itemLedger->item_id            = $outward->item_id;
+						$itemLedger->transaction_date   = date("Y-m-d",strtotime($stockJournal->transaction_date));
+						$itemLedger->quantity           = $outward->quantity;
+						$itemLedger->rate               = $outward->rate;
+						$itemLedger->amount             = $outward->amount;
+						$itemLedger->status             = 'out';
+						$itemLedger->stock_journal_id   = $stockJournal->id;
+						$itemLedger->outward_id          = $outward->id;
+						
+						$this->StockJournals->ItemLedgers->save($itemLedger);
+				    }
                 $this->Flash->success(__('The stock journal has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
