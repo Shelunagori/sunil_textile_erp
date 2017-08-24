@@ -20,7 +20,6 @@ $this->set('title', 'Stock Groups | Sunil Textile ERP');
 							<th scope="col"><?= $this->Paginator->sort('Sr') ?></th>
 							<th scope="col"><?= $this->Paginator->sort('name') ?></th>
 							<th scope="col"><?= $this->Paginator->sort('parent_id') ?></th>
-							<th scope="col"><?= $this->Paginator->sort('company_id') ?></th>
 							<th scope="col" class="actions"><?= __('Actions') ?></th>
 						</tr>
 					</thead>
@@ -30,7 +29,6 @@ $this->set('title', 'Stock Groups | Sunil Textile ERP');
 							<td><?= $this->Number->format($stockGroup->id) ?></td>
 							<td><?= h($stockGroup->name) ?></td>
 							<td><?= $stockGroup->has('parent_stock_group') ? $this->Html->link($stockGroup->parent_stock_group->name, ['controller' => 'StockGroups', 'action' => 'view', $stockGroup->parent_stock_group->id]) : '' ?></td>
-							<td><?= $stockGroup->has('company') ? $this->Html->link($stockGroup->company->name, ['controller' => 'Companies', 'action' => 'view', $stockGroup->company->id]) : '' ?></td>
 							<td class="actions">
 								<?= $this->Html->link(__('View'), ['action' => 'view', $stockGroup->id]) ?>
 								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $stockGroup->id]) ?>
