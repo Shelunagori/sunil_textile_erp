@@ -2,7 +2,7 @@
 /**
  * @Author: PHP Poets IT Solutions Pvt. Ltd.
  */
-$this->set('title', 'Edit Customer | Sunil Textile ERP');
+$this->set('title', 'Edit Customer');
 ?>
 <div class="row">
 	<div class="col-md-8">

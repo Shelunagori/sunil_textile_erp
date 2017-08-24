@@ -2,7 +2,7 @@
 /**
  * @Author: PHP Poets IT Solutions Pvt. Ltd.
  */
-$this->set('title', 'Accounting Groups | Sunil Textile ERP');
+$this->set('title', 'Accounting Groups');
 ?>
 <div class="row">
 	<div class="col-md-12">

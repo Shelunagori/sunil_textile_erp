@@ -2,7 +2,7 @@
 /**
  * @Author: PHP Poets IT Solutions Pvt. Ltd.
  */
-$this->set('title', 'Stock Journals | Sunil Textile ERP');
+$this->set('title', 'Stock Journals');
 ?>
 <div class="row">
 	<div class="col-md-12">

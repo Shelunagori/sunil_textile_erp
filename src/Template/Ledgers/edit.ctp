@@ -2,7 +2,7 @@
 /**
  * @Author: PHP Poets IT Solutions Pvt. Ltd.
  */
-$this->set('title', 'Edit Ledger | Sunil Textile ERP');
+$this->set('title', 'Edit Ledger');
 ?>
 <div class="row">
 	<div class="col-md-6">
