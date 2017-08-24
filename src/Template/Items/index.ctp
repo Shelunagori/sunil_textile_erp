@@ -5,7 +5,7 @@
 $this->set('title', 'Items | Sunil Textile ERP');
 ?>
 <div class="row">
-	<div class="col-md-6">
+	<div class="col-md-10">
 		<div class="portlet light ">
 			<div class="portlet-title">
 				<div class="caption">
