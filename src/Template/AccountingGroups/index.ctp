@@ -22,8 +22,6 @@ $this->set('title', 'Accounting Groups | Sunil Textile ERP');
 							<th scope="col"><?= $this->Paginator->sort('nature of group') ?></th>
 							<th scope="col"><?= $this->Paginator->sort('name') ?></th>
 							<th scope="col"><?= $this->Paginator->sort('parent') ?></th>
-							<th scope="col"><?= $this->Paginator->sort('customer') ?></th>
-							<th scope="col"><?= $this->Paginator->sort('supplier') ?></th>
 							<th scope="col" class="actions"><?= __('Actions') ?></th>
 						</tr>
 					</thead>
@@ -34,12 +32,9 @@ $this->set('title', 'Accounting Groups | Sunil Textile ERP');
 							<td><?= h(@$accountingGroup->nature_of_group->name)  ?></td>
 							<td><?= h($accountingGroup->name) ?></td>
 							<td><?= h(@$accountingGroup->parent_accounting_group->name)  ?></td>
-							<td><?= h(@$accountingGroup->customer->name) ?></td>
-							<td><?= h(@$accountingGroup->supplier->name) ?></td>
 							<td class="actions">
 							<?= $this->Html->link(__('View'), ['action' => 'view', $accountingGroup->id]) ?>
 							<?= $this->Html->link(__('Edit'), ['action' => 'edit', $accountingGroup->id]) ?>
-							<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $accountingGroup->id], ['confirm' => __('Are you sure you want to delete # {0}?', $accountingGroup->id)]) ?>
 							</td>
 						</tr>
 						<?php endforeach; ?>

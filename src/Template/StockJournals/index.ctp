@@ -36,7 +36,6 @@ $this->set('title', 'Stock Journals | Sunil Textile ERP');
 								<td class="actions">
 									<?= $this->Html->link(__('View'), ['action' => 'view', $stockJournal->id]) ?>
 									<?= $this->Html->link(__('Edit'), ['action' => 'edit', $stockJournal->id]) ?>
-									<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $stockJournal->id], ['confirm' => __('Are you sure you want to delete # {0}?', $stockJournal->id)]) ?>
 								</td>
 							</tr>
 							<?php endforeach; ?>
