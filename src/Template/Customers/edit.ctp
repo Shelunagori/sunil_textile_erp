@@ -54,7 +54,7 @@ $this->set('title', 'Edit Customer | Sunil Textile ERP');
 								</div>
 								<div class="form-group">
 									<label>Address</label>
-									<?php echo $this->Form->control('address',['class'=>'form-control input-sm','label'=>false]); ?>
+									<?php echo $this->Form->control('address',['class'=>'form-control input-sm','label'=>false,'placeholder'=>'Address']); ?>
 								</div>
 							</div>
 					   </div>
