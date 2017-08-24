@@ -64,7 +64,7 @@ $this->set('title', 'Edit Stock Journal | Sunil Textile ERP');
 										
 										?></td>
 										<td width="25%">
-											<?php echo $this->Form->input('inwards.'.$i.'.item_id', ['empty'=>'--Select--','options'=>$items,'label' => false,'class' => 'form-control input-sm ','required'=>'required','value'=>$inward->item->id]); 
+											<?php echo $this->Form->input('inwards.'.$i.'.item_id', ['empty'=>'--Select--','options'=>$items,'label' => false,'class' => 'form-control input-sm select2me','required'=>'required','value'=>$inward->item->id]); 
 											echo $this->Form->input('inwards.'.$i.'.id', ['value'=>$inward->id,'type'=>'hidden']);
 											?>
 										</td>
@@ -106,11 +106,9 @@ $this->set('title', 'Edit Stock Journal | Sunil Textile ERP');
 									     {
 							        ?>
 									<tr class="main_tr" class="tab">
-										<td width="7%"><?php echo $j+1;
-										
-										?></td>
+										<td width="7%"><?php echo $j+1;?></td>
 										<td width="25%">
-											<?php echo $this->Form->input('outwards.'.$j.'.item_id', ['empty'=>'--Select--','options'=>$items,'label' => false,'class' => 'form-control input-sm ','required'=>'required','value'=>$outward->item->id]); 
+											<?php echo $this->Form->input('outwards.'.$j.'.item_id', ['empty'=>'--Select--','options'=>$items,'label' => false,'class' => 'form-control input-sm select2me','required'=>'required','value'=>$outward->item->id]); 
 											echo $this->Form->input('outwards.'.$j.'.id', ['value'=>$outward->id,'type'=>'hidden']);
 											?>
 										</td>
@@ -311,7 +309,7 @@ $this->set('title', 'Edit Stock Journal | Sunil Textile ERP');
 		var i=0;
 		 $('#main_table tbody#main_tbody tr.main_tr').each(function(){ 
 		  $(this).find('td:nth-child(1)').html(i+1);
-		  $(this).find('td:nth-child(2) select').attr({name:'inwards['+i+'][item_id]', id:'inwards-'+i+'-item_id'});
+		  $(this).find('td:nth-child(2) select').select2().attr({name:'inwards['+i+'][item_id]', id:'inwards-'+i+'-item_id'});
 		  $(this).find('td:nth-child(3) input').attr({name:'inwards['+i+'][quantity]',id:'inwards-'+i+'-quantity',class:'inward_reverseCalculation   form-control input-sm'});		
 		  $(this).find('td:nth-child(4) input').attr({name:'inwards['+i+'][rate]', id:'inwards-'+i+'-rate',class:'inward_calculation form-control input-sm'});
 		  $(this).find('td:nth-child(5) input').attr({name:'inwards['+i+'][amount]', id:'inwards-'+i+'-amount',class:'inward_reverseCalculation form-control input-sm'});
@@ -324,7 +322,7 @@ $this->set('title', 'Edit Stock Journal | Sunil Textile ERP');
 		 var j=0;
 		  $('#main_table2 tbody#main_tbody2 tr.main_tr').each(function(){ 
 		   $(this).find('td:nth-child(1)').html(j+1);
-		   $(this).find('td:nth-child(2) select').attr({name:'outwards['+j+'][item_id]', id:'outwards-'+j+'-item_id'});
+		   $(this).find('td:nth-child(2) select').select2().attr({name:'outwards['+j+'][item_id]', id:'outwards-'+j+'-item_id'});
 		   $(this).find('td:nth-child(3) input').attr({name:'outwards['+j+'][quantity]',id:'outwards-'+j+'-quantity',class:'outward_reverseCalculation   form-control input-sm'});		
 		   $(this).find('td:nth-child(4) input').attr({name:'outwards['+j+'][rate]', id:'outwards-'+j+'-rate',class:'outward_calculation form-control input-sm'});
 		   $(this).find('td:nth-child(5) input').attr({name:'outwards['+j+'][amount]', id:'outwards-'+j+'-amount',class:'outward_reverseCalculation form-control input-sm'});

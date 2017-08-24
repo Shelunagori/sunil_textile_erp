@@ -32,10 +32,10 @@ $this->set('title', 'Stock Journal View| Sunil Textile ERP');
 					<td><?php echo $stockJournal->narration;?></td>
 				  </tr>
                 </table><br>
-       			<table width="100%" >
-				<tr>
-				      <td width="50%">
-							<table id="main_table" class="table table-condensed table-bordered" style="margin-bottom: 4px;" width="100%">
+       		 <table width="100%" class="table  table-bordered" style="border:none;" border="0">
+				<tr style="border:none;">
+				      <td width="50%" style="border:none;padding: 0px;">
+							<table id="main_table" class="table table-condensed table-bordered"  width="100%">
 								<thead>
 								<tr><td align="center" colspan="6"><b>Inward</b></td></tr>
 								<tr align="center">
@@ -71,8 +71,8 @@ $this->set('title', 'Stock Journal View| Sunil Textile ERP');
 								</tbody>
 								</table>
 					  </td>
-				      <td width="50%">
-						<table id="main_table2" class="table table-condensed table-bordered" style="margin-bottom: 4px;" width="100%">
+				      <td width="50%" style="border:none;padding: 0px;">
+						<table id="main_table2" class="table table-condensed table-bordered" width="100%">
 								<thead>
 								<tr><td align="center" colspan="6"><b>Outward</b></td></tr>
 								<tr align="center">
