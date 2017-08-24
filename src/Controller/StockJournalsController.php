@@ -24,7 +24,7 @@ class StockJournalsController extends AppController
         $this->paginate = [
             'contain' => ['Companies']
         ];
-        $stockJournals = $this->paginate($this->StockJournals);
+        $stockJournals = $this->paginate($this->StockJournals->find()->order(['voucher_no'=>'DESC']));
 
         $this->set(compact('stockJournals'));
         $this->set('_serialize', ['stockJournals']);

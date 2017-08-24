@@ -56,8 +56,16 @@ $this->set('title', 'Create Stock Journal | Sunil Textile ERP');
 								<tbody id='main_tbody' class="tab">
 
 								</tbody>
+								<tfoot>
+									<tr>
+										<td colspan="4" >	
+											<button type="button" class="add_inward btn btn-default input-sm"><i class="fa fa-plus"></i> Add row</button>
+										</td>
+										<td width="25%"><?php echo $this->Form->input('inward_amount_total', ['label' => false,'class' => 'form-control input-sm','id'=>'total_inward','placeholder'=>'Total']); ?></td>
+										<td></td>
+									</tr>
+								</tfoot>
 								</table>
-								<button type="button" class="add_inward btn btn-default input-sm"><i class="fa fa-plus"></i> Add row</button>
 							</td>
 							<td width="50%">
 								<table id="main_table2" class="table table-condensed table-bordered" style="margin-bottom: 4px;" width="100%">
@@ -75,8 +83,16 @@ $this->set('title', 'Create Stock Journal | Sunil Textile ERP');
 								<tbody id='main_tbody2' class="tab">
 
 								</tbody>
+								<tfoot>
+									<tr>
+										<td colspan="4">
+											<button type="button" class="add_outward btn btn-default input-sm"><i class="fa fa-plus"></i> Add row</button>
+										</td>
+										<td width="25%"><?php echo $this->Form->input('outward_amount_total', ['label' => false,'class' => 'form-control input-sm','id'=>'total_outward','placeholder'=>'Total']); ?></td>
+										<td></td>
+									</tr>
+								</tfoot>
 								</table>
-								<button type="button" class="add_outward btn btn-default input-sm"><i class="fa fa-plus"></i> Add row</button>
 							</td>
 						</tr>
 					</table>
@@ -158,7 +174,7 @@ $this->set('title', 'Create Stock Journal | Sunil Textile ERP');
 		   inward_reverce_amt_calc();
 	  });
 	  function inward_amt_calc()
-	  {
+	  {   
 		  $('#main_table tbody#main_tbody tr.main_tr').each(function()
 		  {
 			  var amount=0;
@@ -166,13 +182,14 @@ $this->set('title', 'Create Stock Journal | Sunil Textile ERP');
 			  var rate = parseFloat($(this).find('td:nth-child(4) input').val());
 			  amount   = qty*rate;
 			  if(amount){
-			      $(this).find('td:nth-child(5) input').val(amount.toFixed(2));
+				  $(this).find('td:nth-child(5) input').val(amount.toFixed(2));
 		      }
 		  });
+		  inward_amount_total();
 	  }
 	  
 	  function inward_reverce_amt_calc()
-	  {
+	  {   
 		  $('#main_table tbody#main_tbody tr.main_tr').each(function()
 		  {
 			  var rate=0;
@@ -185,6 +202,7 @@ $this->set('title', 'Create Stock Journal | Sunil Textile ERP');
 				  }
 			  }
 		  });
+		  inward_amount_total();
 	  }
 	  
 	  $('.outward_calculation').die().live('keyup',function(){
@@ -201,13 +219,14 @@ $this->set('title', 'Create Stock Journal | Sunil Textile ERP');
 			  var rate = parseFloat($(this).find('td:nth-child(4) input').val());
 			  amount   = qty*rate;
 			  if(amount){
-			      $(this).find('td:nth-child(5) input').val(amount.toFixed(2));
+				  $(this).find('td:nth-child(5) input').val(amount.toFixed(2));
 		      }
 		  });
-	  }
+		  outward_amount_total()
+	 }
 	  
 	  function outward_reverce_amt_calc()
-	  {
+	  {   
 		  $('#main_table2 tbody#main_tbody2 tr.main_tr').each(function(){
 			  var rate=0;
 			  var qty  = parseFloat($(this).find('td:nth-child(3) input').val());
@@ -219,10 +238,39 @@ $this->set('title', 'Create Stock Journal | Sunil Textile ERP');
 				  }
 			  }
 		  });
+		  outward_amount_total()
 	  }
+	  
+	  function inward_amount_total()
+	  {
+		  var inward_total=0
+		  $('#main_table tbody#main_tbody tr.main_tr').each(function()
+		  {
+			 var amount = parseFloat($(this).find('td:nth-child(5) input').val());
+			 if(amount){
+					  inward_total = inward_total+amount;
+			 }
+		});
+		  $('#total_inward').val(inward_total.toFixed(2)); 
+	  }
+	  
+	  function outward_amount_total()
+	  {   var outward_total=0;
+		  $('#main_table2 tbody#main_tbody2 tr.main_tr').each(function(){
+			  var amount = parseFloat($(this).find('td:nth-child(5) input').val());
+			  if(amount){
+				  outward_total = outward_total+amount;
+			  }
+			  
+		  });
+		  $('#total_outward').val(outward_total.toFixed(2));
+	  }
+	  
 	  $('.delete-tr').die().live('click',function() 
 	  {
 		$(this).closest('tr').remove();
+		inward_amount_total();
+		outward_amount_total();
       });
 	  
 		ComponentsPickers.init();
@@ -230,6 +278,7 @@ $this->set('title', 'Create Stock Journal | Sunil Textile ERP');
 	
 	$('.add_inward').click(function(){
 				add_row_inward();
+				
 		});
 		
 	

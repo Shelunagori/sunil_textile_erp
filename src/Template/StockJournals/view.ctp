@@ -19,7 +19,7 @@ $this->set('title', 'Stock Journal View| Sunil Textile ERP');
 					<td width="15%"><b>Voucher No </b></td>
 					<td width="1%">:</td>
 					<td><?php echo '#'.str_pad($stockJournal->voucher_no, 4, '0', STR_PAD_LEFT);?></td>
-					<td><b>Reference No</b></td>
+					<td width="15%"><b>Reference No</b></td>
 					<td width="1%">:</td>
 					<td><?php echo $stockJournal->reference_no; ?></td>
 					<td width="15%"><b>Transaction Date</b></td>
@@ -55,20 +55,26 @@ $this->set('title', 'Stock Journal View| Sunil Textile ERP');
 									<tr class="main_tr" class="tab">
 										<td width="7%"><?php echo $i+1; ?></td>
 										<td width="25%">
-											<?php echo $inward->item->id; ?>
+											<?php echo $inward->item->name; ?>
 										</td>
-										<td width="15%">
+										<td width="15%" align="center">
 											<?php echo $inward->quantity; ?>
 										</td>
-										<td width="20%">
+										<td width="20%" align="right">
 											<?php echo $inward->rate; ?>
 										</td>
-										<td width="25%">
+										<td width="25%" align="right">
 											<?php echo $inward->amount; ?>	
 										</td>
 									</tr>
 								<?php $i++; } ?>
 								</tbody>
+								<tfoot>
+									<tr>
+										<td colspan="4" align="right">Total</td>
+										<td width="25%" align="right"><?php echo $stockJournal->inward_amount_total;?></td>
+									</tr>
+								</tfoot>
 								</table>
 					  </td>
 				      <td width="50%" style="border:none;padding: 0px;">
@@ -92,20 +98,26 @@ $this->set('title', 'Stock Journal View| Sunil Textile ERP');
 									<tr class="main_tr" class="tab">
 										<td width="7%"><?php echo $j+1;?></td>
 										<td width="25%">
-											<?php echo $outward->item->id; ?>
+											<?php echo $outward->item->name; ?>
 										</td>
-										<td width="15%">
+										<td width="15%" align="center">
 											<?php echo $outward->quantity; ?>
 										</td>
-										<td width="20%">
+										<td width="20%" align="right">
 											<?php echo $outward->rate; ?>
 										</td>
-										<td width="25%">
+										<td width="25%" align="right">
 											<?php echo $outward->amount; ?>	
 										</td>
 									</tr>
 								<?php $j++; } ?>
 								</tbody>
+								<tfoot>
+									<tr>
+										<td colspan="4" align="right">Total</td>
+										<td width="25%" align="right"><?php echo $stockJournal->outward_amount_total;?></td>
+									</tr>
+								</tfoot>
 								</table>
 					  </td>
 				  </tr>			
