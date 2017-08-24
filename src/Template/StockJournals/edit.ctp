@@ -14,7 +14,7 @@ $this->set('title', 'Edit Stock Journal | Sunil Textile ERP');
 				</div>
 			</div>
 			<div class="portlet-body">
-				<?= $this->Form->create($stockJournal) ?>
+				<?= $this->Form->create($stockJournal,['onsubmit'=>'return checkValidation()']) ?>
 					<div class="row">
 						<div class="col-md-3">
 							<div class="form-group">
@@ -375,7 +375,22 @@ $this->set('title', 'Edit Stock Journal | Sunil Textile ERP');
 				j++;
 			});
 			}
-	
+			
+	function checkValidation() 
+	{
+	   var inward_rowCount = $('#main_table tbody#main_tbody tr.main_tr').length;
+	   var outward_rowCount = $('#main_table2 tbody#main_tbody2 tr.main_tr').length;
+	   var total_tr = inward_rowCount+outward_rowCount;
+	   if(total_tr)
+	   {
+		   return true;
+	   }
+	   else
+	   {
+		   alert('No item was selected.');
+		   return false;   
+	   }
+    }
 	
 	
 	";
