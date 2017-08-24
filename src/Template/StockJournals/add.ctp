@@ -332,7 +332,12 @@ $this->set('title', 'Create Stock Journal');
 	   var total_tr = inward_rowCount+outward_rowCount;
 	   if(total_tr)
 	   {
-		   return true;
+			if(confirm('Are you sure you want to submit!')){
+			return true;
+			}else{
+			
+			        return false;
+			 }
 	   }
 	   else
 	   {
