@@ -2,7 +2,7 @@
 /**
  * @Author: PHP Poets IT Solutions Pvt. Ltd.
  */
-$this->set('title', 'Create Ledger);
+$this->set('title', 'Create Ledger');
 ?>
 <div class="row">
 	<div class="col-md-6">

@@ -1,17 +1,283 @@
-<div class="purchaseVouchers form large-9 medium-8 columns content">
-    <?= $this->Form->create($purchaseVoucher) ?>
-    <fieldset>
-        <legend><?= __('Add Purchase Voucher') ?></legend>
-        <?php
-            echo $this->Form->control('voucher_no');
-            echo $this->Form->control('company_id', ['options' => $companies]);
-            echo $this->Form->control('transaction_date');
-            echo $this->Form->control('supplier_invoice_no');
-            echo $this->Form->control('supplier_invoice_date');
-            echo $this->Form->control('narration');
-            echo $this->Form->control('voucher_amount');
-        ?>
-    </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
-    <?= $this->Form->end() ?>
+<?php
+/**
+ * @Author: PHP Poets IT Solutions Pvt. Ltd.
+ */
+$this->set('title', 'Create Purchase Voucher');
+?>
+<div class="row">
+	<div class="col-md-9">
+		<div class="portlet light ">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="icon-bar-chart font-green-sharp hide"></i>
+					<span class="caption-subject font-green-sharp bold ">Create Purchase Voucher</span>
+				</div>
+			</div>
+			<div class="portlet-body">
+				<?= $this->Form->create($purchaseVoucher,['onsubmit'=>'return checkValidation()']) ?>
+					<div class="row">
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>Voucher No :</label>&nbsp;&nbsp;
+								<?= h('#'.str_pad($voucher_no, 4, '0', STR_PAD_LEFT)) ?>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>Supplier Invoice No </label>
+								<?php echo $this->Form->control('supplier_invoice_no',['class'=>'form-control input-sm','label'=>false,'placeholder'=>'Supplier Invoice No','autofocus']); ?>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>Supplier Invoice Date <span class="required">*</span></label>
+								<?php echo $this->Form->control('supplier_invoice_date',['class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'placeholder'=>'DD-MM-YYYY','type'=>'text']); ?>
+							</div>
+						</div> 
+						<div class="col-md-3">
+							<div class="form-group">
+								<label>Transaction Date <span class="required">*</span></label>
+								<?php echo $this->Form->control('transaction_date',['class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'placeholder'=>'DD-MM-YYYY','type'=>'text','data-date-start-date'=>@$coreVariable[fyValidFrom],'data-date-end-date'=>@$coreVariable[fyValidTo]]); ?>
+							</div>
+						</div>
+					</div>
+					<br>
+                  <div class="row">
+				    <div class="table-responsive">
+						<table id="main_table" class="table table-condensed table-bordered" style="margin-bottom: 4px;" width="100%">
+							<thead>
+								<tr align="center">
+									<td><label>Sr<label></td>
+									<td><label>Credit/Debit<label></td>
+									<td><label>Particulars<label></td>
+									<td><label>Debit<label></td>
+									<td><label>Credit<label></td>
+									<td></td>
+								</tr>
+							</thead>
+							<tbody id='main_tbody' class="tab">
+								<tr class="main_tr" class="tab">
+									<td width="7%"></td>
+									<td width="10%">
+									<?php 
+									$option[]= ['value'=>'Cr','text'=>'Cr',];
+									$option[]= ['value'=>'Dr','text'=>'Dr',];
+									echo $this->Form->input('debit_credit_list', ['empty'=>'--Select--','options'=>$option,'label' => false,'class' => 'form-control input-sm','required'=>'required','value'=>'Cr','disabled'=>'disabled']); ?>
+									</td>
+									<td width="15%">
+									<?php echo $this->Form->input('ledger_id', ['empty'=>'--Select--','options'=>@$Creditledgers,'label' => false,'class' => 'form-control input-medium','required'=>'required']); ?>
+									</td>
+									<td width="25%"></td>
+									<td width="25%">
+									<?php echo $this->Form->input('credit', ['label' => false,'class' => 'form-control input-sm','required'=>'required','placeholder'=>'Credit']); ?>	
+									</td>
+									<td align="center"></td>
+								</tr>
+								<tr class="main_tr" class="tab">
+									<td width="7%"></td>
+									<td width="10%">
+									<?php 
+									echo $this->Form->input('debit_credit_list', ['empty'=>'--Select--','options'=>$option,'label' => false,'class' => 'form-control input-sm','required'=>'required','value'=>'Dr','disabled'=>'disabled']); ?>
+									</td>
+									<td width="15%">
+									<?php echo $this->Form->input('ledger_id', ['empty'=>'--Select--','options'=>@$Debitledgers,'label' => false,'class' => 'form-control input-medium','required'=>'required']); ?>
+									</td>
+									<td width="25%">
+									<?php echo $this->Form->input('debit', ['label' => false,'class' => 'form-control input-sm','required'=>'required','placeholder'=>'Debit']); ?>
+									</td>
+									<td width="25%"></td>
+									<td align="center"></td>
+								</tr>
+							</tbody>
+							<tfoot>
+								<tr>
+									<td colspan="3" >	
+									<button type="button" class="add_inward btn btn-default input-sm"><i class="fa fa-plus"></i> Add row</button>
+									</td>
+									<td width="25%"><?php echo $this->Form->input('voucher_amount', ['label' => false,'class' => 'form-control input-sm','id'=>'total_inward','placeholder'=>'Total Credit']); ?></td>
+									<td width="25%"><?php echo $this->Form->input('voucher_amount', ['label' => false,'class' => 'form-control input-sm','id'=>'total_inward','placeholder'=>'Total Debit']); ?></td>
+									<td></td>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+				  </div>
+				  
+				 <div class="row">
+					<div class="col-md-4">
+							<div class="form-group">
+								<label>Narration </label>
+								<?php echo $this->Form->control('narration',['class'=>'form-control input-sm ','label'=>false,'placeholder'=>'Narration','rows'=>'2']); ?>
+							</div>
+						</div>
+				  </div>
+				</div>
+				<?= $this->Form->button(__('Submit'),['class'=>'btn btn-success']) ?>
+				<?= $this->Form->end() ?>
+			</div>
+		</div>
+	</div>
 </div>
+
+<!-- BEGIN PAGE LEVEL STYLES -->
+	<!-- BEGIN COMPONENTS PICKERS -->
+	<?php echo $this->Html->css('/assets/global/plugins/clockface/css/clockface.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+	<?php echo $this->Html->css('/assets/global/plugins/bootstrap-datepicker/css/datepicker3.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+	<?php echo $this->Html->css('/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+	<?php echo $this->Html->css('/assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+	<?php echo $this->Html->css('/assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+	<?php echo $this->Html->css('/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+	<!-- END COMPONENTS PICKERS -->
+
+	<!-- BEGIN COMPONENTS DROPDOWNS -->
+	<?php echo $this->Html->css('/assets/global/plugins/bootstrap-select/bootstrap-select.min.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+	<?php echo $this->Html->css('/assets/global/plugins/select2/select2.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+	<?php echo $this->Html->css('/assets/global/plugins/jquery-multi-select/css/multi-select.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
+	<!-- END COMPONENTS DROPDOWNS -->
+<!-- END PAGE LEVEL STYLES -->
+
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+	<!-- BEGIN COMPONENTS PICKERS -->
+	<?php echo $this->Html->script('/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+	<?php echo $this->Html->script('/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+	<?php echo $this->Html->script('/assets/global/plugins/clockface/js/clockface.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+	<?php echo $this->Html->script('/assets/global/plugins/bootstrap-daterangepicker/moment.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+	<?php echo $this->Html->script('/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+	<?php echo $this->Html->script('/assets/global/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+	<?php echo $this->Html->script('/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+	<!-- END COMPONENTS PICKERS -->
+	
+	<!-- BEGIN COMPONENTS DROPDOWNS -->
+	<?php echo $this->Html->script('/assets/global/plugins/bootstrap-select/bootstrap-select.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+	<?php echo $this->Html->script('/assets/global/plugins/select2/select2.min.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+	<?php echo $this->Html->script('/assets/global/plugins/jquery-multi-select/js/jquery.multi-select.js', ['block' => 'PAGE_LEVEL_PLUGINS_JS']); ?>
+	<!-- END COMPONENTS DROPDOWNS -->
+<!-- END PAGE LEVEL PLUGINS -->
+
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+	<!-- BEGIN COMPONENTS PICKERS -->
+	<?php echo $this->Html->script('/assets/admin/pages/scripts/components-pickers.js', ['block' => 'PAGE_LEVEL_SCRIPTS_JS']); ?>
+	<!-- END COMPONENTS PICKERS -->
+
+	<!-- BEGIN COMPONENTS DROPDOWNS -->
+	<?php echo $this->Html->script('/assets/global/scripts/metronic.js', ['block' => 'PAGE_LEVEL_SCRIPTS_JS']); ?>
+	<?php echo $this->Html->script('/assets/admin/layout/scripts/layout.js', ['block' => 'PAGE_LEVEL_SCRIPTS_JS']); ?>
+	<?php echo $this->Html->script('/assets/admin/layout/scripts/quick-sidebar.js', ['block' => 'PAGE_LEVEL_SCRIPTS_JS']); ?>
+	<?php echo $this->Html->script('/assets/admin/layout/scripts/demo.js', ['block' => 'PAGE_LEVEL_SCRIPTS_JS']); ?>
+	<?php echo $this->Html->script('/assets/admin/pages/scripts/components-dropdowns.js', ['block' => 'PAGE_LEVEL_SCRIPTS_JS']); ?>
+	<!-- END COMPONENTS DROPDOWNS -->
+<!-- END PAGE LEVEL SCRIPTS -->
+
+<?php
+	$js="
+	$(document).ready(function() {
+	  
+	  $('.delete-tr').die().live('click',function() 
+	  {
+		$(this).closest('tr').remove();
+		inward_amount_total();
+		outward_amount_total();
+      });
+	  
+		ComponentsPickers.init();
+    });
+	
+	$('.hide_cr_dr').die().live('change',function() 
+	  { 
+	      var check_debit_or_credit = $(this).val(); 
+		  if(check_debit_or_credit=='Dr')
+		  {
+			$(this).closest('tr').find('.debit_hide_show').hide();
+			$(this).closest('tr').find('.debit_hide_show').val('');
+			$(this).closest('tr').find('.credit_hide_show').show();
+		  }
+		  else if(check_debit_or_credit=='Cr'){
+			  $(this).closest('tr').find('.debit_hide_show').show();
+			  $(this).closest('tr').find('.credit_hide_show').val('');
+			  $(this).closest('tr').find('.credit_hide_show').hide();
+		  }
+		  else{
+			  $(this).closest('tr').find('.debit_hide_show').show();
+			  $(this).closest('tr').find('.credit_hide_show').show();
+		  }
+	  });
+	
+	$('.add_inward').click(function(){
+				add_row_inward();
+				
+		});
+		
+	
+	function add_row_inward(){
+			var tr=$('#sample_table tbody tr.main_tr').clone();
+			$('#main_table tbody#main_tbody').append(tr);
+			
+			rename_inward_rows();
+		}
+			
+	
+	rename_inward_rows();
+	
+	function rename_inward_rows(){
+		var i=0;
+		 $('#main_table tbody#main_tbody tr.main_tr').each(function(){ 
+		  $(this).find('td:nth-child(1)').html(i+1);
+		  
+		  $(this).find('td:nth-child(3) select').select2().attr({name:'purchase_voucher_rows['+i+'][ledger_id]',id:'purchase_voucher_rows-'+i+'-ledger_id'});	
+		  
+		  $(this).find('td:nth-child(4) input').attr({name:'purchase_voucher_rows['+i+'][debit]', id:'purchase_voucher_rows-'+i+'-debit'});
+		  $(this).find('td:nth-child(5) input').attr({name:'purchase_voucher_rows['+i+'][credit]', id:'purchase_voucher_rows-'+i+'-credit'});
+			
+			i++;
+			});
+		}
+		
+	/*function checkValidation() 
+	{
+	   var inward_rowCount = $('#main_table tbody#main_tbody tr.main_tr').length;
+	   var outward_rowCount = $('#main_table2 tbody#main_tbody2 tr.main_tr').length;
+	   var total_tr = inward_rowCount+outward_rowCount;
+	   if(total_tr)
+	   {
+			if(confirm('Are you sure you want to submit!')){
+			return true;
+			}else{
+			
+			        return false;
+			 }
+	   }
+	   else
+	   {
+		   alert('No item was selected.');
+		   return false;   
+	   }
+    }*/
+	
+	
+	";
+
+echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 
+?>
+<table id="sample_table" style="display:none;" width="100%">
+	<tbody>
+			<tr class="main_tr" class="tab">
+				<td width="7%"></td>
+				<td width="10%">
+				<?php 
+				echo $this->Form->input('debit_credit_list', ['empty'=>'--Select--','options'=>$option,'label' => false,'class' => 'form-control input-sm hide_cr_dr','required'=>'required']); ?>
+				</td>
+				<td width="15%">
+				<?php echo $this->Form->input('ledger_id', ['empty'=>'--Select--','options'=>@$ledgers,'label' => false,'class' => 'form-control input-medium ','required'=>'required']); ?>
+				</td>
+				<td width="25%">
+				<?php echo $this->Form->input('debit', ['label' => false,'class' => 'form-control input-sm debit_hide_show','required'=>'required','placeholder'=>'Debit']); ?>
+				</td>
+				<td width="25%">
+				<?php echo $this->Form->input('credit', ['label' => false,'class' => 'form-control input-sm credit_hide_show','required'=>'required','placeholder'=>'Credit']); ?>	
+				</td>
+				<td align="center">
+					<a class="btn btn-danger delete-tr btn-xs" href="#" role="button" style="margin-bottom: 5px;"><i class="fa fa-times"></i></a>
+				</td>
+			</tr>
+	</tbody>
+</table>
