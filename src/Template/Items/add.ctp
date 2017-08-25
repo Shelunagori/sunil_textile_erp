@@ -17,7 +17,7 @@ $this->set('title', 'Create Item');
 				<?= $this->Form->create($item) ?>
 				<div class="row">
 				
-					 <div class="col-md-6">
+					<div class="col-md-6">
 					    <div class="form-group">
 							<label>Item Name <span class="required">*</span></label>
 							<?php echo $this->Form->control('name',['class'=>'form-control input-sm','placeholder'=>'Item Name','label'=>false,'autofocus']); ?>

@@ -97,11 +97,11 @@ class SuppliersController extends AppController
             $this->Flash->error(__('The supplier could not be saved. Please, try again.'));
         }
 		$SundryDebtor = $this->Suppliers->Ledgers->AccountingGroups->find()->where(['supplier'=>1,'company_id'=>$company_id])->first();
-			$accountingGroups = $this->Suppliers->Ledgers->AccountingGroups
-								->find('children', ['for' => $SundryDebtor->id])
-								->find('List')->toArray();
-			$accountingGroups[$SundryDebtor->id]=$SundryDebtor->name;
-			ksort($accountingGroups);
+		$accountingGroups = $this->Suppliers->Ledgers->AccountingGroups
+							->find('children', ['for' => $SundryDebtor->id])
+							->find('List')->toArray();
+		$accountingGroups[$SundryDebtor->id]=$SundryDebtor->name;
+		ksort($accountingGroups);
         $states = $this->Suppliers->States->find('list', ['limit' => 200]);
         $this->set(compact('supplier', 'states','accountingGroups'));
         $this->set('_serialize', ['supplier']);

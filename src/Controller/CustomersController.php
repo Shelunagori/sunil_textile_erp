@@ -98,12 +98,12 @@ class CustomersController extends AppController
             }
 			$this->Flash->error(__('The customer could not be saved. Please, try again.'));
         }
-		    $SundryDebtor = $this->Customers->Ledgers->AccountingGroups->find()->where(['customer'=>1,'company_id'=>$company_id])->first();
-			$accountingGroups = $this->Customers->Ledgers->AccountingGroups
-								->find('children', ['for' => $SundryDebtor->id])
-								->find('List')->toArray();
-			$accountingGroups[$SundryDebtor->id]=$SundryDebtor->name;
-			ksort($accountingGroups);
+		$SundryDebtor = $this->Customers->Ledgers->AccountingGroups->find()->where(['customer'=>1,'company_id'=>$company_id])->first();
+		$accountingGroups = $this->Customers->Ledgers->AccountingGroups
+							->find('children', ['for' => $SundryDebtor->id])
+							->find('List')->toArray();
+		$accountingGroups[$SundryDebtor->id]=$SundryDebtor->name;
+		ksort($accountingGroups);
         $states = $this->Customers->States->find('list', ['limit' => 200]);
         $this->set(compact('customer', 'states','accountingGroups'));
         $this->set('_serialize', ['customer', 'accountingGroups']);
@@ -162,11 +162,11 @@ class CustomersController extends AppController
         }
 		
 		$SundryDebtor = $this->Customers->Ledgers->AccountingGroups->find()->where(['customer'=>1,'company_id'=>$company_id])->first();
-			$accountingGroups = $this->Customers->Ledgers->AccountingGroups
-								->find('children', ['for' => $SundryDebtor->id])
-								->find('List')->toArray();
-			$accountingGroups[$SundryDebtor->id]=$SundryDebtor->name;
-			ksort($accountingGroups);
+		$accountingGroups = $this->Customers->Ledgers->AccountingGroups
+							->find('children', ['for' => $SundryDebtor->id])
+							->find('List')->toArray();
+		$accountingGroups[$SundryDebtor->id]=$SundryDebtor->name;
+		ksort($accountingGroups);
 		$account_entry  = $this->Customers->Ledgers->AccountingEntries->find()->where(['ledger_id'=>$customer->ledger->id,'company_id'=>$company_id])->first();
 		//pr($account_entry->toArray());exit;
         $states = $this->Customers->States->find('list');
