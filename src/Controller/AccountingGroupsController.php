@@ -56,8 +56,10 @@ class AccountingGroupsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $accountingGroup = $this->AccountingGroups->newEntity();
+		$company_id=$this->Auth->User('session_company_id');
         if ($this->request->is('post')) {
             $accountingGroup = $this->AccountingGroups->patchEntity($accountingGroup, $this->request->getData());
+			$accountingGroup->company_id = $company_id;
             if ($this->AccountingGroups->save($accountingGroup)) {
                 $this->Flash->success(__('The accounting group has been saved.'));
 

@@ -37,7 +37,6 @@ $this->set('title', 'Suppliers');
 							<td><?= h($supplier->email) ?></td>
 							<td><?= h($supplier->mobile) ?></td>
 							<td class="actions">
-								<?= $this->Html->link(__('View'), ['action' => 'view', $supplier->id]) ?>
 								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $supplier->id]) ?>
 						</tr>
 						<?php endforeach; ?>

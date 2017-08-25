@@ -52,7 +52,7 @@ $this->set('title', 'Create Item');
 							<div class="col-md-4">
 								<div class="form-group">
 									<label>Quantity </label>
-									<?php echo $this->Form->control('quantity',['class'=>'form-control input-sm qty ','label'=>false,'placeholder'=>'Quantity']); ?>
+									<?php echo $this->Form->control('quantity',['class'=>'form-control input-sm qty calculation reverseCalculation','label'=>false,'placeholder'=>'Quantity']); ?>
 								</div>
 							</div>
 							<div class="col-md-4">
@@ -90,7 +90,10 @@ $this->set('title', 'Create Item');
 		  var qty = $('.qty').val();
 		  var rate = $('.rate').val();
           var amt = qty*rate
-		  $('.amt').val(amt.toFixed(2)); 
+		  if(amt)
+		  {
+			$('.amt').val(amt.toFixed(2)); 
+		  }
 	  }
 	  
 	  function reverce_amt_calc()
@@ -99,7 +102,9 @@ $this->set('title', 'Create Item');
 		  var amt = $('.amt').val();
 		  if(qty){
 		  var rate = amt/qty;
-		  $('.rate').val(rate.toFixed(2));  }
+		  if(rate)
+		  {
+		  $('.rate').val(rate.toFixed(2));  }}
 	  }
     });
 	";

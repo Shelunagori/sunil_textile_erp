@@ -80,7 +80,7 @@ class ItemsController extends AppController
 					$itemLedger->amount             = $this->request->data['amount'];
 					$itemLedger->status             = 'in';
 					$itemLedger->is_opening_balance = 'yes';
-					
+					$itemLedger->company_id         = $company_id;
 					$this->Items->ItemLedgers->save($itemLedger);
 				}
 				
@@ -111,19 +111,19 @@ class ItemsController extends AppController
 				return $q->where(['ItemLedgers.is_opening_balance'=>'yes']);
 			}]
         ]);
-		
+		$company_id=$this->Auth->User('session_company_id');
         if ($this->request->is(['patch', 'post', 'put'])) {
             $item = $this->Items->patchEntity($item, $this->request->getData());
             if ($this->Items->save($item)) {
 				if($item->quantity>0)
 				{
 					$transaction_date=$this->Auth->User('session_company')->books_beginning_from;
-					$itemLedger = $this->Items->ItemLedgers->newEntity();
-						$itemLedger->delete()
+					$query_delete = $this->Items->ItemLedgers->query();
+						$query_delete->delete()
 						->where(['item_id' => $id,'is_opening_balance'=>'yes','company_id'=>$company_id])
 						->execute();
 						
-					
+					$itemLedger = $this->Items->ItemLedgers->newEntity();
 					$itemLedger->item_id            = $item->id;
 					$itemLedger->transaction_date   = date("Y-m-d",strtotime($transaction_date));
 					$itemLedger->quantity           = $this->request->data['quantity'];
@@ -131,7 +131,7 @@ class ItemsController extends AppController
 					$itemLedger->amount             = $this->request->data['amount'];
 					$itemLedger->status             = 'in';
 					$itemLedger->is_opening_balance = 'yes';
-					
+					$itemLedger->company_id         = $company_id;
 					$this->Items->ItemLedgers->save($itemLedger);
 				}
                 $this->Flash->success(__('The item has been saved.'));

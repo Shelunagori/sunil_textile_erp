@@ -37,7 +37,6 @@ $this->set('title', 'Customers');
 							<td><?= h($customer->email) ?></td>
 							<td><?= h($customer->mobile) ?></td>
 							<td class="actions">
-								<?= $this->Html->link(__('View'), ['action' => 'view', $customer->id]) ?>
 								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $customer->id]) ?>
 							</td>
 						</tr>

@@ -56,8 +56,10 @@ class LedgersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $ledger = $this->Ledgers->newEntity();
+		$company_id=$this->Auth->User('session_company_id');
         if ($this->request->is('post')) {
             $ledger = $this->Ledgers->patchEntity($ledger, $this->request->getData());
+			$ledger->company_id = $company_id;
             if ($this->Ledgers->save($ledger)) {
                 $this->Flash->success(__('The ledger has been saved.'));
 
@@ -65,9 +67,9 @@ class LedgersController extends AppController
             }
             $this->Flash->error(__('The ledger could not be saved. Please, try again.'));
         }
-        $accountingGroups = $this->Ledgers->AccountingGroups->find('list', ['limit' => 200]);
-        $suppliers = $this->Ledgers->Suppliers->find('list', ['limit' => 200]);
-        $customers = $this->Ledgers->Customers->find('list', ['limit' => 200]);
+        $accountingGroups = $this->Ledgers->AccountingGroups->find('list');
+        $suppliers = $this->Ledgers->Suppliers->find('list');
+        $customers = $this->Ledgers->Customers->find('list');
         $this->set(compact('ledger', 'accountingGroups',  'suppliers', 'customers'));
         $this->set('_serialize', ['ledger']);
     }
@@ -85,6 +87,7 @@ class LedgersController extends AppController
         $ledger = $this->Ledgers->get($id, [
             'contain' => []
         ]);
+		$company_id=$this->Auth->User('session_company_id');
         if ($this->request->is(['patch', 'post', 'put'])) {
             $ledger = $this->Ledgers->patchEntity($ledger, $this->request->getData());
             if ($this->Ledgers->save($ledger)) {
@@ -95,10 +98,9 @@ class LedgersController extends AppController
             $this->Flash->error(__('The ledger could not be saved. Please, try again.'));
         }
         $accountingGroups = $this->Ledgers->AccountingGroups->find('list', ['limit' => 200]);
-        $companies = $this->Ledgers->Companies->find('list', ['limit' => 200]);
-        $suppliers = $this->Ledgers->Suppliers->find('list', ['limit' => 200]);
-        $customers = $this->Ledgers->Customers->find('list', ['limit' => 200]);
-        $this->set(compact('ledger', 'accountingGroups', 'companies', 'suppliers', 'customers'));
+        $suppliers = $this->Ledgers->Suppliers->find('list');
+        $customers = $this->Ledgers->Customers->find('list');
+        $this->set(compact('ledger', 'accountingGroups', 'suppliers', 'customers'));
         $this->set('_serialize', ['ledger']);
     }
 

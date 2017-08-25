@@ -5,7 +5,7 @@
 $this->set('title', 'Ledgers');
 ?>
 <div class="row">
-	<div class="col-md-12">
+	<div class="col-md-8">
 		<div class="portlet light ">
 			<div class="portlet-title">
 				<div class="caption">
@@ -21,10 +21,6 @@ $this->set('title', 'Ledgers');
 							<th scope="col" class="actions"><?= __('Sr') ?></th>
 							<th scope="col"><?= $this->Paginator->sort('name') ?></th>
 							<th scope="col"><?= $this->Paginator->sort('accounting_group') ?></th>
-							<th scope="col"><?= $this->Paginator->sort('supplier') ?></th>
-							<th scope="col"><?= $this->Paginator->sort('customer') ?></th>
-							<th scope="col"><?= $this->Paginator->sort('tax_percentage') ?></th>
-							<th scope="col"><?= $this->Paginator->sort('gst_type') ?></th>
 							<th scope="col" class="actions"><?= __('Actions') ?></th>
 						</tr>
 					</thead>
@@ -34,14 +30,8 @@ $this->set('title', 'Ledgers');
 							<td><?= h(++$page_no) ?></td>
 							<td><?= h($ledger->name) ?></td>
 							<td><?= h($ledger->accounting_group->name)  ?></td>
-							<td><?= h(@$ledger->supplier->name) ?></td>
-							<td><?= h(@$ledger->customer->name)  ?></td>
-							<td><?= $this->Number->format($ledger->tax_percentage) ?></td>
-							<td><?= h($ledger->gst_type) ?></td>
 							<td class="actions">
-							<?= $this->Html->link(__('View'), ['action' => 'view', $ledger->id]) ?>
 							<?= $this->Html->link(__('Edit'), ['action' => 'edit', $ledger->id]) ?>
-							<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $ledger->id], ['confirm' => __('Are you sure you want to delete # {0}?', $ledger->id)]) ?>
 							</td>
 						</tr>
 						<?php endforeach; ?>

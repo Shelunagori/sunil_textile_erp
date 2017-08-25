@@ -5,7 +5,7 @@
 $this->set('title', 'Accounting Groups');
 ?>
 <div class="row">
-	<div class="col-md-12">
+	<div class="col-md-8">
 		<div class="portlet light ">
 			<div class="portlet-title">
 				<div class="caption">
@@ -33,7 +33,6 @@ $this->set('title', 'Accounting Groups');
 							<td><?= h($accountingGroup->name) ?></td>
 							<td><?= h(@$accountingGroup->parent_accounting_group->name)  ?></td>
 							<td class="actions">
-							<?= $this->Html->link(__('View'), ['action' => 'view', $accountingGroup->id]) ?>
 							<?= $this->Html->link(__('Edit'), ['action' => 'edit', $accountingGroup->id]) ?>
 							</td>
 						</tr>
