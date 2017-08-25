@@ -1,61 +1,71 @@
 <?php
 /**
-  * @var \App\View\AppView $this
-  * @var \App\Model\Entity\PurchaseVoucher[]|\Cake\Collection\CollectionInterface $purchaseVouchers
-  */
+ * @Author: PHP Poets IT Solutions Pvt. Ltd.
+ */
+$this->set('title', 'Purchase Vouchers');
 ?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Purchase Voucher'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Companies'), ['controller' => 'Companies', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Company'), ['controller' => 'Companies', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Purchase Voucher Rows'), ['controller' => 'PurchaseVoucherRows', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Purchase Voucher Row'), ['controller' => 'PurchaseVoucherRows', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="purchaseVouchers index large-9 medium-8 columns content">
-    <h3><?= __('Purchase Vouchers') ?></h3>
-    <table cellpadding="0" cellspacing="0">
-        <thead>
-            <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('voucher_no') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('company_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('transaction_date') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('supplier_invoice_no') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('supplier_invoice_date') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('voucher_amount') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($purchaseVouchers as $purchaseVoucher): ?>
-            <tr>
-                <td><?= $this->Number->format($purchaseVoucher->id) ?></td>
-                <td><?= $this->Number->format($purchaseVoucher->voucher_no) ?></td>
-                <td><?= $purchaseVoucher->has('company') ? $this->Html->link($purchaseVoucher->company->name, ['controller' => 'Companies', 'action' => 'view', $purchaseVoucher->company->id]) : '' ?></td>
-                <td><?= h($purchaseVoucher->transaction_date) ?></td>
-                <td><?= h($purchaseVoucher->supplier_invoice_no) ?></td>
-                <td><?= h($purchaseVoucher->supplier_invoice_date) ?></td>
-                <td><?= $this->Number->format($purchaseVoucher->voucher_amount) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $purchaseVoucher->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $purchaseVoucher->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $purchaseVoucher->id], ['confirm' => __('Are you sure you want to delete # {0}?', $purchaseVoucher->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
-    </div>
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet light ">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="icon-bar-chart font-green-sharp hide"></i>
+					<span class="caption-subject font-green-sharp bold ">Purchase Vouchers</span>
+				</div>
+			</div>
+			<div class="portlet-body">
+				<div class="table-responsive">
+					<?php $page_no=$this->Paginator->current('purchaseVouchers'); $page_no=($page_no-1)*20; ?>
+					<table class="table table-bordered table-hover table-condensed">
+						<thead>
+							<tr>
+								<th scope="col" class="actions"><?= __('Sr') ?></th>
+								<th scope="col"><?= $this->Paginator->sort('voucher_no') ?></th>
+								<th scope="col"><?= $this->Paginator->sort('transaction_date') ?></th>
+								<th scope="col"><?= $this->Paginator->sort('supplier_invoice_no') ?></th>
+								<th scope="col"><?= $this->Paginator->sort('supplier_invoice_date') ?></th>
+								<th scope="col"><?= $this->Paginator->sort('voucher_amount') ?></th>
+								<th scope="col" class="actions"><?= __('Actions') ?></th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach ($purchaseVouchers as $purchaseVoucher): ?>
+							<tr>
+								<td><?= h(++$page_no) ?></td>
+								<td><?= h('#'.str_pad($purchaseVoucher->voucher_no, 4, '0', STR_PAD_LEFT)) ?></td>
+								<td><?= h($purchaseVoucher->transaction_date) ?></td>
+								<td><?= h($purchaseVoucher->supplier_invoice_no) ?></td>
+								<td><?php  if(!empty($purchaseVoucher->supplier_invoice_date))
+										   {
+											   echo $purchaseVoucher->supplier_invoice_date;
+										   }
+										   else
+										   {
+											   echo "--/--/----";
+										   }
+									?>
+								</td>
+								<td><?= $this->Number->format($purchaseVoucher->voucher_amount) ?></td>
+								<td class="actions">
+									<?= $this->Html->link(__('View'), ['action' => 'view', $purchaseVoucher->id]) ?>
+									<?= $this->Html->link(__('Edit'), ['action' => 'edit', $purchaseVoucher->id]) ?>
+								</td>
+							</tr>
+							<?php endforeach; ?>
+						</tbody>
+					</table>
+				</div>
+				<div class="paginator">
+					<ul class="pagination">
+						<?= $this->Paginator->first('<< ' . __('first')) ?>
+						<?= $this->Paginator->prev('< ' . __('previous')) ?>
+						<?= $this->Paginator->numbers() ?>
+						<?= $this->Paginator->next(__('next') . ' >') ?>
+						<?= $this->Paginator->last(__('last') . ' >>') ?>
+					</ul>
+					<p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

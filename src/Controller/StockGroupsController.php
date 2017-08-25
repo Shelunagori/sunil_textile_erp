@@ -55,9 +55,11 @@ class StockGroupsController extends AppController
     public function add()
     {
 		$this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
         $stockGroup = $this->StockGroups->newEntity();
         if ($this->request->is('post')) {
             $stockGroup = $this->StockGroups->patchEntity($stockGroup, $this->request->getData());
+			$stockGroup->company_id = $company_id;
             if ($this->StockGroups->save($stockGroup)) {
                 $this->Flash->success(__('The stock group has been saved.'));
 
@@ -82,6 +84,7 @@ class StockGroupsController extends AppController
         $stockGroup = $this->StockGroups->get($id, [
             'contain' => []
         ]);
+		$company_id=$this->Auth->User('session_company_id');
         if ($this->request->is(['patch', 'post', 'put'])) {
             $stockGroup = $this->StockGroups->patchEntity($stockGroup, $this->request->getData());
             if ($this->StockGroups->save($stockGroup)) {

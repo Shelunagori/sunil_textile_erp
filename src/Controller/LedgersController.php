@@ -40,7 +40,7 @@ class LedgersController extends AppController
     public function view($id = null)
     {
         $ledger = $this->Ledgers->get($id, [
-            'contain' => ['AccountingGroups', 'Companies', 'Suppliers', 'Customers', 'AccountingEntries']
+            'contain' => ['AccountingGroups', 'Suppliers', 'Customers', 'AccountingEntries']
         ]);
 
         $this->set('ledger', $ledger);
@@ -66,10 +66,9 @@ class LedgersController extends AppController
             $this->Flash->error(__('The ledger could not be saved. Please, try again.'));
         }
         $accountingGroups = $this->Ledgers->AccountingGroups->find('list', ['limit' => 200]);
-        $companies = $this->Ledgers->Companies->find('list', ['limit' => 200]);
         $suppliers = $this->Ledgers->Suppliers->find('list', ['limit' => 200]);
         $customers = $this->Ledgers->Customers->find('list', ['limit' => 200]);
-        $this->set(compact('ledger', 'accountingGroups', 'companies', 'suppliers', 'customers'));
+        $this->set(compact('ledger', 'accountingGroups',  'suppliers', 'customers'));
         $this->set('_serialize', ['ledger']);
     }
 

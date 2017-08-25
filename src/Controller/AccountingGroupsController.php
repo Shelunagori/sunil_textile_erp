@@ -67,8 +67,7 @@ class AccountingGroupsController extends AppController
         }
         $natureOfGroups = $this->AccountingGroups->NatureOfGroups->find('list', ['limit' => 200]);
         $parentAccountingGroups = $this->AccountingGroups->ParentAccountingGroups->find('list', ['limit' => 200]);
-        $companies = $this->AccountingGroups->Companies->find('list', ['limit' => 200]);
-        $this->set(compact('accountingGroup', 'natureOfGroups', 'parentAccountingGroups', 'companies'));
+        $this->set(compact('accountingGroup', 'natureOfGroups', 'parentAccountingGroups'));
         $this->set('_serialize', ['accountingGroup']);
     }
 
@@ -96,8 +95,7 @@ class AccountingGroupsController extends AppController
         }
         $natureOfGroups = $this->AccountingGroups->NatureOfGroups->find('list', ['limit' => 200]);
         $parentAccountingGroups = $this->AccountingGroups->ParentAccountingGroups->find('list', ['limit' => 200]);
-        $companies = $this->AccountingGroups->Companies->find('list', ['limit' => 200]);
-        $this->set(compact('accountingGroup', 'natureOfGroups', 'parentAccountingGroups', 'companies'));
+        $this->set(compact('accountingGroup', 'natureOfGroups', 'parentAccountingGroups'));
         $this->set('_serialize', ['accountingGroup']);
     }
 

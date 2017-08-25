@@ -56,4 +56,3 @@ $this->set('title', 'Stock Journals');
 		</div>
 	</div>
 </div>
-

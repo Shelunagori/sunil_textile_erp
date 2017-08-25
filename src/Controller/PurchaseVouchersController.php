@@ -41,7 +41,7 @@ class PurchaseVouchersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $purchaseVoucher = $this->PurchaseVouchers->get($id, [
-            'contain' => ['Companies', 'PurchaseVoucherRows']
+            'contain' => ['Companies', 'PurchaseVoucherRows'=>['Ledgers']]
         ]);
 
         $this->set('purchaseVoucher', $purchaseVoucher);

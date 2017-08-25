@@ -1,85 +1,108 @@
 <?php
 /**
-  * @var \App\View\AppView $this
-  * @var \App\Model\Entity\PurchaseVoucher $purchaseVoucher
-  */
+ * @Author: PHP Poets IT Solutions Pvt. Ltd.
+ */
+$this->set('title', 'purchase Voucher View');
 ?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit Purchase Voucher'), ['action' => 'edit', $purchaseVoucher->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Purchase Voucher'), ['action' => 'delete', $purchaseVoucher->id], ['confirm' => __('Are you sure you want to delete # {0}?', $purchaseVoucher->id)]) ?> </li>
-        <li><?= $this->Html->link(__('List Purchase Vouchers'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Purchase Voucher'), ['action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Companies'), ['controller' => 'Companies', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Company'), ['controller' => 'Companies', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Purchase Voucher Rows'), ['controller' => 'PurchaseVoucherRows', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Purchase Voucher Row'), ['controller' => 'PurchaseVoucherRows', 'action' => 'add']) ?> </li>
-    </ul>
-</nav>
-<div class="purchaseVouchers view large-9 medium-8 columns content">
-    <h3><?= h($purchaseVoucher->id) ?></h3>
-    <table class="vertical-table">
-        <tr>
-            <th scope="row"><?= __('Company') ?></th>
-            <td><?= $purchaseVoucher->has('company') ? $this->Html->link($purchaseVoucher->company->name, ['controller' => 'Companies', 'action' => 'view', $purchaseVoucher->company->id]) : '' ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Supplier Invoice No') ?></th>
-            <td><?= h($purchaseVoucher->supplier_invoice_no) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Id') ?></th>
-            <td><?= $this->Number->format($purchaseVoucher->id) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Voucher No') ?></th>
-            <td><?= $this->Number->format($purchaseVoucher->voucher_no) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Voucher Amount') ?></th>
-            <td><?= $this->Number->format($purchaseVoucher->voucher_amount) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Transaction Date') ?></th>
-            <td><?= h($purchaseVoucher->transaction_date) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Supplier Invoice Date') ?></th>
-            <td><?= h($purchaseVoucher->supplier_invoice_date) ?></td>
-        </tr>
-    </table>
-    <div class="row">
-        <h4><?= __('Narration') ?></h4>
-        <?= $this->Text->autoParagraph(h($purchaseVoucher->narration)); ?>
-    </div>
-    <div class="related">
-        <h4><?= __('Related Purchase Voucher Rows') ?></h4>
-        <?php if (!empty($purchaseVoucher->purchase_voucher_rows)): ?>
-        <table cellpadding="0" cellspacing="0">
-            <tr>
-                <th scope="col"><?= __('Id') ?></th>
-                <th scope="col"><?= __('Purchase Voucher Id') ?></th>
-                <th scope="col"><?= __('Ledger Id') ?></th>
-                <th scope="col"><?= __('Debit') ?></th>
-                <th scope="col"><?= __('Credit') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
-            </tr>
-            <?php foreach ($purchaseVoucher->purchase_voucher_rows as $purchaseVoucherRows): ?>
-            <tr>
-                <td><?= h($purchaseVoucherRows->id) ?></td>
-                <td><?= h($purchaseVoucherRows->purchase_voucher_id) ?></td>
-                <td><?= h($purchaseVoucherRows->ledger_id) ?></td>
-                <td><?= h($purchaseVoucherRows->debit) ?></td>
-                <td><?= h($purchaseVoucherRows->credit) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'PurchaseVoucherRows', 'action' => 'view', $purchaseVoucherRows->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'PurchaseVoucherRows', 'action' => 'edit', $purchaseVoucherRows->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'PurchaseVoucherRows', 'action' => 'delete', $purchaseVoucherRows->id], ['confirm' => __('Are you sure you want to delete # {0}?', $purchaseVoucherRows->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
-        <?php endif; ?>
-    </div>
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet light ">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="icon-bar-chart font-green-sharp hide"></i>
+					<span class="caption-subject font-green-sharp bold ">purchase Voucher View</span>
+				</div>
+			</div>
+			<div class="portlet-body">
+				<table width="100%" >
+				  <tr>
+					<td width="15%"><b>Voucher No </b></td>
+					<td width="1%">:</td>
+					<td><?php echo '#'.str_pad($purchaseVoucher->voucher_no, 4, '0', STR_PAD_LEFT);?></td>
+					<td width="15%"><b>Transaction Date</b></td>
+					<td width="1%">:</td>
+					<td><?php echo date("d-m-Y",strtotime($purchaseVoucher->transaction_date)); ?></td>
+					<td width="15%"><b>Supplier Invoice No</b></td>
+					<td width="1%">:</td>
+					<td><?php echo $purchaseVoucher->supplier_invoice_no; ?></td>
+					<td width="15%"><b>Supplier Invoice Date</b></td>
+					<td width="1%">:</td>
+					<td><?php echo date("d-m-Y",strtotime($purchaseVoucher->supplier_invoice_date)); ?></td>
+				  </tr>
+                  <tr>
+					<td width="15%"><b>Narration </b></td>
+					<td width="1%">:</td>
+					<td><?php echo $purchaseVoucher->narration;?></td>
+				  </tr>
+                </table><br>
+       		    <table id="main_table" class="table table-condensed table-bordered"  width="100%">
+					<thead>
+					<tr align="center">
+						<td></td>
+						<td><b>Ledger Id</b></td>
+						<td><b>Debit</b></td>
+						<td><b>Credit</b></td>
+					</tr>
+					</thead>
+					<tbody id='main_tbody' class="tab">
+					 <?php 
+							 $i=0;									
+							 foreach ($purchaseVoucher->purchase_voucher_rows as $purchaseVoucherRows):
+					?>
+						<tr class="main_tr" class="tab">
+							
+							<td width="7%">
+								<?php 
+									if(!empty($purchaseVoucherRows->debit))
+									{
+										echo "<b>Dr</b>"; 
+									}
+									else
+									{
+										echo "<b>Cr</b>";
+									}
+										
+								?>
+							</td>
+							<td width="25%" align="center">
+								<?php echo $purchaseVoucherRows->ledger->name; ?>
+							</td>
+							<td width="20%" align="right">
+								<?php 
+									if(!empty($purchaseVoucherRows->debit))
+									{
+										echo $purchaseVoucherRows->debit; 
+									}
+									else
+									{
+										echo '-';
+									}
+								?>
+							</td>
+							<td width="25%" align="right">
+								<?php 
+								    if(!empty($purchaseVoucherRows->credit))
+									{
+										echo $purchaseVoucherRows->credit; 
+									}
+									else
+									{
+										echo '-';
+									}
+								?>	
+							</td>
+						</tr>
+					<?php $i++; endforeach; ?>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="2" align="right">Total</td>
+							<td width="25%" align="right"><?php echo $purchaseVoucher->voucher_amount?></td>
+							<td width="25%" align="right"><?php echo $purchaseVoucher->voucher_amount?></td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>
+	</div>
 </div>
