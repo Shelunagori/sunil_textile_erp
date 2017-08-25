@@ -22,7 +22,7 @@ class LedgersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $this->paginate = [
-            'contain' => ['AccountingGroups', 'Companies', 'Suppliers', 'Customers']
+            'contain' => ['AccountingGroups', 'Companies']
         ];
         $ledgers = $this->paginate($this->Ledgers);
         //pr($ledgers->toArray());exit;
