@@ -59,15 +59,7 @@ class PurchaseVoucherRowsTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create');
 
-        $validator
-            ->decimal('debit')
-            ->requirePresence('debit', 'create')
-            ->notEmpty('debit');
-
-        $validator
-            ->decimal('credit')
-            ->requirePresence('credit', 'create')
-            ->notEmpty('credit');
+        
 
         return $validator;
     }

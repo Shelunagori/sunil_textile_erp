@@ -42,7 +42,12 @@ class PurchaseVouchersTable extends Table
             'joinType' => 'INNER'
         ]);
         $this->hasMany('PurchaseVoucherRows', [
-            'foreignKey' => 'purchase_voucher_id'
+            'foreignKey' => 'purchase_voucher_id',
+			'saveStrategy' => 'replace'
+        ]);
+		$this->hasMany('AccountingEntries', [
+            'foreignKey' => 'purchase_voucher_id',
+            'joinType' => 'INNER'
         ]);
     }
 
@@ -58,28 +63,12 @@ class PurchaseVouchersTable extends Table
             ->integer('id')
             ->allowEmpty('id', 'create');
 
-        $validator
-            ->integer('voucher_no')
-            ->requirePresence('voucher_no', 'create')
-            ->notEmpty('voucher_no');
 
-        $validator
-            ->date('transaction_date')
-            ->requirePresence('transaction_date', 'create')
-            ->notEmpty('transaction_date');
-
-        $validator
+        /*$validator
             ->requirePresence('supplier_invoice_no', 'create')
-            ->notEmpty('supplier_invoice_no');
+            ->notEmpty('supplier_invoice_no');*/
 
-        $validator
-            ->date('supplier_invoice_date')
-            ->requirePresence('supplier_invoice_date', 'create')
-            ->notEmpty('supplier_invoice_date');
-
-        $validator
-            ->requirePresence('narration', 'create')
-            ->notEmpty('narration');
+        
 
         $validator
             ->decimal('voucher_amount')

@@ -148,7 +148,7 @@ class StockJournalsController extends AppController
             if ($this->StockJournals->save($stockJournal)) {
 				 $query_delete = $this->StockJournals->ItemLedgers->query();
 					$query_delete->delete()
-					->where(['stock_journal_id' => $stockJournal->id])
+					->where(['stock_journal_id' => $stockJournal->id,'company_id'=>$company_id])
 					->execute();
 					if(!empty($stockJournal->inwards))
 					{
