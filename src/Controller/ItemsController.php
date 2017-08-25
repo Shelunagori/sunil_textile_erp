@@ -115,12 +115,24 @@ class ItemsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $item = $this->Items->patchEntity($item, $this->request->getData());
             if ($this->Items->save($item)) {
-				if($item->quantity>0){
-				$query = $this->Items->ItemLedgers->query();
-					$query->update()
-						->set(['quantity' => $item->quantity,'rate' => $item->rate,'amount' => $item->amount])
-						->where(['item_id' => $id,'is_opening_balance'=>'yes'])
+				if($item->quantity>0)
+				{
+					$transaction_date=$this->Auth->User('session_company')->books_beginning_from;
+					$itemLedger = $this->Items->ItemLedgers->newEntity();
+						$itemLedger->delete()
+						->where(['item_id' => $id,'is_opening_balance'=>'yes','company_id'=>$company_id])
 						->execute();
+						
+					
+					$itemLedger->item_id            = $item->id;
+					$itemLedger->transaction_date   = date("Y-m-d",strtotime($transaction_date));
+					$itemLedger->quantity           = $this->request->data['quantity'];
+					$itemLedger->rate               = $this->request->data['rate'];
+					$itemLedger->amount             = $this->request->data['amount'];
+					$itemLedger->status             = 'in';
+					$itemLedger->is_opening_balance = 'yes';
+					
+					$this->Items->ItemLedgers->save($itemLedger);
 				}
                 $this->Flash->success(__('The item has been saved.'));
 

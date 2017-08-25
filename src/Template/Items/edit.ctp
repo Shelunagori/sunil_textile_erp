@@ -105,5 +105,5 @@ $this->set('title', 'Edit Item');
     });
 	";
 
-echo $this->Html->scriptBlock($js, array('block' => 'jsPageLevelPluginsComponentsPickers'));  
+echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));  
 ?>

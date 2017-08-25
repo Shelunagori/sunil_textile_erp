@@ -32,7 +32,6 @@ $this->set('title', 'Stock Groups');
 							<td class="actions">
 								<?= $this->Html->link(__('View'), ['action' => 'view', $stockGroup->id]) ?>
 								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $stockGroup->id]) ?>
-								<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $stockGroup->id], ['confirm' => __('Are you sure you want to delete # {0}?', $stockGroup->id)]) ?>
 							</td>
 						</tr>
 						<?php endforeach; ?>
@@ -52,4 +51,3 @@ $this->set('title', 'Stock Groups');
 		</div>
 	</div>
 </div>
-
