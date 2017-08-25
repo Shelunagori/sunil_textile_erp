@@ -57,10 +57,12 @@ class LedgersController extends AppController
 		$this->viewBuilder()->layout('index_layout');
         $ledger = $this->Ledgers->newEntity();
 		$company_id=$this->Auth->User('session_company_id');
-        if ($this->request->is('post')) {
+        if ($this->request->is('post')) 
+		{
             $ledger = $this->Ledgers->patchEntity($ledger, $this->request->getData());
 			$ledger->company_id = $company_id;
-            if ($this->Ledgers->save($ledger)) {
+            if ($this->Ledgers->save($ledger)) 
+			{
                 $this->Flash->success(__('The ledger has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -88,9 +90,11 @@ class LedgersController extends AppController
             'contain' => []
         ]);
 		$company_id=$this->Auth->User('session_company_id');
-        if ($this->request->is(['patch', 'post', 'put'])) {
+        if ($this->request->is(['patch', 'post', 'put'])) 
+		{
             $ledger = $this->Ledgers->patchEntity($ledger, $this->request->getData());
-            if ($this->Ledgers->save($ledger)) {
+            if ($this->Ledgers->save($ledger)) 
+			{
                 $this->Flash->success(__('The ledger has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -115,9 +119,12 @@ class LedgersController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
         $ledger = $this->Ledgers->get($id);
-        if ($this->Ledgers->delete($ledger)) {
+        if ($this->Ledgers->delete($ledger)) 
+		{
             $this->Flash->success(__('The ledger has been deleted.'));
-        } else {
+        } 
+		else
+		{
             $this->Flash->error(__('The ledger could not be deleted. Please, try again.'));
         }
 

@@ -71,8 +71,8 @@ $this->set('title', 'Create Supplier');
 									echo $this->Form->control('debit_credit',['class'=>'form-control input-sm','label'=>false, 'options' => $option,'value'=>'creditor']);
 									?>
 							</div>
-						</
-					</div>
+					    </div>
+				    </div>
 				</div>
 				<?= $this->Form->button(__('Submit'),['class'=>'btn btn-success']) ?>
 				<?= $this->Form->end() ?>
