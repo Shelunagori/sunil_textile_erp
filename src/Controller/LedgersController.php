@@ -159,30 +159,30 @@ class LedgersController extends AppController
 			$where1['AccountingEntries.company_id'] = $company_id;
 			
 
-		$query = $this->Ledgers->AccountingEntries->find();
-        $totalInCaseDebit = $query->newExpr()
-            ->addCase(
-				$query->newExpr()->add(['ledger_id']),
-                $query->newExpr()->add(['debit']),
-                'decimal'
-            );
-        $totalOutCaseCredit = $query->newExpr()
-            ->addCase(
-				$query->newExpr()->add(['ledger_id']),
-                $query->newExpr()->add(['credit']),
-                'decimal'
-            );
-        $query->select([
-            'debit_amount' => $query->func()->sum($totalInCaseDebit),
-            'credit_amount' => $query->func()->sum($totalOutCaseCredit),'id','ledger_id'
-        ])
-        ->where($where)
-        ->group('ledger_id')
-        ->autoFields(true)
-		->contain(['Ledgers'])->order(['Ledgers.id'=> 'ASC']);
-        
-        $trialBalances = ($query);
+			$query = $this->Ledgers->AccountingEntries->find();
+			$totalInCaseDebit = $query->newExpr()
+				->addCase(
+					$query->newExpr()->add(['ledger_id']),
+					$query->newExpr()->add(['debit']),
+					'decimal'
+				);
+			$totalOutCaseCredit = $query->newExpr()
+				->addCase(
+					$query->newExpr()->add(['ledger_id']),
+					$query->newExpr()->add(['credit']),
+					'decimal'
+				);
+			$query->select([
+				'debit_amount' => $query->func()->sum($totalInCaseDebit),
+				'credit_amount' => $query->func()->sum($totalOutCaseCredit),'id','ledger_id'
+			])
+			->where($where)
+			->group('ledger_id')
+			->autoFields(true)
+			->contain(['Ledgers'])->order(['Ledgers.id'=> 'ASC']);
 			
+			$trialBalances = ($query);
+				
 			if(!empty($trialBalances))
 			{
 				foreach($trialBalances as $trialBalance)
@@ -191,31 +191,31 @@ class LedgersController extends AppController
 					$transactionArray[$trialBalance->ledger->id][$trialBalance->debit_amount] =$trialBalance->credit_amount;
 				}
 			}
+				
+			$query1 = $this->Ledgers->AccountingEntries->find();
+			$totalInCaseDebit = $query1->newExpr()
+				->addCase(
+					$query->newExpr()->add(['ledger_id']),
+					$query->newExpr()->add(['debit']),
+					'decimal'
+					);
+			$totalOutCaseCredit = $query1->newExpr()
+				->addCase(
+					$query->newExpr()->add(['ledger_id']),
+					$query->newExpr()->add(['credit']),
+					'decimal'
+					);
+			$query1->select([
+				'debit_amount' => $query1->func()->sum($totalInCaseDebit),
+				'credit_amount' => $query1->func()->sum($totalOutCaseCredit),'id','ledger_id'
+			])
+			->where($where1)
+			->group('ledger_id')
+			->autoFields(true)
+			->contain(['Ledgers'])->order(['Ledgers.id'=> 'ASC']);
 			
-		$query1 = $this->Ledgers->AccountingEntries->find();
-		$totalInCaseDebit = $query1->newExpr()
-			->addCase(
-				$query->newExpr()->add(['ledger_id']),
-				$query->newExpr()->add(['debit']),
-				'decimal'
-				);
-        $totalOutCaseCredit = $query1->newExpr()
-			->addCase(
-				$query->newExpr()->add(['ledger_id']),
-				$query->newExpr()->add(['credit']),
-				'decimal'
-				);
-        $query1->select([
-			'debit_amount' => $query1->func()->sum($totalInCaseDebit),
-			'credit_amount' => $query1->func()->sum($totalOutCaseCredit),'id','ledger_id'
-        ])
-        ->where($where1)
-		->group('ledger_id')
-        ->autoFields(true)
-		->contain(['Ledgers'])->order(['Ledgers.id'=> 'ASC']);
-		
-        $openingBalances = ($query1);
-		//pr($openingBalances->toArray());exit;
+			$openingBalances = ($query1);
+			//pr($openingBalances->toArray());exit;
 			if(!empty($openingBalances))
 			{
 				foreach($openingBalances as $openingBalance)
