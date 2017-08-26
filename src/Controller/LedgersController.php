@@ -130,4 +130,104 @@ class LedgersController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+	
+	public function trialBalance($id = null)
+    {
+		$this->viewBuilder()->layout('index_layout');
+		$ledger    = $this->Ledgers->newEntity();
+		$company_id=$this->Auth->User('session_company_id');
+		$where = [];
+		
+		if ($this->request->is('post')) 
+		{
+			$ledgersArray        =[];
+			$openingBalanceArray =[];
+			$transactionArray    =[];
+			$from_date = date("Y-m-d",strtotime($this->request->data['from_date']));
+			$to_date = date("Y-m-d",strtotime($this->request->data['to_date']));
+			if(!empty($from_date))
+			{
+				$where['AccountingEntries.transaction_date >='] = $from_date;
+				$where1['AccountingEntries.transaction_date >='] = $from_date;
+			}
+			
+			if(!empty($to_date))
+			{
+				$where['AccountingEntries.transaction_date <='] = $to_date;
+			}
+			$where['AccountingEntries.company_id'] = $company_id;
+			$where1['AccountingEntries.company_id'] = $company_id;
+			
+
+		$query = $this->Ledgers->AccountingEntries->find();
+        $totalInCaseDebit = $query->newExpr()
+            ->addCase(
+				$query->newExpr()->add(['ledger_id']),
+                $query->newExpr()->add(['debit']),
+                'decimal'
+            );
+        $totalOutCaseCredit = $query->newExpr()
+            ->addCase(
+				$query->newExpr()->add(['ledger_id']),
+                $query->newExpr()->add(['credit']),
+                'decimal'
+            );
+        $query->select([
+            'debit_amount' => $query->func()->sum($totalInCaseDebit),
+            'credit_amount' => $query->func()->sum($totalOutCaseCredit),'id','ledger_id'
+        ])
+        ->where($where)
+        ->group('ledger_id')
+        ->autoFields(true)
+		->contain(['Ledgers'])->order(['Ledgers.id'=> 'ASC']);
+        
+        $trialBalances = ($query);
+			
+			if(!empty($trialBalances))
+			{
+				foreach($trialBalances as $trialBalance)
+				{
+					$ledgersArray[$trialBalance->ledger->id] = $trialBalance->ledger->name;
+					$transactionArray[$trialBalance->ledger->id][$trialBalance->debit_amount] =$trialBalance->credit_amount;
+				}
+			}
+			
+		$query1 = $this->Ledgers->AccountingEntries->find();
+		$totalInCaseDebit = $query1->newExpr()
+			->addCase(
+				$query->newExpr()->add(['ledger_id']),
+				$query->newExpr()->add(['debit']),
+				'decimal'
+				);
+        $totalOutCaseCredit = $query1->newExpr()
+			->addCase(
+				$query->newExpr()->add(['ledger_id']),
+				$query->newExpr()->add(['credit']),
+				'decimal'
+				);
+        $query1->select([
+			'debit_amount' => $query1->func()->sum($totalInCaseDebit),
+			'credit_amount' => $query1->func()->sum($totalOutCaseCredit),'id','ledger_id'
+        ])
+        ->where($where1)
+		->group('ledger_id')
+        ->autoFields(true)
+		->contain(['Ledgers'])->order(['Ledgers.id'=> 'ASC']);
+		
+        $openingBalances = ($query1);
+		//pr($openingBalances->toArray());exit;
+			if(!empty($openingBalances))
+			{
+				foreach($openingBalances as $openingBalance)
+				{
+					$openingBalanceArray1 [$openingBalance->ledger_id] = $openingBalance->debit_amount;
+					$openingBalanceArray2 [$openingBalance->ledger_id] = $openingBalance->credit_amount;
+				}
+			}
+			//pr($openingBalanceArray);exit;
+		}
+		
+		$this->set(compact('ledger','from_date','to_date','ledgersArray','transactionArray','openingBalanceArray1','openingBalanceArray2'));
+        $this->set('_serialize', ['ledger']);
+    }
 }

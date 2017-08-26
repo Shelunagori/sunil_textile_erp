@@ -95,13 +95,13 @@ echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-home']
 
 <li class="start ">
 	<a href="javascript:;">
-	<i class="fa fa-shopping-cart"></i>
-	<span class="title">Purchase Vouchers</span>
+	<i class="fa fa-file"></i>
+	<span class="title">Trail Balance</span>
 	<span class="arrow "></span>
 	</a>
 	<ul class="sub-menu">
-		<li><?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-plus-square']).' Create', '/PurchaseVouchers/Add',['escape' => false]); ?></li>
-		<li><?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-list-ul']).' List', '/PurchaseVouchers',['escape' => false]); ?></li>
+		<li><?php echo $this->Html->link($this->Html->tag('i', '', ['class' => '']).' Report', '/Ledgers/trial_balance',['escape' => false]); ?></li>
+		
 	</ul>
 </li>
 
