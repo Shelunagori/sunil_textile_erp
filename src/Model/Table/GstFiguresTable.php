@@ -40,6 +40,11 @@ class GstFiguresTable extends Table
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'
         ]);
+		
+		$this->hasMany('Items', [
+            'foreignKey' => 'gst_figure_id',
+            'joinType' => 'INNER'
+        ]);
     }
 
     /**
