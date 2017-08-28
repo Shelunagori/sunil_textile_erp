@@ -53,7 +53,7 @@ $this->set('title', 'Trial balance report');
 					</div>	
 					<?= $this->Form->end() ?>
 				</div>
-				<?php if(!empty($openingBalanceArray1)){?>
+				<?php if(!empty($openingBalanceArray)){?>
 				<table class="table table-bordered table-hover table-condensed" width="100%">
 					<thead>
 						<tr>
@@ -80,9 +80,9 @@ $this->set('title', 'Trial balance report');
 							$transactionCreditTotal=0;
 							$closingBalanceDebitTotal=0;
 							$closingBalanceCreditTotal=0;
-							foreach($transactionArray as $key => $transaction)
+							foreach($openingBalanceArray as $key => $openingBalance)
 							{ 
-								foreach($transaction as $key1 => $transaction1)
+								foreach($openingBalance as $key1 => $openingBalance1)
 								{
 									$closing_credit=0;
 									$closing_debit=0;
@@ -91,42 +91,48 @@ $this->set('title', 'Trial balance report');
 										<td scope="col"><?php echo @$ledgersArray[$key];?></td>
 										<td scope="col" align="right">
 										<?php
-											$closing_debit = $closing_debit+$openingBalanceArray1[$key];
-											$transactionDebitTotal +=$openingBalanceArray1[$key];
-											echo $openingBalanceArray1[$key];
-										?>
-										</td>
-										<td scope="col" align="right">
-										<?php 
-											$closing_credit = $closing_credit+$openingBalanceArray2[$key];
-											$transactionCreditTotal +=$openingBalanceArray2[$key];
-											echo $openingBalanceArray2[$key];
-										?>
-										</td>
-										<td scope="col" align="right">
-										<?php
-											$closing_debit = $closing_debit+$key1;
+										    $closing_debit = $closing_debit+$key1;
 											$openingBalanceDebitTotal += $key1;
 											echo $key1;
 										?>
 										</td>
 										<td scope="col" align="right">
 										<?php 
-											$closing_credit = $closing_credit+$transaction1;
-											$openingBalanceCreditTotal +=$transaction1;
-											echo $transaction1;
+											$closing_credit = $closing_credit+$openingBalance1;
+											$openingBalanceCreditTotal +=$openingBalance1;
+											echo $openingBalance1;
+										?>
+										</td>
+										<td scope="col" align="right">
+										<?php
+											if(!empty($transactionArray1[$key]))
+											{
+												$transactionDebitTotal +=$transactionArray1[$key];
+												$closing_debit = $closing_debit+$transactionArray1[$key];
+												echo $transactionArray1[$key];
+											}
+										?>
+										</td>
+										<td scope="col" align="right">
+										<?php 
+										    if(!empty($transactionArray2[$key]))
+											{
+												$transactionCreditTotal +=$transactionArray2[$key];
+												$closing_credit = $closing_credit+$transactionArray2[$key];
+												echo $transactionArray2[$key];
+											}
 										?>
 										</td>
 										<td scope="col" align="right">
 										<?php
 											$closingBalanceDebitTotal +=$closing_debit;
-											echo $closing_debit;
+											echo @$closing_debit;
 										?>
 										</td>
 										<td scope="col" align="right">
 										<?php 
 											$closingBalanceCreditTotal +=$closing_credit;
-											echo $closing_credit;
+											echo @$closing_credit;
 										?>
 										</td>
 									</tr>

@@ -148,12 +148,13 @@ class LedgersController extends AppController
 			if(!empty($from_date))
 			{
 				$where['AccountingEntries.transaction_date >='] = $from_date;
-				$where1['AccountingEntries.transaction_date >='] = $from_date;
+				
 			}
 			
 			if(!empty($to_date))
 			{
 				$where['AccountingEntries.transaction_date <='] = $to_date;
+				$where1['AccountingEntries.transaction_date <='] = $to_date;
 			}
 			$where['AccountingEntries.company_id'] = $company_id;
 			$where1['AccountingEntries.company_id'] = $company_id;
@@ -187,22 +188,23 @@ class LedgersController extends AppController
 			{
 				foreach($trialBalances as $trialBalance)
 				{
-					$ledgersArray[$trialBalance->ledger->id] = $trialBalance->ledger->name;
-					$transactionArray[$trialBalance->ledger->id][$trialBalance->debit_amount] =$trialBalance->credit_amount;
+					$transactionArray1[$trialBalance->ledger_id] = $trialBalance->debit_amount;
+					$transactionArray2[$trialBalance->ledger_id] = $trialBalance->debit_amount;
+					//$transactionArray[$trialBalance->ledger->id][$trialBalance->debit_amount] =$trialBalance->credit_amount;
 				}
 			}
 				
 			$query1 = $this->Ledgers->AccountingEntries->find();
 			$totalInCaseDebit = $query1->newExpr()
 				->addCase(
-					$query->newExpr()->add(['ledger_id']),
-					$query->newExpr()->add(['debit']),
+					$query1->newExpr()->add(['ledger_id']),
+					$query1->newExpr()->add(['debit']),
 					'decimal'
 					);
 			$totalOutCaseCredit = $query1->newExpr()
 				->addCase(
-					$query->newExpr()->add(['ledger_id']),
-					$query->newExpr()->add(['credit']),
+					$query1->newExpr()->add(['ledger_id']),
+					$query1->newExpr()->add(['credit']),
 					'decimal'
 					);
 			$query1->select([
@@ -220,14 +222,14 @@ class LedgersController extends AppController
 			{
 				foreach($openingBalances as $openingBalance)
 				{
-					$openingBalanceArray1 [$openingBalance->ledger_id] = $openingBalance->debit_amount;
-					$openingBalanceArray2 [$openingBalance->ledger_id] = $openingBalance->credit_amount;
+					$ledgersArray[$openingBalance->ledger->id] = $openingBalance->ledger->name;
+					$openingBalanceArray[$openingBalance->ledger->id][$openingBalance->debit_amount] =$openingBalance->credit_amount;
 				}
 			}
 			//pr($openingBalanceArray);exit;
 		}
 		
-		$this->set(compact('ledger','from_date','to_date','ledgersArray','transactionArray','openingBalanceArray1','openingBalanceArray2'));
+		$this->set(compact('ledger','from_date','to_date','ledgersArray','transactionArray1','transactionArray2','openingBalanceArray'));
         $this->set('_serialize', ['ledger']);
     }
 }
