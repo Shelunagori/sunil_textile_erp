@@ -93,14 +93,28 @@ $this->set('title', 'Trial balance report');
 										<?php
 										    $closing_debit = $closing_debit+$key1;
 											$openingBalanceDebitTotal += $key1;
-											echo $key1;
+											if(!empty($key1))
+											{
+												echo $key1;
+											}
+											else
+											{
+												echo "-";
+											}
 										?>
 										</td>
 										<td scope="col" align="right">
 										<?php 
 											$closing_credit = $closing_credit+$openingBalance1;
 											$openingBalanceCreditTotal +=$openingBalance1;
-											echo $openingBalance1;
+											if(!empty($openingBalance1))
+											{
+												echo $openingBalance1;
+											}
+											else
+											{
+												echo "-";
+											}
 										?>
 										</td>
 										<td scope="col" align="right">
@@ -110,6 +124,10 @@ $this->set('title', 'Trial balance report');
 												$transactionDebitTotal +=$transactionArray1[$key];
 												$closing_debit = $closing_debit+$transactionArray1[$key];
 												echo $transactionArray1[$key];
+											}
+											else
+											{
+												echo "-";
 											}
 										?>
 										</td>
@@ -121,18 +139,36 @@ $this->set('title', 'Trial balance report');
 												$closing_credit = $closing_credit+$transactionArray2[$key];
 												echo $transactionArray2[$key];
 											}
+											else
+											{
+												echo "-";
+											}
 										?>
 										</td>
 										<td scope="col" align="right">
 										<?php
 											$closingBalanceDebitTotal +=$closing_debit;
-											echo @$closing_debit;
+											if(!empty($closing_debit))
+											{
+												echo @$closing_debit;
+											}
+											else
+											{
+												echo "-";
+											}
 										?>
 										</td>
 										<td scope="col" align="right">
 										<?php 
 											$closingBalanceCreditTotal +=$closing_credit;
-											echo @$closing_credit;
+											if(!empty($closing_credit))
+											{
+												echo @$closing_credit;
+											}
+											else
+											{
+												echo "-";
+											}
 										?>
 										</td>
 									</tr>
@@ -144,12 +180,78 @@ $this->set('title', 'Trial balance report');
 					<tfoot>
 						<tr>
 							<td scope="col">Total</td>
-							<td scope="col" align="right"><?php echo $openingBalanceDebitTotal;?></td>
-							<td scope="col" align="right"><?php echo $openingBalanceCreditTotal;?></td>
-							<td scope="col" align="right"><?php echo $transactionDebitTotal;?></td>
-							<td scope="col" align="right"><?php echo $transactionCreditTotal;?></td>
-							<td scope="col" align="right"><?php echo $closingBalanceDebitTotal;?></td>
-							<td scope="col" align="right"><?php echo $closingBalanceCreditTotal;?></td>
+							<td scope="col" align="right">
+							<?php 
+								if(!empty($openingBalanceDebitTotal))
+								{
+									echo @$openingBalanceDebitTotal;
+								}
+								else
+								{
+									echo "-";
+								}
+							?>
+							</td>
+							<td scope="col" align="right">
+							<?php 
+								if(!empty($openingBalanceCreditTotal))
+								{
+									echo @$openingBalanceCreditTotal;
+								}
+								else
+								{
+									echo "-";
+								}
+							?>
+							</td>
+							<td scope="col" align="right">
+							<?php 
+								if(!empty($transactionDebitTotal))
+								{
+									echo @$transactionDebitTotal;
+								}
+								else
+								{
+									echo "-";
+								}
+							?>
+							</td>
+							<td scope="col" align="right">
+							<?php
+								if(!empty($transactionCreditTotal))
+								{
+									echo @$transactionCreditTotal;
+								}
+								else
+								{
+									echo "-";
+								}
+							?>
+							</td>
+							<td scope="col" align="right">
+							<?php 
+								if(!empty($closingBalanceDebitTotal))
+								{
+									echo @$closingBalanceDebitTotal;
+								}
+								else
+								{
+									echo "-";
+								}
+							?>
+							</td>
+							<td scope="col" align="right">
+							<?php 
+								if(!empty($closingBalanceCreditTotal))
+								{
+									echo @$closingBalanceCreditTotal;
+								}
+								else
+								{
+									echo "-";
+								}
+							?>
+							</td>
 						</tr>
 					</tfoot>
 				</table>
