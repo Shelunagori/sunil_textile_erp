@@ -90,9 +90,11 @@ class ItemsController extends AppController
             }
             $this->Flash->error(__('The item could not be saved. Please, try again.'));
         }
-        $units = $this->Items->Units->find('list', ['limit' => 200]);
-        $stockGroups = $this->Items->StockGroups->find('list', ['limit' => 200]);
-        $this->set(compact('item', 'units', 'stockGroups'));
+        $units = $this->Items->Units->find('list');
+        $stockGroups = $this->Items->StockGroups->find('list');
+        $shades = $this->Items->Shades->find('list');
+        $sizes = $this->Items->Sizes->find('list');
+        $this->set(compact('item', 'units', 'stockGroups','sizes','shades'));
         $this->set('_serialize', ['item']);
     }
 
@@ -140,9 +142,11 @@ class ItemsController extends AppController
             }
             $this->Flash->error(__('The item could not be saved. Please, try again.'));
         }
-        $units = $this->Items->Units->find('list', ['limit' => 200]);
-        $stockGroups = $this->Items->StockGroups->find('list', ['limit' => 200]);
-        $this->set(compact('item', 'units', 'stockGroups'));
+        $units = $this->Items->Units->find('list');
+        $stockGroups = $this->Items->StockGroups->find('list');
+		$shades = $this->Items->Shades->find('list');
+        $sizes = $this->Items->Sizes->find('list');
+        $this->set(compact('item', 'units', 'stockGroups','sizes','shades'));
         $this->set('_serialize', ['item']);
     }
 

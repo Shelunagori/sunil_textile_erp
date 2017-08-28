@@ -53,6 +53,14 @@ class ItemsTable extends Table
             'foreignKey' => 'item_id',
             'joinType' => 'INNER'
         ]);
+		 $this->belongsTo('Sizes', [
+            'foreignKey' => 'size_id',
+            'joinType' => 'LEFT'
+        ]);
+		 $this->belongsTo('Shades', [
+            'foreignKey' => 'shade_id',
+            'joinType' => 'LEFT'
+        ]);
     }
 
     /**

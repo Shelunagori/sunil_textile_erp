@@ -81,6 +81,7 @@ class StockGroupsController extends AppController
      */
     public function edit($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
         $stockGroup = $this->StockGroups->get($id, [
             'contain' => []
         ]);

@@ -44,6 +44,26 @@ $this->set('title', 'Edit Item');
 									<?php echo $this->Form->control('unit_id',['class'=>'form-control input-sm','label'=>false,'empty'=>'-Unit-', 'options' => $units,'required'=>'required']); ?>
 								</div>
 							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Size </label>
+									<?php echo $this->Form->control('size_id',['class'=>'form-control input-sm','label'=>false,'empty'=>'-Size-', 'options' => $sizes]); ?>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Description </label>
+									<?php echo $this->Form->control('description',['class'=>'form-control input-sm','label'=>false,'rows'=>'2']); ?>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Shade </label>
+									<?php echo $this->Form->control('shade_id',['class'=>'form-control input-sm','label'=>false,'empty'=>'-Shade-', 'options' => $shades]); ?>
+								</div>
+							</div>
 						</div>
 					</div>
 					<div class="col-md-6">

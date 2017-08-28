@@ -32,7 +32,7 @@ $this->set('title', 'Create Accounting Group');
 							<div class="col-md-6">
 							    <div class="form-group hide_group">
 									<label>Nature of Group</label>
-									<?php echo $this->Form->control('nature_of_group_id',['class'=>'form-control input-sm ','label'=>false,'empty'=>'-Nature of Group-', 'options' => $natureOfGroups]); ?>
+									<?php echo $this->Form->control('nature_of_group_id',['class'=>'form-control input-sm attributeRem','label'=>false,'empty'=>'-Nature of Group-', 'options' => $natureOfGroups,'required'=>'required']); ?>
 								</div>
 							</div>
 						</div>
@@ -55,16 +55,19 @@ $this->set('title', 'Create Accounting Group');
 		  var parent_id =$('.calculation').val();
 		  if(parent_id)
 		  {
+			  $('.attributeRem').removeAttr('required');
+			  $('.attributeRem option:selected').remove();
 			  $('.hide_group').hide();
 		  }
 		  else
 		  {
 			  $('.hide_group').show();
+			  $('.attributeRem').attr('required', 'true');
 		  }
 	  }
 	  
     });
 	";
 
-echo $this->Html->scriptBlock($js, array('block' => 'jsPageLevelPluginsComponentsPickers')); 
+echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 
 ?>
