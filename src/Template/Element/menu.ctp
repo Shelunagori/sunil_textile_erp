@@ -96,11 +96,11 @@ echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-home']
 <li class="start ">
 	<a href="javascript:;">
 	<i class="fa fa-file"></i>
-	<span class="title">Trail Balance</span>
+	<span class="title">Reports</span>
 	<span class="arrow "></span>
 	</a>
 	<ul class="sub-menu">
-		<li><?php echo $this->Html->link($this->Html->tag('i', '', ['class' => '']).' Report', '/Ledgers/trial_balance',['escape' => false]); ?></li>
+		<li><?php echo $this->Html->link($this->Html->tag('i', '', ['class' => '']).'Trail Balance Report', '/Ledgers/trial_balance',['escape' => false]); ?></li>
 		
 	</ul>
 </li>
