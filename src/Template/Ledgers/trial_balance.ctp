@@ -20,10 +20,17 @@ $this->set('title', 'Trial balance report');
 						<div class="form-group">
 							<label>From Date</label>
 							<?php 
-							if(!empty($from_date))
+							
+							if(@$from_date=='1970-01-01')
+							{
+								$from_date = '';
+							}
+							elseif(!empty($from_date))
 							{
 								$from_date = date("d-m-Y",strtotime(@$from_date));
 							}
+							
+							
 							echo $this->Form->control('from_date',['class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'placeholder'=>'DD-MM-YYYY','type'=>'text','value'=>@$from_date,'data-date-start-date'=>@$coreVariable[fyValidFrom],'data-date-end-date'=>@$coreVariable[fyValidTo]]); ?>
 						</div>
 					</div>
@@ -31,7 +38,11 @@ $this->set('title', 'Trial balance report');
 						<div class="form-group">
 							<label>To Date</label>
 							<?php 
-							if(!empty($to_date))
+							if(@$to_date=='1970-01-01')
+							{
+								$to_date = '';
+							}
+							elseif(!empty($to_date))
 							{
 								$to_date = date("d-m-Y",strtotime(@$to_date));
 							}
