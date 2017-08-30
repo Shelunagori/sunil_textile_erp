@@ -37,24 +37,31 @@ $this->set('title', 'Customers');
 							<td><?= h($customer->email) ?></td>
 							<td><?= h($customer->mobile) ?></td>
 							<td class="actions">
+								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $customer->id]) ?>
 								<div class="btn-group" style="margin: 0px !important;">
-									<a class="btn btn1 blue" href="#" data-toggle="dropdown">
+									<a class="btn btn1 blue mini" href="#" data-toggle="dropdown">
 										<i class="fa fa-angle-down"></i>       
 									</a>
 									<ul class="dropdown-menu drop">
 										<li>
-											<?= $this->Html->link('Edit ',['action' => 'edit', $customer->id]) ?>
+												<?php echo  $this->Html->link('<i class="fa fa-eye"></i> View', ['action' => 'view', $customer->id],array('escape'=>false)); ?>
 										</li>
 										<li>
-											<?= $this->Form->postLink('<i class="fa fa-trash"></i>Freezed ',
-											['action' => 'delete', $customer->id], 
-											[
-												'escape' => false,
-												'confirm' => __('Are you sure ?', $customer->id)
-											]) ?>
+											<?= $this->Html->link(__('Edit'), ['action' => 'edit', $customer->id]) ?>
+										</li>
+										<li>
+												<?= $this->Form->postLink('<i class="fa fa-trash"></i>Delete ',
+												['action' => 'delete', $customer->id], 
+												[
+													'escape' => false,
+													'confirm' => __('Are you sure ?', $customer->id)
+												]) ?>
+										</li>
+										<li>
+												<?php echo  $this->Html->link('<i class="fa  fa-list-alt"></i> Sampling & Followup', ['action' => 'followUp', $customer->id],array('escape'=>false)); ?>
 										</li>
 									</ul>
-								</div>
+</div>
 							</td>
 						</tr>
 						<?php endforeach; ?>

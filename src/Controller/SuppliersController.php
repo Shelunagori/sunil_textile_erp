@@ -24,7 +24,7 @@ class SuppliersController extends AppController
         $this->paginate = [
             'contain' => ['States']
         ];
-        $suppliers = $this->paginate($this->Suppliers->find()->where(['freeze'=>0]));
+        $suppliers = $this->paginate($this->Suppliers->find());
 
         $this->set(compact('suppliers'));
         $this->set('_serialize', ['suppliers']);
@@ -193,25 +193,14 @@ class SuppliersController extends AppController
      */
     public function delete($id = null)
     {
-		$company_id=$this->Auth->User('session_company_id');
-		if ($this->request->is(['post']))
-		{
-			$supplier = $this->Suppliers->get($id);
-			$supplier->freeze=1;
-			if ($this->Suppliers->save($supplier)) {
-				
-				$this->Flash->success(__('The supplier has been freezed.'));
-			} else {
-				$this->Flash->error(__('The supplier could not be freeze. Please, try again.'));
-			}
-		}
-        /* $this->request->allowMethod(['post', 'delete']);
+		
+        $this->request->allowMethod(['post', 'delete']);
         $supplier = $this->Suppliers->get($id);
         if ($this->Suppliers->delete($supplier)) {
             $this->Flash->success(__('The supplier has been deleted.'));
         } else {
             $this->Flash->error(__('The supplier could not be deleted. Please, try again.'));
-        } */
+        }
 
         return $this->redirect(['action' => 'index']);
     }

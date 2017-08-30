@@ -64,7 +64,7 @@ class SalesInvoiceRowsController extends AppController
             $this->Flash->error(__('The sales invoice row could not be saved. Please, try again.'));
         }
         $salesInvoices = $this->SalesInvoiceRows->SalesInvoices->find('list');
-        $items = $this->SalesInvoiceRows->Items->find('list')->where(['freeze'=>0]);
+        $items = $this->SalesInvoiceRows->Items->find('list');
         $gstFigures = $this->SalesInvoiceRows->GstFigures->find('list');
         $outputCgstLedgers = $this->SalesInvoiceRows->OutputCgstLedgers->find('list');
         $outputSgstLedgers = $this->SalesInvoiceRows->OutputSgstLedgers->find('list');
@@ -95,7 +95,7 @@ class SalesInvoiceRowsController extends AppController
             $this->Flash->error(__('The sales invoice row could not be saved. Please, try again.'));
         }
         $salesInvoices = $this->SalesInvoiceRows->SalesInvoices->find('list');
-        $items = $this->SalesInvoiceRows->Items->find('list')->where(['freeze'=>0]);
+        $items = $this->SalesInvoiceRows->Items->find('list');
         $gstFigures = $this->SalesInvoiceRows->GstFigures->find('list');
         $outputCgstLedgers = $this->SalesInvoiceRows->OutputCgstLedgers->find('list');
         $outputSgstLedgers = $this->SalesInvoiceRows->OutputSgstLedgers->find('list');

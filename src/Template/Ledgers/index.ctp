@@ -31,24 +31,7 @@ $this->set('title', 'Ledgers');
 							<td><?= h($ledger->name) ?></td>
 							<td><?= h($ledger->accounting_group->name)  ?></td>
 							<td class="actions">
-								<div class="btn-group" style="margin: 0px !important;">
-									<a class="btn btn1 blue" href="#" data-toggle="dropdown">
-										<i class="fa fa-angle-down"></i>       
-									</a>
-									<ul class="dropdown-menu drop">
-										<li>
-											<?= $this->Html->link('Edit ',['action' => 'edit', $ledger->id]) ?>
-										</li>
-										<li>
-											<?= $this->Form->postLink('<i class="fa fa-trash"></i>Freezed ',
-											['action' => 'delete', $ledger->id], 
-											[
-												'escape' => false,
-												'confirm' => __('Are you sure ?', $ledger->id)
-											]) ?>
-										</li>
-									</ul>
-								</div>
+								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $ledger->id]) ?>
 							</td>
 						</tr>
 						<?php endforeach; ?>

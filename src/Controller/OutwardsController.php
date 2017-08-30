@@ -63,8 +63,8 @@ class OutwardsController extends AppController
             }
             $this->Flash->error(__('The outward could not be saved. Please, try again.'));
         }
-        $items = $this->Outwards->Items->find('list')->where(['freeze'=>0]);
-        $stockJournals = $this->Outwards->StockJournals->find('list', ['limit' => 200]);
+        $items = $this->Outwards->Items->find('list');
+        $stockJournals = $this->Outwards->StockJournals->find('list');
         $this->set(compact('outward', 'items', 'stockJournals'));
         $this->set('_serialize', ['outward']);
     }
@@ -90,7 +90,7 @@ class OutwardsController extends AppController
             }
             $this->Flash->error(__('The outward could not be saved. Please, try again.'));
         }
-        $items = $this->Outwards->Items->find('list')->where(['freeze'=>0]);
+        $items = $this->Outwards->Items->find('list');
         $stockJournals = $this->Outwards->StockJournals->find('list');
         $this->set(compact('outward', 'items', 'stockJournals'));
         $this->set('_serialize', ['outward']);

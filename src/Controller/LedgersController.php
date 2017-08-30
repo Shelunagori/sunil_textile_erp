@@ -24,7 +24,7 @@ class LedgersController extends AppController
         $this->paginate = [
             'contain' => ['AccountingGroups', 'Companies']
         ];
-        $ledgers = $this->paginate($this->Ledgers->find()->where(['freeze'=>0]));
+        $ledgers = $this->paginate($this->Ledgers->find());
         //pr($ledgers->toArray());exit;
         $this->set(compact('ledgers'));
         $this->set('_serialize', ['ledgers']);
@@ -87,8 +87,8 @@ class LedgersController extends AppController
             $this->Flash->error(__('The ledger could not be saved. Please, try again.'));
         }
         $accountingGroups = $this->Ledgers->AccountingGroups->find('list');
-        $suppliers = $this->Ledgers->Suppliers->find('list')->where(['freeze'=>0]);
-        $customers = $this->Ledgers->Customers->find('list')->where(['freeze'=>0]);
+        $suppliers = $this->Ledgers->Suppliers->find('list');
+        $customers = $this->Ledgers->Customers->find('list');
         $this->set(compact('ledger', 'accountingGroups',  'suppliers', 'customers'));
         $this->set('_serialize', ['ledger']);
     }
@@ -142,8 +142,8 @@ class LedgersController extends AppController
             $this->Flash->error(__('The ledger could not be saved. Please, try again.'));
         }
         $accountingGroups = $this->Ledgers->AccountingGroups->find('list');
-        $suppliers = $this->Ledgers->Suppliers->find('list')->where(['freeze'=>0]);
-        $customers = $this->Ledgers->Customers->find('list')->where(['freeze'=>0]);
+        $suppliers = $this->Ledgers->Suppliers->find('list');
+        $customers = $this->Ledgers->Customers->find('list');
         $this->set(compact('ledger', 'accountingGroups', 'suppliers', 'customers'));
         $this->set('_serialize', ['ledger']);
     }
@@ -157,19 +157,8 @@ class LedgersController extends AppController
      */
     public function delete($id = null)
     {
-        $company_id=$this->Auth->User('session_company_id');
-		if ($this->request->is(['post']))
-		{
-			$ledger = $this->Ledgers->get($id);
-			$ledger->freeze=1;
-			if ($this->Ledgers->save($ledger)) {
-				
-				$this->Flash->success(__('The ledger has been freezed.'));
-			} else {
-				$this->Flash->error(__('The ledger could not be freeze. Please, try again.'));
-			}
-		}
-		/* $this->request->allowMethod(['post', 'delete']);
+       
+		$this->request->allowMethod(['post', 'delete']);
         $ledger = $this->Ledgers->get($id);
         if ($this->Ledgers->delete($ledger)) 
 		{
@@ -178,7 +167,7 @@ class LedgersController extends AppController
 		else
 		{
             $this->Flash->error(__('The ledger could not be deleted. Please, try again.'));
-        } */
+        }
 
         return $this->redirect(['action' => 'index']);
     }
