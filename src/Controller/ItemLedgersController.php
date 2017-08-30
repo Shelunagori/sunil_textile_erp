@@ -63,7 +63,7 @@ class ItemLedgersController extends AppController
             }
             $this->Flash->error(__('The item ledger could not be saved. Please, try again.'));
         }
-        $items = $this->ItemLedgers->Items->find('list', ['limit' => 200]);
+        $items = $this->ItemLedgers->Items->find('list')->where(['freeze'=>0]);
         $this->set(compact('itemLedger', 'items'));
         $this->set('_serialize', ['itemLedger']);
     }
@@ -89,7 +89,7 @@ class ItemLedgersController extends AppController
             }
             $this->Flash->error(__('The item ledger could not be saved. Please, try again.'));
         }
-        $items = $this->ItemLedgers->Items->find('list', ['limit' => 200]);
+        $items = $this->ItemLedgers->Items->find('list')->where(['freeze'=>0]);
         $this->set(compact('itemLedger', 'items'));
         $this->set('_serialize', ['itemLedger']);
     }

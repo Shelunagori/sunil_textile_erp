@@ -67,7 +67,7 @@ class StockGroupsController extends AppController
             }
             $this->Flash->error(__('The stock group could not be saved. Please, try again.'));
         }
-        $parentStockGroups = $this->StockGroups->ParentStockGroups->find('list', ['limit' => 200]);
+        $parentStockGroups = $this->StockGroups->ParentStockGroups->find('list');
         $this->set(compact('stockGroup', 'parentStockGroups'));
         $this->set('_serialize', ['stockGroup']);
     }
@@ -95,8 +95,8 @@ class StockGroupsController extends AppController
             }
             $this->Flash->error(__('The stock group could not be saved. Please, try again.'));
         }
-        $parentStockGroups = $this->StockGroups->ParentStockGroups->find('list', ['limit' => 200]);
-        $companies = $this->StockGroups->Companies->find('list', ['limit' => 200]);
+        $parentStockGroups = $this->StockGroups->ParentStockGroups->find('list');
+        $companies = $this->StockGroups->Companies->find('list');
         $this->set(compact('stockGroup', 'parentStockGroups', 'companies'));
         $this->set('_serialize', ['stockGroup']);
     }

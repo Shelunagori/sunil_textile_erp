@@ -70,8 +70,8 @@ class LedgersController extends AppController
             $this->Flash->error(__('The ledger could not be saved. Please, try again.'));
         }
         $accountingGroups = $this->Ledgers->AccountingGroups->find('list');
-        $suppliers = $this->Ledgers->Suppliers->find('list');
-        $customers = $this->Ledgers->Customers->find('list');
+        $suppliers = $this->Ledgers->Suppliers->find('list')->where(['freeze'=>0]);
+        $customers = $this->Ledgers->Customers->find('list')->where(['freeze'=>0]);
         $this->set(compact('ledger', 'accountingGroups',  'suppliers', 'customers'));
         $this->set('_serialize', ['ledger']);
     }
@@ -101,9 +101,9 @@ class LedgersController extends AppController
             }
             $this->Flash->error(__('The ledger could not be saved. Please, try again.'));
         }
-        $accountingGroups = $this->Ledgers->AccountingGroups->find('list', ['limit' => 200]);
-        $suppliers = $this->Ledgers->Suppliers->find('list');
-        $customers = $this->Ledgers->Customers->find('list');
+        $accountingGroups = $this->Ledgers->AccountingGroups->find('list');
+        $suppliers = $this->Ledgers->Suppliers->find('list')->where(['freeze'=>0]);
+        $customers = $this->Ledgers->Customers->find('list')->where(['freeze'=>0]);
         $this->set(compact('ledger', 'accountingGroups', 'suppliers', 'customers'));
         $this->set('_serialize', ['ledger']);
     }
@@ -153,10 +153,10 @@ class LedgersController extends AppController
 			
 			if(!empty($to_date))
 			{
-				$where['AccountingEntries.transaction_date <='] = $to_date;
+				$where['AccountingEntries.transaction_date <=']  = $to_date;
 				$where1['AccountingEntries.transaction_date <='] = $to_date;
 			}
-			$where['AccountingEntries.company_id'] = $company_id;
+			$where['AccountingEntries.company_id']  = $company_id;
 			$where1['AccountingEntries.company_id'] = $company_id;
 			
 
@@ -217,19 +217,38 @@ class LedgersController extends AppController
 			->contain(['Ledgers'])->order(['Ledgers.id'=> 'ASC']);
 			
 			$openingBalances = ($query1);
-			//pr($openingBalances->toArray());exit;
+			
+			$debitAmount = $this->Ledgers->Companies->ItemLedgers->find();
+			$debitAmount->select(['total_debit' => $debitAmount->func()->sum('ItemLedgers.amount')])
+						->where(['ItemLedgers.is_opening_balance'=> 'yes','company_id' => $company_id]);
+			
+			$totalDebit  = $debitAmount->first()->total_debit;
+			
+			$openingBalanceDebit  = 0;
+			$openingBalanceCredit = 0;
 			if(!empty($openingBalances))
 			{
 				foreach($openingBalances as $openingBalance)
 				{
+					$openingBalanceDebit  += $openingBalance->debit_amount;
+					$openingBalanceCredit += $openingBalance->credit_amount;
 					$ledgersArray[$openingBalance->ledger->id] = $openingBalance->ledger->name;
 					$openingBalanceArray[$openingBalance->ledger->id][$openingBalance->debit_amount] =$openingBalance->credit_amount;
+				}
+				$openingBalanceDebit = round($openingBalanceDebit,2)+round($totalDebit,2);
+				if($openingBalanceDebit > $openingBalanceCredit)
+				{
+					$creditDiffrence = round($openingBalanceDebit,2)-round($openingBalanceCredit,2);
+				}
+				elseif($openingBalanceDebit < $openingBalanceCredit)
+				{
+					$debitDiffrence = round($openingBalanceCredit,2) - round($openingBalanceDebit,2);
 				}
 			}
 			//pr($openingBalanceArray);exit;
 		}
 		
-		$this->set(compact('ledger','from_date','to_date','ledgersArray','transactionArray1','transactionArray2','openingBalanceArray'));
+		$this->set(compact('ledger','from_date','to_date','ledgersArray','transactionArray1','transactionArray2','openingBalanceArray','creditDiffrence','debitDiffrence'));
         $this->set('_serialize', ['ledger']);
     }
 }

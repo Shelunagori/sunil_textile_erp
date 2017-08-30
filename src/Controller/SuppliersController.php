@@ -24,7 +24,7 @@ class SuppliersController extends AppController
         $this->paginate = [
             'contain' => ['States']
         ];
-        $suppliers = $this->paginate($this->Suppliers);
+        $suppliers = $this->paginate($this->Suppliers->find()->where(['freeze'=>0]));
 
         $this->set(compact('suppliers'));
         $this->set('_serialize', ['suppliers']);
@@ -102,7 +102,13 @@ class SuppliersController extends AppController
 							->find('List')->toArray();
 		$accountingGroups[$SundryDebtor->id]=$SundryDebtor->name;
 		ksort($accountingGroups);
-        $states = $this->Suppliers->States->find('list', ['limit' => 200]);
+        $states = $this->Suppliers->States->find('list',
+			['keyField' => function ($row) {
+				return $row['id'];
+			},
+			'valueField' => function ($row) {
+				return $row['state_code'].'-'. $row['name'] ;
+			}]);
         $this->set(compact('supplier', 'states','accountingGroups'));
         $this->set('_serialize', ['supplier']);
     }
@@ -120,6 +126,7 @@ class SuppliersController extends AppController
         $supplier = $this->Suppliers->get($id, [
             'contain' => ['Ledgers']
         ]); 
+		
 		$company_id=$this->Auth->User('session_company_id');
         if ($this->request->is(['patch', 'post', 'put'])) {
             $supplier = $this->Suppliers->patchEntity($supplier, $this->request->getData());
@@ -166,7 +173,13 @@ class SuppliersController extends AppController
 		ksort($accountingGroups);
 		
 		$account_entry  = $this->Suppliers->Ledgers->AccountingEntries->find()->where(['ledger_id'=>$supplier->ledgers[0]->id,'company_id'=>$company_id])->first();
-		$states = $this->Suppliers->States->find('list');
+		$states = $this->Suppliers->States->find('list',
+			['keyField' => function ($row) {
+				return $row['id'];
+			},
+			'valueField' => function ($row) {
+				return $row['state_code'].'-'. $row['name'] ;
+			}]);
         $this->set(compact('supplier', 'states', 'accountingGroups','account_entry'));
         $this->set('_serialize', ['supplier']);
     }

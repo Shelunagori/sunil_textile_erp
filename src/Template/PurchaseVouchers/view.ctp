@@ -19,15 +19,25 @@ $this->set('title', 'purchase Voucher View');
 					<td width="15%"><b>Voucher No </b></td>
 					<td width="1%">:</td>
 					<td><?php echo '#'.str_pad($purchaseVoucher->voucher_no, 4, '0', STR_PAD_LEFT);?></td>
-					<td width="15%"><b>Transaction Date</b></td>
+					<td width="18%"><b>Transaction Date</b></td>
 					<td width="1%">:</td>
 					<td><?php echo date("d-m-Y",strtotime($purchaseVoucher->transaction_date)); ?></td>
-					<td width="15%"><b>Supplier Invoice No</b></td>
+					<td width="18%"><b>Supplier Invoice No</b></td>
 					<td width="1%">:</td>
 					<td><?php echo $purchaseVoucher->supplier_invoice_no; ?></td>
-					<td width="15%"><b>Supplier Invoice Date</b></td>
+					<td width="18%"><b>Supplier Invoice Date</b></td>
 					<td width="1%">:</td>
-					<td><?php echo date("d-m-Y",strtotime($purchaseVoucher->supplier_invoice_date)); ?></td>
+					<td><?php 
+							if(!empty($purchaseVoucher->supplier_invoice_date))
+							{
+								echo date("d-m-Y",strtotime($purchaseVoucher->supplier_invoice_date));	
+							}
+							else
+							{
+								echo "--/--/----";
+							}
+						?>
+					</td>
 				  </tr>
                   <tr>
 					<td width="15%"><b>Narration </b></td>
