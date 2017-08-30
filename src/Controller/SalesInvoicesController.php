@@ -86,21 +86,21 @@ class SalesInvoicesController extends AppController
             $this->Flash->error(__('The sales invoice could not be saved. Please, try again.'));
         }
 		$customers = $this->SalesInvoices->Customers->find()
-					->where(['company_id'=>$company_id,'freeze'=>0]);
+					->where(['company_id'=>$company_id]);
 						$customerOptions=[];
 		foreach($customers as $customer){
 			$customerOptions[]=['text' =>$customer->name, 'value' => $customer->id ,'customer_state_id'=>$customer->state_id];
 		}
 		
 		$items = $this->SalesInvoices->Items->find()
-					->where(['Items.company_id'=>$company_id,'freeze'=>0])
+					->where(['Items.company_id'=>$company_id])
 					->contain(['GstFigures']);
 		$itemOptions=[];
 		foreach($items as $item){
 			$itemOptions[]=['text' =>$item->name, 'value' => $item->id ,'gst_figure_id'=>$item->gst_figure_id, 'gst_figure_tax_percentage'=>$item->gst_figure->tax_percentage,'gst_figure_tax_name'=>$item->gst_figure->name, 'output_cgst_ledger_id'=>$item->output_cgst_ledger_id, 'output_sgst_ledger_id'=>$item->output_sgst_ledger_id, 'output_igst_ledger_id'=>$item->output_igst_ledger_id];
 		}
 		
-        $gstFigures = $this->SalesInvoices->GstFigures->find('list', ['limit' => 200])
+        $gstFigures = $this->SalesInvoices->GstFigures->find('list')
 						->where(['company_id'=>$company_id]);
 						
         $this->set(compact('salesInvoice', 'companies', 'customerOptions', 'gstFigures', 'voucher_no','company_id','itemOptions','state_id'));
@@ -149,28 +149,28 @@ class SalesInvoicesController extends AppController
             $this->Flash->error(__('The sales invoice could not be saved. Please, try again.'));
         }
 
-        $companies = $this->SalesInvoices->Companies->find('list', ['limit' => 200]);
-        $customers = $this->SalesInvoices->Customers->find('list')->where(['freeze'=>0]);
-        $gstFigures = $this->SalesInvoices->GstFigures->find('list', ['limit' => 200]);
+        $companies = $this->SalesInvoices->Companies->find('list');
+        $customers = $this->SalesInvoices->Customers->find('list');
+        $gstFigures = $this->SalesInvoices->GstFigures->find('list');
         $this->set(compact('salesInvoice', 'companies', 'customers', 'gstFigures'));
 
 		
 		$customers = $this->SalesInvoices->Customers->find()
-					->where(['company_id'=>$company_id,'freeze'=>0]);
+					->where(['company_id'=>$company_id]);
 						$customerOptions=[];
 		foreach($customers as $customer){
 			$customerOptions[]=['text' =>$customer->name, 'value' => $customer->id ,'customer_state_id'=>$customer->state_id];
 		}
 		
 		$items = $this->SalesInvoices->Items->find()
-					->where(['Items.company_id'=>$company_id,'freeze'=>0])
+					->where(['Items.company_id'=>$company_id])
 					->contain(['GstFigures']);
 		$itemOptions=[];
 		foreach($items as $item){
 			$itemOptions[]=['text' =>$item->name, 'value' => $item->id ,'gst_figure_id'=>$item->gst_figure_id, 'gst_figure_tax_percentage'=>$item->gst_figure->tax_percentage,'gst_figure_tax_name'=>$item->gst_figure->name, 'output_cgst_ledger_id'=>$item->output_cgst_ledger_id, 'output_sgst_ledger_id'=>$item->output_sgst_ledger_id, 'output_igst_ledger_id'=>$item->output_igst_ledger_id];
 		}
 		
-        $gstFigures = $this->SalesInvoices->GstFigures->find('list', ['limit' => 200])
+        $gstFigures = $this->SalesInvoices->GstFigures->find('list')
 						->where(['company_id'=>$company_id]);
         $this->set(compact('salesInvoice', 'companies', 'customerOptions', 'gstFigures', 'voucher_no','company_id','itemOptions','state_id'));
 

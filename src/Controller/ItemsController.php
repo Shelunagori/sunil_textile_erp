@@ -24,7 +24,7 @@ class ItemsController extends AppController
         $this->paginate = [
             'contain' => ['Units', 'StockGroups']
         ];
-        $items = $this->paginate($this->Items->find()->where(['freeze'=>0]));
+        $items = $this->paginate($this->Items->find());
 
         $this->set(compact('items'));
         $this->set('_serialize', ['items']);
@@ -205,6 +205,7 @@ class ItemsController extends AppController
      */
     public function delete($id = null)
     {
+		
         $this->request->allowMethod(['post', 'delete']);
         $item = $this->Items->get($id);
         if ($this->Items->delete($item)) {

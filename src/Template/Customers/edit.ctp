@@ -25,8 +25,8 @@ $this->set('title', 'Edit Customer');
 									<?php echo $this->Form->control('name',['class'=>'form-control input-sm','placeholder'=>'Customer Name','label'=>false,'autofocus']); ?>
 								</div>
 								<div class="form-group">
-									<label>Pan</label>
-									<?php echo $this->Form->control('pan',['class'=>'form-control input-sm','label'=>false,'placeholder'=>'Pan']); ?>
+									<label>PAN</label>
+									<?php echo $this->Form->control('pan',['class'=>'form-control input-sm','label'=>false,'placeholder'=>'PAN']); ?>
 								</div>
 								<div class="form-group">
 									<label>Under  Accounting Group <span class="required">*</span></label>
@@ -53,8 +53,8 @@ $this->set('title', 'Edit Customer');
 									<?php echo $this->Form->control('state_id',['class'=>'form-control input-sm','label'=>false,'empty'=>'-State-', 'options' => $states,'required'=>'required']); ?>
 								</div>
 								<div class="form-group">
-									<label>Tan</label>
-									<?php echo $this->Form->control('tan',['class'=>'form-control input-sm','label'=>false,'placeholder'=>'Tan']); ?>
+									<label>TAN</label>
+									<?php echo $this->Form->control('tan',['class'=>'form-control input-sm','label'=>false,'placeholder'=>'TAN']); ?>
 								</div>
 								<div class="form-group">
 									<label>Email</label>
@@ -86,15 +86,15 @@ $this->set('title', 'Edit Customer');
 							</div>
 							<div class="col-md-2" style="padding-left: 0px;padding-right:0;">
 							    <label style="visibility:hidden;">s</label>
-								<?php $option =[['value'=>'debitor','text'=>'Debitor'],['value'=>'creditor','text'=>'Creditor']];
+								<?php $option =[['value'=>'Dr','text'=>'Dr'],['value'=>'Cr','text'=>'Cr']];
 								    $check="";
 								    if(!empty($account_entry->debit))
 									{
-										$check ='debitor';
+										$check ='Dr';
 									}
 									else
 									{
-										$check ='creditor';
+										$check ='Cr';
 									}
 									echo $this->Form->control('debit_credit',['class'=>'form-control input-sm','label'=>false, 'options' => $option,'value'=>@$check]);
 									?>

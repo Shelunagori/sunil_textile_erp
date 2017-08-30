@@ -32,6 +32,21 @@ $this->set('title', 'Create Ledger');
 						</div>
 					</div>
 				</div>
+				<div class="row">
+					<div class="col-md-4" style="padding-right: 0px;">
+						<div class="form-group" >
+							<label>Opening Balance</label>
+							<?php echo $this->Form->control('opening_balance_value',['class'=>'form-control input-sm','label'=>false]);
+							?>
+						</div>
+					</div>
+					<div class="col-md-2" style="padding-left: 0px;padding-right:0;">
+						<label style="visibility:hidden;">s</label>
+						<?php $option =[['value'=>'Dr','text'=>'Dr'],['value'=>'Cr','text'=>'Cr']];
+							echo $this->Form->control('debit_credit',['class'=>'form-control input-sm','label'=>false, 'options' => $option,'value'=>'debitor']);
+							?>
+					</div>
+				</div>
 				<?= $this->Form->button(__('Submit'),['class'=>'btn btn-success']) ?>
 				<?= $this->Form->end() ?>
 			</div>

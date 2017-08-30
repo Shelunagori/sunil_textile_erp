@@ -21,7 +21,7 @@ $this->set('title', 'Customers');
 							<th scope="col" class="actions"><?= __('Sr') ?></th>
 							<th scope="col"><?= $this->Paginator->sort('name') ?></th>
 							<th scope="col"><?= $this->Paginator->sort('state') ?></th>
-							<th scope="col"><?= $this->Paginator->sort('gst in') ?></th>
+							<th scope="col"><?= $this->Paginator->sort('GSTIN') ?></th>
 							<th scope="col"><?= $this->Paginator->sort('email') ?></th>
 							<th scope="col"><?= $this->Paginator->sort('mobile') ?></th>
 							<th scope="col" class="actions"><?= __('Actions') ?></th>

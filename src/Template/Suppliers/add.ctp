@@ -75,7 +75,7 @@ $this->set('title', 'Create Supplier');
 							</div>
 							<div class="col-md-2" style="padding-left: 0px;padding-right:0;">
 							    <label style="visibility:hidden;">s</label>
-								<?php $option =[['value'=>'debitor','text'=>'Debitor'],['value'=>'creditor','text'=>'Creditor']];
+								<?php $option =[['value'=>'Dr','text'=>'Dr'],['value'=>'Cr','text'=>'Cr']];
 									echo $this->Form->control('debit_credit',['class'=>'form-control input-sm','label'=>false, 'options' => $option,'value'=>'creditor']);
 									?>
 							</div>

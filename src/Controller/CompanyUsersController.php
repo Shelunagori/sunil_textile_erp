@@ -63,8 +63,8 @@ class CompanyUsersController extends AppController
             }
             $this->Flash->error(__('The company user could not be saved. Please, try again.'));
         }
-        $companies = $this->CompanyUsers->Companies->find('list', ['limit' => 200]);
-        $users = $this->CompanyUsers->Users->find('list', ['limit' => 200]);
+        $companies = $this->CompanyUsers->Companies->find('list');
+        $users = $this->CompanyUsers->Users->find('list');
         $this->set(compact('companyUser', 'companies', 'users'));
         $this->set('_serialize', ['companyUser']);
     }
@@ -90,8 +90,8 @@ class CompanyUsersController extends AppController
             }
             $this->Flash->error(__('The company user could not be saved. Please, try again.'));
         }
-        $companies = $this->CompanyUsers->Companies->find('list', ['limit' => 200]);
-        $users = $this->CompanyUsers->Users->find('list', ['limit' => 200]);
+        $companies = $this->CompanyUsers->Companies->find('list');
+        $users = $this->CompanyUsers->Users->find('list');
         $this->set(compact('companyUser', 'companies', 'users'));
         $this->set('_serialize', ['companyUser']);
     }

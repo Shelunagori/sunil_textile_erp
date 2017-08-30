@@ -24,7 +24,7 @@ class LedgersController extends AppController
         $this->paginate = [
             'contain' => ['AccountingGroups', 'Companies']
         ];
-        $ledgers = $this->paginate($this->Ledgers);
+        $ledgers = $this->paginate($this->Ledgers->find());
         //pr($ledgers->toArray());exit;
         $this->set(compact('ledgers'));
         $this->set('_serialize', ['ledgers']);
@@ -63,6 +63,23 @@ class LedgersController extends AppController
 			$ledger->company_id = $company_id;
             if ($this->Ledgers->save($ledger)) 
 			{
+				//Create Accounting Entry//
+				$transaction_date=$this->Auth->User('session_company')->books_beginning_from;
+				$AccountingEntry = $this->Ledgers->AccountingEntries->newEntity();
+				$AccountingEntry->ledger_id = $ledger->id;
+				if($ledger->debit_credit=="Dr")
+				{
+					$AccountingEntry->debit = $ledger->opening_balance_value;
+				}
+				if($ledger->debit_credit=="Cr")
+				{
+					$AccountingEntry->credit = $ledger->opening_balance_value;
+				}
+				$AccountingEntry->transaction_date      = date("Y-m-d",strtotime($transaction_date));
+				$AccountingEntry->company_id            = $company_id;
+				$AccountingEntry->is_opening_balance    = 'yes';
+				$this->Ledgers->AccountingEntries->save($AccountingEntry);
+				
                 $this->Flash->success(__('The ledger has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -70,8 +87,8 @@ class LedgersController extends AppController
             $this->Flash->error(__('The ledger could not be saved. Please, try again.'));
         }
         $accountingGroups = $this->Ledgers->AccountingGroups->find('list');
-        $suppliers = $this->Ledgers->Suppliers->find('list')->where(['freeze'=>0]);
-        $customers = $this->Ledgers->Customers->find('list')->where(['freeze'=>0]);
+        $suppliers = $this->Ledgers->Suppliers->find('list');
+        $customers = $this->Ledgers->Customers->find('list');
         $this->set(compact('ledger', 'accountingGroups',  'suppliers', 'customers'));
         $this->set('_serialize', ['ledger']);
     }
@@ -87,14 +104,37 @@ class LedgersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $ledger = $this->Ledgers->get($id, [
-            'contain' => []
+            'contain' => ['AccountingEntries']
         ]);
+		
 		$company_id=$this->Auth->User('session_company_id');
         if ($this->request->is(['patch', 'post', 'put'])) 
 		{
             $ledger = $this->Ledgers->patchEntity($ledger, $this->request->getData());
             if ($this->Ledgers->save($ledger)) 
 			{
+				//Accounting Entry
+				$query_delete = $this->Ledgers->AccountingEntries->query();
+				$query_delete->delete()
+				->where(['ledger_id' => $ledger->id,'company_id'=>$company_id])
+				->execute();
+				
+				$transaction_date=$this->Auth->User('session_company')->books_beginning_from;
+				$AccountingEntry = $this->Ledgers->AccountingEntries->newEntity();
+				$AccountingEntry->ledger_id = $ledger->id;
+				if($ledger->debit_credit=="Dr")
+				{
+					$AccountingEntry->debit = $ledger->opening_balance_value;
+				}
+				if($ledger->debit_credit=="Cr")
+				{
+					$AccountingEntry->credit = $ledger->opening_balance_value;
+				}
+				$AccountingEntry->transaction_date      = date("Y-m-d",strtotime($transaction_date));
+				$AccountingEntry->company_id            = $company_id;
+				$AccountingEntry->is_opening_balance    = 'yes';
+				$this->Ledgers->AccountingEntries->save($AccountingEntry);
+				
                 $this->Flash->success(__('The ledger has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -102,8 +142,8 @@ class LedgersController extends AppController
             $this->Flash->error(__('The ledger could not be saved. Please, try again.'));
         }
         $accountingGroups = $this->Ledgers->AccountingGroups->find('list');
-        $suppliers = $this->Ledgers->Suppliers->find('list')->where(['freeze'=>0]);
-        $customers = $this->Ledgers->Customers->find('list')->where(['freeze'=>0]);
+        $suppliers = $this->Ledgers->Suppliers->find('list');
+        $customers = $this->Ledgers->Customers->find('list');
         $this->set(compact('ledger', 'accountingGroups', 'suppliers', 'customers'));
         $this->set('_serialize', ['ledger']);
     }
@@ -117,7 +157,8 @@ class LedgersController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+       
+		$this->request->allowMethod(['post', 'delete']);
         $ledger = $this->Ledgers->get($id);
         if ($this->Ledgers->delete($ledger)) 
 		{
@@ -248,7 +289,7 @@ class LedgersController extends AppController
 			//pr($openingBalanceArray);exit;
 		}
 		
-		$this->set(compact('ledger','from_date','to_date','ledgersArray','transactionArray1','transactionArray2','openingBalanceArray','creditDiffrence','debitDiffrence'));
+		$this->set(compact('ledger','from_date','to_date','ledgersArray','transactionArray1','transactionArray2','openingBalanceArray','creditDiffrence','debitDiffrence','openingBalanceDebit'));
         $this->set('_serialize', ['ledger']);
     }
 }

@@ -31,7 +31,7 @@ $this->set('title', 'Ledgers');
 							<td><?= h($ledger->name) ?></td>
 							<td><?= h($ledger->accounting_group->name)  ?></td>
 							<td class="actions">
-							<?= $this->Html->link(__('Edit'), ['action' => 'edit', $ledger->id]) ?>
+								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $ledger->id]) ?>
 							</td>
 						</tr>
 						<?php endforeach; ?>

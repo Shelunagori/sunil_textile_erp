@@ -63,7 +63,7 @@ class CompaniesController extends AppController
             }
             $this->Flash->error(__('The company could not be saved. Please, try again.'));
         }
-        $states = $this->Companies->States->find('list', ['limit' => 200]);
+        $states = $this->Companies->States->find('list');
         $this->set(compact('company', 'states'));
         $this->set('_serialize', ['company']);
     }
@@ -89,7 +89,7 @@ class CompaniesController extends AppController
             }
             $this->Flash->error(__('The company could not be saved. Please, try again.'));
         }
-        $states = $this->Companies->States->find('list', ['limit' => 200]);
+        $states = $this->Companies->States->find('list');
         $this->set(compact('company', 'states'));
         $this->set('_serialize', ['company']);
     }
