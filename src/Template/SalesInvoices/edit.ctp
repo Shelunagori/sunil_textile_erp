@@ -102,7 +102,7 @@ $this->set('title', 'Update Sales Invoice');
 				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.gst_figure_tax_name', ['label' => false,'class' => 'form-control input-sm gst_figure_tax_name', 'readonly'=>'readonly','required'=>'required','placeholder'=>'', 'value'=>$salesInvoiceRow->gst_figure->name]); ?>	
 			</td>
 			<td>
-				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.net_amount', ['label' => false,'class' => 'form-control input-sm gstAmount calculation','required'=>'required', 'readonly'=>'readonly','placeholder'=>'Amount', 'value'=>$salesInvoiceRow->net_amount]); ?>	
+				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.net_amount', ['label' => false,'class' => 'form-control input-sm gstAmount reverse_total_amount','required'=>'required', 'placeholder'=>'Amount', 'value'=>$salesInvoiceRow->net_amount]); ?>	
 			</td>
 										
 										<td align="center">
@@ -256,7 +256,7 @@ $this->set('title', 'Update Sales Invoice');
 				<?php echo $this->Form->input('gst_figure_tax_name', ['label' => false,'class' => 'form-control input-sm gst_figure_tax_name', 'readonly'=>'readonly','required'=>'required','placeholder'=>'']); ?>	
 			</td>
 			<td>
-				<?php echo $this->Form->input('net_amount', ['label' => false,'class' => 'form-control input-sm gstAmount calculation','required'=>'required', 'readonly'=>'readonly','placeholder'=>'Amount']); ?>	
+				<?php echo $this->Form->input('net_amount', ['label' => false,'class' => 'form-control input-sm gstAmount reverse_total_amount','required'=>'required','placeholder'=>'Amount']); ?>	
 			</td>
 			<td align="center">
 				<a class="btn btn-danger delete-tr btn-xs" href="#" role="button" style="margin-bottom: 5px;"><i class="fa fa-times"></i></a>
@@ -335,7 +335,7 @@ $this->set('title', 'Update Sales Invoice');
 		var tr=$('#sample_table tbody tr.main_tr').clone();
 		$('#main_table tbody#main_tbody').append(tr);
 		rename_rows();
-		$('.attrGet').select2();
+		//$('.attrGet').select2();
 	}
 	function rename_rows()
 	{
@@ -362,10 +362,10 @@ $this->set('title', 'Update Sales Invoice');
 	}
 	$('.calculation').die().live('keyup',function()
 	{
-		total_amount();
+		forward_total_amount();
 	});
 		
-		function total_amount()
+		function forward_total_amount()
 		{
 			var total  = 0;
 			var gst_amount  = 0;
@@ -436,7 +436,80 @@ $this->set('title', 'Update Sales Invoice');
 				$('.add_sgst').val(s_cgst_value.toFixed(2));
 				$('.add_igst').val(igst_value.toFixed(2));
 				$('.roundValue').val(round_of.toFixed(2));
+		rename_rows();
 		}
+		
+		$(document).ready(function() {
+		$('.reverse_total_amount').die().live('keyup',function(){
+			var total=0;
+			var gst_amount=0;
+			var gst_value= 0;
+			var s_cgst_value=0;
+			var roundOff1=0;
+			var round_of=0;
+			$('#main_table tbody#main_tbody tr.main_tr').each(function()
+			{
+				var gstAmount  = parseFloat($(this).find('.gstAmount').val());
+				var gst_figure_tax_percentage  = parseFloat($(this).find('.gst_figure_tax_percentage').val());
+				if(!gst_figure_tax_percentage){gst_figure_tax_percentage=0;}
+				var discountAmount=parseFloat((gstAmount*100)/(100+gst_figure_tax_percentage));
+				var gstValue=parseFloat(gstAmount)-parseFloat(discountAmount);
+				 
+				var discount= parseFloat($(this).find('.discount').val()); 
+				var quantity= parseFloat($(this).find('.quantity').val()); 
+				var totamount=parseFloat((discountAmount*100)/(100-discount));
+				var discountvalue=parseFloat(totamount)-parseFloat(discountAmount);
+				 
+				$(this).find('.discountAmount').val(discountAmount.toFixed(2));
+				$(this).find('.gstValue').val(gstValue.toFixed(2));
+				$(this).find('.totamount').val(totamount.toFixed(2));
+				$(this).find('.discountvalue').val(discountvalue.toFixed(2));
+
+				var rate=parseFloat((totamount/quantity));
+				$(this).find('.rate').val(rate.toFixed(2));
+				
+				var taxable_value1=parseFloat($(this).find('.discountAmount').val());
+				total=parseFloat(total)+taxable_value1;
+				
+				var gstAmount  = parseFloat($(this).find('.gstAmount').val());
+				gst_amount=parseFloat(gst_amount)+parseFloat(gstAmount);
+				roundOff1=Math.round(gst_amount);
+				
+				if(gst_amount<roundOff1)
+				{
+				round_of=parseFloat(roundOff1)-parseFloat(gst_amount);
+				}
+				if(gst_amount>roundOff1)
+				{
+				round_of=parseFloat(gst_amount)-parseFloat(roundOff1);
+				}
+				if(gst_amount==roundOff1)
+				{
+				round_of=parseFloat(gst_amount)-parseFloat(roundOff1);
+				}
+				
+				var gstValue  = parseFloat($(this).find('.gstValue').val());
+				var is_interstate  = parseFloat($('#is_interstate').val());
+				if(is_interstate=='0')
+				{
+				gst_value=parseFloat(gst_value)+gstValue;
+				s_cgst_value=parseFloat(gst_value/2);
+				igst_value=0;
+				}
+				else{
+				igst_value=parseFloat(gst_value)+gstValue;
+				s_cgst_value=0;
+				}
+			});
+				$('.amount_before_tax').val(total);
+				$('.amount_after_tax').val(roundOff1.toFixed(2));
+				$('.add_cgst').val(s_cgst_value.toFixed(2));
+				$('.add_sgst').val(s_cgst_value.toFixed(2));
+				$('.add_igst').val(igst_value.toFixed(2));
+				$('.roundValue').val(round_of.toFixed(2));
+		});
+		});
+		
 	function checkValidation() 
 	{  
 		var amount_before_tax  = $('.amount_before_tax').val();

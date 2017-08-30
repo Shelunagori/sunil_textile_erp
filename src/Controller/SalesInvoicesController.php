@@ -77,7 +77,8 @@ class SalesInvoicesController extends AppController
 			{
 			$salesInvoice->customer_id=0;
 			}
-			
+		
+				
 		   if ($this->SalesInvoices->save($salesInvoice)) {
                 $this->Flash->success(__('The sales invoice has been saved.'));
 
