@@ -165,9 +165,9 @@ $this->set('title', 'Edit Purchase Voucher');
 						</div>
 					</div>
 				</div>
-			</div>
 				<?= $this->Form->button(__('Submit'),['class'=>'btn btn-success']) ?>
 				<?= $this->Form->end() ?>
+			</div>
 		</div>
 	</div>
 </div>
