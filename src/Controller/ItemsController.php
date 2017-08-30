@@ -68,7 +68,27 @@ class ItemsController extends AppController
 				$item->item_code=1;
 			} 
 			$quantity = $this->request->data['quantity'];
-            if ($this->Items->save($item)) {
+			$input_cgst_ledger = $this->Items->input_cgst_ledger->find()->where(['gst_type'=>'CGST','company_id'=>$company_id,'input_output'=>'input','gst_figure_id'=>$item->gst_figure_id])->first();
+			
+			$input_sgst_ledger = $this->Items->input_sgst_ledger->find()->where(['gst_type'=>'SGST','company_id'=>$company_id,'input_output'=>'input','gst_figure_id'=>$item->gst_figure_id])->first();
+			
+			$input_igst_ledger = $this->Items->input_igst_ledger->find()->where(['gst_type'=>'IGST','company_id'=>$company_id,'input_output'=>'input','gst_figure_id'=>$item->gst_figure_id])->first();
+			
+			$output_cgst_ledger = $this->Items->output_cgst_ledger->find()->where(['gst_type'=>'CGST','company_id'=>$company_id,'input_output'=>'output','gst_figure_id'=>$item->gst_figure_id])->first();
+			
+			$output_sgst_ledger = $this->Items->output_sgst_ledger->find()->where(['gst_type'=>'SGST','company_id'=>$company_id,'input_output'=>'output','gst_figure_id'=>$item->gst_figure_id])->first();
+			
+			$output_igst_ledger = $this->Items->output_igst_ledger->find()->where(['gst_type'=>'IGST','company_id'=>$company_id,'input_output'=>'output','gst_figure_id'=>$item->gst_figure_id])->first();
+			
+			$item->input_cgst_ledger_id  = $input_cgst_ledger->id;
+			$item->input_sgst_ledger_id  = $input_sgst_ledger->id;
+			$item->input_igst_ledger_id  = $input_igst_ledger->id;
+			$item->output_cgst_ledger_id = $output_cgst_ledger->id;
+			$item->output_sgst_ledger_id = $output_sgst_ledger->id;
+			$item->output_igst_ledger_id = $output_igst_ledger->id;
+			
+            if ($this->Items->save($item)) 
+			{
 				$transaction_date=$this->Auth->User('session_company')->books_beginning_from;
 				if($quantity>0)
 				{
@@ -94,7 +114,8 @@ class ItemsController extends AppController
         $stockGroups = $this->Items->StockGroups->find('list');
         $shades = $this->Items->Shades->find('list');
         $sizes = $this->Items->Sizes->find('list');
-        $this->set(compact('item', 'units', 'stockGroups','sizes','shades'));
+        $gstFigures = $this->Items->GstFigures->find('list');
+        $this->set(compact('item', 'units', 'stockGroups','sizes','shades','gstFigures'));
         $this->set('_serialize', ['item']);
     }
 
@@ -116,7 +137,27 @@ class ItemsController extends AppController
 		$company_id=$this->Auth->User('session_company_id');
         if ($this->request->is(['patch', 'post', 'put'])) {
             $item = $this->Items->patchEntity($item, $this->request->getData());
-            if ($this->Items->save($item)) {
+			
+			$input_cgst_ledger = $this->Items->input_cgst_ledger->find()->where(['gst_type'=>'CGST','company_id'=>$company_id,'input_output'=>'input','gst_figure_id'=>$item->gst_figure_id])->first();
+			
+			$input_sgst_ledger = $this->Items->input_sgst_ledger->find()->where(['gst_type'=>'SGST','company_id'=>$company_id,'input_output'=>'input','gst_figure_id'=>$item->gst_figure_id])->first();
+			
+			$input_igst_ledger = $this->Items->input_igst_ledger->find()->where(['gst_type'=>'IGST','company_id'=>$company_id,'input_output'=>'input','gst_figure_id'=>$item->gst_figure_id])->first();
+			
+			$output_cgst_ledger = $this->Items->output_cgst_ledger->find()->where(['gst_type'=>'CGST','company_id'=>$company_id,'input_output'=>'output','gst_figure_id'=>$item->gst_figure_id])->first();
+			
+			$output_sgst_ledger = $this->Items->output_sgst_ledger->find()->where(['gst_type'=>'SGST','company_id'=>$company_id,'input_output'=>'output','gst_figure_id'=>$item->gst_figure_id])->first();
+			
+			$output_igst_ledger = $this->Items->output_igst_ledger->find()->where(['gst_type'=>'IGST','company_id'=>$company_id,'input_output'=>'output','gst_figure_id'=>$item->gst_figure_id])->first();
+			
+			$item->input_cgst_ledger_id  = $input_cgst_ledger->id;
+			$item->input_sgst_ledger_id  = $input_sgst_ledger->id;
+			$item->input_igst_ledger_id  = $input_igst_ledger->id;
+			$item->output_cgst_ledger_id = $output_cgst_ledger->id;
+			$item->output_sgst_ledger_id = $output_sgst_ledger->id;
+			$item->output_igst_ledger_id = $output_igst_ledger->id;
+			//pr($item);exit;
+			if ($this->Items->save($item)) {
 				if($item->quantity>0)
 				{
 					$transaction_date=$this->Auth->User('session_company')->books_beginning_from;
@@ -136,17 +177,22 @@ class ItemsController extends AppController
 					$itemLedger->company_id         = $company_id;
 					$this->Items->ItemLedgers->save($itemLedger);
 				}
-                $this->Flash->success(__('The item has been saved.'));
+				$this->Flash->success(__('The item has been saved.'));
+				
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The item could not be saved. Please, try again.'));
+			else
+			{ 
+				$this->Flash->error(__('The item could not be saved. Please, try again.'));
+			}
         }
         $units = $this->Items->Units->find('list');
         $stockGroups = $this->Items->StockGroups->find('list');
 		$shades = $this->Items->Shades->find('list');
         $sizes = $this->Items->Sizes->find('list');
-        $this->set(compact('item', 'units', 'stockGroups','sizes','shades'));
+		$gstFigures = $this->Items->GstFigures->find('list');
+        $this->set(compact('item', 'units', 'stockGroups','sizes','shades','gstFigures'));
         $this->set('_serialize', ['item']);
     }
 
