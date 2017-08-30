@@ -147,7 +147,7 @@ $this->set('title', 'Edit Purchase Voucher');
 											<button type="button" class="add_row btn btn-default input-sm"><i class="fa fa-plus"></i> Add row</button>
 										</td>
 										<td width="25%">
-											<?php echo $this->Form->input('voucher_amount', ['label' => false,'class' => 'form-control input-sm total_debit','id'=>'total_inward','placeholder'=>'Total Debit']); ?></td>
+											<?php echo $this->Form->input('voucher_amount', ['label' => false,'class' => 'form-control input-sm total_debit','id'=>'total_inward','placeholder'=>'Total Debit','type'=>'text']); ?></td>
 										<td width="25%">
 											<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm total_credit','id'=>'total_inward','placeholder'=>'Total Credit','value'=>$purchaseVoucher->voucher_amount]); ?></td>
 										<td></td>
