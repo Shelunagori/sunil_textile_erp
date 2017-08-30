@@ -45,20 +45,24 @@ class ItemsTable extends Table
             'foreignKey' => 'stock_group_id',
             'joinType' => 'LEFT'
         ]);
-		 $this->belongsTo('Companies', [
+		$this->belongsTo('Companies', [
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'
         ]);
-		 $this->hasMany('ItemLedgers', [
+		$this->hasMany('ItemLedgers', [
             'foreignKey' => 'item_id',
             'joinType' => 'INNER'
         ]);
-		 $this->belongsTo('Sizes', [
+		$this->belongsTo('Sizes', [
             'foreignKey' => 'size_id',
             'joinType' => 'LEFT'
         ]);
-		 $this->belongsTo('Shades', [
+		$this->belongsTo('Shades', [
             'foreignKey' => 'shade_id',
+            'joinType' => 'LEFT'
+        ]);
+		$this->belongsTo('GstFigures', [
+            'foreignKey' => 'gst_figure_id',
             'joinType' => 'LEFT'
         ]);
     }

@@ -56,6 +56,8 @@ class SalesInvoicesController extends AppController
 		$this->viewBuilder()->layout('index_layout');
         $salesInvoice = $this->SalesInvoices->newEntity();
 		$company_id=$this->Auth->User('session_company_id');
+		$stateDetails=$this->Auth->User('session_company');
+		$state_id=$stateDetails->state_id;
 		$Voucher_no = $this->SalesInvoices->find()->select(['voucher_no'])->where(['company_id'=>$company_id])->order(['voucher_no' => 'DESC'])->first();
 		if($Voucher_no)
 		{
@@ -64,27 +66,45 @@ class SalesInvoicesController extends AppController
 		else
 		{
 			$voucher_no=1;
-		} 
-		
-		$Items = $this->SalesInvoices->Items->find('list', ['limit' => 200])
-		->where(['company_id'=>$company_id]);
-		
+		} 		
 		
         if ($this->request->is('post')) {
+		    $transaction_date=date('Y-m-d', strtotime($this->request->data['transaction_date']));
             $salesInvoice = $this->SalesInvoices->patchEntity($salesInvoice, $this->request->getData());
-            if ($this->SalesInvoices->save($salesInvoice)) {
+            $salesInvoice->transaction_date=$transaction_date;
+			if($salesInvoice->cash_or_credit=='cash')
+			{
+			$salesInvoice->customer_id=0;
+			}
+			
+		   if ($this->SalesInvoices->save($salesInvoice)) {
                 $this->Flash->success(__('The sales invoice has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'add']);
             }
             $this->Flash->error(__('The sales invoice could not be saved. Please, try again.'));
         }
-        $companies = $this->SalesInvoices->Companies->find('list', ['limit' => 200]);
-        $customers = $this->SalesInvoices->Customers->find('list', ['limit' => 200])
-		->where(['company_id'=>$company_id]);
-        $gstFigures = $this->SalesInvoices->GstFigures->find('list', ['limit' => 200]);
-        $this->set(compact('salesInvoice', 'companies', 'customers', 'gstFigures', 'voucher_no','company_id','Items'));
-        $this->set('_serialize', ['salesInvoice'],'voucher_no','company_id','Items');
+        
+		$customers = $this->SalesInvoices->Customers->find()
+					->where(['company_id'=>$company_id]);
+						$customerOptions=[];
+		foreach($customers as $customer){
+			$customerOptions[]=['text' =>$customer->name, 'value' => $customer->id ,'customer_state_id'=>$customer->state_id];
+		}
+		
+		$items = $this->SalesInvoices->Items->find()
+					->where(['Items.company_id'=>$company_id])
+					->contain(['GstFigures']);
+		$itemOptions=[];
+		foreach($items as $item){
+			$itemOptions[]=['text' =>$item->name, 'value' => $item->id ,'gst_figure_id'=>$item->gst_figure_id, 'gst_figure_tax_percentage'=>$item->gst_figure->tax_percentage,'gst_figure_tax_name'=>$item->gst_figure->name, 'output_cgst_ledger_id'=>$item->output_cgst_ledger_id, 'output_sgst_ledger_id'=>$item->output_sgst_ledger_id, 'output_igst_ledger_id'=>$item->output_igst_ledger_id];
+		}
+		
+        $gstFigures = $this->SalesInvoices->GstFigures->find('list', ['limit' => 200])
+						->where(['company_id'=>$company_id]);
+						
+        $this->set(compact('salesInvoice', 'companies', 'customerOptions', 'gstFigures', 'voucher_no','company_id','itemOptions','state_id'));
+        $this->set('_serialize', ['salesInvoice']);
     }
 
     /**

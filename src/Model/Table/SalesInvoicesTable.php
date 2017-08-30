@@ -54,6 +54,7 @@ class SalesInvoicesTable extends Table
         $this->hasMany('SalesInvoiceRows', [
             'foreignKey' => 'sales_invoice_id'
         ]);
+		$this->belongsTo('Items');
     }
 
     /**

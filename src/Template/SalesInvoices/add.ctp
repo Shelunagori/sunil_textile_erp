@@ -2,10 +2,10 @@
 /**
  * @Author: PHP Poets IT Solutions Pvt. Ltd.
  */
-$this->set('title', 'Create Purchase Voucher');
+$this->set('title', 'Create Sales Invoice');
 ?>
 <div class="row">
-	<div class="col-md-9">
+	<div class="col-md-12">
 		<div class="portlet light ">
 			<div class="portlet-title">
 				<div class="caption">
@@ -25,10 +25,13 @@ $this->set('title', 'Create Purchase Voucher');
 						<div class="col-md-3">
 							<div class="form-group">
 								<label>Transaction Date <span class="required">*</span></label>
-								<?php echo $this->Form->control('transaction_date',['class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'placeholder'=>'DD-MM-YYYY','type'=>'text','data-date-start-date'=>@$coreVariable[fyValidFrom],'data-date-end-date'=>@$coreVariable[fyValidTo],'value'=>date('d-m-Y')]); ?>
+								<?php echo $this->Form->control('transaction_date',['class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'placeholder'=>'DD-MM-YYYY','type'=>'text','data-date-start-date'=>@$coreVariable[fyValidFrom],'data-date-end-date'=>@$coreVariable[fyValidTo],'value'=>date('Y-m-d')]); ?>
 							</div>
 						</div>
-						<input type="hidden" name="company_id" value="<?php echo $company_id;?>">
+						<input type="hidden" name="company_id" class="customer_id" value="<?php echo $company_id;?>">
+						<input type="hidden" name="state_id" class="state_id" value="<?php echo $state_id;?>">
+						<input type="hidden" name="" id="is_interstate" value="0">
+						<input type="hidden" name="voucher_no" id="" value="<?= h($voucher_no, 4, '0') ?>">
 						<div class="col-md-3">
 							    <label style="">Cash/Credit</label>
 								<?php $option =[['value'=>'cash','text'=>'Cash'],['value'=>'credit','text'=>'Credit']];
@@ -38,42 +41,87 @@ $this->set('title', 'Create Purchase Voucher');
 						<div class="col-md-3" style="display:none" id="cusomerIds">
 							<div class="form-group">
 								<label>Customer Name</label>
-								<?php echo $this->Form->control('customer_id',['class'=>'form-control input-sm select2me select2','label'=>false, 'options' => $customers,'value'=>'cash']);
+								<?php echo $this->Form->control('customer_id',['empty'=>'--Select--', 'class'=>'form-control input-sm customer_id','label'=>false, 'options' => $customerOptions]);
 								?>
-									</div>
+							</div>
 						</div> 
 					</div>
 					<br>
-					
 				   <div class="row">
 				  <div class="table-responsive">
 								<table id="main_table" class="table table-condensed table-bordered" style="margin-bottom: 4px;" width="100%">
 								<thead>
-								<tr><td align="center" colspan="6">Inward</td></tr>
 								<tr align="center">
-									<td><label>Sr<label></td>
 									<td><label>Item<label></td>
 									<td><label>Qty<label></td>
 									<td><label>Rate<label></td>
-									<td><label>Amount<label></td>
+									<td><label>Discount(%)<label></td>
+									<td><label>Taxable Value<label></td>
+									<td><label id="gstDisplay">CGST/SGST<label></td>
+									<td><label>Net Amount<label></td>
 									<td></td>
 								</tr>
 								</thead>
 								<tbody id='main_tbody' class="tab">
-
 								</tbody>
 								<tfoot>
 									<tr>
-										<td colspan="4" >	
+										<td colspan="8">	
 											<button type="button" class="add_row btn btn-default input-sm"><i class="fa fa-plus"></i> Add row</button>
 										</td>
-										<td width="25%"><?php echo $this->Form->input('inward_amount_total', ['label' => false,'class' => 'form-control input-sm','id'=>'total_inward','placeholder'=>'Total']); ?></td>
-										<td></td>
 									</tr>
-								</tfoot>
-								</table>
+						<tr>
+						<td colspan="6" align="right"><b>Amt Before Tax</b>
+						</td>
+						<td colspan="2">
+						<?php echo $this->Form->input('amount_before_tax', ['label' => false,'class' => 'form-control input-sm amount_before_tax','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
+						</td>
+						</tr>
+									
+						<tr id="add_cgst">
+						<td colspan="6" align="right"><b>Add CGST</b>
+						</td>
+						<td colspan="2">
+						<?php echo $this->Form->input('total_cgst', ['label' => false,'class' => 'form-control input-sm add_cgst ','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
+						</td>
+						</tr>
+									
+						<tr id="add_sgst">
+						<td colspan="6" align="right"><b>Add SGST</b>
+						</td>
+						<td colspan="2">
+						<?php echo $this->Form->input('total_sgst', ['label' => false,'class' => 'form-control input-sm add_sgst','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
+						</td>
+						</tr>
+						<tr id="add_igst" style="display:none">
+						<td colspan="6" align="right"><b>Add IGST</b>
+						</td>
+						<td colspan="2">
+						<?php echo $this->Form->input('total_igst', ['label' => false,'class' => 'form-control input-sm add_igst','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
+						</td>
+						</tr>
+									
+						<tr>
+						<td colspan="6" align="right"><b>Round OFF</b>
+						</td>
+						<td colspan="2">
+						<?php echo $this->Form->input('round_off', ['label' => false,'class' => 'form-control input-sm round_off','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
+						</td>
+						</tr>
+									
+						<tr>
+						<td colspan="6" align="right"><b>Amt After Tax</b>
+						</td>
+						<td colspan="2">
+						<?php echo $this->Form->input('amount_after_tax', ['label' => false,'class' => 'form-control input-sm amount_after_tax','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
+						</td>
+						</tr>
+					</tfoot>
+					</table>
 				   </div>
 				  </div>
+				  
+					
 			</div>
 				<?= $this->Form->button(__('Submit'),['class'=>'btn btn-success']) ?>
 				<?= $this->Form->end() ?>
@@ -134,18 +182,35 @@ $this->set('title', 'Create Purchase Voucher');
 <table id="sample_table" style="display:none;" width="100%">
 	<tbody>
 		<tr class="main_tr" class="tab">
-			<td width="7%"></td>
-			<td width="25%">
-				<?php echo $this->Form->input('item_id', ['empty'=>'--Select--','options'=>$Items,'label' => false,'class' => 'form-control input-medium','required'=>'required']); ?>
+			<td>
+			<input type="hidden" name="gst_figure_id" class="gst_figure_id" value="">
+			<input type="hidden" name="output_cgst_ledger_id" class="output_cgst_ledger_id" value="">
+			<input type="hidden" name="output_sgst_ledger_id" class="output_sgst_ledger_id" value="">
+			<input type="hidden" name="output_igst_ledger_id" class="output_igst_ledger_id" value="">
+			<input type="hidden" name="gst_figure_tax_percentage" class="gst_figure_tax_percentage calculation" value="">
+			<input type="hidden" name="tot" class="totamount calculation" value="">
+			<input type="hidden" name="" class="gstValue calculation" value="">
+
+			
+				<?php echo $this->Form->input('item_id', ['empty'=>'--Select--','options'=>$itemOptions,'label' => false,'class' => 'form-control input-sm attrGet','required'=>'required']); ?>
 			</td>
-			<td width="15%">
-				<?php echo $this->Form->input('quantity', ['label' => false,'class' => '','id'=>'check','required'=>'required','placeholder'=>'Quantity']); ?>
+			<td>
+				<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm calculation quantity','id'=>'check','required'=>'required','placeholder'=>'Quantity']); ?>
 			</td>
-			<td width="20%">
-				<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm','required'=>'required','placeholder'=>'Rate']); ?>
+			<td>
+				<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm calculation rate','required'=>'required','placeholder'=>'Rate']); ?>
 			</td>
-			<td width="25%">
-				<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm','required'=>'required','placeholder'=>'Amount']); ?>	
+			<td>
+				<?php echo $this->Form->input('discount_percentage', ['label' => false,'class' => 'form-control input-sm calculation discount','required'=>'required','placeholder'=>'Dis.']); ?>	
+			</td>
+			<td>
+				<?php echo $this->Form->input('taxable_value', ['label' => false,'class' => 'form-control input-sm discountAmount calculation','required'=>'required', 'readonly'=>'readonly','placeholder'=>'Taxable Value']); ?>	
+			</td>
+			<td>
+				<?php echo $this->Form->input('gst_figure_tax_name', ['label' => false,'class' => 'form-control input-sm gst_figure_tax_name', 'readonly'=>'readonly','required'=>'required','placeholder'=>'']); ?>	
+			</td>
+			<td>
+				<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm gstAmount calculation','required'=>'required', 'readonly'=>'readonly','placeholder'=>'Amount']); ?>	
 			</td>
 			<td align="center">
 				<a class="btn btn-danger delete-tr btn-xs" href="#" role="button" style="margin-bottom: 5px;"><i class="fa fa-times"></i></a>
@@ -157,64 +222,159 @@ $this->set('title', 'Create Purchase Voucher');
 <?php
 	$js="
 	$(document).ready(function() {
-
-	$('.cashCredit').die().live('change',function(){
-		 var cashcredit=$(this).val();
-		 if(cashcredit=='credit')
-		 {
-		 $('#cusomerIds').show();
-		 }
-		 else{
-		 $('#cusomerIds').hide();
-		 }
+		$('.attrGet').die().live('change',function(){
+			var gst_figure_id=$('option:selected', this).attr('gst_figure_id');
+			var gst_figure_tax_percentage=$('option:selected', this).attr('gst_figure_tax_percentage');
+			var gst_figure_tax_name=$('option:selected', this).attr('gst_figure_tax_name');
+			var output_cgst_ledger_id=$('option:selected', this).attr('output_cgst_ledger_id');
+			var output_sgst_ledger_id=$('option:selected', this).attr('output_sgst_ledger_id');
+			var output_igst_ledger_id=$('option:selected', this).attr('output_igst_ledger_id');
+			$(this).closest('tr').find('.gst_figure_id').val(gst_figure_id);
+			$(this).closest('tr').find('.gst_figure_tax_percentage').val(gst_figure_tax_percentage);
+			$(this).closest('tr').find('.gst_figure_tax_name').val(gst_figure_tax_name);
+			$(this).closest('tr').find('.output_cgst_ledger_id').val(output_cgst_ledger_id);
+			$(this).closest('tr').find('.output_sgst_ledger_id').val(output_sgst_ledger_id);
+			$(this).closest('tr').find('.output_igst_ledger_id').val(output_igst_ledger_id);
 		});
-	
-	
 		
-
+		$('.customer_id').die().live('change',function(){
+			var customer_state_id=$('option:selected', this).attr('customer_state_id');
+			var state_id=$('.state_id').val();
+			if(customer_state_id!=state_id)
+			{
+			$('#gstDisplay').html('IGST');
+			$('#add_igst').show();
+			$('#add_cgst').hide();
+			$('#add_sgst').hide();
+			$('#is_interstate').val('1');
+			}
+			else{
+			$('#gstDisplay').html('CGST/SGST');
+			$('#add_cgst').show();
+			$('#add_sgst').show();
+			$('#add_igst').hide();
+			$('#is_interstate').val('0');
+			}
+			
+			$(this).closest('tr').find('.output_igst_ledger_id').val(output_igst_ledger_id);
+		});
+		
+		$('.cashCredit').die().live('change',function(){
+			var cashcredit=$(this).val();
+			if(cashcredit=='credit')
+			{
+				$('#cusomerIds').show();
+			}
+			else{
+				$('#cusomerIds').hide();
+				$('#gstDisplay').html('CGST/SGST');
+				$('#add_cgst').show();
+			    $('#add_sgst').show();
+			    $('#add_igst').hide();
+				$('#is_interstate').val('0');
+			}
+		});
 		$('.delete-tr').die().live('click',function() 
 		{
 			$(this).closest('tr').remove();
 			rename_rows();
-			total_debit_credit();
 		});
-
 		ComponentsPickers.init();
 	});
-
-	
-
 	$('.add_row').click(function(){
 		add_row();
     }) ;
-
-
 	function add_row()
 	{
 		var tr=$('#sample_table tbody tr.main_tr').clone();
-				$('#main_table tbody#main_tbody').append(tr);
+		$('#main_table tbody#main_tbody').append(tr);
 		rename_rows();
 	}
-	rename_rows();
 	function rename_rows()
 	{
 		var i=0;
 		$('#main_table tbody#main_tbody tr.main_tr').each(function(){ 
-
-			$(this).find('td:nth-child(2) select').select2().attr({name:'purchase_voucher_rows['+i+'][ledger_id]',id:'purchase_voucher_rows-'+i+'-ledger_id'});	
-
-			$(this).find('td:nth-child(3) input').attr({name:'purchase_voucher_rows['+i+'][debit]', id:'purchase_voucher_rows-'+i+'-debit'});
-			$(this).find('td:nth-child(4) input').attr({name:'purchase_voucher_rows['+i+'][credit]', id:'purchase_voucher_rows-'+i+'-credit'});
-
-			i++;
+			$(this).find('.attrGet').attr({name:'sales_invoice_rows['+i+'][item_id]',id:'sales_invoice_rows['+i+'][item_id]'});
+		  $(this).find('.quantity').attr({name:'sales_invoice_rows['+i+'][quantity]',id:'sales_invoice_rows['+i+'][quantity]'});
+		  $(this).find('.rate').attr({name:'sales_invoice_rows['+i+'][rate]',id:'sales_invoice_rows['+i+'][rate]'});
+		  $(this).find('.discount').attr({name:'sales_invoice_rows['+i+'][discount_percentage]',id:'sales_invoice_rows['+i+'][discount_percentage]'});
+		  
+		  $(this).find('.discountAmount').attr({name:'sales_invoice_rows['+i+'][taxable_value]',id:'sales_invoice_rows['+i+'][taxable_value]'});
+		  
+		  $(this).find('.gst_figure_id').attr({name:'sales_invoice_rows['+i+'][gst_figure_id]',id:'sales_invoice_rows['+i+'][gst_figure_id]'});
+		  
+		  $(this).find('.output_cgst_ledger_id').attr({name:'sales_invoice_rows['+i+'][output_cgst_ledger_id]',id:'sales_invoice_rows['+i+'][output_cgst_ledger_id]'});
+		  
+		  $(this).find('.output_sgst_ledger_id').attr({name:'sales_invoice_rows['+i+'][output_sgst_ledger_id]',id:'sales_invoice_rows['+i+'][output_sgst_ledger_id]'});
+		  
+		  $(this).find('.output_igst_ledger_id').attr({name:'sales_invoice_rows['+i+'][output_igst_ledger_id]',id:'sales_invoice_rows['+i+'][output_igst_ledger_id]'});
+		  
+		i++;
 		});
 	}
+	$('.calculation').die().live('keyup',function()
+	{
+		total_amount();
+	});
+		
+		function total_amount()
+		{
+			var total  = 0;
+			var gst_amount  = 0;
+			var gst_value  = 0;
+			var s_cgst_value=0;
+			$('#main_table tbody#main_tbody tr.main_tr').each(function()
+			{
+				var quantity  = parseFloat($(this).find('.quantity').val());
+				if(!quantity){quantity=0;}
+				var rate  = parseFloat($(this).find('.rate').val());
+				if(!rate){rate=0;}
+				var totamount = quantity*rate;
+				$(this).find('.totamount').val(totamount);
+				   
+				var discount  = parseFloat($(this).find('.discount').val());
+				var discountValue=(discount*totamount)/100;
+				var discountAmount=totamount+discountValue;
+				$(this).find('.discountAmount').val(discountAmount);
+				
+				var gst_figure_tax_percentage  = parseFloat($(this).find('.gst_figure_tax_percentage').val());
+				if(!gst_figure_tax_percentage){gst_figure_tax_percentage=0;}
+				var discountAmount  = parseFloat($(this).find('.discountAmount').val());
+				if(!discountAmount){discountAmount=0;}
+				var gstValue=(discountAmount*gst_figure_tax_percentage)/100;
+				var gstAmount=discountAmount+gstValue;
+				$(this).find('.gstAmount').val(gstAmount);
+				$(this).find('.gstValue').val(gstValue);
 
+				var taxable_value1=parseFloat($(this).find('.discountAmount').val());
+				total=parseFloat(total)+taxable_value1;
+				
+				var gstAmount  = parseFloat($(this).find('.gstAmount').val());
+				gst_amount=parseFloat(gst_amount)+gstAmount;
+				
+				var gstValue  = parseFloat($(this).find('.gstValue').val());
+				var is_interstate  = parseFloat($('#is_interstate').val());
+				if(is_interstate=='0')
+				{
+				gst_value=parseFloat(gst_value)+gstValue;
+				s_cgst_value=parseFloat(gst_value/2);
+				igst_value=0;
+				}
+				else{
+				igst_value=parseFloat(gst_value)+gstValue;
+				s_cgst_value=0;
+				}
+			});
+				$('.amount_before_tax').val(total);
+				$('.amount_after_tax').val(gst_amount);
+				$('.add_cgst').val(s_cgst_value);
+				$('.add_sgst').val(s_cgst_value);
+				$('.add_igst').val(igst_value);
+		}
 	function checkValidation() 
 	{  
 		var total_debit  = $('.total_debit').val();
 		var total_credit = $('.total_credit').val();
-
 		if(total_debit!=total_credit)
 		{
 			alert('Credit and debit value not matched');

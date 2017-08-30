@@ -153,7 +153,11 @@ License: You must have a valid license purchased only from themeforest(the above
 		jQuery(document).ready(function() {  
 			Metronic.init(); // init metronic core components
 			Layout.init(); // init current layout
-			
+		});
+		$(document).ready(function() {
+			$('a[role=button]').live('click',function(e) {
+				e.preventDefault();
+			});
 		});
 		</script>
 		<?= $this->fetch('scriptBottom')?>
