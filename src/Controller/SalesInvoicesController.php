@@ -156,14 +156,14 @@ class SalesInvoicesController extends AppController
 
 		
 		$customers = $this->SalesInvoices->Customers->find()
-					->where(['company_id'=>$company_id]);
+					->where(['company_id'=>$company_id,'freeze'=>0]);
 						$customerOptions=[];
 		foreach($customers as $customer){
 			$customerOptions[]=['text' =>$customer->name, 'value' => $customer->id ,'customer_state_id'=>$customer->state_id];
 		}
 		
 		$items = $this->SalesInvoices->Items->find()
-					->where(['Items.company_id'=>$company_id])
+					->where(['Items.company_id'=>$company_id,'freeze'=>0])
 					->contain(['GstFigures']);
 		$itemOptions=[];
 		foreach($items as $item){
