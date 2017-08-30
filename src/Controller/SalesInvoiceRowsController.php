@@ -63,12 +63,12 @@ class SalesInvoiceRowsController extends AppController
             }
             $this->Flash->error(__('The sales invoice row could not be saved. Please, try again.'));
         }
-        $salesInvoices = $this->SalesInvoiceRows->SalesInvoices->find('list', ['limit' => 200]);
-        $items = $this->SalesInvoiceRows->Items->find('list', ['limit' => 200]);
-        $gstFigures = $this->SalesInvoiceRows->GstFigures->find('list', ['limit' => 200]);
-        $outputCgstLedgers = $this->SalesInvoiceRows->OutputCgstLedgers->find('list', ['limit' => 200]);
-        $outputSgstLedgers = $this->SalesInvoiceRows->OutputSgstLedgers->find('list', ['limit' => 200]);
-        $outputIgstLedgers = $this->SalesInvoiceRows->OutputIgstLedgers->find('list', ['limit' => 200]);
+        $salesInvoices = $this->SalesInvoiceRows->SalesInvoices->find('list');
+        $items = $this->SalesInvoiceRows->Items->find('list')->where(['freeze'=>0]);
+        $gstFigures = $this->SalesInvoiceRows->GstFigures->find('list');
+        $outputCgstLedgers = $this->SalesInvoiceRows->OutputCgstLedgers->find('list');
+        $outputSgstLedgers = $this->SalesInvoiceRows->OutputSgstLedgers->find('list');
+        $outputIgstLedgers = $this->SalesInvoiceRows->OutputIgstLedgers->find('list');
         $this->set(compact('salesInvoiceRow', 'salesInvoices', 'items', 'gstFigures', 'outputCgstLedgers', 'outputSgstLedgers', 'outputIgstLedgers'));
         $this->set('_serialize', ['salesInvoiceRow']);
     }
@@ -94,12 +94,12 @@ class SalesInvoiceRowsController extends AppController
             }
             $this->Flash->error(__('The sales invoice row could not be saved. Please, try again.'));
         }
-        $salesInvoices = $this->SalesInvoiceRows->SalesInvoices->find('list', ['limit' => 200]);
-        $items = $this->SalesInvoiceRows->Items->find('list', ['limit' => 200]);
-        $gstFigures = $this->SalesInvoiceRows->GstFigures->find('list', ['limit' => 200]);
-        $outputCgstLedgers = $this->SalesInvoiceRows->OutputCgstLedgers->find('list', ['limit' => 200]);
-        $outputSgstLedgers = $this->SalesInvoiceRows->OutputSgstLedgers->find('list', ['limit' => 200]);
-        $outputIgstLedgers = $this->SalesInvoiceRows->OutputIgstLedgers->find('list', ['limit' => 200]);
+        $salesInvoices = $this->SalesInvoiceRows->SalesInvoices->find('list');
+        $items = $this->SalesInvoiceRows->Items->find('list')->where(['freeze'=>0]);
+        $gstFigures = $this->SalesInvoiceRows->GstFigures->find('list');
+        $outputCgstLedgers = $this->SalesInvoiceRows->OutputCgstLedgers->find('list');
+        $outputSgstLedgers = $this->SalesInvoiceRows->OutputSgstLedgers->find('list');
+        $outputIgstLedgers = $this->SalesInvoiceRows->OutputIgstLedgers->find('list');
         $this->set(compact('salesInvoiceRow', 'salesInvoices', 'items', 'gstFigures', 'outputCgstLedgers', 'outputSgstLedgers', 'outputIgstLedgers'));
         $this->set('_serialize', ['salesInvoiceRow']);
     }

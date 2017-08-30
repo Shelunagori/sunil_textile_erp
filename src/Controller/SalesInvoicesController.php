@@ -86,14 +86,14 @@ class SalesInvoicesController extends AppController
         }
         
 		$customers = $this->SalesInvoices->Customers->find()
-					->where(['company_id'=>$company_id]);
+					->where(['company_id'=>$company_id,'freeze'=>0]);
 						$customerOptions=[];
 		foreach($customers as $customer){
 			$customerOptions[]=['text' =>$customer->name, 'value' => $customer->id ,'customer_state_id'=>$customer->state_id];
 		}
 		
 		$items = $this->SalesInvoices->Items->find()
-					->where(['Items.company_id'=>$company_id])
+					->where(['Items.company_id'=>$company_id,'freeze'=>0])
 					->contain(['GstFigures']);
 		$itemOptions=[];
 		foreach($items as $item){
@@ -129,7 +129,7 @@ class SalesInvoicesController extends AppController
             $this->Flash->error(__('The sales invoice could not be saved. Please, try again.'));
         }
         $companies = $this->SalesInvoices->Companies->find('list', ['limit' => 200]);
-        $customers = $this->SalesInvoices->Customers->find('list', ['limit' => 200]);
+        $customers = $this->SalesInvoices->Customers->find('list')->where(['freeze'=>0]);
         $gstFigures = $this->SalesInvoices->GstFigures->find('list', ['limit' => 200]);
         $this->set(compact('salesInvoice', 'companies', 'customers', 'gstFigures'));
         $this->set('_serialize', ['salesInvoice']);

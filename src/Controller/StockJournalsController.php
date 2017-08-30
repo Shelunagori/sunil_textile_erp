@@ -113,7 +113,7 @@ class StockJournalsController extends AppController
             }
             $this->Flash->error(__('The stock journal could not be saved. Please, try again.'));
         }
-		$items     = $this->StockJournals->Inwards->Items->find('list');
+		$items     = $this->StockJournals->Inwards->Items->find('list')->where(['freeze'=>0]);
         $Voucher_no=$this->StockJournals->find()->select(['voucher_no'])->where(['company_id'=>$company_id])->order(['voucher_no' => 'DESC'])->first();
 		if($Voucher_no){
 			$voucher_no=$Voucher_no->voucher_no+1;
@@ -193,7 +193,7 @@ class StockJournalsController extends AppController
 			}
         }
 		
-		$items     = $this->StockJournals->Inwards->Items->find('list');
+		$items = $this->StockJournals->Inwards->Items->find('list')->where(['freeze'=>0]);
         $this->set(compact('stockJournal', 'items'));
         $this->set('_serialize', ['stockJournal']);
     }

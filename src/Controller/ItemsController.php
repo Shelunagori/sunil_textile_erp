@@ -24,7 +24,7 @@ class ItemsController extends AppController
         $this->paginate = [
             'contain' => ['Units', 'StockGroups']
         ];
-        $items = $this->paginate($this->Items);
+        $items = $this->paginate($this->Items->find()->where(['freeze'=>0]));
 
         $this->set(compact('items'));
         $this->set('_serialize', ['items']);

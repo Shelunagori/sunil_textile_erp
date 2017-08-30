@@ -24,7 +24,7 @@ class CustomersController extends AppController
 		 $this->paginate = [
             'contain' => ['States']
         ];
-        $customers = $this->paginate($this->Customers);
+        $customers = $this->paginate($this->Customers->find()->where(['freeze'=>0]));
 
         $this->set(compact('customers'));
         $this->set('_serialize', ['customers']);
@@ -104,7 +104,15 @@ class CustomersController extends AppController
 							->find('List')->toArray();
 		$accountingGroups[$SundryDebtor->id]=$SundryDebtor->name;
 		ksort($accountingGroups);
-        $states = $this->Customers->States->find('list', ['limit' => 200]);
+        $states = $this->Customers->States->find('list',
+			['keyField' => function ($row) {
+				return $row['id'];
+			},
+			'valueField' => function ($row) {
+				return $row['state_code'].'-'. $row['name'] ;
+				
+			}]);
+		
         $this->set(compact('customer', 'states','accountingGroups'));
         $this->set('_serialize', ['customer', 'accountingGroups']);
     }
@@ -169,7 +177,13 @@ class CustomersController extends AppController
 		ksort($accountingGroups);
 		$account_entry  = $this->Customers->Ledgers->AccountingEntries->find()->where(['ledger_id'=>$customer->ledger->id,'company_id'=>$company_id])->first();
 		//pr($account_entry->toArray());exit;
-        $states = $this->Customers->States->find('list');
+        $states = $this->Customers->States->find('list',
+			['keyField' => function ($row) {
+				return $row['id'];
+			},
+			'valueField' => function ($row) {
+				return $row['state_code'].'-'. $row['name'] ;
+			}]);
 		$this->set(compact('customer', 'states','accountingGroups','account_entry'));
         $this->set('_serialize', ['customer']);
     }

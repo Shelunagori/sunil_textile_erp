@@ -63,8 +63,8 @@ class InwardsController extends AppController
             }
             $this->Flash->error(__('The inward could not be saved. Please, try again.'));
         }
-        $items = $this->Inwards->Items->find('list', ['limit' => 200]);
-        $stockJournals = $this->Inwards->StockJournals->find('list', ['limit' => 200]);
+        $items = $this->Inwards->Items->find('list')->where(['freeze'=>0]);
+        $stockJournals = $this->Inwards->StockJournals->find('list');
         $this->set(compact('inward', 'items', 'stockJournals'));
         $this->set('_serialize', ['inward']);
     }
@@ -90,8 +90,8 @@ class InwardsController extends AppController
             }
             $this->Flash->error(__('The inward could not be saved. Please, try again.'));
         }
-        $items = $this->Inwards->Items->find('list', ['limit' => 200]);
-        $stockJournals = $this->Inwards->StockJournals->find('list', ['limit' => 200]);
+        $items = $this->Inwards->Items->find('list')->where(['freeze'=>0]);
+        $stockJournals = $this->Inwards->StockJournals->find('list');
         $this->set(compact('inward', 'items', 'stockJournals'));
         $this->set('_serialize', ['inward']);
     }

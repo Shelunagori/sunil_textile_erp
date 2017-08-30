@@ -25,6 +25,10 @@ $this->set('title', 'Edit Customer');
 									<?php echo $this->Form->control('name',['class'=>'form-control input-sm','placeholder'=>'Customer Name','label'=>false,'autofocus']); ?>
 								</div>
 								<div class="form-group">
+									<label>Pan</label>
+									<?php echo $this->Form->control('pan',['class'=>'form-control input-sm','label'=>false,'placeholder'=>'Pan']); ?>
+								</div>
+								<div class="form-group">
 									<label>Under  Accounting Group <span class="required">*</span></label>
 									<?php echo $this->Form->control('accounting_group_id',['class'=>'form-control input-sm','label'=>false,'options' => $accountingGroups,'required'=>'required','value'=>$customer->ledger->accounting_group_id]); ?>
 								</div>
@@ -47,6 +51,10 @@ $this->set('title', 'Edit Customer');
 								<div class="form-group">
 									<label>State <span class="required">*</span></label>
 									<?php echo $this->Form->control('state_id',['class'=>'form-control input-sm','label'=>false,'empty'=>'-State-', 'options' => $states,'required'=>'required']); ?>
+								</div>
+								<div class="form-group">
+									<label>Tan</label>
+									<?php echo $this->Form->control('tan',['class'=>'form-control input-sm','label'=>false,'placeholder'=>'Tan']); ?>
 								</div>
 								<div class="form-group">
 									<label>Email</label>
