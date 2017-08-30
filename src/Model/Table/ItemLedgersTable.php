@@ -56,6 +56,11 @@ class ItemLedgersTable extends Table
             'joinType' => 'INNER'
         ]);
 		
+		$this->belongsTo('Companies', [
+            'foreignKey' => 'company_id',
+            'joinType' => 'INNER'
+        ]);
+		
 		
     }
 
