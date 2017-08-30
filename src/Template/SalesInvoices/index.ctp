@@ -22,7 +22,6 @@ $this->set('title', 'Sales Invoice List');
 								<th scope="col"><?= __('Sr') ?></th>
 								<th scope="col"><?= $this->Paginator->sort('voucher_no') ?></th>
 								<th scope="col"><?= $this->Paginator->sort('transaction_date') ?></th>
-								<th scope="col"><?= $this->Paginator->sort('cash_or_credit') ?></th>
 								<th scope="col"><?= $this->Paginator->sort('amount_after_tax') ?></th>
 								<th scope="col" class="actions"><?= __('Actions') ?></th>
 							</tr>
@@ -33,7 +32,6 @@ $this->set('title', 'Sales Invoice List');
 								<td><?= h(++$page_no) ?></td>
 								<td><?= h('#'.str_pad($salesInvoice->voucher_no, 4, '0', STR_PAD_LEFT)) ?></td>
 								<td><?= h($salesInvoice->transaction_date) ?></td>
-								<td><?= h($salesInvoice->cash_or_credit) ?></td>
 								<td><?= h($salesInvoice->amount_after_tax) ?></td>
 								<td class="actions">
 									<!--<?= $this->Html->link(__('View'), ['action' => 'view', $salesInvoice->id]) ?>-->

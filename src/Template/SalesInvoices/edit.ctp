@@ -81,6 +81,7 @@ $this->set('title', 'Update Sales Invoice');
 				<input type="hidden" name="" class="gst_figure_tax_percentage calculation" value="<?php echo $salesInvoiceRow->gst_figure->tax_percentage;?>">
 				<input type="hidden" name="" class="totamount calculation" value="">
 				<input type="hidden" name="" class="gstValue calculation" value="">
+				<input type="hidden" name="" class="discountvalue calculation" value="">
 										
 				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.item_id', ['empty'=>'--Select--','options'=>$itemOptions,'label' => false,'class' => 'form-control input-sm attrGet','required'=>'required','value'=>$salesInvoiceRow->item->id]);
                 echo $this->Form->input('salesInvoiceRow.'.$i.'.id', ['value'=>$salesInvoiceRow->id,'type'=>'hidden']);	?>
@@ -235,7 +236,7 @@ $this->set('title', 'Update Sales Invoice');
 			<input type="hidden" name="" class="gst_figure_tax_percentage calculation" value="">
 			<input type="hidden" name="" class="totamount calculation" value="">
 			<input type="hidden" name="" class="gstValue calculation" value="">
-
+            <input type="hidden" name="" class="discountvalue calculation" value="">
 			
 				<?php echo $this->Form->input('item_id', ['empty'=>'--Select--','options'=>$itemOptions,'label' => false,'class' => 'form-control input-sm attrGet','required'=>'required']); ?>
 			</td>
@@ -383,8 +384,9 @@ $this->set('title', 'Update Sales Invoice');
 				   
 				var discount  = parseFloat($(this).find('.discount').val());
 				var discountValue=(discount*totamount)/100;
-				var discountAmount=totamount+discountValue;
+				var discountAmount=totamount-discountValue;
 				$(this).find('.discountAmount').val(discountAmount.toFixed(2));
+				$(this).find('.discountvalue').val(discountValue.toFixed(2));
 				
 				var gst_figure_tax_percentage  = parseFloat($(this).find('.gst_figure_tax_percentage').val());
 				if(!gst_figure_tax_percentage){gst_figure_tax_percentage=0;}

@@ -72,6 +72,7 @@ $this->set('title', 'Create Sales Invoice');
 			<input type="hidden" name="gst_figure_tax_percentage" class="gst_figure_tax_percentage calculation" value="">
 			<input type="hidden" name="tot" class="totamount calculation" value="">
 			<input type="hidden" name="" class="gstValue calculation" value="">
+			<input type="hidden" name="" class="discountvalue calculation" value="">
 
 			
 				<?php echo $this->Form->input('item_id', ['empty'=>'Select...', 'options'=>$itemOptions,'label' => false,'class' =>'form-control input-sm attrGet','required'=>'required']); ?>
@@ -92,14 +93,13 @@ $this->set('title', 'Create Sales Invoice');
 				<?php echo $this->Form->input('gst_figure_tax_name', ['label' => false,'class' => 'form-control input-sm gst_figure_tax_name', 'readonly'=>'readonly','required'=>'required','placeholder'=>'']); ?>	
 			</td>
 			<td>
-				<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm gstAmount calculation','required'=>'required', 'readonly'=>'readonly','placeholder'=>'Amount']); ?>	
+				<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm gstAmount calculation','required'=>'required','placeholder'=>'Amount']); ?>	
 			</td>
 			<td align="center">
 			</td>
 		</tr>
 								</tbody>
 								<tfoot>
-								
 									<tr>
 										<td colspan="8">	
 											<button type="button" class="add_row btn btn-default input-sm"><i class="fa fa-plus"></i> Add row</button>
@@ -225,6 +225,7 @@ $this->set('title', 'Create Sales Invoice');
 			<input type="hidden" name="gst_figure_tax_percentage" class="gst_figure_tax_percentage calculation" value="">
 			<input type="hidden" name="tot" class="totamount calculation" value="">
 			<input type="hidden" name="" class="gstValue calculation" value="">
+			<input type="hidden" name="" class="discountvalue calculation" value="">
 
 			
 				<?php echo $this->Form->input('item_id', ['empty'=>'Select...', 'options'=>$itemOptions,'label' => false,'class' =>'form-control input-sm attrGet','required'=>'required']); ?>
@@ -245,7 +246,7 @@ $this->set('title', 'Create Sales Invoice');
 				<?php echo $this->Form->input('gst_figure_tax_name', ['label' => false,'class' => 'form-control input-sm gst_figure_tax_name', 'readonly'=>'readonly','required'=>'required','placeholder'=>'']); ?>	
 			</td>
 			<td>
-				<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm gstAmount calculation','required'=>'required', 'readonly'=>'readonly','placeholder'=>'Amount']); ?>	
+				<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm gstAmount calculation','required'=>'required','placeholder'=>'Amount']); ?>	
 			</td>
 			<td align="center">
 				<a class="btn btn-danger delete-tr btn-xs" href="#" role="button" style="margin-bottom: 5px;"><i class="fa fa-times"></i></a>
@@ -290,7 +291,6 @@ $this->set('title', 'Create Sales Invoice');
 			$('#add_igst').hide();
 			$('#is_interstate').val('0');
 			}
-			
 			$(this).closest('tr').find('.output_igst_ledger_id').val(output_igst_ledger_id);
 		});
 		
@@ -373,8 +373,9 @@ $this->set('title', 'Create Sales Invoice');
 				   
 				var discount  = parseFloat($(this).find('.discount').val());
 				var discountValue=(discount*totamount)/100;
-				var discountAmount=totamount+discountValue;
+				var discountAmount=totamount-discountValue;
 				$(this).find('.discountAmount').val(discountAmount.toFixed(2));
+				$(this).find('.discountvalue').val(discountValue.toFixed(2));
 				
 				var gst_figure_tax_percentage  = parseFloat($(this).find('.gst_figure_tax_percentage').val());
 				if(!gst_figure_tax_percentage){gst_figure_tax_percentage=0;}
