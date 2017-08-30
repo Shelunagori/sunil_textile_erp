@@ -308,6 +308,7 @@ $this->set('title', 'Create Sales Invoice');
 		  $(this).find('.output_sgst_ledger_id').attr({name:'sales_invoice_rows['+i+'][output_sgst_ledger_id]',id:'sales_invoice_rows['+i+'][output_sgst_ledger_id]'});
 		  
 		  $(this).find('.output_igst_ledger_id').attr({name:'sales_invoice_rows['+i+'][output_igst_ledger_id]',id:'sales_invoice_rows['+i+'][output_igst_ledger_id]'});
+		  $(this).find('.gstAmount').attr({name:'sales_invoice_rows['+i+'][net_amount]',id:'sales_invoice_rows['+i+'][net_amount]'});	
 		  
 		i++;
 		});

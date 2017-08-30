@@ -52,7 +52,8 @@ class SalesInvoicesTable extends Table
             'joinType' => 'INNER'
         ]);
         $this->hasMany('SalesInvoiceRows', [
-            'foreignKey' => 'sales_invoice_id'
+            'foreignKey' => 'sales_invoice_id',
+			'saveStrategy'=>'replace'
         ]);
 		$this->belongsTo('Items');
     }
@@ -121,7 +122,7 @@ class SalesInvoicesTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['company_id'], 'Companies'));
-        $rules->add($rules->existsIn(['customer_id'], 'Customers'));
+        //$rules->add($rules->existsIn(['customer_id'], 'Customers'));
         $rules->add($rules->existsIn(['gst_figure_id'], 'GstFigures'));
 
         return $rules;
