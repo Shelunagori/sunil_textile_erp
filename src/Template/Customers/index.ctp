@@ -21,7 +21,7 @@ $this->set('title', 'Customers');
 							<th scope="col" class="actions"><?= __('Sr') ?></th>
 							<th scope="col"><?= $this->Paginator->sort('name') ?></th>
 							<th scope="col"><?= $this->Paginator->sort('state') ?></th>
-							<th scope="col"><?= $this->Paginator->sort('gst in') ?></th>
+							<th scope="col"><?= $this->Paginator->sort('GSTIN') ?></th>
 							<th scope="col"><?= $this->Paginator->sort('email') ?></th>
 							<th scope="col"><?= $this->Paginator->sort('mobile') ?></th>
 							<th scope="col" class="actions"><?= __('Actions') ?></th>
@@ -38,30 +38,6 @@ $this->set('title', 'Customers');
 							<td><?= h($customer->mobile) ?></td>
 							<td class="actions">
 								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $customer->id]) ?>
-								<div class="btn-group" style="margin: 0px !important;">
-									<a class="btn btn1 blue mini" href="#" data-toggle="dropdown">
-										<i class="fa fa-angle-down"></i>       
-									</a>
-									<ul class="dropdown-menu drop">
-										<li>
-												<?php echo  $this->Html->link('<i class="fa fa-eye"></i> View', ['action' => 'view', $customer->id],array('escape'=>false)); ?>
-										</li>
-										<li>
-											<?= $this->Html->link(__('Edit'), ['action' => 'edit', $customer->id]) ?>
-										</li>
-										<li>
-												<?= $this->Form->postLink('<i class="fa fa-trash"></i>Delete ',
-												['action' => 'delete', $customer->id], 
-												[
-													'escape' => false,
-													'confirm' => __('Are you sure ?', $customer->id)
-												]) ?>
-										</li>
-										<li>
-												<?php echo  $this->Html->link('<i class="fa  fa-list-alt"></i> Sampling & Followup', ['action' => 'followUp', $customer->id],array('escape'=>false)); ?>
-										</li>
-									</ul>
-</div>
 							</td>
 						</tr>
 						<?php endforeach; ?>
