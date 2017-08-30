@@ -124,8 +124,8 @@ echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-home']
 	<span class="arrow "></span>
 	</a>
 	<ul class="sub-menu">
-		<li><?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-plus-square']).' Create', '/SalesInvoicess/Add',['escape' => false]); ?></li>
-		<li><?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-list-ul']).' List', '/PurchaseVouchers',['escape' => false]); ?></li>
+		<li><?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-plus-square']).' Create', '/SalesInvoices/Add',['escape' => false]); ?></li>
+		<li><?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-list-ul']).' List', '/SalesInvoices',['escape' => false]); ?></li>
 	</ul>
 </li>
 <?php 
