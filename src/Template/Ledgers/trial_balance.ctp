@@ -182,9 +182,9 @@ $this->set('title', 'Trial balance report');
 							<td scope="col">Total</td>
 							<td scope="col" align="right">
 							<?php 
-								if(!empty($openingBalanceDebitTotal))
+								if(!empty($openingBalanceDebit))
 								{
-									echo @$openingBalanceDebitTotal;
+									echo @$openingBalanceDebit+@$debitDiffrence;
 								}
 								else
 								{
@@ -196,7 +196,8 @@ $this->set('title', 'Trial balance report');
 							<?php 
 								if(!empty($openingBalanceCreditTotal))
 								{
-									echo @$openingBalanceCreditTotal;
+									
+									echo @$openingBalanceCreditTotal+@$creditDiffrence;
 								}
 								else
 								{

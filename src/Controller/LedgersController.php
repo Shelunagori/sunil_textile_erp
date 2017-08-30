@@ -289,7 +289,7 @@ class LedgersController extends AppController
 			//pr($openingBalanceArray);exit;
 		}
 		
-		$this->set(compact('ledger','from_date','to_date','ledgersArray','transactionArray1','transactionArray2','openingBalanceArray','creditDiffrence','debitDiffrence'));
+		$this->set(compact('ledger','from_date','to_date','ledgersArray','transactionArray1','transactionArray2','openingBalanceArray','creditDiffrence','debitDiffrence','openingBalanceDebit'));
         $this->set('_serialize', ['ledger']);
     }
 }
