@@ -91,10 +91,10 @@ $this->set('title', 'Trial balance report');
 										<td scope="col"><?php echo @$ledgersArray[$key];?></td>
 										<td scope="col" align="right">
 										<?php
-										    $closing_debit = $closing_debit+$key1;
-											$openingBalanceDebitTotal += $key1;
-											if(!empty($key1))
+										    if(!empty($key1))
 											{
+												$closing_debit = $closing_debit+$key1;
+												$openingBalanceDebitTotal += $key1;
 												echo $key1;
 											}
 											else
@@ -105,10 +105,10 @@ $this->set('title', 'Trial balance report');
 										</td>
 										<td scope="col" align="right">
 										<?php 
-											$closing_credit = $closing_credit+$openingBalance1;
-											$openingBalanceCreditTotal +=$openingBalance1;
 											if(!empty($openingBalance1))
 											{
+												$closing_credit = $closing_credit+$openingBalance1;
+												$openingBalanceCreditTotal +=$openingBalance1;
 												echo $openingBalance1;
 											}
 											else
