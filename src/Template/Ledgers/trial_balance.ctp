@@ -93,7 +93,7 @@ $this->set('title', 'Trial balance report');
 										<?php
 										    if(!empty($key1))
 											{
-												$closing_debit = $closing_debit+$key1;
+												$closing_debit = round($closing_debit,2)+round($key1,2);
 												$openingBalanceDebitTotal += $key1;
 												echo $key1;
 											}
@@ -107,8 +107,8 @@ $this->set('title', 'Trial balance report');
 										<?php 
 											if(!empty($openingBalance1))
 											{
-												$closing_credit = $closing_credit+$openingBalance1;
-												$openingBalanceCreditTotal +=$openingBalance1;
+												$closing_credit = round($closing_credit,2)+round($openingBalance1,2);
+												$openingBalanceCreditTotal +=round($openingBalance1,2);
 												echo $openingBalance1;
 											}
 											else
@@ -121,8 +121,8 @@ $this->set('title', 'Trial balance report');
 										<?php
 											if(!empty($transactionArray1[$key]))
 											{
-												$transactionDebitTotal +=$transactionArray1[$key];
-												$closing_debit = $closing_debit+$transactionArray1[$key];
+												$transactionDebitTotal +=round($transactionArray1[$key],2);
+												$closing_debit = round($closing_debit,2)+round($transactionArray1[$key],2);
 												echo $transactionArray1[$key];
 											}
 											else
@@ -135,8 +135,8 @@ $this->set('title', 'Trial balance report');
 										<?php 
 										    if(!empty($transactionArray2[$key]))
 											{
-												$transactionCreditTotal +=$transactionArray2[$key];
-												$closing_credit = $closing_credit+$transactionArray2[$key];
+												$transactionCreditTotal +=round($transactionArray2[$key],2);
+												$closing_credit = round($closing_credit,2)+round($transactionArray2[$key],2);
 												echo $transactionArray2[$key];
 											}
 											else
@@ -147,7 +147,7 @@ $this->set('title', 'Trial balance report');
 										</td>
 										<td scope="col" align="right">
 										<?php
-											$closingBalanceDebitTotal +=$closing_debit;
+											$closingBalanceDebitTotal +=round($closing_debit,2);
 											if(!empty($closing_debit))
 											{
 												echo @$closing_debit;
@@ -160,7 +160,7 @@ $this->set('title', 'Trial balance report');
 										</td>
 										<td scope="col" align="right">
 										<?php 
-											$closingBalanceCreditTotal +=$closing_credit;
+											$closingBalanceCreditTotal +=round($closing_credit,2);
 											if(!empty($closing_credit))
 											{
 												echo @$closing_credit;
@@ -252,6 +252,26 @@ $this->set('title', 'Trial balance report');
 								}
 							?>
 							</td>
+						</tr>
+						<tr>
+							<td scope="col">Diffrence of opening balance</td>
+							<td scope="col" align="right">
+							<?php 
+								if(!empty($debitDiffrence))
+								{
+									echo @$debitDiffrence;
+								}
+							?>
+							</td>
+							<td scope="col" align="right">
+							<?php 
+								if(!empty($creditDiffrence))
+								{
+									echo @$creditDiffrence;
+								}
+							?>
+							</td>
+							<td scope="col" colspan="4"></td>
 						</tr>
 					</tfoot>
 				</table>
