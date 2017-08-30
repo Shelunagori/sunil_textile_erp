@@ -156,7 +156,7 @@ class ItemsController extends AppController
 			$item->output_cgst_ledger_id = $output_cgst_ledger->id;
 			$item->output_sgst_ledger_id = $output_sgst_ledger->id;
 			$item->output_igst_ledger_id = $output_igst_ledger->id;
-			pr($item);exit;
+			//pr($item);exit;
 			if ($this->Items->save($item)) {
 				if($item->quantity>0)
 				{
@@ -177,11 +177,15 @@ class ItemsController extends AppController
 					$itemLedger->company_id         = $company_id;
 					$this->Items->ItemLedgers->save($itemLedger);
 				}
-                $this->Flash->success(__('The item has been saved.'));
+				$this->Flash->success(__('The item has been saved.'));
+				
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The item could not be saved. Please, try again.'));
+			else
+			{ pr($item);exit;
+				$this->Flash->error(__('The item could not be saved. Please, try again.'));
+			}
         }
         $units = $this->Items->Units->find('list');
         $stockGroups = $this->Items->StockGroups->find('list');

@@ -130,7 +130,7 @@ class ItemsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['unit_id'], 'Units'));
-        $rules->add($rules->existsIn(['stock_group_id'], 'StockGroups'));
+        //$rules->add($rules->existsIn(['stock_group_id'], 'StockGroups'));
 
         return $rules;
     }
