@@ -78,17 +78,18 @@ class CustomersController extends AppController
 			        $transaction_date=$this->Auth->User('session_company')->books_beginning_from;
 					$AccountingEntry = $this->Customers->Ledgers->AccountingEntries->newEntity();
 					$AccountingEntry->ledger_id = $ledger->id;
-					if($customer->debit_credit=="debitor")
+					if($customer->debit_credit=="Dr")
 					{
 						$AccountingEntry->debit = $customer->opening_balance_value;
 					}
-					if($customer->debit_credit=="creditor")
+					if($customer->debit_credit=="Cr")
 					{
 						$AccountingEntry->credit = $customer->opening_balance_value;
 					}
 					$AccountingEntry->customer_id      = $customer->id;
 					$AccountingEntry->transaction_date = date("Y-m-d",strtotime($transaction_date));
 					$AccountingEntry->company_id       = $company_id;
+					$AccountingEntry->is_opening_balance = 'yes';
 					$this->Customers->Ledgers->AccountingEntries->save($AccountingEntry);
 				}
 
@@ -149,17 +150,18 @@ class CustomersController extends AppController
 					$transaction_date=$this->Auth->User('session_company')->books_beginning_from;
 					$AccountingEntry = $this->Customers->Ledgers->AccountingEntries->newEntity();
 					$AccountingEntry->ledger_id        = $customer->ledger->id;
-					if($customer->debit_credit=="debitor")
+					if($customer->debit_credit=="Dr")
 					{
 						$AccountingEntry->debit        = $customer->opening_balance_value;
 					}
-					if($customer->debit_credit=="creditor")
+					if($customer->debit_credit=="Cr")
 					{
 						$AccountingEntry->credit       = $customer->opening_balance_value;
 					}
 					$AccountingEntry->customer_id      = $customer->id;
 					$AccountingEntry->transaction_date = date("Y-m-d",strtotime($transaction_date));
 					$AccountingEntry->company_id       = $company_id;
+					$AccountingEntry->is_opening_balance = 'yes';
 					$this->Customers->Ledgers->AccountingEntries->save($AccountingEntry);
 					
                 $this->Flash->success(__('The customer has been saved.'));

@@ -77,17 +77,18 @@ class SuppliersController extends AppController
 			        $transaction_date=$this->Auth->User('session_company')->books_beginning_from;
 					$AccountingEntry = $this->Suppliers->Ledgers->AccountingEntries->newEntity();
 					$AccountingEntry->ledger_id        = $ledger->id;
-					if($supplier->debit_credit=="debitor")
+					if($supplier->debit_credit=="Dr")
 					{
 						$AccountingEntry->debit        = $supplier->opening_balance_value;
 					}
-					if($supplier->debit_credit=="creditor")
+					if($supplier->debit_credit=="Cr")
 					{
 						$AccountingEntry->credit       = $supplier->opening_balance_value;
 					}
 					$AccountingEntry->customer_id      = $supplier->id;
 					$AccountingEntry->transaction_date = date("Y-m-d",strtotime($transaction_date));
 					$AccountingEntry->company_id       = $company_id;
+					$AccountingEntry->is_opening_balance = 'yes';
 					$this->Suppliers->Ledgers->AccountingEntries->save($AccountingEntry);
 				}
                 $this->Flash->success(__('The supplier has been saved.'));
@@ -146,17 +147,18 @@ class SuppliersController extends AppController
 					$transaction_date=$this->Auth->User('session_company')->books_beginning_from;
 					$AccountingEntry = $this->Suppliers->Ledgers->AccountingEntries->newEntity();
 					$AccountingEntry->ledger_id        = $supplier->ledgers[0]->id;
-					if($supplier->debit_credit=="debitor")
+					if($supplier->debit_credit=="Dr")
 					{
 						$AccountingEntry->debit        = $supplier->opening_balance_value;
 					}
-					if($supplier->debit_credit=="creditor")
+					if($supplier->debit_credit=="Cr")
 					{
 						$AccountingEntry->credit       = $supplier->opening_balance_value;
 					}
 					$AccountingEntry->customer_id      = $supplier->id;
 					$AccountingEntry->transaction_date = date("Y-m-d",strtotime($transaction_date));
 					$AccountingEntry->company_id       = $company_id;
+					$AccountingEntry->is_opening_balance = 'yes';
 					$this->Suppliers->Ledgers->AccountingEntries->save($AccountingEntry);
                 $this->Flash->success(__('The supplier has been saved.'));
 
