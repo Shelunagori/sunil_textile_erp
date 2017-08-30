@@ -63,6 +63,23 @@ class LedgersController extends AppController
 			$ledger->company_id = $company_id;
             if ($this->Ledgers->save($ledger)) 
 			{
+				//Create Accounting Entry//
+				$transaction_date=$this->Auth->User('session_company')->books_beginning_from;
+				$AccountingEntry = $this->Ledgers->AccountingEntries->newEntity();
+				$AccountingEntry->ledger_id = $ledger->id;
+				if($ledger->debit_credit=="Dr")
+				{
+					$AccountingEntry->debit = $ledger->opening_balance_value;
+				}
+				if($ledger->debit_credit=="Cr")
+				{
+					$AccountingEntry->credit = $ledger->opening_balance_value;
+				}
+				$AccountingEntry->transaction_date      = date("Y-m-d",strtotime($transaction_date));
+				$AccountingEntry->company_id            = $company_id;
+				$AccountingEntry->is_opening_balance    = 'yes';
+				$this->Ledgers->AccountingEntries->save($AccountingEntry);
+				
                 $this->Flash->success(__('The ledger has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -87,14 +104,37 @@ class LedgersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $ledger = $this->Ledgers->get($id, [
-            'contain' => []
+            'contain' => ['AccountingEntries']
         ]);
+		
 		$company_id=$this->Auth->User('session_company_id');
         if ($this->request->is(['patch', 'post', 'put'])) 
 		{
             $ledger = $this->Ledgers->patchEntity($ledger, $this->request->getData());
             if ($this->Ledgers->save($ledger)) 
 			{
+				//Accounting Entry
+				$query_delete = $this->Ledgers->AccountingEntries->query();
+				$query_delete->delete()
+				->where(['ledger_id' => $ledger->id,'company_id'=>$company_id])
+				->execute();
+				
+				$transaction_date=$this->Auth->User('session_company')->books_beginning_from;
+				$AccountingEntry = $this->Ledgers->AccountingEntries->newEntity();
+				$AccountingEntry->ledger_id = $ledger->id;
+				if($ledger->debit_credit=="Dr")
+				{
+					$AccountingEntry->debit = $ledger->opening_balance_value;
+				}
+				if($ledger->debit_credit=="Cr")
+				{
+					$AccountingEntry->credit = $ledger->opening_balance_value;
+				}
+				$AccountingEntry->transaction_date      = date("Y-m-d",strtotime($transaction_date));
+				$AccountingEntry->company_id            = $company_id;
+				$AccountingEntry->is_opening_balance    = 'yes';
+				$this->Ledgers->AccountingEntries->save($AccountingEntry);
+				
                 $this->Flash->success(__('The ledger has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
