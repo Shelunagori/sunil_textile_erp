@@ -205,14 +205,26 @@ class ItemsController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+		$company_id=$this->Auth->User('session_company_id');
+		if ($this->request->is(['post']))
+		{
+			$item = $this->Items->get($id);
+			$item->freeze=1;
+			if ($this->Items->save($item)) {
+				
+				$this->Flash->success(__('The item has been freezed.'));
+			} else {
+				$this->Flash->error(__('The item could not be freeze. Please, try again.'));
+			}
+		}
+        /* $this->request->allowMethod(['post', 'delete']);
         $item = $this->Items->get($id);
         if ($this->Items->delete($item)) {
             $this->Flash->success(__('The item has been deleted.'));
         } else {
             $this->Flash->error(__('The item could not be deleted. Please, try again.'));
         }
-
+ */
         return $this->redirect(['action' => 'index']);
     }
 }

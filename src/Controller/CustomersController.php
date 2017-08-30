@@ -197,14 +197,26 @@ class CustomersController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+		$company_id=$this->Auth->User('session_company_id');
+		if ($this->request->is(['post']))
+		{
+			$customer = $this->Customers->get($id);
+			$customer->freeze=1;
+			if ($this->Customers->save($customer)) {
+				
+				$this->Flash->success(__('The customer has been freezed.'));
+			} else {
+				$this->Flash->error(__('The customer could not be freeze. Please, try again.'));
+			}
+		}
+        /* $this->request->allowMethod(['post', 'delete']);
         $customer = $this->Customers->get($id);
         if ($this->Customers->delete($customer)) {
             $this->Flash->success(__('The customer has been deleted.'));
         } else {
             $this->Flash->error(__('The customer could not be deleted. Please, try again.'));
         }
-
+ */
         return $this->redirect(['action' => 'index']);
     }
 }

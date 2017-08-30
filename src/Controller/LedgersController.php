@@ -24,7 +24,7 @@ class LedgersController extends AppController
         $this->paginate = [
             'contain' => ['AccountingGroups', 'Companies']
         ];
-        $ledgers = $this->paginate($this->Ledgers);
+        $ledgers = $this->paginate($this->Ledgers->find()->where(['freeze'=>0]));
         //pr($ledgers->toArray());exit;
         $this->set(compact('ledgers'));
         $this->set('_serialize', ['ledgers']);
@@ -117,7 +117,19 @@ class LedgersController extends AppController
      */
     public function delete($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
+        $company_id=$this->Auth->User('session_company_id');
+		if ($this->request->is(['post']))
+		{
+			$ledger = $this->Ledgers->get($id);
+			$ledger->freeze=1;
+			if ($this->Ledgers->save($ledger)) {
+				
+				$this->Flash->success(__('The ledger has been freezed.'));
+			} else {
+				$this->Flash->error(__('The ledger could not be freeze. Please, try again.'));
+			}
+		}
+		/* $this->request->allowMethod(['post', 'delete']);
         $ledger = $this->Ledgers->get($id);
         if ($this->Ledgers->delete($ledger)) 
 		{
@@ -126,7 +138,7 @@ class LedgersController extends AppController
 		else
 		{
             $this->Flash->error(__('The ledger could not be deleted. Please, try again.'));
-        }
+        } */
 
         return $this->redirect(['action' => 'index']);
     }

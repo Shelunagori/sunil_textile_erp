@@ -37,7 +37,24 @@ $this->set('title', 'Customers');
 							<td><?= h($customer->email) ?></td>
 							<td><?= h($customer->mobile) ?></td>
 							<td class="actions">
-								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $customer->id]) ?>
+								<div class="btn-group" style="margin: 0px !important;">
+									<a class="btn btn1 blue" href="#" data-toggle="dropdown">
+										<i class="fa fa-angle-down"></i>       
+									</a>
+									<ul class="dropdown-menu drop">
+										<li>
+											<?= $this->Html->link('Edit ',['action' => 'edit', $customer->id]) ?>
+										</li>
+										<li>
+											<?= $this->Form->postLink('<i class="fa fa-trash"></i>Freezed ',
+											['action' => 'delete', $customer->id], 
+											[
+												'escape' => false,
+												'confirm' => __('Are you sure ?', $customer->id)
+											]) ?>
+										</li>
+									</ul>
+								</div>
 							</td>
 						</tr>
 						<?php endforeach; ?>
