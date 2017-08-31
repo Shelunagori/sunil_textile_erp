@@ -54,8 +54,8 @@ $this->set('title', 'Edit Item');
 						<div class="row">
 							<div class="col-md-6">
 								<div class="form-group">
-									<label>Gst Figure <span class="required">*</span></label>
-									<?php echo $this->Form->control('gst_figure_id',['class'=>'form-control input-sm','label'=>false,'empty'=>'-GstFiguret -', 'options' => $gstFigures,'required'=>'required']); ?>
+									<label>GST Figure <span class="required">*</span></label>
+									<?php echo $this->Form->control('gst_figure_id',['class'=>'form-control input-sm','label'=>false,'empty'=>'-GSTFiguret -', 'options' => $gstFigures,'required'=>'required']); ?>
 								</div>
 							</div>
 							<div class="col-md-6">
