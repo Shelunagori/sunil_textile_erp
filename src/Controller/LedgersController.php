@@ -229,8 +229,11 @@ class LedgersController extends AppController
 			{
 				foreach($trialBalances as $trialBalance)
 				{
-					$transactionArray1[$trialBalance->ledger_id] = $trialBalance->debit_amount;
-					$transactionArray2[$trialBalance->ledger_id] = $trialBalance->debit_amount;
+					if(!empty($trialBalance->debit_amount) || !empty($trialBalance->credit_amount))
+					{
+						$transactionArray1[$trialBalance->ledger_id] = $trialBalance->debit_amount;
+						$transactionArray2[$trialBalance->ledger_id] = $trialBalance->credit_amount;
+					}
 					//$transactionArray[$trialBalance->ledger->id][$trialBalance->debit_amount] =$trialBalance->credit_amount;
 				}
 			}
@@ -273,8 +276,11 @@ class LedgersController extends AppController
 				{
 					$openingBalanceDebit  += $openingBalance->debit_amount;
 					$openingBalanceCredit += $openingBalance->credit_amount;
-					$ledgersArray[$openingBalance->ledger->id] = $openingBalance->ledger->name;
-					$openingBalanceArray[$openingBalance->ledger->id][$openingBalance->debit_amount] =$openingBalance->credit_amount;
+					if(!empty($openingBalance->debit_amount) || !empty($openingBalance->credit_amount))
+					{
+						$ledgersArray[$openingBalance->ledger->id] = $openingBalance->ledger->name;
+						$openingBalanceArray[$openingBalance->ledger->id][$openingBalance->debit_amount] =$openingBalance->credit_amount;
+					}
 				}
 				$openingBalanceDebit = round($openingBalanceDebit,2)+round($totalDebit,2);
 				if($openingBalanceDebit > $openingBalanceCredit)
@@ -290,6 +296,33 @@ class LedgersController extends AppController
 		}
 		
 		$this->set(compact('ledger','from_date','to_date','ledgersArray','transactionArray1','transactionArray2','openingBalanceArray','creditDiffrence','debitDiffrence','openingBalanceDebit'));
+        $this->set('_serialize', ['ledger']);
+    }
+	
+	public function accountLedger($id = null)
+    {
+		$this->viewBuilder()->layout('index_layout');
+		$accountLedger     = $this->Ledgers->newEntity();
+		$company_id = $this->Auth->User('session_company_id');
+		
+		$ledger_id = $this->request->query('ledger_id');
+		$from_date = $this->request->query('from_date');
+		$to_date   = $this->request->query('to_date');
+		
+		 if(!empty($ledger_id)){
+			$where['AccountingEntries.ledger_id']=$ledger_id;
+		} 
+		if(!empty($from_date)){
+			$From=date("Y-m-d",strtotime($from_date));
+            $where['AccountingEntries.transaction_date >=']=$From;
+		}
+		if(!empty($to_date)){
+			$To=date("Y-m-d",strtotime($to_date));
+            $where['AccountingEntries.transaction_date <=']=$To;
+		}
+		
+		$ledgers = $this->Ledgers->find('list');
+		$this->set(compact('accountLedger','ledgers'));
         $this->set('_serialize', ['ledger']);
     }
 }
