@@ -332,7 +332,8 @@ class LedgersController extends AppController
             $where['AccountingEntries.transaction_date <=']=$To;
 			
 		}
-		$AccountingLedgers = $this->Ledgers->AccountingEntries->find()->where($where)->contain(['Ledgers'])->order(['ledger_id'=>'ASC']);
+		if(!empty($ledger_id) || !empty($from_date) || !empty($to_date))
+		$AccountingLedgers = $this->Ledgers->AccountingEntries->find()->where($where)->contain(['Ledgers'])->order(['AccountingEntries.transaction_date'=>'ASC']);
 		if(!empty($AccountingLedgers))
 		{ 
 	
@@ -386,22 +387,20 @@ class LedgersController extends AppController
 			$total_debit1  = $debit1+$opening_balance_yes_debit_total1; 
 			if($total_credit1 > $total_debit1)
 			{ 
-		        echo "Cr:-";echo "<br>";
-				echo "opening:-".$openingBalance_credit1 = $total_credit1-$total_debit1; echo "<br>";
-				echo "closing:-".$closingBalance_credit1 = $openingBalance_credit1+@$openingBalance_credit; echo "<br>";
+				$openingBalance_credit1 = $total_credit1-$total_debit1; 
+				$closingBalance_credit1 = $openingBalance_credit1+@$openingBalance_credit; 
 			}
 			
 			if($total_credit1 < $total_debit1)
 			{ 
-				echo "Dr:-";echo "<br>";
-				echo "opening:-".$openingBalance_debit1 = $total_debit1-$total_credit1; echo "<br>";
-				echo "closing:-".$closingBalance_debit1 = $openingBalance_debit1+@$openingBalance_debit;
+				$openingBalance_debit1 = $total_debit1-$total_credit1; 
+				$closingBalance_debit1 = $openingBalance_debit1+@$openingBalance_debit;
 			}
 			//exit;
 		}
 		//pr($AccountingLedgers->toArray());exit;
 		$ledgers = $this->Ledgers->find('list');
-		$this->set(compact('accountLedger','ledgers'));
+		$this->set(compact('accountLedger','ledgers','openingBalance_debit1','closingBalance_debit1','openingBalance_credit1','closingBalance_credit1','AccountingLedgers','from_date','to_date'));
         $this->set('_serialize', ['ledger']);
     }
 }

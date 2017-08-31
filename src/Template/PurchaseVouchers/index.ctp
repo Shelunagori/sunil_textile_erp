@@ -39,13 +39,13 @@ $this->set('title', 'Purchase Vouchers');
 										   {
 											   echo $purchaseVoucher->supplier_invoice_date;
 										   }
-										   else
-										   {
-											   echo "--/--/----";
-										   }
 									?>
 								</td>
+
 								<td class="rightAligntextClass"><?= $this->Number->format($purchaseVoucher->voucher_amount) ?></td>
+
+								<td align="right"><?= $this->Number->format($purchaseVoucher->voucher_amount) ?></td>
+
 								<td class="actions">
 									<?= $this->Html->link(__('View'), ['action' => 'view', $purchaseVoucher->id]) ?>
 									<?= $this->Html->link(__('Edit'), ['action' => 'edit', $purchaseVoucher->id]) ?>

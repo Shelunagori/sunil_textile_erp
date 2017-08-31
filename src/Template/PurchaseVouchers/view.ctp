@@ -4,6 +4,10 @@
  */
 $this->set('title', 'purchase Voucher View');
 ?>
+<style>
+table.fixed { table-layout:fixed; }
+table.fixed td { overflow: hidden; }
+</style>
 <div class="row">
 	<div class="col-md-12">
 		<div class="portlet light ">
@@ -14,42 +18,37 @@ $this->set('title', 'purchase Voucher View');
 				</div>
 			</div>
 			<div class="portlet-body">
-				<table width="100%" >
+				<table width="100%" class="fixed">
 				  <tr>
-					<td width="15%"><b>Voucher No </b></td>
+					<td width="8%"><b>Voucher No </b></td>
 					<td width="1%">:</td>
 					<td><?php echo '#'.str_pad($purchaseVoucher->voucher_no, 4, '0', STR_PAD_LEFT);?></td>
-					<td width="18%"><b>Transaction Date</b></td>
-					<td width="1%">:</td>
+					<td width="12%" ><b>Transaction Date</b></td>
+					<td width="1%" >:</td>
 					<td><?php echo date("d-m-Y",strtotime($purchaseVoucher->transaction_date)); ?></td>
-					<td width="18%"><b>Supplier Invoice No</b></td>
+					<td width="12%"><b>Supplier Invoice No</b></td>
 					<td width="1%">:</td>
 					<td><?php echo $purchaseVoucher->supplier_invoice_no; ?></td>
-					<td width="18%"><b>Supplier Invoice Date</b></td>
+					<td width="14%"><b>Supplier Invoice Date</b></td>
 					<td width="1%">:</td>
 					<td><?php 
 							if(!empty($purchaseVoucher->supplier_invoice_date))
 							{
 								echo date("d-m-Y",strtotime($purchaseVoucher->supplier_invoice_date));	
 							}
-							else
-							{
-								echo "--/--/----";
-							}
 						?>
 					</td>
 				  </tr>
-                  <tr>
-					<td width="15%"><b>Narration </b></td>
-					<td width="1%">:</td>
-					<td><?php echo $purchaseVoucher->narration;?></td>
+                  <tr style="padding-top:5px;">
+					<td width="8%" valign="top"><b>Narration </b></td>
+					<td width="1%" valign="top">:</td>
+					<td colspan="3"><?php echo $purchaseVoucher->narration;?></td>
 				  </tr>
                 </table><br>
        		    <table id="main_table" class="table table-condensed table-bordered"  width="100%">
 					<thead>
 					<tr align="center">
-						<td></td>
-						<td><b>Ledger Id</b></td>
+						<td><b>Ledger</b></td>
 						<td><b>Debit</b></td>
 						<td><b>Credit</b></td>
 					</tr>
@@ -60,7 +59,6 @@ $this->set('title', 'purchase Voucher View');
 							 foreach ($purchaseVoucher->purchase_voucher_rows as $purchaseVoucherRows):
 					?>
 						<tr class="main_tr" class="tab">
-							
 							<td width="7%" class="rightAligntextClass">
 								<?php 
 									if(!empty($purchaseVoucherRows->debit))
@@ -75,6 +73,7 @@ $this->set('title', 'purchase Voucher View');
 								?>
 							</td>
 							<td width="25%" align="center">
+							<td width="60%">
 								<?php echo $purchaseVoucherRows->ledger->name; ?>
 							</td>
 							<td width="20%" class="rightAligntextClass">
@@ -90,6 +89,7 @@ $this->set('title', 'purchase Voucher View');
 								?>
 							</td>
 							<td width="25%" class="rightAligntextClass">
+							<td width="20%" align="right">
 								<?php 
 								    if(!empty($purchaseVoucherRows->credit))
 									{
@@ -108,7 +108,9 @@ $this->set('title', 'purchase Voucher View');
 						<tr>
 							<td colspan="2" class="rightAligntextClass">Total</td>
 							<td width="25%" class="rightAligntextClass"><?php echo $purchaseVoucher->voucher_amount?></td>
-							<td width="25%" class="rightAligntextClass"><?php echo $purchaseVoucher->voucher_amount?></td>
+							<td width="25%" class="rightAligntextClass"><?php echo $purchaseVoucher->voucher_amount?></td>							<td align="right">Total</td>
+							<td width="25%" align="right"><?php echo $purchaseVoucher->voucher_amount?></td>
+							<td width="25%" align="right"><?php echo $purchaseVoucher->voucher_amount?></td>
 						</tr>
 					</tfoot>
 				</table>
