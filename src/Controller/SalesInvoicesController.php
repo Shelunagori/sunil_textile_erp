@@ -75,7 +75,7 @@ class SalesInvoicesController extends AppController
             $salesInvoice->transaction_date=$transaction_date;
 			if($salesInvoice->cash_or_credit=='cash')
 			{
-			$salesInvoice->customer_id=0;
+				$salesInvoice->customer_id=0;
 			}
 		
 				
@@ -93,7 +93,7 @@ class SalesInvoicesController extends AppController
 			$customerOptions[]=['text' =>$customer->name, 'value' => $customer->id ,'customer_state_id'=>$customer->state_id];
 		}
 		
-		$items = $this->SalesInvoices->Items->find()
+		$items = $this->SalesInvoices->SalesInvoiceRows->Items->find()
 					->where(['Items.company_id'=>$company_id])
 					->contain(['GstFigures']);
 		$itemOptions=[];

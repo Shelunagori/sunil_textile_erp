@@ -55,7 +55,6 @@ class SalesInvoicesTable extends Table
             'foreignKey' => 'sales_invoice_id',
 			'saveStrategy'=>'replace'
         ]);
-		$this->belongsTo('Items');
     }
 
     /**
