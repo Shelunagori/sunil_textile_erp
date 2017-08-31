@@ -48,7 +48,7 @@ $this->set('title', 'Trial balance report');
 					</div>
 					<div class="col-md-2" >
 							<div class="form-group" style="padding-top:22px;"> 
-								<button type="submit" class="btn btn-xs blue input-sm srch"><i class="fa fa-search"></i> Search</button>
+								<button type="submit" class="btn btn-xs blue input-sm srch">Go</button>
 							</div>
 					</div>	
 					<?= $this->Form->end() ?>
@@ -178,6 +178,26 @@ $this->set('title', 'Trial balance report');
 						?>
 					</tbody>
 					<tfoot>
+						<tr style="color:red;">
+							<td scope="col"><b>Diffrence of opening balance</b></td>
+							<td scope="col" align="right">
+							<?php 
+								if(!empty($debitDiffrence))
+								{
+									echo @$debitDiffrence;
+								}
+							?>
+							</td>
+							<td scope="col" align="right">
+							<?php 
+								if(!empty($creditDiffrence))
+								{
+									echo @$creditDiffrence;
+								}
+							?>
+							</td>
+							<td scope="col" colspan="4"></td>
+						</tr>
 						<tr>
 							<td scope="col">Total</td>
 							<td scope="col" align="right">
@@ -253,26 +273,6 @@ $this->set('title', 'Trial balance report');
 								}
 							?>
 							</td>
-						</tr>
-						<tr>
-							<td scope="col">Diffrence of opening balance</td>
-							<td scope="col" align="right">
-							<?php 
-								if(!empty($debitDiffrence))
-								{
-									echo @$debitDiffrence;
-								}
-							?>
-							</td>
-							<td scope="col" align="right">
-							<?php 
-								if(!empty($creditDiffrence))
-								{
-									echo @$creditDiffrence;
-								}
-							?>
-							</td>
-							<td scope="col" colspan="4"></td>
 						</tr>
 					</tfoot>
 				</table>

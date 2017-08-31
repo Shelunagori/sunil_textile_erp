@@ -114,7 +114,7 @@ class ItemsController extends AppController
         $stockGroups = $this->Items->StockGroups->find('list');
         $shades = $this->Items->Shades->find('list');
         $sizes = $this->Items->Sizes->find('list');
-        $gstFigures = $this->Items->GstFigures->find('list');
+        $gstFigures = $this->Items->GstFigures->find('list')->where(['GstFigures.company_id'=>$company_id]);
         $this->set(compact('item', 'units', 'stockGroups','sizes','shades','gstFigures'));
         $this->set('_serialize', ['item']);
     }
@@ -191,7 +191,7 @@ class ItemsController extends AppController
         $stockGroups = $this->Items->StockGroups->find('list');
 		$shades = $this->Items->Shades->find('list');
         $sizes = $this->Items->Sizes->find('list');
-		$gstFigures = $this->Items->GstFigures->find('list');
+		$gstFigures = $this->Items->GstFigures->find('list')->where(['GstFigures.company_id'=>$company_id]);
         $this->set(compact('item', 'units', 'stockGroups','sizes','shades','gstFigures'));
         $this->set('_serialize', ['item']);
     }
