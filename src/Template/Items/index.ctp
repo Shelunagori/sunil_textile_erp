@@ -22,7 +22,7 @@ $this->set('title', 'Items');
 								<th scope="col" class="actions"><?= __('Sr') ?></th>
 								<th scope="col"><?= $this->Paginator->sort('name') ?></th>
 								<th scope="col"><?= $this->Paginator->sort('unit_id') ?></th>
-								<th scope="col"><?= $this->Paginator->sort('hsn_code') ?></th>
+								<th scope="col"><?= $this->Paginator->sort('HSN_code') ?></th>
 								<th scope="col" class="actions"><?= __('Actions') ?></th>
 							</tr>
 						</thead>

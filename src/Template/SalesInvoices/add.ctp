@@ -242,7 +242,7 @@ $this->set('title', 'Create Sales Invoice');
 				<?php echo $this->Form->input('taxable_value', ['label' => false,'class' => 'form-control input-sm discountAmount calculation','required'=>'required', 'readonly'=>'readonly','placeholder'=>'Taxable Value']); ?>	
 			</td>
 			<td>
-				<?php echo $this->Form->input('gst_figure_tax_name', ['label' => false,'class' => 'form-control input-sm gst_figure_tax_name', 'readonly'=>'readonly','required'=>'required','placeholder'=>'']); ?>	
+				<?php echo $this->Form->input('gst_figure_tax_name', ['label' => false,'class' => 'form-control input-sm gst_figure_tax_name', 'readonly'=>'readonly','required'=>'required','placeholder'=>'GST']); ?>	
 			</td>
 			<td>
 				<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm gstAmount calculation','required'=>'required', 'readonly'=>'readonly','placeholder'=>'Amount']); ?>	

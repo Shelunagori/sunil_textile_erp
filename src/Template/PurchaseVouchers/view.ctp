@@ -10,7 +10,7 @@ $this->set('title', 'purchase Voucher View');
 			<div class="portlet-title">
 				<div class="caption">
 					<i class="icon-bar-chart font-green-sharp hide"></i>
-					<span class="caption-subject font-green-sharp bold ">purchase Voucher View</span>
+					<span class="caption-subject font-green-sharp bold ">Purchase Voucher View</span>
 				</div>
 			</div>
 			<div class="portlet-body">

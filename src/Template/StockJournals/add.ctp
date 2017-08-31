@@ -359,7 +359,7 @@ echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 				<?php echo $this->Form->input('item_id', ['empty'=>'--Select--','options'=>$items,'label' => false,'class' => 'form-control input-medium','required'=>'required']); ?>
 			</td>
 			<td width="15%">
-				<?php echo $this->Form->input('quantity', ['label' => false,'class' => '','id'=>'check','required'=>'required','placeholder'=>'Quantity']); ?>
+				<?php echo $this->Form->input('quantity', ['label' => false,'class' => '','id'=>'check','required'=>'required','placeholder'=>'Qty']); ?>
 			</td>
 			<td width="20%">
 				<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm','required'=>'required','placeholder'=>'Rate']); ?>
