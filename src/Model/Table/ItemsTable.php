@@ -64,12 +64,19 @@ class ItemsTable extends Table
 		$this->belongsTo('GstFigures', [
             'foreignKey' => 'gst_figure_id',
             'joinType' => 'LEFT'
-]);
-		/* $this->belongsTo('input_cgst_ledger', [
+		]);
+		
+		$this->belongsTo('InputCgstLedgers', [
 			'className' => 'Ledgers',
 			'foreignKey' => 'input_cgst_ledger_id',
-			'propertyName' => 'input_cgst_ledger',
+			'propertyName' => 'InputCgstLedgers',
 		]);
+		$this->belongsTo('InputSgstLedgers', [
+			'className' => 'Ledgers',
+			'foreignKey' => 'input_sgst_ledger_id',
+			'propertyName' => 'InputSgstLedgers',
+		]);
+		/* 
 		$this->belongsTo('input_sgst_ledger', [
 			'className' => 'Ledgers',
 			'foreignKey' => 'input_sgst_ledger_id',
