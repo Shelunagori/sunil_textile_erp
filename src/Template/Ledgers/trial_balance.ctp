@@ -89,7 +89,7 @@ $this->set('title', 'Trial balance report');
 							?>
 									<tr>
 										<td scope="col"><?php echo @$ledgersArray[$key];?></td>
-										<td scope="col" align="right">
+										<td scope="col" class="rightAligntextClass">
 										<?php
 										    if(!empty($key1))
 											{
@@ -103,7 +103,7 @@ $this->set('title', 'Trial balance report');
 											}
 										?>
 										</td>
-										<td scope="col" align="right">
+										<td scope="col"class="rightAligntextClass">
 										<?php 
 											if(!empty($openingBalance1))
 											{
@@ -117,7 +117,7 @@ $this->set('title', 'Trial balance report');
 											}
 										?>
 										</td>
-										<td scope="col" align="right">
+										<td scope="col" class="rightAligntextClass">
 										<?php
 											if(!empty($transactionArray1[$key]))
 											{
@@ -131,7 +131,7 @@ $this->set('title', 'Trial balance report');
 											}
 										?>
 										</td>
-										<td scope="col" align="right">
+										<td scope="col" class="rightAligntextClass">
 										<?php 
 										    if(!empty($transactionArray2[$key]))
 											{
@@ -145,7 +145,7 @@ $this->set('title', 'Trial balance report');
 											}
 										?>
 										</td>
-										<td scope="col" align="right">
+										<td scope="col" class="rightAligntextClass">
 										<?php
 											$closingBalanceDebitTotal +=round($closing_debit,2);
 											if(!empty($closing_debit))
@@ -158,7 +158,7 @@ $this->set('title', 'Trial balance report');
 											}
 										?>
 										</td>
-										<td scope="col" align="right">
+										<td scope="col" class="rightAligntextClass">
 										<?php 
 											$closingBalanceCreditTotal +=round($closing_credit,2);
 											if(!empty($closing_credit))
@@ -180,7 +180,7 @@ $this->set('title', 'Trial balance report');
 					<tfoot>
 						<tr>
 							<td scope="col">Total</td>
-							<td scope="col" align="right">
+							<td scope="col" class="rightAligntextClass">
 							<?php 
 								if(!empty($openingBalanceDebit))
 								{
@@ -192,7 +192,7 @@ $this->set('title', 'Trial balance report');
 								}
 							?>
 							</td>
-							<td scope="col" align="right">
+							<td scope="col" class="rightAligntextClass">
 							<?php 
 								if(!empty($openingBalanceCreditTotal))
 								{
@@ -205,7 +205,7 @@ $this->set('title', 'Trial balance report');
 								}
 							?>
 							</td>
-							<td scope="col" align="right">
+							<td scope="col" class="rightAligntextClass">
 							<?php 
 								if(!empty($transactionDebitTotal))
 								{
@@ -217,7 +217,7 @@ $this->set('title', 'Trial balance report');
 								}
 							?>
 							</td>
-							<td scope="col" align="right">
+							<td scope="col" class="rightAligntextClass">
 							<?php
 								if(!empty($transactionCreditTotal))
 								{
@@ -229,7 +229,7 @@ $this->set('title', 'Trial balance report');
 								}
 							?>
 							</td>
-							<td scope="col" align="right">
+							<td scope="col" class="rightAligntextClass">
 							<?php 
 								if(!empty($closingBalanceDebitTotal))
 								{
@@ -241,7 +241,7 @@ $this->set('title', 'Trial balance report');
 								}
 							?>
 							</td>
-							<td scope="col" align="right">
+							<td scope="col" class="rightAligntextClass">
 							<?php 
 								if(!empty($closingBalanceCreditTotal))
 								{
@@ -256,7 +256,7 @@ $this->set('title', 'Trial balance report');
 						</tr>
 						<tr>
 							<td scope="col">Diffrence of opening balance</td>
-							<td scope="col" align="right">
+							<td scope="col" class="rightAligntextClass">
 							<?php 
 								if(!empty($debitDiffrence))
 								{
@@ -264,7 +264,7 @@ $this->set('title', 'Trial balance report');
 								}
 							?>
 							</td>
-							<td scope="col" align="right">
+							<td scope="col" class="rightAligntextClass">
 							<?php 
 								if(!empty($creditDiffrence))
 								{

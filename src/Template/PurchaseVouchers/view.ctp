@@ -61,7 +61,7 @@ $this->set('title', 'purchase Voucher View');
 					?>
 						<tr class="main_tr" class="tab">
 							
-							<td width="7%">
+							<td width="7%" class="rightAligntextClass">
 								<?php 
 									if(!empty($purchaseVoucherRows->debit))
 									{
@@ -77,7 +77,7 @@ $this->set('title', 'purchase Voucher View');
 							<td width="25%" align="center">
 								<?php echo $purchaseVoucherRows->ledger->name; ?>
 							</td>
-							<td width="20%" align="right">
+							<td width="20%" class="rightAligntextClass">
 								<?php 
 									if(!empty($purchaseVoucherRows->debit))
 									{
@@ -89,7 +89,7 @@ $this->set('title', 'purchase Voucher View');
 									}
 								?>
 							</td>
-							<td width="25%" align="right">
+							<td width="25%" class="rightAligntextClass">
 								<?php 
 								    if(!empty($purchaseVoucherRows->credit))
 									{
@@ -106,9 +106,9 @@ $this->set('title', 'purchase Voucher View');
 					</tbody>
 					<tfoot>
 						<tr>
-							<td colspan="2" align="right">Total</td>
-							<td width="25%" align="right"><?php echo $purchaseVoucher->voucher_amount?></td>
-							<td width="25%" align="right"><?php echo $purchaseVoucher->voucher_amount?></td>
+							<td colspan="2" class="rightAligntextClass">Total</td>
+							<td width="25%" class="rightAligntextClass"><?php echo $purchaseVoucher->voucher_amount?></td>
+							<td width="25%" class="rightAligntextClass"><?php echo $purchaseVoucher->voucher_amount?></td>
 						</tr>
 					</tfoot>
 				</table>

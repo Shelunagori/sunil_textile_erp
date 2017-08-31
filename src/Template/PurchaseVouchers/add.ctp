@@ -65,11 +65,11 @@ $this->set('title', 'Create Purchase Voucher');
 										<td width="15%">
 											<?php echo $this->Form->input('ledger_id', ['options'=>@$Creditledgers,'label' => false,'class' => 'form-control input-medium','required'=>'required']); ?>
 										</td>
-										<td width="25%">
-											<?php echo $this->Form->input('debit', ['label' => false,'class' => 'form-control input-sm','placeholder'=>'Debit','style'=>'display:none;']); ?>
+										<td width="25%" >
+											<?php echo $this->Form->input('debit', ['label' => false,'class' => 'form-control input-sm rightAligntextClass','placeholder'=>'Debit','style'=>'display:none;']); ?>
 										</td>
 										<td width="25%">
-											<?php echo $this->Form->input('credit', ['label' => false,'class' => 'form-control input-sm calculation','required'=>'required','placeholder'=>'Credit']); ?>	
+											<?php echo $this->Form->input('credit', ['label' => false,'class' => 'form-control input-sm calculation rightAligntextClass','required'=>'required','placeholder'=>'Credit']); ?>	
 										</td>
 										<td align="center"></td>
 									</tr>
@@ -81,11 +81,11 @@ $this->set('title', 'Create Purchase Voucher');
 										<td width="15%">
 											<?php echo $this->Form->input('ledger_id', ['options'=>@$Debitledgers,'label' => false,'class' => 'form-control input-medium','required'=>'required']); ?>
 										</td>
-										<td width="25%">
-											<?php echo $this->Form->input('debit', ['label' => false,'class' => 'form-control input-sm calculation','required'=>'required','placeholder'=>'Debit']); ?>
+										<td width="25%" >
+											<?php echo $this->Form->input('debit', ['label' => false,'class' => 'form-control input-sm calculation rightAligntextClass','required'=>'required','placeholder'=>'Debit']); ?>
 										</td>
-										<td width="25%">
-											<?php echo $this->Form->input('credit', ['label' => false,'class' => 'form-control input-sm','style'=>'display:none;','placeholder'=>'Credit']); ?>
+										<td width="25%" >
+											<?php echo $this->Form->input('credit', ['label' => false,'class' => 'form-control input-sm rightAligntextClass','style'=>'display:none;','placeholder'=>'Credit']); ?>
                                         </td>
 										<td align="center"></td>
 									</tr>
@@ -95,10 +95,10 @@ $this->set('title', 'Create Purchase Voucher');
 										<td colspan="2" >	
 											<button type="button" class="add_row btn btn-default input-sm"><i class="fa fa-plus"></i> Add row</button>
 										</td>
-										<td width="25%">
-											<?php echo $this->Form->input('voucher_amount', ['label' => false,'class' => 'form-control input-sm total_debit','id'=>'total_inward','placeholder'=>'Total Debit','type'=>'text']); ?></td>
-										<td width="25%">
-											<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm total_credit','id'=>'total_inward','placeholder'=>'Total Credit']); ?></td>
+										<td width="25%" >
+											<?php echo $this->Form->input('voucher_amount', ['label' => false,'class' => 'form-control input-sm total_debit rightAligntextClass','id'=>'total_inward','placeholder'=>'Total Debit','type'=>'text']); ?></td>
+										<td width="25%" >
+											<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm total_credit rightAligntextClass','id'=>'total_inward','placeholder'=>'Total Credit']); ?></td>
 										<td></td>
 									</tr>
 								</tfoot>
@@ -182,10 +182,10 @@ $this->set('title', 'Create Purchase Voucher');
 				<?php echo $this->Form->input('ledger_id', ['options'=>@$ledgers,'label' => false,'class' => 'form-control input-medium ','required'=>'required']); ?>
 			</td>
 			<td width="25%">
-				<?php echo $this->Form->input('debit', ['label' => false,'class' => 'form-control input-sm debit_hide_show calculation','placeholder'=>'Debit']); ?>
+				<?php echo $this->Form->input('debit', ['label' => false,'class' => 'form-control input-sm debit_hide_show calculation rightAligntextClass','placeholder'=>'Debit']); ?>
 			</td>
 			<td width="25%">
-				<?php echo $this->Form->input('credit', ['label' => false,'class' => 'form-control input-sm credit_hide_show calculation','placeholder'=>'Credit','style'=>'display:none;']); ?>	
+				<?php echo $this->Form->input('credit', ['label' => false,'class' => 'form-control input-sm credit_hide_show calculation rightAligntextClass','placeholder'=>'Credit','style'=>'display:none;']); ?>	
 			</td>
 			<td align="center">
 				<a class="btn btn-danger delete-tr btn-xs" href="#" role="button" style="margin-bottom: 5px;"><i class="fa fa-times"></i></a>
