@@ -86,7 +86,13 @@ class LedgersController extends AppController
             }
             $this->Flash->error(__('The ledger could not be saved. Please, try again.'));
         }
-        $accountingGroups = $this->Ledgers->AccountingGroups->find('list');
+		
+		$accountingGroups = $this->Ledgers->AccountingGroups->find('list');
+		
+		
+		
+		
+			
         $suppliers = $this->Ledgers->Suppliers->find('list');
         $customers = $this->Ledgers->Customers->find('list');
         $this->set(compact('ledger', 'accountingGroups',  'suppliers', 'customers'));
