@@ -106,13 +106,13 @@ class CustomersController extends AppController
 		$accountingGroups[$SundryDebtor->id]=$SundryDebtor->name;
 		ksort($accountingGroups);
         $states = $this->Customers->States->find('list',
-			['keyField' => function ($row) {
-				return $row['id'];
-			},
-			'valueField' => function ($row) {
-				return $row['state_code'].'-'. $row['name'] ;
-				
-			}]);
+													['keyField' => function ($row) {
+														return $row['id'];
+													},
+													'valueField' => function ($row) {
+														return $row['state_code'].'-'. $row['name'] ;
+														
+													}]);
 		
         $this->set(compact('customer', 'states','accountingGroups'));
         $this->set('_serialize', ['customer', 'accountingGroups']);
