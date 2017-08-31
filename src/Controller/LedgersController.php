@@ -303,24 +303,98 @@ class LedgersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
 		$accountLedger     = $this->Ledgers->newEntity();
-		$company_id = $this->Auth->User('session_company_id');
+		$company_id        = $this->Auth->User('session_company_id');
 		
-		$ledger_id = $this->request->query('ledger_id');
-		$from_date = $this->request->query('from_date');
-		$to_date   = $this->request->query('to_date');
+		$ledger_id         = $this->request->query('ledger_id');
+		$from_date         = $this->request->query('from_date');
+		$to_date           = $this->request->query('to_date');
 		
-		 if(!empty($ledger_id)){
+		$where['AccountingEntries.company_id']  = $company_id;
+		$where1['AccountingEntries.company_id'] = $company_id;
+		
+		if(!empty($ledger_id)){
 			$where['AccountingEntries.ledger_id']=$ledger_id;
+			$where1['AccountingEntries.ledger_id']=$ledger_id;
 		} 
 		if(!empty($from_date)){
-			$From=date("Y-m-d",strtotime($from_date));
+		    $From=date("Y-m-d",strtotime($from_date));
             $where['AccountingEntries.transaction_date >=']=$From;
-		}
+        }
 		if(!empty($to_date)){
 			$To=date("Y-m-d",strtotime($to_date));
             $where['AccountingEntries.transaction_date <=']=$To;
+			$where1['AccountingEntries.transaction_date <=']=$To;
+		}
+		$AccountingLedgers = $this->Ledgers->AccountingEntries->find()->where($where)->contain(['Ledgers'])->order(['ledger_id'=>'ASC']);
+		if(!empty($AccountingLedgers))
+		{ 
+	
+			$credit=0;$debit=0;$opening_balance_yes_credit_total=0;$opening_balance_yes_debit_total=0;
+			$openingBalance_debit=0;$openingBalance_credit=0;
+			foreach($AccountingLedgers as $AccountingLedgers1)
+			{
+				if($AccountingLedgers1->is_opening_balance!='yes')
+				{
+					$credit += $AccountingLedgers1->credit; 
+					$debit  += $AccountingLedgers1->debit; 
+				}
+				else
+				{
+					$opening_balance_yes_credit_total += $AccountingLedgers1->credit; 
+					$opening_balance_yes_debit_total  += $AccountingLedgers1->debit; 
+				}
+			}
+			$total_credit = $credit+$opening_balance_yes_credit_total;  
+			$total_debit  = $debit+$opening_balance_yes_debit_total; 
+			
+			if($total_credit>$total_debit)
+			{
+				$openingBalance_debit = $total_credit-$total_debit;
+			}
+			
+			if($total_credit<$total_debit)
+			{
+				$openingBalance_credit = $total_debit-$total_credit;
+			}
+			
 		}
 		
+		$AccountingLedgersBeforeFromDate = $this->Ledgers->AccountingEntries->find()->where($where1)->contain(['Ledgers'])->order(['ledger_id'=>'ASC']);
+		//pr($AccountingLedgersBeforeFromDate->toArray());
+		if(!empty($AccountingLedgersBeforeFromDate))
+		{
+			$credit1=0;$debit1=0;$opening_balance_yes_credit_total1=0;$opening_balance_yes_debit_total1=0;
+			foreach($AccountingLedgersBeforeFromDate as $AccountingLedgersBeforeFromDate1)
+			{
+				if($AccountingLedgersBeforeFromDate1->is_opening_balance!='yes')
+				{
+					$credit1 += $AccountingLedgersBeforeFromDate1->credit; 
+					$debit1  += $AccountingLedgersBeforeFromDate1->debit; 
+				}
+				else
+				{
+					$opening_balance_yes_credit_total1 += $AccountingLedgersBeforeFromDate1->credit; 
+					$opening_balance_yes_debit_total1  += $AccountingLedgersBeforeFromDate1->debit; 
+				}
+			}
+			$total_credit1 = $credit1+$opening_balance_yes_credit_total1;  
+			$total_debit1  = $debit1+$opening_balance_yes_debit_total1; 
+			if($total_credit1 > $total_debit1)
+			{ 
+		        echo "Cr:-";echo "<br>";
+				echo "opening:-".$openingBalance1 = $total_credit1-$total_debit1; echo "<br>";
+				echo "closing:-".$closingBalance1 = $openingBalance1+@$openingBalance; echo "<br>";
+			}
+			
+			if($total_credit1 < $total_debit1)
+			{ 
+				echo "Dr:-";echo "<br>";
+				echo "opening:-".$openingBalance1 = $total_debit1-$total_credit1; echo "<br>";
+				echo "closing:-".$closingBalance1 = $openingBalance1+@$openingBalance;
+			}
+			exit;
+		}
+		//pr($AccountingLedgers->toArray());exit;
 		$ledgers = $this->Ledgers->find('list');
 		$this->set(compact('accountLedger','ledgers'));
         $this->set('_serialize', ['ledger']);

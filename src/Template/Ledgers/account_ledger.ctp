@@ -65,17 +65,9 @@ $this->set('title', 'Account Ledger report');
 				<table class="table table-bordered table-hover table-condensed" width="100%">
 					<thead>
 						<tr>
-							<th scope="col"></th>
-							<th scope="col" colspan="2" style="text-align:center";>Opening Balance</th>
-							<th scope="col" colspan="2" style="text-align:center";>Transactions</th>
-							<th scope="col" colspan="2" style="text-align:center";>Closing balance</th>
-						</tr>
-						<tr>
-							<th scope="col">Ledgers</th>
-							<th scope="col" style="text-align:center";>Debit</th>
-							<th scope="col" style="text-align:center";>Credit</th>
-							<th scope="col" style="text-align:center";>Debit</th>
-							<th scope="col" style="text-align:center";>Credit</th>
+							<th scope="col">Date</th>
+							<th scope="col" style="text-align:center";>Voucher Type</th>
+							<th scope="col" style="text-align:center";>Voucher No</th>
 							<th scope="col" style="text-align:center";>Debit</th>
 							<th scope="col" style="text-align:center";>Credit</th>
 						</tr>
@@ -85,7 +77,14 @@ $this->set('title', 'Account Ledger report');
 					</tbody>
 					<tfoot>
 						<tr>
-							<td scope="col">Total</td>
+							<td scope="col" colspan="3" style="text-align:right";><b>Total</b></td>
+							<td scope="col" style="text-align:right";></td>
+							<td scope="col" style="text-align:right";></td>
+						</tr>
+						<tr>
+							<td scope="col" colspan="3" style="text-align:right";><b>Closing Balance</b></td>
+							<td scope="col" style="text-align:right";></td>
+							<td scope="col" style="text-align:right";></td>
 						</tr>
 					</tfoot>
 				</table>
