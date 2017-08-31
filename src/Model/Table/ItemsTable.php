@@ -64,38 +64,39 @@ class ItemsTable extends Table
 		$this->belongsTo('GstFigures', [
             'foreignKey' => 'gst_figure_id',
             'joinType' => 'LEFT'
-]);
-		/* $this->belongsTo('input_cgst_ledger', [
+		]);
+		
+		$this->belongsTo('InputCgstLedgers', [
 			'className' => 'Ledgers',
 			'foreignKey' => 'input_cgst_ledger_id',
-			'propertyName' => 'input_cgst_ledger',
+			'propertyName' => 'InputCgstLedgers',
 		]);
-		$this->belongsTo('input_sgst_ledger', [
+		$this->belongsTo('InputSgstLedgers', [
 			'className' => 'Ledgers',
 			'foreignKey' => 'input_sgst_ledger_id',
-			'propertyName' => 'input_sgst_ledger',
+			'propertyName' => 'InputSgstLedgers',
 		]);
-		$this->belongsTo('input_igst_ledger', [
+		$this->belongsTo('InputIgstLedgers', [
 			'className' => 'Ledgers',
 			'foreignKey' => 'input_igst_ledger_id',
-			'propertyName' => 'input_igst_ledger',
+			'propertyName' => 'InputIgstLedgers',
 		]);
-		$this->belongsTo('output_cgst_ledger', [
+		
+		$this->belongsTo('OutputCgstLedgers', [
 			'className' => 'Ledgers',
 			'foreignKey' => 'output_cgst_ledger_id',
-			'propertyName' => 'output_cgst_ledger',
+			'propertyName' => 'OutputCgstLedgers',
 		]);
-		$this->belongsTo('output_sgst_ledger', [
+		$this->belongsTo('OutputSgstLedgers', [
 			'className' => 'Ledgers',
-			'foreignKey' => 'output_cgst_ledger_id',
-			'propertyName' => 'output_sgst_ledger',
+			'foreignKey' => 'output_sgst_ledger_id',
+			'propertyName' => 'OutputSgstLedgers',
 		]);
-		$this->belongsTo('output_igst_ledger', [
+		$this->belongsTo('OutputIgstLedgers', [
 			'className' => 'Ledgers',
 			'foreignKey' => 'output_igst_ledger_id',
-			'propertyName' => 'output_igst_ledger',
-		]); */
-	
+			'propertyName' => 'OutputIgstLedgers',
+		]);
     }
 
     /**
@@ -131,8 +132,14 @@ class ItemsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['unit_id'], 'Units'));
-        //$rules->add($rules->existsIn(['stock_group_id'], 'StockGroups'));
-
+        $rules->add($rules->existsIn(['stock_group_id'], 'StockGroups'));
+		$rules->add($rules->existsIn(['gst_figure_id'], 'GstFigures'));
+        $rules->add($rules->existsIn(['output_cgst_ledger_id'], 'OutputCgstLedgers'));
+        $rules->add($rules->existsIn(['output_sgst_ledger_id'], 'OutputSgstLedgers'));
+        $rules->add($rules->existsIn(['output_igst_ledger_id'], 'OutputIgstLedgers'));
+		$rules->add($rules->existsIn(['Input_cgst_ledger_id'], 'InputputCgstLedgers'));
+        $rules->add($rules->existsIn(['Input_sgst_ledger_id'], 'InputSgstLedgers'));
+        $rules->add($rules->existsIn(['Input_igst_ledger_id'], 'InputIgstLedgers'));
         return $rules;
     }
 }
