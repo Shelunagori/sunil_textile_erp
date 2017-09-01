@@ -44,7 +44,6 @@ $this->set('title', 'Purchase Vouchers');
 
 								<td class="rightAligntextClass"><?= $this->Number->format($purchaseVoucher->voucher_amount) ?></td>
 
-								<td align="right"><?= $this->Number->format($purchaseVoucher->voucher_amount) ?></td>
 
 								<td class="actions">
 									<?= $this->Html->link(__('View'), ['action' => 'view', $purchaseVoucher->id]) ?>

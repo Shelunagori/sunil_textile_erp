@@ -67,105 +67,108 @@ $this->set('title', 'Account Ledger report');
 						</div>	
 					</form>
 				</div>
-				
-				<table class="table table-bordered table-hover table-condensed" width="100%">
-					<thead>
-					    <tr>
-							<th colspan="3" style="text-align:right";><b>Opening Balance</b></th>
-							<th style="text-align:right";>
-							<?php
-								if(!empty($openingBalance_debit1))
+				<?php
+					if(!empty($AccountingLedgers))
+					{
+				?>
+					<table class="table table-bordered table-hover table-condensed" width="100%">
+						<thead>
+							<tr>
+								<th colspan="3" style="text-align:right";><b>Opening Balance</b></th>
+								<th style="text-align:right";>
+								<?php
+									if(!empty($openingBalance_debit1))
+									{
+										echo $openingBalance_debit1;
+									}
+								?>
+								</th>
+								<th style="text-align:right";>
+								<?php
+									if(!empty($openingBalance_credit1))
+									{
+										echo $openingBalance_credit1;
+									}
+								?>
+								</th>
+							</tr>
+							<tr>
+								<th scope="col">Date</th>
+								<th scope="col" style="text-align:center";>Voucher Type</th>
+								<th scope="col" style="text-align:center";>Voucher No</th>
+								<th scope="col" style="text-align:center";>Debit</th>
+								<th scope="col" style="text-align:center";>Credit</th>
+							</tr>
+						</thead>
+						<tbody>
+						<?php
+								if(!empty($AccountingLedgers))
 								{
-									echo $openingBalance_debit1;
-								}
-							?>
-							</th>
-							<th style="text-align:right";>
-							<?php
-								if(!empty($openingBalance_credit1))
-								{
-									echo $openingBalance_credit1;
-								}
-							?>
-							</th>
-						</tr>
-						<tr>
-							<th scope="col">Date</th>
-							<th scope="col" style="text-align:center";>Voucher Type</th>
-							<th scope="col" style="text-align:center";>Voucher No</th>
-							<th scope="col" style="text-align:center";>Debit</th>
-							<th scope="col" style="text-align:center";>Credit</th>
-						</tr>
-					</thead>
-					<tbody>
-					<?php
-							if(!empty($AccountingLedgers))
-							{
-								$total_credit=0;
-								$total_debit=0;
-								foreach($AccountingLedgers as $AccountingLedger)
-								{
-					?>
-						<tr>
-							<td><?php echo date("d-m-Y",strtotime($AccountingLedger->transaction_date)); ?></td>
-							<td></td>
-							<td></td>
-							<td style="text-align:right";>
-							<?php 
-								if(!empty($AccountingLedger->debit))
-								{
-									echo $AccountingLedger->debit; 
-									$total_debit +=round($AccountingLedger->debit,2);
-								}
-								else
-								{
-									echo "-";
-								}
-							?>
-							</td>
-							<td style="text-align:right";>
-							<?php 
-								if(!empty($AccountingLedger->credit))
-								{
-									echo $AccountingLedger->credit; 
-									$total_credit +=round($AccountingLedger->credit,2);
-								}else
-								{
-									echo "-";
-								}
-							?>
-							</td>
-						</tr>
-					<?php   }   } ?>
-					</tbody>
-					<tfoot>
-						<tr>
-							<td scope="col" colspan="3" style="text-align:right";><b>Total</b></td>
-							<td scope="col" style="text-align:right";><?php echo @$total_debit;?></td>
-							<td scope="col" style="text-align:right";><?php echo @$total_credit;?></td>
-						</tr>
-						<tr>
-							<td scope="col" colspan="3" style="text-align:right";><b>Closing Balance</b></td>
-							<td scope="col" style="text-align:right";>
-							<?php
-								if(!empty($closingBalance_debit1))
-								{
-									echo $closingBalance_debit1;
-								}
-							?>
-							</td>
-							<td scope="col" style="text-align:right";>
-							<?php
-								if(!empty($closingBalance_credit1))
-								{
-									echo $closingBalance_credit1;
-								}
-							?>
-							</td>
-						</tr>
-					</tfoot>
-				</table>
-				
+									$total_credit=0;
+									$total_debit=0;
+									foreach($AccountingLedgers as $AccountingLedger)
+									{
+						?>
+							<tr>
+								<td><?php echo date("d-m-Y",strtotime($AccountingLedger->transaction_date)); ?></td>
+								<td></td>
+								<td></td>
+								<td style="text-align:right";>
+								<?php 
+									if(!empty($AccountingLedger->debit))
+									{
+										echo $AccountingLedger->debit; 
+										$total_debit +=round($AccountingLedger->debit,2);
+									}
+									else
+									{
+										echo "-";
+									}
+								?>
+								</td>
+								<td style="text-align:right";>
+								<?php 
+									if(!empty($AccountingLedger->credit))
+									{
+										echo $AccountingLedger->credit; 
+										$total_credit +=round($AccountingLedger->credit,2);
+									}else
+									{
+										echo "-";
+									}
+								?>
+								</td>
+							</tr>
+						<?php   }   } ?>
+						</tbody>
+						<tfoot>
+							<tr>
+								<td scope="col" colspan="3" style="text-align:right";><b>Total</b></td>
+								<td scope="col" style="text-align:right";><?php echo @$total_debit;?></td>
+								<td scope="col" style="text-align:right";><?php echo @$total_credit;?></td>
+							</tr>
+							<tr>
+								<td scope="col" colspan="3" style="text-align:right";><b>Closing Balance</b></td>
+								<td scope="col" style="text-align:right";>
+								<?php
+									if(!empty($closingBalance_debit1))
+									{
+										echo $closingBalance_debit1;
+									}
+								?>
+								</td>
+								<td scope="col" style="text-align:right";>
+								<?php
+									if(!empty($closingBalance_credit1))
+									{
+										echo $closingBalance_credit1;
+									}
+								?>
+								</td>
+							</tr>
+						</tfoot>
+					</table>
+				<?php } ?>
 			</div>
 		</div>
 	</div>

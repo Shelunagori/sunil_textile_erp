@@ -15,7 +15,7 @@ $this->set('title', 'Trial balance report');
 			</div>
 			<div class="portlet-body">
 				<div class="row">
-					<?= $this->Form->create($ledger) ?>
+					<form method="get">
 					<div class="col-md-3">
 						<div class="form-group">
 							<label>From Date</label>
@@ -51,7 +51,7 @@ $this->set('title', 'Trial balance report');
 								<button type="submit" class="btn btn-xs blue input-sm srch">Go</button>
 							</div>
 					</div>	
-					<?= $this->Form->end() ?>
+					</form>
 				</div>
 				<?php if(!empty($openingBalanceArray)){?>
 				<table class="table table-bordered table-hover table-condensed" width="100%">
@@ -178,101 +178,240 @@ $this->set('title', 'Trial balance report');
 						?>
 					</tbody>
 					<tfoot>
-						<tr style="color:red;">
-							<td scope="col"><b>Diffrence of opening balance</b></td>
-							<td scope="col" align="right">
-							<?php 
-								if(!empty($debitDiffrence))
-								{
-									echo @$debitDiffrence;
-								}
-							?>
-							</td>
-							<td scope="col" align="right">
-							<?php 
-								if(!empty($creditDiffrence))
-								{
-									echo @$creditDiffrence;
-								}
-							?>
-							</td>
-							<td scope="col" colspan="4"></td>
-						</tr>
 						<tr>
-							<td scope="col">Total</td>
-							<td scope="col" align="right">
+							<th scope="col">Total</th>
+							<th scope="col" style="text-align:right";>
 							<?php 
-								if(!empty($openingBalanceDebit))
+								if(!empty($openingBalanceDebitTotal))
 								{
-									echo @$openingBalanceDebit+@$debitDiffrence;
-								}
-								else
-								{
-									echo "-";
+									echo @$openingBalanceDebitTotal;
+									$total1 =@$openingBalanceDebitTotal;
 								}
 							?>
-							</td>
-							<td scope="col" align="right">
+							</th>
+							<th scope="col" style="text-align:right";>
 							<?php 
 								if(!empty($openingBalanceCreditTotal))
 								{
 									
-									echo @$openingBalanceCreditTotal+@$creditDiffrence;
-								}
-								else
-								{
-									echo "-";
+									echo @$openingBalanceCreditTotal;
+									$total2 =@$openingBalanceCreditTotal;
 								}
 							?>
-							</td>
-							<td scope="col" align="right">
+							</th>
+							<th scope="col" style="text-align:right";>
 							<?php 
 								if(!empty($transactionDebitTotal))
 								{
 									echo @$transactionDebitTotal;
-								}
-								else
-								{
-									echo "-";
+									$total3 =@$transactionDebitTotal;
 								}
 							?>
-							</td>
-							<td scope="col" align="right">
+							</th>
+							<th scope="col" style="text-align:right";>
 							<?php
 								if(!empty($transactionCreditTotal))
 								{
 									echo @$transactionCreditTotal;
-								}
-								else
-								{
-									echo "-";
+									$total4 =@$transactionCreditTotal;
 								}
 							?>
-							</td>
-							<td scope="col" align="right">
+							</th>
+							<th scope="col" style="text-align:right";>
 							<?php 
 								if(!empty($closingBalanceDebitTotal))
 								{
 									echo @$closingBalanceDebitTotal;
-								}
-								else
-								{
-									echo "-";
+									$total5 =@$closingBalanceDebitTotal;
 								}
 							?>
-							</td>
-							<td scope="col" align="right">
+							</th>
+							<th scope="col" style="text-align:right";>
 							<?php 
 								if(!empty($closingBalanceCreditTotal))
 								{
 									echo @$closingBalanceCreditTotal;
-								}
-								else
-								{
-									echo "-";
+									$total6 =@$closingBalanceCreditTotal;
 								}
 							?>
-							</td>
+							</th>
+						</tr>
+						<tr>
+							<th scope="col" >Opening Stock</th>
+							<th style="text-align:right";>
+								<?php 
+								  if(@$coreVariable[fyValidFrom]<$from_date)
+								  {
+									if($totalDebit>0)
+									{ 
+									   $openingBalanceDebitTotal  = @$openingBalanceDebitTotal+@$totalDebit; echo "<br>";
+										echo @$totalDebit;
+										$total1 +=$totalDebit;
+									}
+									
+								  }
+								?>
+							</th>
+							<th style="text-align:right";>
+								<?php 
+								if(@$coreVariable[fyValidFrom]<$from_date)
+								{
+									if($totalDebit<0)
+									{
+									   $openingBalanceCreditTotal = @$openingBalanceCreditTotal+@$totalDebit;
+										echo @$totalDebit;
+										$total2 +=$totalDebit;
+									}
+									
+									
+								}
+								?>
+							</th>
+							<th style="text-align:right";>
+								<?php 
+								  if(@$coreVariable[fyValidFrom]>$from_date && @$coreVariable[fyValidFrom]<$to_date)
+								  { 
+									if($totalDebit>0)
+									{
+										$transactionDebitTotal  = @$transactionDebitTotal+@$totalDebit;
+										echo @$totalDebit;
+										$total3 +=$totalDebit;
+									}
+									
+								  }
+								?>
+							</th>
+							<th style="text-align:right";>
+								<?php 
+								  if(@$coreVariable[fyValidFrom]>$from_date && @$coreVariable[fyValidFrom]<$to_date)
+								  {
+									if($totalDebit<0)
+									{
+										$transactionCreditTotal = @$transactionCreditTotal+@$totalDebit;
+										echo @$totalDebit;
+										$total4 +=$totalDebit;
+									}
+									
+								  }
+								?>
+							</th>
+							<th style="text-align:right";></th>
+							<th style="text-align:right";></th>
+						</tr>
+						<tr style="color:red;">
+							<th scope="col">Diffrence of opening balance</th>
+							<th scope="col" style="text-align:right";>
+							<?php 
+							   if(@$coreVariable[fyValidFrom]<$from_date)
+								{ 
+									if($openingBalanceDebitTotal>@$openingBalanceCreditTotal)
+									{
+										echo $debit_diff = $openingBalanceDebitTotal-@$openingBalanceCreditTotal;
+									}
+								}
+							?>
+							</th>
+							<th scope="col" style="text-align:right";>
+							<?php 
+								if(@$coreVariable[fyValidFrom]<$from_date)
+								{
+									if(@$openingBalanceCreditTotal>$openingBalanceDebitTotal)
+									{
+										echo $cedit_diff =@$openingBalanceCreditTotal-$openingBalanceDebitTotal;
+									}
+								}
+							?>
+							</th>
+							<th style="text-align:right";>
+							<?php 
+							   if(@$coreVariable[fyValidFrom]>$from_date && @$coreVariable[fyValidFrom]<$to_date)
+								{ 
+									if($openingBalanceDebitTotal>$openingBalanceCreditTotal)
+									{
+										echo $debit_diff =$openingBalanceDebitTotal-$openingBalanceCreditTotal;
+									}
+								}
+							?>
+							</th>
+							<th style="text-align:right";>
+							<?php 
+								if(@$coreVariable[fyValidFrom]>$from_date && @$coreVariable[fyValidFrom]<$to_date)
+								{
+									if($openingBalanceCreditTotal>$openingBalanceDebitTotal)
+									{
+										echo $cedit_diff=$openingBalanceCreditTotal-$openingBalanceDebitTotal;
+									}
+								}
+							?>
+							</th>
+							<th scope="col" colspan="2"></th>
+						</tr>
+						<tr>
+							<th scope="col">Total</th>
+							<th scope="col" style="text-align:right";>
+							<?php 
+								if(!empty($total1))
+								{
+									if($total1>$total2)
+									{
+										$debit = @$total1-$total2;
+									}
+									else{
+										$credit = @$total2-$total1;
+									}
+									
+										echo $total1=@$total1+@$credit;
+									
+								}
+							?>
+							</th>
+							<th scope="col" style="text-align:right";>
+							<?php 
+								if(!empty($total2))
+								{
+									echo $total2=@$total2+@$debit;
+									
+								}
+							?>
+							</th>
+							<th scope="col" style="text-align:right";>
+							<?php 
+								if(!empty($total3))
+								{
+									if($total3>$total4)
+									{ 
+										$debit1 = $total3-$total4;
+									}
+									else
+									{ 
+										$credit1 = $total4-$total3;
+									}
+									
+										echo $total3=@$total3+@$credit1;
+									
+								}
+							?>
+							</th>
+							<th scope="col" style="text-align:right";>
+							<?php
+								if(!empty($total4))
+								{
+									
+										echo $total4=@$total4+@$debit1;
+									
+								}
+							?>
+							</th>
+							<th scope="col" style="text-align:right";>
+							<?php 
+								echo @$total1+@$total3;
+							?>
+							</th>
+							<th scope="col" style="text-align:right";>
+							<?php 
+								echo @$total2+@$total4;
+							?>
+							</th>
 						</tr>
 					</tfoot>
 				</table>
