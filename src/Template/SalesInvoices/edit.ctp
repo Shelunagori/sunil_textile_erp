@@ -41,7 +41,7 @@ $this->set('title', 'Update Sales Invoice');
 						<div class="col-md-3" style="<?php if($salesInvoice->cash_or_credit=='cash'){echo "display:none";}?>" id="cusomerIds">
 							<div class="form-group">
 								<label>Customer Name</label>
-								<?php echo $this->Form->control('customer_id',['empty'=>'--Select--', 'class'=>'form-control input-sm customer_id select2me','label'=>false, 'options' => $customerOptions, 'value'=>$salesInvoice->customer_id]);
+								<?php echo $this->Form->control('customer_id',['empty'=>'-Customer Name-', 'class'=>'form-control input-sm customer_id select2me','label'=>false, 'options' => $customerOptions, 'value'=>$salesInvoice->customer_id]);
 								?>
 							</div>
 						</div> 
@@ -83,26 +83,26 @@ $this->set('title', 'Update Sales Invoice');
 				<input type="hidden" name="" class="gstValue calculation" value="">
 				<input type="hidden" name="" class="discountvalue calculation" value="">
 										
-				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.item_id', ['empty'=>'--Select--','options'=>$itemOptions,'label' => false,'class' => 'form-control input-sm attrGet','required'=>'required','value'=>$salesInvoiceRow->item->id]);
+				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.item_id', ['empty'=>'-Item Name-','options'=>$itemOptions,'label' => false,'class' => 'form-control input-sm attrGet','required'=>'required','value'=>$salesInvoiceRow->item->id]);
                 echo $this->Form->input('salesInvoiceRow.'.$i.'.id', ['value'=>$salesInvoiceRow->id,'type'=>'hidden']);	?>
 			</td>
 			<td>
-				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.quantity', ['label' => false,'class' => 'form-control input-sm calculation quantity','id'=>'check','required'=>'required','placeholder'=>'Quantity', 'value'=>$salesInvoiceRow->quantity]); ?>
+				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.quantity', ['label' => false,'class' => 'form-control input-sm calculation quantity rightAligntextClass','id'=>'check','required'=>'required','placeholder'=>'Quantity', 'value'=>$salesInvoiceRow->quantity]); ?>
 			</td>
 			<td>
-				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.rate', ['label' => false,'class' => 'form-control input-sm calculation rate','required'=>'required','placeholder'=>'Rate','value'=>$salesInvoiceRow->rate]); ?>
+				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.rate', ['label' => false,'class' => 'form-control input-sm calculation rate rightAligntextClass','required'=>'required','placeholder'=>'Rate','value'=>$salesInvoiceRow->rate]); ?>
 			</td>
 			<td>
-				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.discount_percentage', ['label' => false,'class' => 'form-control input-sm calculation discount','required'=>'required','placeholder'=>'Dis.', 'value'=>$salesInvoiceRow->discount_percentage]); ?>	
+				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.discount_percentage', ['label' => false,'class' => 'form-control input-sm calculation discount rightAligntextClass','required'=>'required','placeholder'=>'Dis.', 'value'=>$salesInvoiceRow->discount_percentage]); ?>	
 			</td>
 			<td>
-				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.taxable_value', ['label' => false,'class' => 'form-control input-sm discountAmount calculation','required'=>'required', 'readonly'=>'readonly','placeholder'=>'Taxable Value', 'value'=>$salesInvoiceRow->taxable_value]); ?>	
+				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.taxable_value', ['label' => false,'class' => 'form-control input-sm discountAmount calculation rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'Taxable Value', 'value'=>$salesInvoiceRow->taxable_value]); ?>	
 			</td>
 			<td>
-				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.gst_figure_tax_name', ['label' => false,'class' => 'form-control input-sm gst_figure_tax_name', 'readonly'=>'readonly','required'=>'required','placeholder'=>'', 'value'=>$salesInvoiceRow->gst_figure->name]); ?>	
+				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.gst_figure_tax_name', ['label' => false,'class' => 'form-control input-sm gst_figure_tax_name rightAligntextClass', 'readonly'=>'readonly','required'=>'required','placeholder'=>'', 'value'=>$salesInvoiceRow->gst_figure->name]); ?>	
 			</td>
 			<td>
-				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.net_amount', ['label' => false,'class' => 'form-control input-sm gstAmount reverse_total_amount','required'=>'required', 'placeholder'=>'Amount', 'value'=>$salesInvoiceRow->net_amount]); ?>	
+				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.net_amount', ['label' => false,'class' => 'form-control input-sm gstAmount reverse_total_amount rightAligntextClass','required'=>'required', 'placeholder'=>'Amount', 'value'=>$salesInvoiceRow->net_amount]); ?>	
 			</td>
 										
 										<td align="center">
@@ -122,7 +122,7 @@ $this->set('title', 'Update Sales Invoice');
 						<td colspan="6" align="right"><b>Amt Before Tax</b>
 						</td>
 						<td colspan="2">
-						<?php echo $this->Form->input('amount_before_tax', ['label' => false,'class' => 'form-control input-sm amount_before_tax','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
+						<?php echo $this->Form->input('amount_before_tax', ['label' => false,'class' => 'form-control input-sm amount_before_tax rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
 						</td>
 						</tr>
                         <?php if($salesInvoice->cash_or_credit=='cash'){?>						
@@ -130,14 +130,14 @@ $this->set('title', 'Update Sales Invoice');
 						<td colspan="6" align="right"><b>Total CGST</b>
 						</td>
 						<td colspan="2">
-						<?php echo $this->Form->input('total_cgst', ['label' => false,'class' => 'form-control input-sm add_cgst ','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
+						<?php echo $this->Form->input('total_cgst', ['label' => false,'class' => 'form-control input-sm add_cgst rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
 						</td>
 						</tr>
 						<tr id="add_sgst">
 						<td colspan="6" align="right"><b>Total SGST</b>
 						</td>
 						<td colspan="2">
-						<?php echo $this->Form->input('total_sgst', ['label' => false,'class' => 'form-control input-sm add_sgst','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
+						<?php echo $this->Form->input('total_sgst', ['label' => false,'class' => 'form-control input-sm add_sgst rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
 						</td>
 						</tr>
 						<?php } else{?>
@@ -146,7 +146,7 @@ $this->set('title', 'Update Sales Invoice');
 						<td colspan="6" align="right"><b>Total IGST</b>
 						</td>
 						<td colspan="2">
-						<?php echo $this->Form->input('total_igst', ['label' => false,'class' => 'form-control input-sm add_igst','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
+						<?php echo $this->Form->input('total_igst', ['label' => false,'class' => 'form-control input-sm add_igst rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
 						</td>
 						</tr>
 						<?php }?>
@@ -154,7 +154,7 @@ $this->set('title', 'Update Sales Invoice');
 						<td colspan="6" align="right"><b>Round OFF</b>
 						</td>
 						<td colspan="2">
-						<?php echo $this->Form->input('round_off', ['label' => false,'class' => 'form-control input-sm roundValue','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
+						<?php echo $this->Form->input('round_off', ['label' => false,'class' => 'form-control input-sm roundValue rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
 						</td>
 						</tr>
 									
@@ -162,7 +162,7 @@ $this->set('title', 'Update Sales Invoice');
 						<td colspan="6" align="right"><b>Amt After Tax</b>
 						</td>
 						<td colspan="2">
-						<?php echo $this->Form->input('amount_after_tax', ['label' => false,'class' => 'form-control input-sm amount_after_tax','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
+						<?php echo $this->Form->input('amount_after_tax', ['label' => false,'class' => 'form-control input-sm amount_after_tax rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
 						</td>
 						</tr>
 					</tfoot>
@@ -238,25 +238,25 @@ $this->set('title', 'Update Sales Invoice');
 			<input type="hidden" name="" class="gstValue calculation" value="">
             <input type="hidden" name="" class="discountvalue calculation" value="">
 			
-				<?php echo $this->Form->input('item_id', ['empty'=>'--Select--','options'=>$itemOptions,'label' => false,'class' => 'form-control input-sm attrGet','required'=>'required']); ?>
+				<?php echo $this->Form->input('item_id', ['empty'=>'-Item Name-','options'=>$itemOptions,'label' => false,'class' => 'form-control input-sm attrGet','required'=>'required']); ?>
 			</td>
 			<td>
-				<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm calculation quantity','id'=>'check','required'=>'required','placeholder'=>'Quantity']); ?>
+				<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm calculation quantity rightAligntextClass','id'=>'check','required'=>'required','placeholder'=>'Quantity']); ?>
 			</td>
 			<td>
-				<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm calculation rate','required'=>'required','placeholder'=>'Rate']); ?>
+				<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm calculation rate rightAligntextClass','required'=>'required','placeholder'=>'Rate']); ?>
 			</td>
 			<td>
-				<?php echo $this->Form->input('discount_percentage', ['label' => false,'class' => 'form-control input-sm calculation discount','required'=>'required','placeholder'=>'Dis.']); ?>	
+				<?php echo $this->Form->input('discount_percentage', ['label' => false,'class' => 'form-control input-sm calculation discount rightAligntextClass','required'=>'required','placeholder'=>'Dis.']); ?>	
 			</td>
 			<td>
-				<?php echo $this->Form->input('taxable_value', ['label' => false,'class' => 'form-control input-sm discountAmount calculation','required'=>'required', 'readonly'=>'readonly','placeholder'=>'Taxable Value']); ?>	
+				<?php echo $this->Form->input('taxable_value', ['label' => false,'class' => 'form-control input-sm discountAmount calculation rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'Taxable Value']); ?>	
 			</td>
 			<td>
-				<?php echo $this->Form->input('gst_figure_tax_name', ['label' => false,'class' => 'form-control input-sm gst_figure_tax_name', 'readonly'=>'readonly','required'=>'required','placeholder'=>'']); ?>	
+				<?php echo $this->Form->input('gst_figure_tax_name', ['label' => false,'class' => 'form-control input-sm gst_figure_tax_name rightAligntextClass', 'readonly'=>'readonly','required'=>'required','placeholder'=>'']); ?>	
 			</td>
 			<td>
-				<?php echo $this->Form->input('net_amount', ['label' => false,'class' => 'form-control input-sm gstAmount reverse_total_amount','required'=>'required','placeholder'=>'Amount']); ?>	
+				<?php echo $this->Form->input('net_amount', ['label' => false,'class' => 'form-control input-sm gstAmount reverse_total_amount rightAligntextClass','required'=>'required','placeholder'=>'Amount']); ?>	
 			</td>
 			<td align="center">
 				<a class="btn btn-danger delete-tr btn-xs" href="#" role="button" style="margin-bottom: 5px;"><i class="fa fa-times"></i></a>
@@ -310,6 +310,7 @@ $this->set('title', 'Update Sales Invoice');
 			if(cashcredit=='credit')
 			{
 				$('#cusomerIds').show();
+				$('.customer_id').attr('required', 'required');
 			}
 			else{
 				$('#cusomerIds').hide();
@@ -318,6 +319,7 @@ $this->set('title', 'Update Sales Invoice');
 			    $('#add_sgst').show();
 			    $('#add_igst').hide();
 				$('#is_interstate').val('0');
+				$('.customer_id').removeAttr('required');
 			}
 		});
 		$('.delete-tr').die().live('click',function() 
@@ -460,12 +462,14 @@ $this->set('title', 'Update Sales Invoice');
 				var totamount=parseFloat((discountAmount*100)/(100-discount));
 				var discountvalue=parseFloat(totamount)-parseFloat(discountAmount);
 				 
+				 if(!discountAmount){discountAmount=0;}
 				$(this).find('.discountAmount').val(discountAmount.toFixed(2));
 				$(this).find('.gstValue').val(gstValue.toFixed(2));
 				$(this).find('.totamount').val(totamount.toFixed(2));
 				$(this).find('.discountvalue').val(discountvalue.toFixed(2));
 
 				var rate=parseFloat((totamount/quantity));
+				if(!rate){rate=0;}
 				$(this).find('.rate').val(rate.toFixed(2));
 				
 				var taxable_value1=parseFloat($(this).find('.discountAmount').val());

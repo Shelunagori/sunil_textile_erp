@@ -137,6 +137,7 @@ class PurchaseVouchersController extends AppController
 		->find('List')->toArray();
 		$accountingGroups[$accountGroupdebit->id]=$accountGroupdebit->name;
 		ksort($accountingGroups);
+		
 		if($accountingGroups)
 		{   
 			$account_ids="";

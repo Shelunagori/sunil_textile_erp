@@ -41,7 +41,7 @@ $this->set('title', 'Create Sales Invoice');
 						<div class="col-md-3" style="display:none" id="cusomerIds">
 							<div class="form-group">
 								<label>Customer Name</label>
-								<?php echo $this->Form->control('customer_id',['empty'=>'Select...', 'class'=>'form-control input-sm customer_id select2me','label'=>false, 'options' => $customerOptions, 'required'=>'required']);
+								<?php echo $this->Form->control('customer_id',['empty'=>'-Customer Name-', 'class'=>'form-control input-sm customer_id select2me','label'=>false, 'options' => $customerOptions]);
 								?>
 							</div>
 						</div> 
@@ -75,7 +75,7 @@ $this->set('title', 'Create Sales Invoice');
 			<input type="hidden" name="" class="discountvalue calculation" value="">
 
 			
-				<?php echo $this->Form->input('item_id', ['empty'=>'Select...', 'options'=>$itemOptions,'label' => false,'class' =>'form-control input-sm attrGet','required'=>'required']); ?>
+				<?php echo $this->Form->input('item_id', ['empty'=>'-Item Name-', 'options'=>$itemOptions,'label' => false,'class' =>'form-control input-sm attrGet','required'=>'required']); ?>
 			</td>
 			<td>
 				<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm calculation quantity rightAligntextClass','id'=>'check','required'=>'required','placeholder'=>'Quantity']); ?>
@@ -90,7 +90,7 @@ $this->set('title', 'Create Sales Invoice');
 				<?php echo $this->Form->input('taxable_value', ['label' => false,'class' => 'form-control input-sm discountAmount calculation rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'Taxable Value']); ?>	
 			</td>
 			<td>
-				<?php echo $this->Form->input('gst_figure_tax_name', ['label' => false,'class' => 'form-control input-sm gst_figure_tax_name', 'readonly'=>'readonly','required'=>'required','placeholder'=>'GST']); ?>	
+				<?php echo $this->Form->input('gst_figure_tax_name', ['label' => false,'class' => 'form-control input-sm gst_figure_tax_name rightAligntextClass', 'readonly'=>'readonly','required'=>'required','placeholder'=>'GST']); ?>	
 			</td>
 			<td>
 				<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm gstAmount reverse_total_amount rightAligntextClass','required'=>'required','placeholder'=>'Amount']); ?>	
@@ -228,7 +228,7 @@ $this->set('title', 'Create Sales Invoice');
 			<input type="hidden" name="" class="discountvalue calculation" value="">
 
 			
-				<?php echo $this->Form->input('item_id', ['empty'=>'Select...', 'options'=>$itemOptions,'label' => false,'class' =>'form-control input-sm attrGet','required'=>'required']); ?>
+				<?php echo $this->Form->input('item_id', ['empty'=>'-Item Name-', 'options'=>$itemOptions,'label' => false,'class' =>'form-control input-sm attrGet','required'=>'required']); ?>
 			</td>
 			<td>
 				<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm calculation quantity rightAligntextClass','id'=>'check','required'=>'required','placeholder'=>'Quantity']); ?>
@@ -299,6 +299,7 @@ $this->set('title', 'Create Sales Invoice');
 			if(cashcredit=='credit')
 			{
 				$('#cusomerIds').show();
+				$('.customer_id').attr('required', 'required');
 			}
 			else{
 				$('#cusomerIds').hide();
@@ -307,6 +308,7 @@ $this->set('title', 'Create Sales Invoice');
 			    $('#add_sgst').show();
 			    $('#add_igst').hide();
 				$('#is_interstate').val('0');
+				$('.customer_id').removeAttr('required');
 			}
 		});
 		$('.delete-tr').die().live('click',function() 
@@ -375,6 +377,8 @@ $this->set('title', 'Create Sales Invoice');
 				var discount  = parseFloat($(this).find('.discount').val());
 				var discountValue=(discount*totamount)/100;
 				var discountAmount=totamount-discountValue;
+				
+				if(!discountAmount){discountAmount=0;}
 				$(this).find('.discountAmount').val(discountAmount.toFixed(2));
 				$(this).find('.discountvalue').val(discountValue.toFixed(2));
 				
@@ -450,12 +454,14 @@ $this->set('title', 'Create Sales Invoice');
 				var totamount=parseFloat((discountAmount*100)/(100-discount));
 				var discountvalue=parseFloat(totamount)-parseFloat(discountAmount);
 				 
+				 if(!discountAmount){discountAmount=0;}
 				$(this).find('.discountAmount').val(discountAmount.toFixed(2));
 				$(this).find('.gstValue').val(gstValue.toFixed(2));
 				$(this).find('.totamount').val(totamount.toFixed(2));
 				$(this).find('.discountvalue').val(discountvalue.toFixed(2));
 
 				var rate=parseFloat((totamount/quantity));
+				if(!rate){rate=0;}
 				$(this).find('.rate').val(rate.toFixed(2));
 				
 				var taxable_value1=parseFloat($(this).find('.discountAmount').val());

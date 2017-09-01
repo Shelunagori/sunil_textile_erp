@@ -60,10 +60,10 @@ $this->set('title', 'Stock Journal View');
 										<td width="15%" align="center">
 											<?php echo $inward->quantity; ?>
 										</td>
-										<td width="20%" align="right">
+										<td width="20%" class="rightAligntextClass">
 											<?php echo $inward->rate; ?>
 										</td>
-										<td width="25%" align="right">
+										<td width="25%" class="rightAligntextClass">
 											<?php echo $inward->amount; ?>	
 										</td>
 									</tr>
@@ -71,8 +71,8 @@ $this->set('title', 'Stock Journal View');
 								</tbody>
 								<tfoot>
 									<tr>
-										<td colspan="4" align="right">Total</td>
-										<td width="25%" align="right"><?php echo $stockJournal->inward_amount_total;?></td>
+										<td colspan="4" class="rightAligntextClass">Total</td>
+										<td width="25%" class="rightAligntextClass"><?php echo $stockJournal->inward_amount_total;?></td>
 									</tr>
 								</tfoot>
 								</table>
@@ -103,10 +103,10 @@ $this->set('title', 'Stock Journal View');
 										<td width="15%" align="center">
 											<?php echo $outward->quantity; ?>
 										</td>
-										<td width="20%" align="right">
+										<td width="20%" class="rightAligntextClass">
 											<?php echo $outward->rate; ?>
 										</td>
-										<td width="25%" align="right">
+										<td width="25%" class="rightAligntextClass">
 											<?php echo $outward->amount; ?>	
 										</td>
 									</tr>
@@ -114,8 +114,8 @@ $this->set('title', 'Stock Journal View');
 								</tbody>
 								<tfoot>
 									<tr>
-										<td colspan="4" align="right">Total</td>
-										<td width="25%" align="right"><?php echo $stockJournal->outward_amount_total;?></td>
+										<td colspan="4" class="rightAligntextClass">Total</td>
+										<td width="25%" class="rightAligntextClass"><?php echo $stockJournal->outward_amount_total;?></td>
 									</tr>
 								</tfoot>
 								</table>

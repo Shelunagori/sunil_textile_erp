@@ -185,28 +185,30 @@ class LedgersController extends AppController
 		$company_id=$this->Auth->User('session_company_id');
 		$where = [];
 		
-		if ($this->request->is('post')) 
+		$from_date         = $this->request->query('from_date');
+		$to_date           = $this->request->query('to_date');
+		
+		$ledgersArray        =[];
+		$openingBalanceArray =[];
+		$transactionArray    =[];
+		
+		if(!empty($from_date))
 		{
-			$ledgersArray        =[];
-			$openingBalanceArray =[];
-			$transactionArray    =[];
-			$from_date = date("Y-m-d",strtotime($this->request->data['from_date']));
-			$to_date = date("Y-m-d",strtotime($this->request->data['to_date']));
-			if(!empty($from_date))
-			{
-				$where['AccountingEntries.transaction_date >='] = $from_date;
-				
-			}
-			
-			if(!empty($to_date))
-			{
-				$where['AccountingEntries.transaction_date <=']  = $to_date;
-				$where1['AccountingEntries.transaction_date <='] = $to_date;
-			}
-			$where['AccountingEntries.company_id']  = $company_id;
-			$where1['AccountingEntries.company_id'] = $company_id;
-			
-
+			$from_date = date("Y-m-d",strtotime($from_date));
+			$where['AccountingEntries.transaction_date >='] = $from_date;
+			$where1['AccountingEntries.transaction_date <='] = $from_date;
+		}
+		
+		if(!empty($to_date))
+		{
+			$to_date = date("Y-m-d",strtotime($to_date));
+			$where['AccountingEntries.transaction_date <=']  = $to_date;
+		}
+		$where['AccountingEntries.company_id']  = $company_id;
+		$where1['AccountingEntries.company_id'] = $company_id;
+		
+        if(!empty($from_date) || !empty($to_date))
+		{
 			$query = $this->Ledgers->AccountingEntries->find();
 			$totalInCaseDebit = $query->newExpr()
 				->addCase(
@@ -230,7 +232,7 @@ class LedgersController extends AppController
 			->contain(['Ledgers'])->order(['Ledgers.id'=> 'ASC']);
 			
 			$trialBalances = ($query);
-				
+			
 			if(!empty($trialBalances))
 			{
 				foreach($trialBalances as $trialBalance)
@@ -298,8 +300,8 @@ class LedgersController extends AppController
 					$debitDiffrence = round($openingBalanceCredit,2) - round($openingBalanceDebit,2);
 				}
 			}
-			//pr($openingBalanceArray);exit;
 		}
+		//pr($openingBalanceArray);exit;
 		
 		$this->set(compact('ledger','from_date','to_date','ledgersArray','transactionArray1','transactionArray2','openingBalanceArray','creditDiffrence','debitDiffrence','openingBalanceDebit'));
         $this->set('_serialize', ['ledger']);
@@ -325,7 +327,7 @@ class LedgersController extends AppController
 		if(!empty($from_date)){
 		    $From=date("Y-m-d",strtotime($from_date));
             $where['AccountingEntries.transaction_date >=']=$From;
-			$where1['AccountingEntries.transaction_date >=']=$From;
+			$where1['AccountingEntries.transaction_date <=']=$From;
         }
 		if(!empty($to_date)){
 			$To=date("Y-m-d",strtotime($to_date));

@@ -59,10 +59,24 @@ table.fixed td { overflow: hidden; }
 							 foreach ($purchaseVoucher->purchase_voucher_rows as $purchaseVoucherRows):
 					?>
 						<tr class="main_tr" class="tab">
+							<td width="7%" class="rightAligntextClass">
+								<?php 
+									if(!empty($purchaseVoucherRows->debit))
+									{
+										echo "<b>Dr</b>"; 
+									}
+									else
+									{
+										echo "<b>Cr</b>";
+									}
+										
+								?>
+							</td>
+							<td width="25%" align="center">
 							<td width="60%">
 								<?php echo $purchaseVoucherRows->ledger->name; ?>
 							</td>
-							<td width="20%" align="right">
+							<td width="20%" class="rightAligntextClass">
 								<?php 
 									if(!empty($purchaseVoucherRows->debit))
 									{
@@ -74,6 +88,7 @@ table.fixed td { overflow: hidden; }
 									}
 								?>
 							</td>
+							<td width="25%" class="rightAligntextClass">
 							<td width="20%" align="right">
 								<?php 
 								    if(!empty($purchaseVoucherRows->credit))
@@ -91,7 +106,9 @@ table.fixed td { overflow: hidden; }
 					</tbody>
 					<tfoot>
 						<tr>
-							<td align="right">Total</td>
+							<td colspan="2" class="rightAligntextClass">Total</td>
+							<td width="25%" class="rightAligntextClass"><?php echo $purchaseVoucher->voucher_amount?></td>
+							<td width="25%" class="rightAligntextClass"><?php echo $purchaseVoucher->voucher_amount?></td>							<td align="right">Total</td>
 							<td width="25%" align="right"><?php echo $purchaseVoucher->voucher_amount?></td>
 							<td width="25%" align="right"><?php echo $purchaseVoucher->voucher_amount?></td>
 						</tr>
