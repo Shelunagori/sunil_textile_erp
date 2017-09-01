@@ -30,18 +30,18 @@ $this->set('title', 'Update Sales Invoice');
 						</div>
 						<input type="hidden" name="company_id" class="company_id" value="<?php echo $company_id;?>">
 						<input type="hidden" name="state_id" class="state_id" value="<?php echo $state_id;?>">
-						<input type="hidden" name="" id="is_interstate" value="0">
+						<input type="hidden" name="is_interstate" id="is_interstate" value="0">
+						<input type="hidden" name="isRoundofType" id="isRoundofType" class="isRoundofType" value="0">
 						<input type="hidden" name="voucher_no" id="" value="<?= h($voucher_no, 4, '0') ?>">
 						<div class="col-md-3">
-							    <label style="">Cash/Credit</label>
-								<?php $option =[['value'=>'cash','text'=>'Cash'],['value'=>'credit','text'=>'Credit']];
-									echo $this->Form->control('cash_or_credit',['class'=>'form-control input-sm cashCredit select2me','label'=>false, 'options' => $option,'value'=>$salesInvoice->cash_or_credit]);
+								<label>Sales Party</label>
+								<?php echo $this->Form->control('party_ledger_id',['empty'=>'-Select-', 'class'=>'form-control input-sm party_ledger_id select2me','label'=>false, 'options' => $Partyledgers,'required'=>'required', 'value'=>$salesInvoice->party_ledger_id]);
 								?>
 						</div>
-						<div class="col-md-3" style="<?php if($salesInvoice->cash_or_credit=='cash'){echo "display:none";}?>" id="cusomerIds">
+						<div class="col-md-3">
 							<div class="form-group">
-								<label>Customer Name</label>
-								<?php echo $this->Form->control('customer_id',['empty'=>'-Customer Name-', 'class'=>'form-control input-sm customer_id select2me','label'=>false, 'options' => $customerOptions, 'value'=>$salesInvoice->customer_id]);
+								<label>Sales Account</label>
+								<?php echo $this->Form->control('sales_ledger_id',['empty'=>'-Select-', 'class'=>'form-control input-sm sales_ledger_id select2me','label'=>false, 'options' => $Accountledgers,'required'=>'required', 'value'=>$salesInvoice->sales_ledger_id]);
 								?>
 							</div>
 						</div> 
@@ -59,7 +59,7 @@ $this->set('title', 'Update Sales Invoice');
 									<td><label>Taxable Value<label></td>
 									
 									<td><label id="gstDisplay">
-									<?php if($salesInvoice->cash_or_credit=='cash'){echo "GST";}else{echo "IGST";}?>
+									GST
 									<label></td>
 									<td><label>Net Amount<label></td>
 									<td></td>
@@ -80,7 +80,7 @@ $this->set('title', 'Update Sales Invoice');
 				<input type="hidden" name="salesInvoiceRow<?php echo $i;?>output_igst_ledger_id" class="output_igst_ledger_id" value="<?php echo $salesInvoiceRow->output_igst_ledger_id;?>">
 				<input type="hidden" name="" class="gst_figure_tax_percentage calculation" value="<?php echo $salesInvoiceRow->gst_figure->tax_percentage;?>">
 				<input type="hidden" name="" class="totamount calculation" value="">
-				<input type="hidden" name="" class="gstValue calculation" value="">
+				<input type="hidden" name="salesInvoiceRow<?php echo $i;?>gst_value" class="gstValue calculation" value="<?php echo $salesInvoiceRow->gst_value;?>">
 				<input type="hidden" name="" class="discountvalue calculation" value="">
 										
 				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.item_id', ['empty'=>'-Item Name-','options'=>$itemOptions,'label' => false,'class' => 'form-control input-sm attrGet','required'=>'required','value'=>$salesInvoiceRow->item->id]);
@@ -125,7 +125,6 @@ $this->set('title', 'Update Sales Invoice');
 						<?php echo $this->Form->input('amount_before_tax', ['label' => false,'class' => 'form-control input-sm amount_before_tax rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
 						</td>
 						</tr>
-                        <?php if($salesInvoice->cash_or_credit=='cash'){?>						
 						<tr id="add_cgst">
 						<td colspan="6" align="right"><b>Total CGST</b>
 						</td>
@@ -140,16 +139,15 @@ $this->set('title', 'Update Sales Invoice');
 						<?php echo $this->Form->input('total_sgst', ['label' => false,'class' => 'form-control input-sm add_sgst rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
 						</td>
 						</tr>
-						<?php } else{?>
 						
-						<tr id="add_igst" style="<?php if($salesInvoice->cash_or_credit=='cash'){echo"display:none";}?>">
+						
+						<!--<tr id="add_igst" style="<?php if($salesInvoice->cash_or_credit=='cash'){echo"display:none";}?>">
 						<td colspan="6" align="right"><b>Total IGST</b>
 						</td>
 						<td colspan="2">
 						<?php echo $this->Form->input('total_igst', ['label' => false,'class' => 'form-control input-sm add_igst rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
 						</td>
-						</tr>
-						<?php }?>
+						</tr>-->
 						<tr>
 						<td colspan="6" align="right"><b>Round OFF</b>
 						</td>
@@ -235,7 +233,7 @@ $this->set('title', 'Update Sales Invoice');
 			<input type="hidden" name="output_igst_ledger_id" class="output_igst_ledger_id" value="">
 			<input type="hidden" name="" class="gst_figure_tax_percentage calculation" value="">
 			<input type="hidden" name="" class="totamount calculation" value="">
-			<input type="hidden" name="" class="gstValue calculation" value="">
+			<input type="hidden" name="gst_value" class="gstValue calculation" value="">
             <input type="hidden" name="" class="discountvalue calculation" value="">
 			
 				<?php echo $this->Form->input('item_id', ['empty'=>'-Item Name-','options'=>$itemOptions,'label' => false,'class' => 'form-control input-sm attrGet','required'=>'required']); ?>
@@ -358,6 +356,7 @@ $this->set('title', 'Update Sales Invoice');
 		  
 		  $(this).find('.output_igst_ledger_id').attr({name:'sales_invoice_rows['+i+'][output_igst_ledger_id]',id:'sales_invoice_rows['+i+'][output_igst_ledger_id]'});
 		  $(this).find('.gstAmount').attr({name:'sales_invoice_rows['+i+'][net_amount]',id:'sales_invoice_rows['+i+'][net_amount]'});
+		  $(this).find('.gstValue').attr({name:'sales_invoice_rows['+i+'][gst_value]',id:'sales_invoice_rows['+i+'][gst_value]'});
 		  
 		i++;
 		});
@@ -375,6 +374,7 @@ $this->set('title', 'Update Sales Invoice');
 			var s_cgst_value=0;
 			var roundOff1=0;
 			var round_of=0;
+			var isRoundofType=0;
 			$('#main_table tbody#main_tbody tr.main_tr').each(function()
 			{
 				var quantity  = parseFloat($(this).find('.quantity').val());
@@ -409,14 +409,17 @@ $this->set('title', 'Update Sales Invoice');
 				if(gst_amount<roundOff1)
 				{
 				round_of=parseFloat(roundOff1)-parseFloat(gst_amount);
+				isRoundofType='0';
 				}
 				if(gst_amount>roundOff1)
 				{
 				round_of=parseFloat(gst_amount)-parseFloat(roundOff1);
+				isRoundofType='1';
 				}
 				if(gst_amount==roundOff1)
 				{
 				round_of=parseFloat(gst_amount)-parseFloat(roundOff1);
+				isRoundofType='0';
 				}
 				
 				var gstValue  = parseFloat($(this).find('.gstValue').val());
@@ -438,6 +441,7 @@ $this->set('title', 'Update Sales Invoice');
 				$('.add_sgst').val(s_cgst_value.toFixed(2));
 				$('.add_igst').val(igst_value.toFixed(2));
 				$('.roundValue').val(round_of.toFixed(2));
+				$('.isRoundofType').val(isRoundofType);
 		rename_rows();
 		}
 		

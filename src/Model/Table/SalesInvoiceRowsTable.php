@@ -68,6 +68,10 @@ class SalesInvoiceRowsTable extends Table
 			'foreignKey' => 'output_igst_ledger_id',
 			'propertyName' => 'OutputIgstLedgers',
 		]);
+		$this->belongsTo('Ledgers', [
+            'foreignKey' => 'ledger_id',
+            'joinType' => 'INNER'
+        ]);
     }
 
     /**
@@ -117,9 +121,9 @@ class SalesInvoiceRowsTable extends Table
         $rules->add($rules->existsIn(['sales_invoice_id'], 'SalesInvoices'));
         $rules->add($rules->existsIn(['item_id'], 'Items'));
         $rules->add($rules->existsIn(['gst_figure_id'], 'GstFigures'));
-        $rules->add($rules->existsIn(['output_cgst_ledger_id'], 'OutputCgstLedgers'));
-        $rules->add($rules->existsIn(['output_sgst_ledger_id'], 'OutputSgstLedgers'));
-        $rules->add($rules->existsIn(['output_igst_ledger_id'], 'OutputIgstLedgers'));
+        //$rules->add($rules->existsIn(['output_cgst_ledger_id'], 'OutputCgstLedgers'));
+        //$rules->add($rules->existsIn(['output_sgst_ledger_id'], 'OutputSgstLedgers'));
+        //$rules->add($rules->existsIn(['output_igst_ledger_id'], 'OutputIgstLedgers'));
         return $rules;
     }
 }
