@@ -55,6 +55,10 @@ class SalesInvoicesTable extends Table
             'foreignKey' => 'sales_invoice_id',
 			'saveStrategy'=>'replace'
         ]);
+		$this->hasMany('AccountingEntries', [
+            'foreignKey' => 'sales_invoice_id',
+            'joinType' => 'INNER'
+        ]);
     }
 
     /**
@@ -78,11 +82,7 @@ class SalesInvoicesTable extends Table
             ->date('transaction_date')
             ->requirePresence('transaction_date', 'create')
             ->notEmpty('transaction_date');
-
-        $validator
-            ->requirePresence('cash_or_credit', 'create')
-            ->notEmpty('cash_or_credit');
-
+			
         $validator
             ->decimal('amount_before_tax')
             ->requirePresence('amount_before_tax', 'create')

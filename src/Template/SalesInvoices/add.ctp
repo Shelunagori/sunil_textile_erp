@@ -30,18 +30,18 @@ $this->set('title', 'Create Sales Invoice');
 						</div>
 						<input type="hidden" name="company_id" class="customer_id" value="<?php echo $company_id;?>">
 						<input type="hidden" name="state_id" class="state_id" value="<?php echo $state_id;?>">
-						<input type="hidden" name="" id="is_interstate" value="0">
+						<input type="hidden" name="is_interstate" id="is_interstate" value="0">
+						<input type="hidden" name="isRoundofType" id="isRoundofType" class="isRoundofType" value="0">
 						<input type="hidden" name="voucher_no" id="" value="<?= h($voucher_no, 4, '0') ?>">
 						<div class="col-md-3">
-							    <label style="">Cash/Credit</label>
-								<?php $option =[['value'=>'cash','text'=>'Cash'],['value'=>'credit','text'=>'Credit']];
-									echo $this->Form->control('cash_or_credit',['class'=>'form-control input-sm cashCredit select2me','label'=>false, 'options' => $option,'value'=>'cash']);
+								<label>Sales Party</label>
+								<?php echo $this->Form->control('party_ledger_id',['empty'=>'-Select-', 'class'=>'form-control input-sm party_ledger_id select2me','label'=>false, 'options' => $Partyledgers,'required'=>'required']);
 								?>
 						</div>
-						<div class="col-md-3" style="display:none" id="cusomerIds">
+						<div class="col-md-3">
 							<div class="form-group">
-								<label>Customer Name</label>
-								<?php echo $this->Form->control('customer_id',['empty'=>'Select...', 'class'=>'form-control input-sm customer_id select2me','label'=>false, 'options' => $customerOptions, 'required'=>'required']);
+								<label>Sales Account</label>
+								<?php echo $this->Form->control('sales_ledger_id',['empty'=>'-Select-', 'class'=>'form-control input-sm sales_ledger_id select2me','label'=>false, 'options' => $Accountledgers,'required'=>'required']);
 								?>
 							</div>
 						</div> 
@@ -71,11 +71,11 @@ $this->set('title', 'Create Sales Invoice');
 			<input type="hidden" name="output_igst_ledger_id" class="output_igst_ledger_id" value="">
 			<input type="hidden" name="gst_figure_tax_percentage" class="gst_figure_tax_percentage calculation" value="">
 			<input type="hidden" name="tot" class="totamount calculation" value="">
-			<input type="hidden" name="" class="gstValue calculation" value="">
-			<input type="hidden" name="" class="discountvalue calculation" value="">
+			<input type="hidden" name="gst_value" class="gstValue calculation" value="">
+			<input type="hidden" name="discountvalue" class="discountvalue calculation" value="">
 
 			
-				<?php echo $this->Form->input('item_id', ['empty'=>'Select...', 'options'=>$itemOptions,'label' => false,'class' =>'form-control input-sm attrGet','required'=>'required']); ?>
+				<?php echo $this->Form->input('item_id', ['empty'=>'-Item Name-', 'options'=>$itemOptions,'label' => false,'class' =>'form-control input-sm attrGet','required'=>'required']); ?>
 			</td>
 			<td>
 				<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm calculation quantity rightAligntextClass','id'=>'check','required'=>'required','placeholder'=>'Quantity']); ?>
@@ -90,7 +90,7 @@ $this->set('title', 'Create Sales Invoice');
 				<?php echo $this->Form->input('taxable_value', ['label' => false,'class' => 'form-control input-sm discountAmount calculation rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'Taxable Value']); ?>	
 			</td>
 			<td>
-				<?php echo $this->Form->input('gst_figure_tax_name', ['label' => false,'class' => 'form-control input-sm gst_figure_tax_name', 'readonly'=>'readonly','required'=>'required','placeholder'=>'GST']); ?>	
+				<?php echo $this->Form->input('gst_figure_tax_name', ['label' => false,'class' => 'form-control input-sm gst_figure_tax_name rightAligntextClass', 'readonly'=>'readonly','required'=>'required','placeholder'=>'GST']); ?>	
 			</td>
 			<td>
 				<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm gstAmount reverse_total_amount rightAligntextClass','required'=>'required','placeholder'=>'Amount']); ?>	
@@ -224,11 +224,11 @@ $this->set('title', 'Create Sales Invoice');
 			<input type="hidden" name="output_igst_ledger_id" class="output_igst_ledger_id" value="">
 			<input type="hidden" name="gst_figure_tax_percentage" class="gst_figure_tax_percentage calculation" value="">
 			<input type="hidden" name="tot" class="totamount calculation" value="">
-			<input type="hidden" name="" class="gstValue calculation" value="">
-			<input type="hidden" name="" class="discountvalue calculation" value="">
+			<input type="hidden" name="gst_value" class="gstValue calculation" value="">
+			<input type="hidden" name="discountvalue" class="discountvalue calculation" value="">
 
 			
-				<?php echo $this->Form->input('item_id', ['empty'=>'Select...', 'options'=>$itemOptions,'label' => false,'class' =>'form-control input-sm attrGet','required'=>'required']); ?>
+				<?php echo $this->Form->input('item_id', ['empty'=>'-Item Name-', 'options'=>$itemOptions,'label' => false,'class' =>'form-control input-sm attrGet','required'=>'required']); ?>
 			</td>
 			<td>
 				<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm calculation quantity rightAligntextClass','id'=>'check','required'=>'required','placeholder'=>'Quantity']); ?>
@@ -299,6 +299,7 @@ $this->set('title', 'Create Sales Invoice');
 			if(cashcredit=='credit')
 			{
 				$('#cusomerIds').show();
+				$('.customer_id').attr('required', 'required');
 			}
 			else{
 				$('#cusomerIds').hide();
@@ -307,6 +308,7 @@ $this->set('title', 'Create Sales Invoice');
 			    $('#add_sgst').show();
 			    $('#add_igst').hide();
 				$('#is_interstate').val('0');
+				$('.customer_id').removeAttr('required');
 			}
 		});
 		$('.delete-tr').die().live('click',function() 
@@ -345,7 +347,9 @@ $this->set('title', 'Create Sales Invoice');
 		  $(this).find('.output_sgst_ledger_id').attr({name:'sales_invoice_rows['+i+'][output_sgst_ledger_id]',id:'sales_invoice_rows['+i+'][output_sgst_ledger_id]'});
 		  
 		  $(this).find('.output_igst_ledger_id').attr({name:'sales_invoice_rows['+i+'][output_igst_ledger_id]',id:'sales_invoice_rows['+i+'][output_igst_ledger_id]'});
-		  $(this).find('.gstAmount').attr({name:'sales_invoice_rows['+i+'][net_amount]',id:'sales_invoice_rows['+i+'][net_amount]'});	
+		  $(this).find('.gstAmount').attr({name:'sales_invoice_rows['+i+'][net_amount]',id:'sales_invoice_rows['+i+'][net_amount]'});
+		$(this).find('.gstValue').attr({name:'sales_invoice_rows['+i+'][gst_value]',id:'sales_invoice_rows['+i+'][gst_value]'});	
+		  		  
 		  
 		i++;
 		});
@@ -363,6 +367,7 @@ $this->set('title', 'Create Sales Invoice');
 			var s_cgst_value=0;
 			var roundOff1=0;
 			var round_of=0;
+			var isRoundofType=0;
 			$('#main_table tbody#main_tbody tr.main_tr').each(function()
 			{
 				var quantity  = parseFloat($(this).find('.quantity').val());
@@ -375,6 +380,8 @@ $this->set('title', 'Create Sales Invoice');
 				var discount  = parseFloat($(this).find('.discount').val());
 				var discountValue=(discount*totamount)/100;
 				var discountAmount=totamount-discountValue;
+				
+				if(!discountAmount){discountAmount=0;}
 				$(this).find('.discountAmount').val(discountAmount.toFixed(2));
 				$(this).find('.discountvalue').val(discountValue.toFixed(2));
 				
@@ -397,14 +404,17 @@ $this->set('title', 'Create Sales Invoice');
 				if(gst_amount<roundOff1)
 				{
 				round_of=parseFloat(roundOff1)-parseFloat(gst_amount);
+				isRoundofType='0';
 				}
 				if(gst_amount>roundOff1)
 				{
 				round_of=parseFloat(gst_amount)-parseFloat(roundOff1);
+				isRoundofType='1';
 				}
 				if(gst_amount==roundOff1)
 				{
 				round_of=parseFloat(gst_amount)-parseFloat(roundOff1);
+				isRoundofType='0';
 				}
 				
 				var gstValue  = parseFloat($(this).find('.gstValue').val());
@@ -426,6 +436,7 @@ $this->set('title', 'Create Sales Invoice');
 				$('.add_sgst').val(s_cgst_value.toFixed(2));
 				$('.add_igst').val(igst_value.toFixed(2));
 				$('.roundValue').val(round_of.toFixed(2));
+				$('.isRoundofType').val(isRoundofType);
 		rename_rows();
 		}
 		
@@ -450,12 +461,14 @@ $this->set('title', 'Create Sales Invoice');
 				var totamount=parseFloat((discountAmount*100)/(100-discount));
 				var discountvalue=parseFloat(totamount)-parseFloat(discountAmount);
 				 
+				 if(!discountAmount){discountAmount=0;}
 				$(this).find('.discountAmount').val(discountAmount.toFixed(2));
 				$(this).find('.gstValue').val(gstValue.toFixed(2));
 				$(this).find('.totamount').val(totamount.toFixed(2));
 				$(this).find('.discountvalue').val(discountvalue.toFixed(2));
 
 				var rate=parseFloat((totamount/quantity));
+				if(!rate){rate=0;}
 				$(this).find('.rate').val(rate.toFixed(2));
 				
 				var taxable_value1=parseFloat($(this).find('.discountAmount').val());

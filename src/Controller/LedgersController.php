@@ -221,30 +221,34 @@ class LedgersController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		$ledger    = $this->Ledgers->newEntity();
 		$company_id=$this->Auth->User('session_company_id');
-		$where = [];
 		
-		if ($this->request->is('post')) 
-		{
-			$ledgersArray        =[];
-			$openingBalanceArray =[];
-			$transactionArray    =[];
-			$from_date = date("Y-m-d",strtotime($this->request->data['from_date']));
-			$to_date = date("Y-m-d",strtotime($this->request->data['to_date']));
+		$from_date = $this->request->query('from_date');
+		$to_date = $this->request->query('to_date');
+		
+		$where               = [];
+		$ledgersArray        = [];
+		$openingBalanceArray = [];
+		$transactionArray    = [];
+		
+		if(!empty($from_date) || !empty($to_date))
+		{ 
 			if(!empty($from_date))
 			{
-				$where['AccountingEntries.transaction_date >='] = $from_date;
-				
+				$from_date = date("Y-m-d",strtotime($from_date));
+				$where['AccountingEntries.transaction_date >=']  = $from_date;
+				$where1['AccountingEntries.transaction_date <='] = $from_date;
 			}
 			
 			if(!empty($to_date))
 			{
+				$to_date = date("Y-m-d",strtotime($to_date));
 				$where['AccountingEntries.transaction_date <=']  = $to_date;
-				$where1['AccountingEntries.transaction_date <='] = $to_date;
 			}
+			
 			$where['AccountingEntries.company_id']  = $company_id;
 			$where1['AccountingEntries.company_id'] = $company_id;
 			
-
+			
 			$query = $this->Ledgers->AccountingEntries->find();
 			$totalInCaseDebit = $query->newExpr()
 				->addCase(
@@ -268,7 +272,7 @@ class LedgersController extends AppController
 			->contain(['Ledgers'])->order(['Ledgers.id'=> 'ASC']);
 			
 			$trialBalances = ($query);
-				
+			
 			if(!empty($trialBalances))
 			{
 				foreach($trialBalances as $trialBalance)
@@ -310,7 +314,7 @@ class LedgersController extends AppController
 			$debitAmount->select(['total_debit' => $debitAmount->func()->sum('ItemLedgers.amount')])
 						->where(['ItemLedgers.is_opening_balance'=> 'yes','company_id' => $company_id]);
 			
-			$totalDebit  = $debitAmount->first()->total_debit;
+			$totalDebit  = $debitAmount->first()->total_debit; 
 			
 			$openingBalanceDebit  = 0;
 			$openingBalanceCredit = 0;
@@ -326,7 +330,8 @@ class LedgersController extends AppController
 						$openingBalanceArray[$openingBalance->ledger->id][$openingBalance->debit_amount] =$openingBalance->credit_amount;
 					}
 				}
-				$openingBalanceDebit = round($openingBalanceDebit,2)+round($totalDebit,2);
+				//$openingBalanceDebit = round($openingBalanceDebit,2)+round($totalDebit,2);
+				$openingBalanceDebit = round($openingBalanceDebit,2);
 				if($openingBalanceDebit > $openingBalanceCredit)
 				{
 					$creditDiffrence = round($openingBalanceDebit,2)-round($openingBalanceCredit,2);
@@ -336,10 +341,11 @@ class LedgersController extends AppController
 					$debitDiffrence = round($openingBalanceCredit,2) - round($openingBalanceDebit,2);
 				}
 			}
-			//pr($openingBalanceArray);exit;
+				//pr($openingBalances->toArray());exit;
+		
 		}
 		
-		$this->set(compact('ledger','from_date','to_date','ledgersArray','transactionArray1','transactionArray2','openingBalanceArray','creditDiffrence','debitDiffrence','openingBalanceDebit'));
+		$this->set(compact('ledger','from_date','to_date','ledgersArray','transactionArray1','transactionArray2','openingBalanceArray','openingBalanceCredit','openingBalanceDebit','totalDebit'));
         $this->set('_serialize', ['ledger']);
     }
 	
@@ -363,7 +369,7 @@ class LedgersController extends AppController
 		if(!empty($from_date)){
 		    $From=date("Y-m-d",strtotime($from_date));
             $where['AccountingEntries.transaction_date >=']=$From;
-			$where1['AccountingEntries.transaction_date >=']=$From;
+			$where1['AccountingEntries.transaction_date <=']=$From;
         }
 		if(!empty($to_date)){
 			$To=date("Y-m-d",strtotime($to_date));
@@ -405,6 +411,8 @@ class LedgersController extends AppController
 											->contain(['Ledgers'])
 											->order(['ledger_id'=>'ASC']);
 		//pr($AccountingLedgersBeforeFromDate->toArray());
+		$closingBalance_credit1 = 0;
+		$closingBalance_debit1  = 0;
 		if(!empty($AccountingLedgersBeforeFromDate))
 		{
 			$credit1=0;$debit1=0;$opening_balance_yes_credit_total1=0;$opening_balance_yes_debit_total1=0;
@@ -426,14 +434,16 @@ class LedgersController extends AppController
 			if($total_credit1 > $total_debit1)
 			{ 
 				$openingBalance_credit1 = $total_credit1-$total_debit1; 
-				$closingBalance_credit1 = $openingBalance_credit1+@$openingBalance_credit; 
+				 
 			}
 			
 			if($total_credit1 < $total_debit1)
 			{ 
 				$openingBalance_debit1 = $total_debit1-$total_credit1; 
-				$closingBalance_debit1 = $openingBalance_debit1+@$openingBalance_debit;
+				
 			}
+			$closingBalance_credit1 = @$openingBalance_credit1+@$openingBalance_credit;
+			$closingBalance_debit1  = @$openingBalance_debit1+@$openingBalance_debit;
 			//exit;
 		}
 		//pr($AccountingLedgers->toArray());exit;
