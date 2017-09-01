@@ -139,7 +139,7 @@ class LedgersController extends AppController
 				//Accounting Entry
 				$query_delete = $this->Ledgers->AccountingEntries->query();
 				$query_delete->delete()
-				->where(['ledger_id' => $ledger->id,'company_id'=>$company_id])
+				->where(['ledger_id' => $ledger->id,'company_id'=>$company_id,'is_opening_balance'=>'yes'])
 				->execute();
 				
 				$transaction_date=$this->Auth->User('session_company')->books_beginning_from;
@@ -222,130 +222,55 @@ class LedgersController extends AppController
 		$ledger    = $this->Ledgers->newEntity();
 		$company_id=$this->Auth->User('session_company_id');
 		
-		$from_date = $this->request->query('from_date');
-		$to_date = $this->request->query('to_date');
+		$from_date = date("Y-m-d",strtotime($this->request->query('from_date')));
+		$to_date = date("Y-m-d",strtotime($this->request->query('to_date')));
 		
-		$where               = [];
-		$ledgersArray        = [];
-		$openingBalanceArray = [];
-		$transactionArray    = [];
-		
-		if(!empty($from_date) || !empty($to_date))
-		{ 
-			if(!empty($from_date))
-			{
-				$from_date = date("Y-m-d",strtotime($from_date));
-				$where['AccountingEntries.transaction_date >=']  = $from_date;
-				$where1['AccountingEntries.transaction_date <='] = $from_date;
-			}
-			
-			if(!empty($to_date))
-			{
-				$to_date = date("Y-m-d",strtotime($to_date));
-				$where['AccountingEntries.transaction_date <=']  = $to_date;
-			}
-			
-			$where['AccountingEntries.company_id']  = $company_id;
-			$where1['AccountingEntries.company_id'] = $company_id;
-			
-			
-			$query = $this->Ledgers->AccountingEntries->find();
-			$totalInCaseDebit = $query->newExpr()
+		$query = $this->Ledgers->AccountingEntries->find();
+			$CaseDebitOpeningBalance = $query->newExpr()
 				->addCase(
-					$query->newExpr()->add(['ledger_id']),
+					$query->newExpr()->add(['transaction_date <'=>$from_date]),
 					$query->newExpr()->add(['debit']),
 					'decimal'
 				);
-			$totalOutCaseCredit = $query->newExpr()
+			$CaseCreditOpeningBalance = $query->newExpr()
 				->addCase(
-					$query->newExpr()->add(['ledger_id']),
+					$query->newExpr()->add(['transaction_date <'=>$from_date]),
+					$query->newExpr()->add(['credit']),
+					'decimal'
+				);
+			$CaseDebitTransaction = $query->newExpr()
+				->addCase(
+					$query->newExpr()->add(['transaction_date >='=>$from_date,'transaction_date <='=>$to_date]),
+					$query->newExpr()->add(['debit']),
+					'decimal'
+				);
+			$CaseCreditTransaction = $query->newExpr()
+				->addCase(
+					$query->newExpr()->add(['transaction_date >='=>$from_date,'transaction_date <='=>$to_date]),
 					$query->newExpr()->add(['credit']),
 					'decimal'
 				);
 			$query->select([
-				'debit_amount' => $query->func()->sum($totalInCaseDebit),
-				'credit_amount' => $query->func()->sum($totalOutCaseCredit),'id','ledger_id'
+				'debit_opening_balance' => $query->func()->sum($CaseDebitOpeningBalance),
+				'credit_opening_balance' => $query->func()->sum($CaseCreditOpeningBalance),
+				'debit_transaction' => $query->func()->sum($CaseDebitTransaction),
+				'credit_transaction' => $query->func()->sum($CaseCreditTransaction),'id','ledger_id'
 			])
-			->where($where)
+			->where(['AccountingEntries.company_id'=>$company_id])
 			->group('ledger_id')
 			->autoFields(true)
-			->contain(['Ledgers'])->order(['Ledgers.id'=> 'ASC']);
-			
-			$trialBalances = ($query);
-			
-			if(!empty($trialBalances))
-			{
-				foreach($trialBalances as $trialBalance)
-				{
-					if(!empty($trialBalance->debit_amount) || !empty($trialBalance->credit_amount))
-					{
-						$transactionArray1[$trialBalance->ledger_id] = $trialBalance->debit_amount;
-						$transactionArray2[$trialBalance->ledger_id] = $trialBalance->credit_amount;
-					}
-					//$transactionArray[$trialBalance->ledger->id][$trialBalance->debit_amount] =$trialBalance->credit_amount;
-				}
-			}
-				
-			$query1 = $this->Ledgers->AccountingEntries->find();
-			$totalInCaseDebit = $query1->newExpr()
-				->addCase(
-					$query1->newExpr()->add(['ledger_id']),
-					$query1->newExpr()->add(['debit']),
-					'decimal'
-					);
-			$totalOutCaseCredit = $query1->newExpr()
-				->addCase(
-					$query1->newExpr()->add(['ledger_id']),
-					$query1->newExpr()->add(['credit']),
-					'decimal'
-					);
-			$query1->select([
-				'debit_amount' => $query1->func()->sum($totalInCaseDebit),
-				'credit_amount' => $query1->func()->sum($totalOutCaseCredit),'id','ledger_id'
-			])
-			->where($where1)
-			->group('ledger_id')
-			->autoFields(true)
-			->contain(['Ledgers'])->order(['Ledgers.id'=> 'ASC']);
-			
-			$openingBalances = ($query1);
+			->contain(['Ledgers']);
+			$TrialBalances = ($query);
 			
 			$debitAmount = $this->Ledgers->Companies->ItemLedgers->find();
 			$debitAmount->select(['total_debit' => $debitAmount->func()->sum('ItemLedgers.amount')])
 						->where(['ItemLedgers.is_opening_balance'=> 'yes','company_id' => $company_id]);
 			
-			$totalDebit  = $debitAmount->first()->total_debit; 
-			
-			$openingBalanceDebit  = 0;
-			$openingBalanceCredit = 0;
-			if(!empty($openingBalances))
-			{
-				foreach($openingBalances as $openingBalance)
-				{
-					$openingBalanceDebit  += $openingBalance->debit_amount;
-					$openingBalanceCredit += $openingBalance->credit_amount;
-					if(!empty($openingBalance->debit_amount) || !empty($openingBalance->credit_amount))
-					{
-						$ledgersArray[$openingBalance->ledger->id] = $openingBalance->ledger->name;
-						$openingBalanceArray[$openingBalance->ledger->id][$openingBalance->debit_amount] =$openingBalance->credit_amount;
-					}
-				}
-				//$openingBalanceDebit = round($openingBalanceDebit,2)+round($totalDebit,2);
-				$openingBalanceDebit = round($openingBalanceDebit,2);
-				if($openingBalanceDebit > $openingBalanceCredit)
-				{
-					$creditDiffrence = round($openingBalanceDebit,2)-round($openingBalanceCredit,2);
-				}
-				elseif($openingBalanceDebit < $openingBalanceCredit)
-				{
-					$debitDiffrence = round($openingBalanceCredit,2) - round($openingBalanceDebit,2);
-				}
-			}
-				//pr($openingBalances->toArray());exit;
+			$totalDebit  = $debitAmount->first()->total_debit;
+		//pr($query->toArray()); exit;
 		
-		}
 		
-		$this->set(compact('ledger','from_date','to_date','ledgersArray','transactionArray1','transactionArray2','openingBalanceArray','openingBalanceCredit','openingBalanceDebit','totalDebit'));
+		$this->set(compact('ledger','from_date','to_date','TrialBalances','totalDebit'));
         $this->set('_serialize', ['ledger']);
     }
 	

@@ -66,36 +66,38 @@ class ItemsTable extends Table
             'joinType' => 'LEFT'
 		]);
 		
-		$this->belongsTo('InputCgstLedgers', [
+		$this->belongsTo('input_cgst_ledger', [
 			'className' => 'Ledgers',
 			'foreignKey' => 'input_cgst_ledger_id',
-			'propertyName' => 'InputCgstLedgers',
-		]);
-		$this->belongsTo('InputSgstLedgers', [
-			'className' => 'Ledgers',
-			'foreignKey' => 'input_sgst_ledger_id',
-			'propertyName' => 'InputSgstLedgers',
-		]);
-		$this->belongsTo('InputIgstLedgers', [
-			'className' => 'Ledgers',
-			'foreignKey' => 'input_igst_ledger_id',
-			'propertyName' => 'InputIgstLedgers',
+			'propertyName' => 'input_cgst_ledger',
 		]);
 		
-		$this->belongsTo('OutputCgstLedgers', [
+		$this->belongsTo('input_sgst_ledger', [
+			'className' => 'Ledgers',
+			'foreignKey' => 'input_sgst_ledger_id',
+			'propertyName' => 'input_sgst_ledger',
+		]);
+		$this->belongsTo('input_igst_ledger', [
+			'className' => 'Ledgers',
+			'foreignKey' => 'input_igst_ledger_id',
+			'propertyName' => 'input_igst_ledger',
+		]);
+		
+		$this->belongsTo('output_cgst_ledger', [
 			'className' => 'Ledgers',
 			'foreignKey' => 'output_cgst_ledger_id',
-			'propertyName' => 'OutputCgstLedgers',
+			'propertyName' => 'output_cgst_ledger',
 		]);
-		$this->belongsTo('OutputSgstLedgers', [
+		
+		$this->belongsTo('output_sgst_ledger', [
 			'className' => 'Ledgers',
 			'foreignKey' => 'output_sgst_ledger_id',
-			'propertyName' => 'OutputSgstLedgers',
+			'propertyName' => 'output_sgst_ledger',
 		]);
-		$this->belongsTo('OutputIgstLedgers', [
+		$this->belongsTo('output_igst_ledger', [
 			'className' => 'Ledgers',
 			'foreignKey' => 'output_igst_ledger_id',
-			'propertyName' => 'OutputIgstLedgers',
+			'propertyName' => 'output_igst_ledger',
 		]);
     }
 

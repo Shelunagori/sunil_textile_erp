@@ -141,7 +141,7 @@ class SuppliersController extends AppController
 				//Accounting Entry
 					$query_delete = $this->Suppliers->Ledgers->AccountingEntries->query();
 					$query_delete->delete()
-					->where(['ledger_id' => $supplier->ledgers[0]->id,'company_id'=>$company_id])
+					->where(['ledger_id' => $supplier->ledgers[0]->id,'company_id'=>$company_id,'is_opening_balance'=>'yes'])
 					->execute();
 					
 					$transaction_date=$this->Auth->User('session_company')->books_beginning_from;

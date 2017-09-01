@@ -53,7 +53,7 @@ $this->set('title', 'Trial balance report');
 					</div>	
 					</form>
 				</div>
-				<?php if(!empty($openingBalanceArray)){?>
+				
 				<table class="table table-bordered table-hover table-condensed" width="100%">
 					<thead>
 						<tr>
@@ -80,100 +80,56 @@ $this->set('title', 'Trial balance report');
 							$transactionCreditTotal=0;
 							$closingBalanceDebitTotal=0;
 							$closingBalanceCreditTotal=0;
-							foreach($openingBalanceArray as $key => $openingBalance)
+							foreach($TrialBalances as  $TrialBalance)
 							{ 
-								foreach($openingBalance as $key1 => $openingBalance1)
-								{
-									$closing_credit=0;
+								    $closing_credit=0;
 									$closing_debit=0;
 							?>
 									<tr>
-										<td scope="col"><?php echo @$ledgersArray[$key];?></td>
+										<td scope="col"><?php echo @$TrialBalance->ledger->name;?></td>
 										<td scope="col" align="right">
 										<?php
-										    if(!empty($key1))
-											{
-												$closing_debit = round($closing_debit,2)+round($key1,2);
-												$openingBalanceDebitTotal += $key1;
-												echo $key1;
-											}
-											else
-											{
-												echo "-";
-											}
+										    echo $TrialBalance->debit_opening_balance;
+											$closing_debit +=round($TrialBalance->debit_opening_balance,2);
+											$openingBalanceDebitTotal +=round($TrialBalance->debit_opening_balance,2);
 										?>
 										</td>
 										<td scope="col" align="right">
 										<?php 
-											if(!empty($openingBalance1))
-											{
-												$closing_credit = round($closing_credit,2)+round($openingBalance1,2);
-												$openingBalanceCreditTotal +=round($openingBalance1,2);
-												echo $openingBalance1;
-											}
-											else
-											{
-												echo "-";
-											}
+											$closing_credit +=round($TrialBalance->credit_opening_balance,2);
+											$openingBalanceCreditTotal +=round($TrialBalance->credit_opening_balance,2);
+											echo $TrialBalance->credit_opening_balance;
 										?>
 										</td>
 										<td scope="col" align="right">
 										<?php
-											if(!empty($transactionArray1[$key]))
-											{
-												$transactionDebitTotal +=round($transactionArray1[$key],2);
-												$closing_debit = round($closing_debit,2)+round($transactionArray1[$key],2);
-												echo $transactionArray1[$key];
-											}
-											else
-											{
-												echo "-";
-											}
+											$closing_debit +=round($TrialBalance->debit_transaction,2);
+											$transactionDebitTotal +=round($TrialBalance->debit_transaction,2);
+											echo $TrialBalance->debit_transaction;
 										?>
 										</td>
 										<td scope="col" align="right">
 										<?php 
-										    if(!empty($transactionArray2[$key]))
-											{
-												$transactionCreditTotal +=round($transactionArray2[$key],2);
-												$closing_credit = round($closing_credit,2)+round($transactionArray2[$key],2);
-												echo $transactionArray2[$key];
-											}
-											else
-											{
-												echo "-";
-											}
+											$closing_credit +=round($TrialBalance->credit_transaction,2);
+											$transactionCreditTotal +=round($TrialBalance->credit_transaction,2);
+										    echo $TrialBalance->credit_transaction;
 										?>
 										</td>
 										<td scope="col" align="right">
 										<?php
+											echo @$closing_debit;
 											$closingBalanceDebitTotal +=round($closing_debit,2);
-											if(!empty($closing_debit))
-											{
-												echo @$closing_debit;
-											}
-											else
-											{
-												echo "-";
-											}
 										?>
 										</td>
 										<td scope="col" align="right">
 										<?php 
+											echo @$closing_credit;
 											$closingBalanceCreditTotal +=round($closing_credit,2);
-											if(!empty($closing_credit))
-											{
-												echo @$closing_credit;
-											}
-											else
-											{
-												echo "-";
-											}
 										?>
 										</td>
 									</tr>
 						<?php 
-								}
+								
 							}
 						?>
 					</tbody>
@@ -240,31 +196,30 @@ $this->set('title', 'Trial balance report');
 							<th scope="col" >Opening Stock</th>
 							<th style="text-align:right";>
 								<?php 
-								  if(@$coreVariable[fyValidFrom]<$from_date)
-								  {
+								if(@$coreVariable['fyValidFrom']<$from_date)
+								{
 									if($totalDebit>0)
 									{ 
-									   $openingBalanceDebitTotal  = @$openingBalanceDebitTotal+@$totalDebit; echo "<br>";
-										echo @$totalDebit;
-										$total1 +=$totalDebit;
+									   echo @$totalDebit;
+									   $openingBalanceDebitTotal +=round($totalDebit,2);
+									   $total1 +=$totalDebit;
 									}
 									
-								  }
+								} 
 								?>
 							</th>
 							<th style="text-align:right";>
 								<?php 
-								if(@$coreVariable[fyValidFrom]<$from_date)
+								 if(@$coreVariable['fyValidFrom']<$from_date)
 								{
 									if($totalDebit<0)
 									{
-									   $openingBalanceCreditTotal = @$openingBalanceCreditTotal+@$totalDebit;
-										echo @$totalDebit;
-										$total2 +=$totalDebit;
+									   echo @$totalDebit;
+									   $openingBalanceCreditTotal +=round($totalDebit,2);
+									   $total2 +=$totalDebit;
 									}
 									
-									
-								}
+								} 
 								?>
 							</th>
 							<th style="text-align:right";>
@@ -273,26 +228,26 @@ $this->set('title', 'Trial balance report');
 								  { 
 									if($totalDebit>0)
 									{
-										$transactionDebitTotal  = @$transactionDebitTotal+@$totalDebit;
 										echo @$totalDebit;
+										$transactionDebitTotal +=round($totalDebit,2);
 										$total3 +=$totalDebit;
 									}
 									
-								  }
+								  } 
 								?>
 							</th>
 							<th style="text-align:right";>
 								<?php 
-								  if(@$coreVariable[fyValidFrom]>$from_date && @$coreVariable[fyValidFrom]<$to_date)
-								  {
+								if(@$coreVariable[fyValidFrom]>$from_date && @$coreVariable[fyValidFrom]<$to_date)
+								{
 									if($totalDebit<0)
 									{
-										$transactionCreditTotal = @$transactionCreditTotal+@$totalDebit;
 										echo @$totalDebit;
+										$transactionCreditTotal +=round($totalDebit,2);
 										$total4 +=$totalDebit;
 									}
 									
-								  }
+								} 
 								?>
 							</th>
 							<th style="text-align:right";></th>
@@ -306,8 +261,13 @@ $this->set('title', 'Trial balance report');
 								{ 
 									if($openingBalanceDebitTotal>@$openingBalanceCreditTotal)
 									{
-										echo $debit_diff = $openingBalanceDebitTotal-@$openingBalanceCreditTotal;
+										$cedit_diff = $openingBalanceDebitTotal-@$openingBalanceCreditTotal;
 									}
+									if(@$openingBalanceCreditTotal>$openingBalanceDebitTotal)
+									{
+										$debit_diff =@$openingBalanceCreditTotal-$openingBalanceDebitTotal;
+									}
+									echo @$debit_diff;
 								}
 							?>
 							</th>
@@ -315,10 +275,7 @@ $this->set('title', 'Trial balance report');
 							<?php 
 								if(@$coreVariable[fyValidFrom]<$from_date)
 								{
-									if(@$openingBalanceCreditTotal>$openingBalanceDebitTotal)
-									{
-										echo $cedit_diff =@$openingBalanceCreditTotal-$openingBalanceDebitTotal;
-									}
+									echo @$cedit_diff;
 								}
 							?>
 							</th>
@@ -326,10 +283,15 @@ $this->set('title', 'Trial balance report');
 							<?php 
 							   if(@$coreVariable[fyValidFrom]>$from_date && @$coreVariable[fyValidFrom]<$to_date)
 								{ 
-									if($openingBalanceDebitTotal>$openingBalanceCreditTotal)
+									if($transactionDebitTotal>$transactionCreditTotal)
 									{
-										echo $debit_diff =$openingBalanceDebitTotal-$openingBalanceCreditTotal;
+										$cedit_diff1 =$transactionDebitTotal-$transactionCreditTotal;
 									}
+									if($transactionDebitTotal<$transactionCreditTotal)
+									{
+										$debit_diff1=$transactionCreditTotal-$transactionDebitTotal;
+									}
+									echo @$debit_diff1;
 								}
 							?>
 							</th>
@@ -337,10 +299,7 @@ $this->set('title', 'Trial balance report');
 							<?php 
 								if(@$coreVariable[fyValidFrom]>$from_date && @$coreVariable[fyValidFrom]<$to_date)
 								{
-									if($openingBalanceCreditTotal>$openingBalanceDebitTotal)
-									{
-										echo $cedit_diff=$openingBalanceCreditTotal-$openingBalanceDebitTotal;
-									}
+									echo @$cedit_diff1;
 								}
 							?>
 							</th>
@@ -415,7 +374,7 @@ $this->set('title', 'Trial balance report');
 						</tr>
 					</tfoot>
 				</table>
-				<?php } ?>
+				
 			</div>
 		</div>
 	</div>
