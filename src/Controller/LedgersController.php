@@ -86,11 +86,28 @@ class LedgersController extends AppController
             }
             $this->Flash->error(__('The ledger could not be saved. Please, try again.'));
         }
-		
-		$accountingGroups = $this->Ledgers->AccountingGroups->find('list');
-		
-		
-		
+		$SundryDebtor = $this->Ledgers->AccountingGroups->find('all')->where(['customer'=>1,'company_id'=>$company_id])->first();
+		$accountingGroupdebitors = $this->Ledgers->AccountingGroups
+							->find('children', ['for' => $SundryDebtor->id])
+							->find('all');
+		$debtorArray=[];
+		foreach($accountingGroupdebitors as $accountingGroupdebitor)
+		{ 
+			$debtorArray[]= $accountingGroupdebitor->id;
+		}
+		$datadebtor[]=$SundryDebtor->id;
+		$SundryCredior = $this->Ledgers->AccountingGroups->find('all')->where(['supplier'=>1,'company_id'=>$company_id])->first();
+		$accountingGroupcreditors = $this->Ledgers->AccountingGroups
+							->find('children', ['for' => $SundryCredior->id])
+							->find('all');
+		$creditorArray=[];
+		foreach($accountingGroupcreditors as $accountingGroupcreditor)
+		{ 
+			$creditorArray[]= $accountingGroupcreditor->id;
+		}
+		$datacreditor[]=$SundryCredior->id;
+		$alldebtors=array_merge($datadebtor,$debtorArray,$datacreditor,$creditorArray);
+		$accountingGroups = $this->Ledgers->AccountingGroups->find('list')->where(['id NOT IN'=>$alldebtors]);
 		
 			
         $suppliers = $this->Ledgers->Suppliers->find('list');
@@ -147,8 +164,29 @@ class LedgersController extends AppController
             }
             $this->Flash->error(__('The ledger could not be saved. Please, try again.'));
         }
-        $accountingGroups = $this->Ledgers->AccountingGroups->find('list');
-        $suppliers = $this->Ledgers->Suppliers->find('list');
+        $SundryDebtor = $this->Ledgers->AccountingGroups->find('all')->where(['customer'=>1,'company_id'=>$company_id])->first();
+		$accountingGroupdebitors = $this->Ledgers->AccountingGroups
+							->find('children', ['for' => $SundryDebtor->id])
+							->find('all');
+		$debtorArray=[];
+		foreach($accountingGroupdebitors as $accountingGroupdebitor)
+		{ 
+			$debtorArray[]= $accountingGroupdebitor->id;
+		}
+		$datadebtor[]=$SundryDebtor->id;
+		$SundryCredior = $this->Ledgers->AccountingGroups->find('all')->where(['supplier'=>1,'company_id'=>$company_id])->first();
+		$accountingGroupcreditors = $this->Ledgers->AccountingGroups
+							->find('children', ['for' => $SundryCredior->id])
+							->find('all');
+		$creditorArray=[];
+		foreach($accountingGroupcreditors as $accountingGroupcreditor)
+		{ 
+			$creditorArray[]= $accountingGroupcreditor->id;
+		}
+		$datacreditor[]=$SundryCredior->id;
+		$alldebtors=array_merge($datadebtor,$debtorArray,$datacreditor,$creditorArray);
+		$accountingGroups = $this->Ledgers->AccountingGroups->find('list')->where(['id NOT IN'=>$alldebtors]);
+		$suppliers = $this->Ledgers->Suppliers->find('list');
         $customers = $this->Ledgers->Customers->find('list');
         $this->set(compact('ledger', 'accountingGroups', 'suppliers', 'customers'));
         $this->set('_serialize', ['ledger']);
