@@ -222,10 +222,12 @@ class LedgersController extends AppController
 		$ledger    = $this->Ledgers->newEntity();
 		$company_id=$this->Auth->User('session_company_id');
 		
-		$from_date = date("Y-m-d",strtotime($this->request->query('from_date')));
-		$to_date = date("Y-m-d",strtotime($this->request->query('to_date')));
+		$from_date = $this->request->query('from_date');
+		$to_date   = $this->request->query('to_date');
 		if(!empty($from_date) || !empty($to_date))
 		{
+			$from_date = date("Y-m-d",strtotime($from_date));
+			$to_date   = date("Y-m-d",strtotime($to_date));
 			$query = $this->Ledgers->AccountingEntries->find();
 				$CaseDebitOpeningBalance = $query->newExpr()
 					->addCase(

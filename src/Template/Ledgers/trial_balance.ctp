@@ -53,7 +53,11 @@ $this->set('title', 'Trial balance report');
 					</div>	
 					</form>
 				</div>
+				<?php 
 				
+				if(!empty($TrialBalances))
+				{
+				?>
 				<table class="table table-bordered table-hover table-condensed" width="100%">
 					<thead>
 						<tr>
@@ -374,7 +378,7 @@ $this->set('title', 'Trial balance report');
 						</tr>
 					</tfoot>
 				</table>
-				
+				<?php } ?>
 			</div>
 		</div>
 	</div>
