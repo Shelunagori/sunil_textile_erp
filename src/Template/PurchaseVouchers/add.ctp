@@ -232,80 +232,84 @@ $this->set('title', 'Create Purchase Voucher');
 			total_debit_credit();
 		});
 
-		ComponentsPickers.init();
-	});
-
-	$('.hide_cr_dr').die().live('change',function() 
-	{ 
-		var check_debit_or_credit = $(this).val(); 
-		if(check_debit_or_credit=='Dr')
+		
+		$('.hide_cr_dr').die().live('change',function() 
 		{
-			$(this).closest('tr').find('.debit_hide_show').show();
-			$(this).closest('tr').find('.credit_hide_show').val('');
-			$(this).closest('tr').find('.credit_hide_show').hide();
-		}
-		else if(check_debit_or_credit=='Cr')
+			var check_debit_or_credit = $(this).val(); 
+			if(check_debit_or_credit=='Dr')
+			{
+				$(this).closest('tr').find('.debit_hide_show').show();
+				$(this).closest('tr').find('.credit_hide_show').val('');
+				$(this).closest('tr').find('.credit_hide_show').hide();
+			}
+			else if(check_debit_or_credit=='Cr')
+			{
+				$(this).closest('tr').find('.debit_hide_show').hide();
+				$(this).closest('tr').find('.debit_hide_show').val('');
+				$(this).closest('tr').find('.credit_hide_show').show();
+			}
+
+		});
+
+		$('.add_row').click(function(){
+			add_row();
+		}) ;
+
+
+		function add_row()
 		{
-			$(this).closest('tr').find('.debit_hide_show').hide();
-			$(this).closest('tr').find('.debit_hide_show').val('');
-			$(this).closest('tr').find('.credit_hide_show').show();
+			var tr=$('#sample_table tbody tr.main_tr').clone();
+			$('#main_table tbody#main_tbody').append(tr);
+
+			rename_rows();
 		}
 
-	});
-
-	$('.add_row').click(function(){
-		add_row();
-    }) ;
-
-
-	function add_row()
-	{
-		var tr=$('#sample_table tbody tr.main_tr').clone();
-		$('#main_table tbody#main_tbody').append(tr);
 
 		rename_rows();
-	}
 
-
-	rename_rows();
-
-	function rename_rows()
-	{
-		var i=0;
-		$('#main_table tbody#main_tbody tr.main_tr').each(function(){ 
-
-			$(this).find('td:nth-child(2) select').select2().attr({name:'purchase_voucher_rows['+i+'][ledger_id]',id:'purchase_voucher_rows-'+i+'-ledger_id'});	
-
-			$(this).find('td:nth-child(3) input').attr({name:'purchase_voucher_rows['+i+'][debit]', id:'purchase_voucher_rows-'+i+'-debit'});
-			$(this).find('td:nth-child(4) input').attr({name:'purchase_voucher_rows['+i+'][credit]', id:'purchase_voucher_rows-'+i+'-credit'});
-
-			i++;
-		});
-	}
-
-	function checkValidation() 
-	{  
-		var total_debit  = $('.total_debit').val();
-		var total_credit = $('.total_credit').val();
-
-		if(total_debit!=total_credit)
+		function rename_rows()
 		{
-			alert('Credit and debit value not matched');
-			return false;
+			var i=0;
+			$('#main_table tbody#main_tbody tr.main_tr').each(function(){ 
+
+				$(this).find('td:nth-child(2) select').select2().attr({name:'purchase_voucher_rows['+i+'][ledger_id]',id:'purchase_voucher_rows-'+i+'-ledger_id'});	
+
+				$(this).find('td:nth-child(3) input').attr({name:'purchase_voucher_rows['+i+'][debit]', id:'purchase_voucher_rows-'+i+'-debit'});
+				$(this).find('td:nth-child(4) input').attr({name:'purchase_voucher_rows['+i+'][credit]', id:'purchase_voucher_rows-'+i+'-credit'});
+
+				i++;
+			});
 		}
-		else
+
+		function checkValidation() 
 		{
-			if(confirm('Are you sure you want to submit!'))
+			var total_debit  = $('.total_debit').val();
+			var total_credit = $('.total_credit').val();
+
+			if(total_debit!=total_credit)
 			{
-				return true;
+				alert('Credit and debit value not matched');
+				return false;
 			}
 			else
 			{
-				return false;
-			}
+				if(confirm('Are you sure you want to submit!'))
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
 
+			}
 		}
-	}
+	
+	
+		ComponentsPickers.init();
+	});
+
+	
 	
 	
 	";
