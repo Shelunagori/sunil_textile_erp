@@ -42,6 +42,9 @@ License: You must have a valid license purchased only from themeforest(the above
 		span.required{
 			color:red;
 		}
+		.rightAligntextClass{
+			text-align:right !important;
+		}
 		</style>
 	</head>
 	<!-- END HEAD -->

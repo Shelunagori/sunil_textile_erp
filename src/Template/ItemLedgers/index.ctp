@@ -34,11 +34,11 @@
                 <td><?= $this->Number->format($itemLedger->id) ?></td>
                 <td><?= $itemLedger->has('item') ? $this->Html->link($itemLedger->item->name, ['controller' => 'Items', 'action' => 'view', $itemLedger->item->id]) : '' ?></td>
                 <td><?= h($itemLedger->transaction_date) ?></td>
-                <td><?= $this->Number->format($itemLedger->quantity) ?></td>
-                <td><?= $this->Number->format($itemLedger->rate) ?></td>
-                <td><?= $this->Number->format($itemLedger->amount) ?></td>
+                <td class="rightAligntextClass"><?= $this->Number->format($itemLedger->quantity) ?></td>
+                <td class="rightAligntextClass"><?= $this->Number->format($itemLedger->rate) ?></td>
+                <td class="rightAligntextClass"><?= $this->Number->format($itemLedger->amount) ?></td>
                 <td><?= h($itemLedger->status) ?></td>
-                <td><?= h($itemLedger->is_opening_balance) ?></td>
+                <td class="rightAligntextClass"><?= h($itemLedger->is_opening_balance) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $itemLedger->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $itemLedger->id]) ?>

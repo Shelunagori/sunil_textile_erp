@@ -362,10 +362,10 @@ echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 				<?php echo $this->Form->input('quantity', ['label' => false,'class' => '','id'=>'check','required'=>'required','placeholder'=>'Qty']); ?>
 			</td>
 			<td width="20%">
-				<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm','required'=>'required','placeholder'=>'Rate']); ?>
+				<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm rightAligntextClass','required'=>'required','placeholder'=>'Rate']); ?>
 			</td>
 			<td width="25%">
-				<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm','required'=>'required','placeholder'=>'Amount']); ?>	
+				<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm rightAligntextClass','required'=>'required','placeholder'=>'Amount']); ?>	
 			</td>
 			<td align="center">
 				<a class="btn btn-danger delete-tr btn-xs" href="#" role="button" style="margin-bottom: 5px;"><i class="fa fa-times"></i></a>

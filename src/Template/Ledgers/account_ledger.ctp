@@ -10,7 +10,7 @@ $this->set('title', 'Account Ledger report');
 			<div class="portlet-title">
 				<div class="caption">
 					<i class="icon-bar-chart font-green-sharp hide"></i>
-					<span class="caption-subject font-green-sharp bold ">Account Ledger Report</span>
+					<span class="caption-subject font-green-sharp bold ">Account Ledger</span>
 				</div>
 			</div>
 			<div class="portlet-body">
@@ -36,6 +36,9 @@ $this->set('title', 'Account Ledger report');
 								{
 									$from_date = date("d-m-Y",strtotime(@$from_date));
 								}
+								else{
+									$from_date = @$coreVariable[fyValidFrom];
+								}
 								echo $this->Form->control('from_date',['class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'placeholder'=>'DD-MM-YYYY','type'=>'text','value'=>@$from_date,'data-date-start-date'=>@$coreVariable[fyValidFrom],'data-date-end-date'=>@$coreVariable[fyValidTo]]); ?>
 							</div>
 						</div>
@@ -51,6 +54,9 @@ $this->set('title', 'Account Ledger report');
 								{
 									$to_date = date("d-m-Y",strtotime(@$to_date));
 								}
+								else{
+									$to_date = @$coreVariable[fyValidTo];
+								}
 								echo $this->Form->control('to_date',['class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'placeholder'=>'DD-MM-YYYY','type'=>'text','value'=>@$to_date,'data-date-start-date'=>@$coreVariable[fyValidFrom],'data-date-end-date'=>@$coreVariable[fyValidTo]]); ?>
 							</div>
 						</div>
@@ -61,34 +67,108 @@ $this->set('title', 'Account Ledger report');
 						</div>	
 					</form>
 				</div>
-				
-				<table class="table table-bordered table-hover table-condensed" width="100%">
-					<thead>
-						<tr>
-							<th scope="col">Date</th>
-							<th scope="col" style="text-align:center";>Voucher Type</th>
-							<th scope="col" style="text-align:center";>Voucher No</th>
-							<th scope="col" style="text-align:center";>Debit</th>
-							<th scope="col" style="text-align:center";>Credit</th>
-						</tr>
-					</thead>
-					<tbody>
-							
-					</tbody>
-					<tfoot>
-						<tr>
-							<td scope="col" colspan="3" style="text-align:right";><b>Total</b></td>
-							<td scope="col" style="text-align:right";></td>
-							<td scope="col" style="text-align:right";></td>
-						</tr>
-						<tr>
-							<td scope="col" colspan="3" style="text-align:right";><b>Closing Balance</b></td>
-							<td scope="col" style="text-align:right";></td>
-							<td scope="col" style="text-align:right";></td>
-						</tr>
-					</tfoot>
-				</table>
-				
+				<?php
+					if(!empty($AccountingLedgers))
+					{
+				?>
+					<table class="table table-bordered table-hover table-condensed" width="100%">
+						<thead>
+							<tr>
+								<th colspan="3" style="text-align:right";><b>Opening Balance</b></th>
+								<th style="text-align:right";>
+								<?php
+									if(!empty($openingBalance_debit1))
+									{
+										echo $openingBalance_debit1;
+									}
+								?>
+								</th>
+								<th style="text-align:right";>
+								<?php
+									if(!empty($openingBalance_credit1))
+									{
+										echo $openingBalance_credit1;
+									}
+								?>
+								</th>
+							</tr>
+							<tr>
+								<th scope="col">Date</th>
+								<th scope="col" style="text-align:center";>Voucher Type</th>
+								<th scope="col" style="text-align:center";>Voucher No</th>
+								<th scope="col" style="text-align:center";>Debit</th>
+								<th scope="col" style="text-align:center";>Credit</th>
+							</tr>
+						</thead>
+						<tbody>
+						<?php
+								if(!empty($AccountingLedgers))
+								{
+									$total_credit=0;
+									$total_debit=0;
+									foreach($AccountingLedgers as $AccountingLedger)
+									{
+						?>
+							<tr>
+								<td><?php echo date("d-m-Y",strtotime($AccountingLedger->transaction_date)); ?></td>
+								<td></td>
+								<td></td>
+								<td style="text-align:right";>
+								<?php 
+									if(!empty($AccountingLedger->debit))
+									{
+										echo $AccountingLedger->debit; 
+										$total_debit +=round($AccountingLedger->debit,2);
+									}
+									else
+									{
+										echo "-";
+									}
+								?>
+								</td>
+								<td style="text-align:right";>
+								<?php 
+									if(!empty($AccountingLedger->credit))
+									{
+										echo $AccountingLedger->credit; 
+										$total_credit +=round($AccountingLedger->credit,2);
+									}else
+									{
+										echo "-";
+									}
+								?>
+								</td>
+							</tr>
+						<?php   }   } ?>
+						</tbody>
+						<tfoot>
+							<tr>
+								<td scope="col" colspan="3" style="text-align:right";><b>Total</b></td>
+								<td scope="col" style="text-align:right";><?php echo @$total_debit;?></td>
+								<td scope="col" style="text-align:right";><?php echo @$total_credit;?></td>
+							</tr>
+							<tr>
+								<td scope="col" colspan="3" style="text-align:right";><b>Closing Balance</b></td>
+								<td scope="col" style="text-align:right";>
+								<?php
+									if(!empty($closingBalance_debit1))
+									{
+										echo $closingBalance_debit1;
+									}
+								?>
+								</td>
+								<td scope="col" style="text-align:right";>
+								<?php
+									if(!empty($closingBalance_credit1))
+									{
+										echo $closingBalance_credit1;
+									}
+								?>
+								</td>
+							</tr>
+						</tfoot>
+					</table>
+				<?php } ?>
 			</div>
 		</div>
 	</div>
