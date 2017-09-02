@@ -109,9 +109,16 @@ class CustomersController extends AppController
 													['keyField' => function ($row) {
 														return $row['id'];
 													},
-													'valueField' => function ($row) {
-														return $row['state_code'].'-'. $row['name'] ;
-														
+													'valueField' => function ($row) 
+													{
+														if($row['state_code']<=9)
+														{
+															return str_pad($this->_properties['state_code'], 1, '0', STR_PAD_LEFT).$row['state_code'].'-'. $row['name'] ;
+														}
+														else
+														{
+															return $row['state_code'].'-'. $row['name'] ;
+														}
 													}]);
 		
         $this->set(compact('customer', 'states','accountingGroups'));
@@ -180,12 +187,20 @@ class CustomersController extends AppController
 		$account_entry  = $this->Customers->Ledgers->AccountingEntries->find()->where(['ledger_id'=>$customer->ledger->id,'company_id'=>$company_id])->first();
 		//pr($account_entry->toArray());exit;
         $states = $this->Customers->States->find('list',
-			['keyField' => function ($row) {
-				return $row['id'];
-			},
-			'valueField' => function ($row) {
-				return $row['state_code'].'-'. $row['name'] ;
-			}]);
+												['keyField' => function ($row) {
+													return $row['id'];
+												},
+												'valueField' => function ($row) 
+												{
+													if($row['state_code']<=9)
+														{
+															return str_pad($this->_properties['state_code'], 1, '0', STR_PAD_LEFT).$row['state_code'].'-'. $row['name'] ;
+														}
+														else
+														{
+															return $row['state_code'].'-'. $row['name'] ;
+														}
+												}]);
 		$this->set(compact('customer', 'states','accountingGroups','account_entry'));
         $this->set('_serialize', ['customer']);
     }

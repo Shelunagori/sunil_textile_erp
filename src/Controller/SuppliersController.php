@@ -104,12 +104,20 @@ class SuppliersController extends AppController
 		$accountingGroups[$SundryDebtor->id]=$SundryDebtor->name;
 		ksort($accountingGroups);
         $states = $this->Suppliers->States->find('list',
-			['keyField' => function ($row) {
-				return $row['id'];
-			},
-			'valueField' => function ($row) {
-				return $row['state_code'].'-'. $row['name'] ;
-			}]);
+												['keyField' => function ($row) {
+													return $row['id'];
+												},
+												'valueField' => function ($row) 
+												{
+													if($row['state_code']<=9)
+														{
+															return str_pad($this->_properties['state_code'], 1, '0', STR_PAD_LEFT).$row['state_code'].'-'. $row['name'] ;
+														}
+														else
+														{
+															return $row['state_code'].'-'. $row['name'] ;
+														}
+												}]);
         $this->set(compact('supplier', 'states','accountingGroups'));
         $this->set('_serialize', ['supplier']);
     }
@@ -176,12 +184,20 @@ class SuppliersController extends AppController
 		
 		$account_entry  = $this->Suppliers->Ledgers->AccountingEntries->find()->where(['ledger_id'=>$supplier->ledgers[0]->id,'company_id'=>$company_id])->first();
 		$states = $this->Suppliers->States->find('list',
-			['keyField' => function ($row) {
-				return $row['id'];
-			},
-			'valueField' => function ($row) {
-				return $row['state_code'].'-'. $row['name'] ;
-			}]);
+													['keyField' => function ($row) {
+														return $row['id'];
+													},
+													'valueField' => function ($row) 
+													{
+														if($row['state_code']<=9)
+														{
+															return str_pad($this->_properties['state_code'], 1, '0', STR_PAD_LEFT).$row['state_code'].'-'. $row['name'] ;
+														}
+														else
+														{
+															return $row['state_code'].'-'. $row['name'] ;
+														}
+													}]);
         $this->set(compact('supplier', 'states', 'accountingGroups','account_entry'));
         $this->set('_serialize', ['supplier']);
     }
