@@ -127,7 +127,7 @@ class LedgersController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $ledger = $this->Ledgers->get($id, [
-            'contain' => ['AccountingEntries']
+            'contain' => ['AccountingEntries'],'where'=>['AccountingEntries.is_opening_balance'=>'yes']
         ]);
 		
 		$company_id=$this->Auth->User('session_company_id');
