@@ -50,6 +50,9 @@ class CompaniesTable extends Table
 		$this->hasMany('ItemLedgers', [
             'foreignKey' => 'company_id'
         ]);
+		$this->hasMany('Locations', [
+            'foreignKey' => 'location_id'
+        ]);
     }
 
     /**
