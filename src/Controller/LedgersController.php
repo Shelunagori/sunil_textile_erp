@@ -228,6 +228,13 @@ class LedgersController extends AppController
 		{
 			$from_date = date("Y-m-d",strtotime($from_date));
 			$to_date   = date("Y-m-d",strtotime($to_date));
+		}
+		else
+		{   
+			$from_date = date("Y-m-d",strtotime($this->coreVariable['fyValidFrom']));
+			$toDate    = $this->Ledgers->AccountingEntries->find()->order(['AccountingEntries.transaction_date'=>'DESC'])->First();
+			$to_date   = date("Y-m-d",strtotime($toDate->transaction_date));
+		}
 			$query = $this->Ledgers->AccountingEntries->find();
 				$CaseDebitOpeningBalance = $query->newExpr()
 					->addCase(
@@ -271,7 +278,7 @@ class LedgersController extends AppController
 				
 				$totalDebit  = $debitAmount->first()->total_debit;
 			//pr($query->toArray()); exit;
-		}
+		
 		
 		
 		$this->set(compact('ledger','from_date','to_date','TrialBalances','totalDebit'));
