@@ -73,8 +73,34 @@ class GrnsController extends AppController
 			{
 				$grn->voucher_no = 1;
 			} 
-			
-            if ($this->Grns->save($grn)) {
+			pr($grn);
+            if ($this->Grns->save($grn)) 
+			{
+				//Create Item_Ledger//
+				$item_ledger = $this->Grns->ItemLedgers->newEntity();
+				$item_ledger->transaction_date = $grn->transaction_date;
+				$item_ledger->grn_id = $grn->id;
+				
+				
+				foreach($grn->grn_rows as $grn_row)
+				{
+					$item_ledger = $this->Grns->ItemLedgers->newEntity();
+					$item_ledger->grn_row_id = $grn_row->id;
+					$item_ledger->item_id = $grn_row->item_id;
+					$item_ledger->quantity = $grn_row->quantity;
+					$item_ledger->rate = $grn_row->purchase_rate;
+					$item_ledger->sale_rate = $grn_row->sale_rate;
+					$item_ledger->company_id =$company_id;
+					$item_ledger->status ='in';
+					$item_ledger->amount=$grn_row->quantity*$grn_row->purchase_rate;
+					
+					
+					pr($item_ledger);  exit;
+					$this->Grns->ItemLedgers->save($item_ledger);
+					
+				
+				}
+				
                 $this->Flash->success(__('The grn has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
