@@ -335,7 +335,6 @@ class LedgersController extends AppController
 			->autoFields(true)
 			->contain(['Ledgers'=>['AccountingGroups'=>['ParentAccountingGroups']]]);
 			$TrialBalances = ($query);
-		//pr($TrialBalances->toArray());exit;
 		$this->set(compact('ledger','from_date','to_date','TrialBalances'));
         $this->set('_serialize', ['ledger']);
 	}
