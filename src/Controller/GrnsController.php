@@ -20,8 +20,10 @@ class GrnsController extends AppController
      */
     public function index()
     {
+		$this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
         $this->paginate = [
-            'contain' => ['Locations', 'Companies']
+            'contain' => ['Companies']
         ];
         $grns = $this->paginate($this->Grns);
 
@@ -38,10 +40,12 @@ class GrnsController extends AppController
      */
     public function view($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
         $grn = $this->Grns->get($id, [
-            'contain' => ['Locations', 'Companies', 'GrnRows']
+            'contain' => ['Companies', 'GrnRows'=>['Items']]
         ]);
-
+		
         $this->set('grn', $grn);
         $this->set('_serialize', ['grn']);
     }
@@ -53,9 +57,23 @@ class GrnsController extends AppController
      */
     public function add()
     {
+		$this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
         $grn = $this->Grns->newEntity();
+		$this->request->data['company_id'] =$company_id;
         if ($this->request->is('post')) {
-            $grn = $this->Grns->patchEntity($grn, $this->request->getData());
+			$grn = $this->Grns->patchEntity($grn, $this->request->getData());
+			$grn->transaction_date = date("Y-m-d",strtotime($this->request->getData()['transaction_date']));
+			$Voucher_no = $this->Grns->find()->select(['voucher_no'])->where(['company_id'=>$company_id])->order(['voucher_no' => 'DESC'])->first();
+			if($Voucher_no)
+			{
+				$grn->voucher_no = $Voucher_no->voucher_no+1;
+			}
+			else
+			{
+				$grn->voucher_no = 1;
+			} 
+			
             if ($this->Grns->save($grn)) {
                 $this->Flash->success(__('The grn has been saved.'));
 
@@ -63,9 +81,29 @@ class GrnsController extends AppController
             }
             $this->Flash->error(__('The grn could not be saved. Please, try again.'));
         }
-        $locations = $this->Grns->Locations->find('list', ['limit' => 200]);
-        $companies = $this->Grns->Companies->find('list', ['limit' => 200]);
-        $this->set(compact('grn', 'locations', 'companies'));
+		$items = $this->Grns->GrnRows->Items->find()
+					->where(['Items.company_id'=>$company_id])
+					->contain(['GstFigures']);
+				
+		$itemOptions=[];
+		foreach($items as $item){
+			$itemOptions[]=['text' =>$item->name, 'value' => $item->id ,'gst_figure_id'=>$item->gst_figure_id, 'gst_figure_tax_percentage'=>$item->gst_figure->tax_percentage,'gst_figure_tax_name'=>$item->gst_figure->name, 'output_cgst_ledger_id'=>$item->output_cgst_ledger_id, 'output_sgst_ledger_id'=>$item->output_sgst_ledger_id, 'output_igst_ledger_id'=>$item->output_igst_ledger_id];
+		}
+		$Voucher_no = $this->Grns->find()->select(['voucher_no'])->where(['company_id'=>$company_id])->order(['voucher_no' => 'DESC'])->first();
+		
+		if($Voucher_no)
+		{
+			$voucher_no=$Voucher_no->voucher_no+1;
+		}
+		else
+		{ 
+			$voucher_no=1;
+			
+		} 
+		 
+        //$locations = $this->Grns->Locations->find('list', ['limit' => 200]);
+        $companies = $this->Grns->Companies->find('list');
+        $this->set(compact('grn','companies','voucher_no','itemOptions'));
         $this->set('_serialize', ['grn']);
     }
 
@@ -78,11 +116,15 @@ class GrnsController extends AppController
      */
     public function edit($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
         $grn = $this->Grns->get($id, [
-            'contain' => []
+            'contain' => ['GrnRows']
         ]);
+	
         if ($this->request->is(['patch', 'post', 'put'])) {
             $grn = $this->Grns->patchEntity($grn, $this->request->getData());
+			$grn->transaction_date = date("Y-m-d",strtotime($this->request->getData()['transaction_date']));
             if ($this->Grns->save($grn)) {
                 $this->Flash->success(__('The grn has been saved.'));
 
@@ -90,9 +132,17 @@ class GrnsController extends AppController
             }
             $this->Flash->error(__('The grn could not be saved. Please, try again.'));
         }
-        $locations = $this->Grns->Locations->find('list', ['limit' => 200]);
-        $companies = $this->Grns->Companies->find('list', ['limit' => 200]);
-        $this->set(compact('grn', 'locations', 'companies'));
+		$items = $this->Grns->GrnRows->Items->find()
+					->where(['Items.company_id'=>$company_id])
+					->contain(['GstFigures']);
+				
+		$itemOptions=[];
+		foreach($items as $item){
+			$itemOptions[]=['text' =>$item->name, 'value' => $item->id ,'gst_figure_id'=>$item->gst_figure_id, 'gst_figure_tax_percentage'=>$item->gst_figure->tax_percentage,'gst_figure_tax_name'=>$item->gst_figure->name, 'output_cgst_ledger_id'=>$item->output_cgst_ledger_id, 'output_sgst_ledger_id'=>$item->output_sgst_ledger_id, 'output_igst_ledger_id'=>$item->output_igst_ledger_id];
+		}
+        //$locations = $this->Grns->Locations->find('list', ['limit' => 200]);
+        $companies = $this->Grns->Companies->find('list');
+        $this->set(compact('grn','companies','itemOptions'));
         $this->set('_serialize', ['grn']);
     }
 
@@ -105,6 +155,7 @@ class GrnsController extends AppController
      */
     public function delete($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
         $this->request->allowMethod(['post', 'delete']);
         $grn = $this->Grns->get($id);
         if ($this->Grns->delete($grn)) {
