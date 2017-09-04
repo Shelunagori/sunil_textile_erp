@@ -105,7 +105,7 @@ class CustomersController extends AppController
 							->find('List')->toArray();
 		$accountingGroups[$SundryDebtor->id]=$SundryDebtor->name;
 		ksort($accountingGroups);
-        $states = $this->Customers->States->find('list',
+        $states = $this->Customers->States->  find('list',
 													['keyField' => function ($row) {
 														return $row['id'];
 													},

@@ -285,6 +285,61 @@ class LedgersController extends AppController
         $this->set('_serialize', ['ledger']);
     }
 	
+	public function trialBalance1($id = null)
+    {
+		$this->viewBuilder()->layout('index_layout');
+		$ledger    = $this->Ledgers->newEntity();
+		$company_id=$this->Auth->User('session_company_id');
+		
+		$from_date = $this->request->query('from_date');
+		$to_date   = $this->request->query('to_date');
+		if(!empty($from_date) || !empty($to_date))
+		{
+			$from_date = date("Y-m-d",strtotime($from_date));
+			$to_date   = date("Y-m-d",strtotime($to_date));
+		}
+		
+		$query = $this->Ledgers->AccountingEntries->find();
+			$CaseDebitOpeningBalance = $query->newExpr()
+				->addCase(
+					$query->newExpr()->add(['transaction_date <'=>$from_date]),
+					$query->newExpr()->add(['debit']),
+					'decimal'
+				);
+			$CaseCreditOpeningBalance = $query->newExpr()
+				->addCase(
+					$query->newExpr()->add(['transaction_date <'=>$from_date]),
+					$query->newExpr()->add(['credit']),
+					'decimal'
+				);
+			$CaseDebitTransaction = $query->newExpr()
+				->addCase(
+					$query->newExpr()->add(['transaction_date >='=>$from_date,'transaction_date <='=>$to_date]),
+					$query->newExpr()->add(['debit']),
+					'decimal'
+				);
+			$CaseCreditTransaction = $query->newExpr()
+				->addCase(
+					$query->newExpr()->add(['transaction_date >='=>$from_date,'transaction_date <='=>$to_date]),
+					$query->newExpr()->add(['credit']),
+					'decimal'
+				);
+			$query->select([
+				'debit_opening_balance' => $query->func()->sum($CaseDebitOpeningBalance),
+				'credit_opening_balance' => $query->func()->sum($CaseCreditOpeningBalance),
+				'debit_transaction' => $query->func()->sum($CaseDebitTransaction),
+				'credit_transaction' => $query->func()->sum($CaseCreditTransaction),'id','ledger_id'
+			])
+			->where(['AccountingEntries.company_id'=>$company_id])
+			->group('ParentAccountingGroups.id')
+			->autoFields(true)
+			->contain(['Ledgers'=>['AccountingGroups'=>['ParentAccountingGroups']]]);
+			$TrialBalances = ($query);
+		//pr($TrialBalances->toArray());exit;
+		$this->set(compact('ledger','from_date','to_date','TrialBalances'));
+        $this->set('_serialize', ['ledger']);
+	}
+	
 	public function accountLedger($id = null)
     {
 		$this->viewBuilder()->layout('index_layout');
