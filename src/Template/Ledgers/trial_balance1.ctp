@@ -200,13 +200,13 @@ $this->set('title', 'Trial balance report');
 							<th scope="col" >Opening Stock</th>
 							<th style="text-align:right";>
 								<?php 
-								if(@$coreVariable['fyValidFrom']<$from_date)
+								if(@$coreVariable['fyValidFrom']<@$from_date)
 								{
-									if($totalDebit>0)
+									if(@$totalDebit>0)
 									{ 
 									   echo @$totalDebit;
-									   $openingBalanceDebitTotal +=round($totalDebit,2);
-									   $total1 +=$totalDebit;
+									   $openingBalanceDebitTotal +=round(@$totalDebit,2);
+									   $total1 +=@$totalDebit;
 									}
 									
 								} 
@@ -216,7 +216,7 @@ $this->set('title', 'Trial balance report');
 								<?php 
 								 if(@$coreVariable['fyValidFrom']<$from_date)
 								{
-									if($totalDebit<0)
+									if(@$totalDebit<0)
 									{
 									   echo @$totalDebit;
 									   $openingBalanceCreditTotal +=round($totalDebit,2);
