@@ -1,8 +1,7 @@
 <?php
 namespace App\Controller;
-
 use App\Controller\AppController;
-
+use Cake\View\Helper\BarcodeHelper;
 /**
  * Items Controller
  *
