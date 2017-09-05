@@ -181,9 +181,26 @@ class SalesInvoicesController extends AppController
 					->where(['Items.company_id'=>$company_id])
 					->contain(['GstFigures', 'ItemLedgers', 'Units']);
 					
+					
 		$itemOptions=[];
 		foreach($items as $item){
 				$qty=0;
+				
+				$first_gst_figure_id=$item->first_gst_figure_id;
+				$second_gst_figure_id=$item->second_gst_figure_id;
+				
+				$firstGsts = $this->SalesInvoices->SalesInvoiceRows->Items->GstFigures->find()
+				->where(['GstFigures.id'=>$first_gst_figure_id, 'GstFigures.company_id'=>$company_id ])->first();
+				$firstGstLedgers = $this->SalesInvoices->SalesInvoiceRows->Items->GstFigures->Ledgers->find()
+				->where(['Ledgers.gst_figure_id'=>$first_gst_figure_id, 'Ledgers.company_id'=>$company_id, 'Ledgers.input_output'=>'output', 'Ledgers.company_id'=>$company_id ]);
+				
+				$secondGsts = $this->SalesInvoices->SalesInvoiceRows->Items->GstFigures->find()
+				->where(['GstFigures.id'=>$second_gst_figure_id, 'GstFigures.company_id'=>$company_id ])->first();
+				$secondGstsLedgers = $this->SalesInvoices->SalesInvoiceRows->Items->GstFigures->Ledgers->find()
+				->where(['Ledgers.gst_figure_id'=>$second_gst_figure_id, 'Ledgers.company_id'=>$company_id, 'Ledgers.input_output'=>'output', 'Ledgers.company_id'=>$company_id ]);
+				
+				
+				
 				foreach($item->item_ledgers as $data)
 				{
 				 $qty+=$data->quantity;

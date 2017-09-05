@@ -45,6 +45,11 @@ class GstFiguresTable extends Table
             'foreignKey' => 'gst_figure_id',
             'joinType' => 'INNER'
         ]);
+		
+		$this->belongsTo('Ledgers', [
+            'foreignKey' => 'gst_figure_id',
+            'joinType' => 'INNER'
+        ]);
     }
 
     /**
