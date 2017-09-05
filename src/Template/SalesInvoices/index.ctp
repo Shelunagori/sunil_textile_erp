@@ -34,8 +34,9 @@ $this->set('title', 'Sales Invoice List');
 								<td><?= h($salesInvoice->transaction_date) ?></td>
 								<td><?= h($salesInvoice->amount_after_tax) ?></td>
 								<td class="actions">
-									<!--<?= $this->Html->link(__('View'), ['action' => 'view', $salesInvoice->id]) ?>-->
-									<?= $this->Html->link(__('Edit'), ['action' => 'edit', $salesInvoice->id]) ?>
+									
+									<?= $this->Html->link(__('Edit'), ['action' => 'edit', $salesInvoice->id]) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<?= $this->Html->link(__('View Bill'), ['action' => 'sales_invoice_bill', $salesInvoice->id]) ?>
 								</td>
 							</tr>
 							<?php endforeach; ?>

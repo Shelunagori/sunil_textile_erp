@@ -34,14 +34,14 @@ $this->set('title', 'Create Sales Invoice');
 						<input type="hidden" name="isRoundofType" id="isRoundofType" class="isRoundofType" value="0">
 						<input type="hidden" name="voucher_no" id="" value="<?= h($voucher_no, 4, '0') ?>">
 						<div class="col-md-3">
-								<label>Sales Party</label>
-								<?php echo $this->Form->control('party_ledger_id',['empty'=>'-Select-', 'class'=>'form-control input-sm party_ledger_id select2me','label'=>false, 'options' => $Partyledgers,'required'=>'required']);
+								<label>Party</label>
+								<?php echo $this->Form->control('party_ledger_id',['empty'=>'-Select Party-', 'class'=>'form-control input-sm party_ledger_id select2me','label'=>false, 'options' => $partyOptions,'required'=>'required']);
 								?>
 						</div>
 						<div class="col-md-3">
 							<div class="form-group">
 								<label>Sales Account</label>
-								<?php echo $this->Form->control('sales_ledger_id',['empty'=>'-Select-', 'class'=>'form-control input-sm sales_ledger_id select2me','label'=>false, 'options' => $Accountledgers,'required'=>'required']);
+								<?php echo $this->Form->control('sales_ledger_id',['empty'=>'-Select Account-', 'class'=>'form-control input-sm sales_ledger_id select2me','label'=>false, 'options' => $Accountledgers,'required'=>'required']);
 								?>
 							</div>
 						</div> 
@@ -76,6 +76,7 @@ $this->set('title', 'Create Sales Invoice');
 
 			
 				<?php echo $this->Form->input('item_id', ['empty'=>'-Item Name-', 'options'=>$itemOptions,'label' => false,'class' =>'form-control input-sm attrGet','required'=>'required']); ?>
+				<span class="itemQty" style="color:red"></span>
 			</td>
 			<td>
 				<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm calculation quantity rightAligntextClass','id'=>'check','required'=>'required','placeholder'=>'Quantity']); ?>
@@ -87,13 +88,13 @@ $this->set('title', 'Create Sales Invoice');
 				<?php echo $this->Form->input('discount_percentage', ['label' => false,'class' => 'form-control input-sm calculation discount rightAligntextClass','required'=>'required','placeholder'=>'Dis.']); ?>	
 			</td>
 			<td>
-				<?php echo $this->Form->input('taxable_value', ['label' => false,'class' => 'form-control input-sm discountAmount calculation rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'Taxable Value']); ?>	
+				<?php echo $this->Form->input('taxable_value', ['label' => false,'class' => 'form-control input-sm gstAmount reverse_total_amount rightAligntextClass','required'=>'required','placeholder'=>'Amount', 'readonly'=>'readonly']); ?>
 			</td>
 			<td>
 				<?php echo $this->Form->input('gst_figure_tax_name', ['label' => false,'class' => 'form-control input-sm gst_figure_tax_name rightAligntextClass', 'readonly'=>'readonly','required'=>'required','placeholder'=>'GST']); ?>	
 			</td>
-			<td>
-				<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm gstAmount reverse_total_amount rightAligntextClass','required'=>'required','placeholder'=>'Amount']); ?>	
+			<td>	
+				<?php echo $this->Form->input('net_amount', ['label' => false,'class' => 'form-control input-sm discountAmount calculation rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'Taxable Value']); ?>	
 			</td>
 			<td align="center">
 			</td>
@@ -229,6 +230,7 @@ $this->set('title', 'Create Sales Invoice');
 
 			
 				<?php echo $this->Form->input('item_id', ['empty'=>'-Item Name-', 'options'=>$itemOptions,'label' => false,'class' =>'form-control input-sm attrGet','required'=>'required']); ?>
+				<span class="itemQty" style="color:red"></span>
 			</td>
 			<td>
 				<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm calculation quantity rightAligntextClass','id'=>'check','required'=>'required','placeholder'=>'Quantity']); ?>
@@ -240,13 +242,13 @@ $this->set('title', 'Create Sales Invoice');
 				<?php echo $this->Form->input('discount_percentage', ['label' => false,'class' => 'form-control input-sm calculation discount rightAligntextClass','required'=>'required','placeholder'=>'Dis.']); ?>	
 			</td>
 			<td>
-				<?php echo $this->Form->input('taxable_value', ['label' => false,'class' => 'form-control input-sm discountAmount calculation rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'Taxable Value']); ?>	
+				<?php echo $this->Form->input('taxable_value', ['label' => false,'class' => 'form-control input-sm gstAmount reverse_total_amount rightAligntextClass','required'=>'required','placeholder'=>'Amount', 'readonly'=>'readonly']); ?>
 			</td>
 			<td>
 				<?php echo $this->Form->input('gst_figure_tax_name', ['label' => false,'class' => 'form-control input-sm gst_figure_tax_name rightAligntextClass', 'readonly'=>'readonly','required'=>'required','placeholder'=>'GST']); ?>	
 			</td>
 			<td>
-				<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm gstAmount reverse_total_amount rightAligntextClass','required'=>'required','placeholder'=>'Amount']); ?>	
+				<?php echo $this->Form->input('net_amount', ['label' => false,'class' => 'form-control input-sm discountAmount calculation rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'Taxable Value']); ?>					
 			</td>
 			<td align="center">
 				<a class="btn btn-danger delete-tr btn-xs" href="#" role="button" style="margin-bottom: 5px;"><i class="fa fa-times"></i></a>
@@ -265,16 +267,21 @@ $this->set('title', 'Create Sales Invoice');
 			var output_cgst_ledger_id=$('option:selected', this).attr('output_cgst_ledger_id');
 			var output_sgst_ledger_id=$('option:selected', this).attr('output_sgst_ledger_id');
 			var output_igst_ledger_id=$('option:selected', this).attr('output_igst_ledger_id');
+			var item_qty=$('option:selected', this).attr('item_qty');
+			var item_unit=$('option:selected', this).attr('item_unit');
+			var itemText=item_qty+' '+item_unit;
+			
 			$(this).closest('tr').find('.gst_figure_id').val(gst_figure_id);
 			$(this).closest('tr').find('.gst_figure_tax_percentage').val(gst_figure_tax_percentage);
 			$(this).closest('tr').find('.gst_figure_tax_name').val(gst_figure_tax_name);
 			$(this).closest('tr').find('.output_cgst_ledger_id').val(output_cgst_ledger_id);
 			$(this).closest('tr').find('.output_sgst_ledger_id').val(output_sgst_ledger_id);
 			$(this).closest('tr').find('.output_igst_ledger_id').val(output_igst_ledger_id);
+			$('.itemQty').html(itemText);
 		});
 		
-		$('.customer_id').die().live('change',function(){
-			var customer_state_id=$('option:selected', this).attr('customer_state_id');
+		$('.party_ledger_id').die().live('change',function(){
+			var customer_state_id=$('option:selected', this).attr('party_state_id');
 			var state_id=$('.state_id').val();
 			if(customer_state_id!=state_id)
 			{
@@ -368,6 +375,7 @@ $this->set('title', 'Create Sales Invoice');
 			var roundOff1=0;
 			var round_of=0;
 			var isRoundofType=0;
+			var igst_value=0;
 			$('#main_table tbody#main_tbody tr.main_tr').each(function()
 			{
 				var quantity  = parseFloat($(this).find('.quantity').val());
@@ -390,30 +398,30 @@ $this->set('title', 'Create Sales Invoice');
 				var discountAmount  = parseFloat($(this).find('.discountAmount').val());
 				if(!discountAmount){discountAmount=0;}
 				var gstValue=(discountAmount*gst_figure_tax_percentage)/100;
-				var gstAmount=discountAmount+gstValue;
+	            var gstAmount=discountAmount-gstValue;
 				$(this).find('.gstAmount').val(gstAmount.toFixed(2));
 				$(this).find('.gstValue').val(gstValue.toFixed(2));
 
 				var taxable_value1=parseFloat($(this).find('.discountAmount').val());
 				total=parseFloat(total)+taxable_value1;
+				roundOff1=Math.round(total);
 				
 				var gstAmount  = parseFloat($(this).find('.gstAmount').val());
 				gst_amount=parseFloat(gst_amount)+parseFloat(gstAmount);
-				roundOff1=Math.round(gst_amount);
 				
-				if(gst_amount<roundOff1)
+				if(total<roundOff1)
 				{
-				round_of=parseFloat(roundOff1)-parseFloat(gst_amount);
+				round_of=parseFloat(roundOff1)-parseFloat(total);
 				isRoundofType='0';
 				}
-				if(gst_amount>roundOff1)
+				if(total>roundOff1)
 				{
-				round_of=parseFloat(gst_amount)-parseFloat(roundOff1);
+				round_of=parseFloat(total)-parseFloat(roundOff1);
 				isRoundofType='1';
 				}
-				if(gst_amount==roundOff1)
+				if(total==roundOff1)
 				{
-				round_of=parseFloat(gst_amount)-parseFloat(roundOff1);
+				round_of=parseFloat(total)-parseFloat(roundOff1);
 				isRoundofType='0';
 				}
 				
@@ -426,12 +434,15 @@ $this->set('title', 'Create Sales Invoice');
 				igst_value=0;
 				}
 				else{
-				igst_value=parseFloat(gst_value)+gstValue;
+				gst_value=parseFloat(gst_value)+gstValue;
+				igst_value=parseFloat(gst_value);
 				s_cgst_value=0;
 				}
+				//alert(s_cgst_value);
+				//alert(igst_value);
 			});
-				$('.amount_before_tax').val(total);
-				$('.amount_after_tax').val(roundOff1.toFixed(2));
+				$('.amount_after_tax').val(roundOff1);
+				$('.amount_before_tax').val(gst_amount.toFixed(2));
 				$('.add_cgst').val(s_cgst_value.toFixed(2));
 				$('.add_sgst').val(s_cgst_value.toFixed(2));
 				$('.add_igst').val(igst_value.toFixed(2));
@@ -440,7 +451,7 @@ $this->set('title', 'Create Sales Invoice');
 		rename_rows();
 		}
 		
-		$(document).ready(function() {
+		/*$(document).ready(function() {
 		$('.reverse_total_amount').die().live('keyup',function(){
 			var total=0;
 			var gst_amount=0;
@@ -511,7 +522,7 @@ $this->set('title', 'Create Sales Invoice');
 				$('.add_igst').val(igst_value.toFixed(2));
 				$('.roundValue').val(round_of.toFixed(2));
 		});
-		});
+		});*/
 		
 	function checkValidation() 
 	{  

@@ -82,6 +82,7 @@ class SalesInvoicesController extends AppController
 			}
 			
 			
+			
 		   if ($this->SalesInvoices->save($salesInvoice)) {
 		    $partyData = $this->SalesInvoices->AccountingEntries->query();
 						$partyData->insert(['ledger_id', 'debit','credit', 'transaction_date', 'company_id', 'sales_invoice_id'])
@@ -147,12 +148,28 @@ class SalesInvoicesController extends AppController
 						->execute();
 			   }
 			 }
+		   }else if($salesInvoice->is_interstate=='1'){
+		 
+		   foreach($salesInvoice->sales_invoice_rows as $sales_invoice_row)
+			   {
+			   $accountData = $this->SalesInvoices->AccountingEntries->query();
+						$accountData->insert(['ledger_id', 'debit','credit', 'transaction_date', 'company_id', 'sales_invoice_id'])
+								->values([
+								'ledger_id' => $sales_invoice_row->output_igst_ledger_id,
+								'debit' => '',
+								'credit' => $sales_invoice_row->gst_value,
+								'transaction_date' => $salesInvoice->transaction_date,
+								'company_id' => $salesInvoice->company_id,
+								'sales_invoice_id' => $salesInvoice->id
+								])
+						->execute();
+			   }
 		   }
-                $this->Flash->success(__('The sales invoice has been saved.'));
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The sales invoice could not be saved. Please, try again.'));
-        }
+		    $this->Flash->success(__('The sales invoice has been saved.'));
+            return $this->redirect(['action' => 'index']);
+		 }
+		 $this->Flash->error(__('The sales invoice could not be saved. Please, try again.'));
+		}
 		$customers = $this->SalesInvoices->Customers->find()
 					->where(['company_id'=>$company_id]);
 						$customerOptions=[];
@@ -162,10 +179,16 @@ class SalesInvoicesController extends AppController
 		
 		$items = $this->SalesInvoices->SalesInvoiceRows->Items->find()
 					->where(['Items.company_id'=>$company_id])
-					->contain(['GstFigures']);
+					->contain(['GstFigures', 'ItemLedgers', 'Units']);
+					
 		$itemOptions=[];
 		foreach($items as $item){
-			$itemOptions[]=['text' =>$item->name, 'value' => $item->id ,'gst_figure_id'=>$item->gst_figure_id, 'gst_figure_tax_percentage'=>$item->gst_figure->tax_percentage,'gst_figure_tax_name'=>$item->gst_figure->name, 'output_cgst_ledger_id'=>$item->output_cgst_ledger_id, 'output_sgst_ledger_id'=>$item->output_sgst_ledger_id, 'output_igst_ledger_id'=>$item->output_igst_ledger_id];
+				$qty=0;
+				foreach($item->item_ledgers as $data)
+				{
+				 $qty+=$data->quantity;
+				}
+			$itemOptions[]=['text' =>$item->item_code.' '.$item->name, 'value' => $item->id ,'gst_figure_id'=>$item->gst_figure_id, 'gst_figure_tax_percentage'=>$item->gst_figure->tax_percentage,'gst_figure_tax_name'=>$item->gst_figure->name, 'output_cgst_ledger_id'=>$item->output_cgst_ledger_id, 'output_sgst_ledger_id'=>$item->output_sgst_ledger_id, 'output_igst_ledger_id'=>$item->output_igst_ledger_id, 'item_qty'=>$qty, 'item_unit'=>$item->unit->name];
 		}
 		
         $partyLedgers = $this->SalesInvoices->SalesInvoiceRows->Ledgers->AccountingGroups->find()
@@ -186,9 +209,14 @@ class SalesInvoicesController extends AppController
 				$account_ids .=$key.',';
 			}
 			$account_ids = explode(",",trim($account_ids,','));
-			$Partyledgers = $this->SalesInvoices->SalesInvoiceRows->Ledgers->find('list')
-			->where(['Ledgers.accounting_group_id IN' =>$account_ids]);
+			$Partyledgers = $this->SalesInvoices->SalesInvoiceRows->Ledgers->find()
+			->where(['Ledgers.accounting_group_id IN' =>$account_ids])
+			->contain(['Customers']);
         }
+		$partyOptions=[];
+		foreach($Partyledgers as $Partyledger){
+			$partyOptions[]=['text' =>$Partyledger->name, 'value' => $Partyledger->id ,'party_state_id'=>$Partyledger->customer->state_id];
+		}
 		
 		$accountLedgers = $this->SalesInvoices->SalesInvoiceRows->Ledgers->AccountingGroups->find()->where(['AccountingGroups.sale_invoice_sales_account'=>1,'AccountingGroups.company_id'=>$company_id])->first();
 
@@ -207,23 +235,15 @@ class SalesInvoicesController extends AppController
 			$account_ids = explode(",",trim($account_ids,','));
 			$Accountledgers = $this->SalesInvoices->SalesInvoiceRows->Ledgers->find('list')->where(['Ledgers.accounting_group_id IN' =>$account_ids]);
         }
-	
 						
-						$gstFigures = $this->SalesInvoices->GstFigures->find('list')
-						->where(['company_id'=>$company_id]);
-						
-        $this->set(compact('salesInvoice', 'companies', 'customerOptions', 'gstFigures', 'voucher_no','company_id','itemOptions','state_id', 'Partyledgers', 'Accountledgers'));
-        $this->set('_serialize', ['salesInvoice']);
-    }		
+			$gstFigures = $this->SalesInvoices->GstFigures->find('list')
+			->where(['company_id'=>$company_id]);
 
-    /**
-     * Edit method
-     *
-     * @param string|null $id Sales Invoice id.
-     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
-     */
-    public function edit($id = null)
+			$this->set(compact('salesInvoice', 'companies', 'customerOptions', 'gstFigures', 'voucher_no','company_id','itemOptions','state_id', 'partyOptions', 'Accountledgers'));
+        $this->set('_serialize', ['salesInvoice']);
+    }	
+
+public function edit($id = null)
     {
 	$this->viewBuilder()->layout('index_layout');
         $salesInvoice = $this->SalesInvoices->get($id, [
@@ -249,10 +269,6 @@ class SalesInvoicesController extends AppController
 		    $transaction_date=date('Y-m-d', strtotime($this->request->data['transaction_date']));
             $salesInvoice = $this->SalesInvoices->patchEntity($salesInvoice, $this->request->getData());
             $salesInvoice->transaction_date=$transaction_date;
-			if($salesInvoice->cash_or_credit=='cash')
-			{
-			$salesInvoice->customer_id=0;
-			}
 			
 			if ($this->SalesInvoices->save($salesInvoice)) {
 			$deleteAccountEntries = $this->SalesInvoices->AccountingEntries->query();
@@ -326,6 +342,22 @@ class SalesInvoicesController extends AppController
 			   }
 			 }
 		   }
+		   else if($salesInvoice->is_interstate=='1'){
+		   foreach($salesInvoice->sales_invoice_rows as $sales_invoice_row)
+			   {
+			   $accountData = $this->SalesInvoices->AccountingEntries->query();
+						$accountData->insert(['ledger_id', 'debit','credit', 'transaction_date', 'company_id', 'sales_invoice_id'])
+								->values([
+								'ledger_id' => $sales_invoice_row->output_igst_ledger_id,
+								'debit' => '',
+								'credit' => $sales_invoice_row->gst_value,
+								'transaction_date' => $salesInvoice->transaction_date,
+								'company_id' => $salesInvoice->company_id,
+								'sales_invoice_id' => $salesInvoice->id
+								])
+						->execute();
+			   }
+		   }
                 $this->Flash->success(__('The sales invoice has been saved.'));
                 return $this->redirect(['action' => 'index']);
             }
@@ -347,12 +379,16 @@ class SalesInvoicesController extends AppController
 		
 		$items = $this->SalesInvoices->SalesInvoiceRows->Items->find()
 					->where(['Items.company_id'=>$company_id])
-					->contain(['GstFigures']);
+					->contain(['GstFigures', 'ItemLedgers', 'Units']);
 		$itemOptions=[];
 		foreach($items as $item){
-			$itemOptions[]=['text' =>$item->name, 'value' => $item->id ,'gst_figure_id'=>$item->gst_figure_id, 'gst_figure_tax_percentage'=>$item->gst_figure->tax_percentage,'gst_figure_tax_name'=>$item->gst_figure->name, 'output_cgst_ledger_id'=>$item->output_cgst_ledger_id, 'output_sgst_ledger_id'=>$item->output_sgst_ledger_id, 'output_igst_ledger_id'=>$item->output_igst_ledger_id];
+				$qty=0;
+				foreach($item->item_ledgers as $data)
+				{
+				 $qty+=$data->quantity;
+				}
+			$itemOptions[]=['text' =>$item->item_code.' '.$item->name, 'value' => $item->id ,'gst_figure_id'=>$item->gst_figure_id, 'gst_figure_tax_percentage'=>$item->gst_figure->tax_percentage,'gst_figure_tax_name'=>$item->gst_figure->name, 'output_cgst_ledger_id'=>$item->output_cgst_ledger_id, 'output_sgst_ledger_id'=>$item->output_sgst_ledger_id, 'output_igst_ledger_id'=>$item->output_igst_ledger_id, 'item_qty'=>$qty, 'item_unit'=>$item->unit->name];
 		}
-		
 		$partyLedgers = $this->SalesInvoices->SalesInvoiceRows->Ledgers->AccountingGroups->find()
 						->where(['AccountingGroups.company_id'=>$company_id, 'AccountingGroups.sale_invoice_party'=>'1']);
 		foreach($partyLedgers as $partyLedger)
@@ -371,9 +407,14 @@ class SalesInvoicesController extends AppController
 				$account_ids .=$key.',';
 			}
 			$account_ids = explode(",",trim($account_ids,','));
-			$Partyledgers = $this->SalesInvoices->SalesInvoiceRows->Ledgers->find('list')
-			->where(['Ledgers.accounting_group_id IN' =>$account_ids]);
+			$Partyledgers = $this->SalesInvoices->SalesInvoiceRows->Ledgers->find()
+			->where(['Ledgers.accounting_group_id IN' =>$account_ids])
+			->contain(['Customers']);
         }
+		$partyOptions=[];
+		foreach($Partyledgers as $Partyledger){
+			$partyOptions[]=['text' =>$Partyledger->name, 'value' => $Partyledger->id ,'party_state_id'=>$Partyledger->customer->state_id];
+		}
 		
 		$accountLedgers = $this->SalesInvoices->SalesInvoiceRows->Ledgers->AccountingGroups->find()->where(['AccountingGroups.sale_invoice_sales_account'=>1,'AccountingGroups.company_id'=>$company_id])->first();
 
@@ -392,13 +433,54 @@ class SalesInvoicesController extends AppController
 			$account_ids = explode(",",trim($account_ids,','));
 			$Accountledgers = $this->SalesInvoices->SalesInvoiceRows->Ledgers->find('list')->where(['Ledgers.accounting_group_id IN' =>$account_ids]);
         }
-		
         $gstFigures = $this->SalesInvoices->GstFigures->find('list')
 						->where(['company_id'=>$company_id]);
-        $this->set(compact('salesInvoice', 'companies', 'customerOptions', 'gstFigures', 'voucher_no','company_id','itemOptions','state_id', 'Accountledgers', 'Partyledgers'));
-
+        $this->set(compact('salesInvoice', 'companies', 'customerOptions', 'gstFigures', 'voucher_no','company_id','itemOptions','state_id', 'Accountledgers', 'partyOptions'));
         $this->set('_serialize', ['salesInvoice']);
-    }
+    }	
+	
+	
+public function salesInvoiceBill($id=null)
+    {
+	    $this->viewBuilder()->layout('');
+		$company_id=$this->Auth->User('session_company_id');
+		$stateDetails=$this->Auth->User('session_company');
+		$state_id=$stateDetails->state_id;
+		$invoiceBills= $this->SalesInvoices->find()
+		->where(['SalesInvoices.id'=>$id])
+		->contain(['Companies'=>['States'],'SalesInvoiceRows'=>['Items'=>['Sizes'], 'GstFigures']]);
+	
+	foreach($invoiceBills->toArray() as $data){
+		foreach($data->sales_invoice_rows as $sales_invoice_row){
+		$item_id=$sales_invoice_row->item_id;
+		$accountingEntries= $this->SalesInvoices->AccountingEntries->find()
+		->where(['AccountingEntries.item_id'=>$item_id, 'AccountingEntries.sales_invoice_id'=>$data->id]);
+		$sales_invoice_row->accountEntries=$accountingEntries->toArray();
+		
+		$partyDetail= $this->SalesInvoices->SalesInvoiceRows->Ledgers->find()
+		->where(['id'=>$data->party_ledger_id])->first();
+		
+		$partyCustomerid=$partyDetail->customer_id;
+		$partyDetails= $this->SalesInvoices->Customers->find()
+		->where(['Customers.id'=>$partyCustomerid])
+		->contain(['States'])->first();
+		$data->partyDetails=$partyDetails;
+		}
+		}
+		
+		
+		$this->set(compact('invoiceBills'));
+        $this->set('_serialize', ['invoiceBills']);
+    }	
+
+    /**
+     * Edit method
+     *
+     * @param string|null $id Sales Invoice id.
+     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     */
+    
 
     /**
      * Delete method
