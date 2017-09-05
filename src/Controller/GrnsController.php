@@ -222,25 +222,24 @@ class GrnsController extends AppController
 	{
 		$this->viewBuilder()->layout('index_layout');
 		$grn = $this->Grns->newEntity();
-		/* if ($this->request->is('post')) 
+		$user_id=$this->Auth->User('id');
+		if ($this->request->is('post')) 
 		{
 			
 			$csv = $this->request->data['csv'];
 			if(!empty($csv['tmp_name']))
 			{
-				
 				$ext = substr(strtolower(strrchr($csv['name'], '.')), 1); //get the extension 
 				
 				$arr_ext = array('csv'); 									   
 				if (in_array($ext, $arr_ext)) 
 				{
-								
-					$f = fopen($csv['tmp_name'], 'r') or die("ERROR OPENING DATA");
-					$batchcount=0;
+                  move_uploaded_file($csv['tmp_name'], WWW_ROOT . '/step_first/'.$user_id.'.'.$ext);
+				  
+				  $f = fopen($csv['tmp_name'], 'r') or die("ERROR OPENING DATA");
 					$records=0;
 					while (($line = fgetcsv($f, 4096, ';')) !== false) 
 					{
-						$numcols = count($line);
 						$test[]=$line;
 						++$records;
 					}
@@ -259,14 +258,10 @@ class GrnsController extends AppController
 					} 
 					fclose($f);
 					$records;
-
-					move_uploaded_file($csv['tmp_name'], WWW_ROOT . '/csv/csv_'.date("d-m-Y").'.'.$ext);
 				}
-			   
-				
 			}
-		} */
-		$this->set(compact('import'));
-        $this->set('_serialize', ['import']);
+		} 
+		$this->set(compact('grn'));
+        $this->set('_serialize', ['grn']);
 	}
 }
