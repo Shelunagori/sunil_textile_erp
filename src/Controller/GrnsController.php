@@ -209,4 +209,12 @@ class GrnsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+	
+	public function importCsv()
+	{
+		$this->viewBuilder()->layout('index_layout');
+		$import_csv = $this->Grns->newEntity();
+		$this->set(compact('import_csv'));
+        $this->set('_serialize', ['import_csv']);
+	}
 }

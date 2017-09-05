@@ -134,7 +134,7 @@ class ItemsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['unit_id'], 'Units'));
-        $rules->add($rules->existsIn(['stock_group_id'], 'StockGroups'));
+        //$rules->add($rules->existsIn(['stock_group_id'], 'StockGroups'));
 		$rules->add($rules->existsIn(['gst_figure_id'], 'GstFigures'));
         $rules->add($rules->existsIn(['output_cgst_ledger_id'], 'output_cgst_ledger'));
         $rules->add($rules->existsIn(['output_sgst_ledger_id'], 'output_sgst_ledger'));
