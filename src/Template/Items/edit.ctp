@@ -77,23 +77,44 @@ $this->set('title', 'Edit Item');
 					<div class="col-md-6">
 					<span class="caption-subject bold " style="float:center;">Opening Balance</span><hr style="margin: 6px 0;">
 					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group">
+								<label>Quantity </label>
+								<?php 
+								echo $this->Form->control('quantity',['class'=>'form-control input-sm qty calculation reverseCalculation','label'=>false,'placeholder'=>'Quantity','value'=>@$item->item_ledgers[0]->quantity]); ?>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label>Rate </label>
+								<?php echo $this->Form->control('rate',['class'=>'form-control input-sm rate calculation','label'=>false,'placeholder'=>'Rate','value'=>@$item->item_ledgers[0]->rate]); ?>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label>Value </label>
+								<?php echo $this->Form->control('amount',['class'=>'form-control input-sm amt reverseCalculation','label'=>false,'placeholder'=>'Value','value'=>@$item->item_ledgers[0]->amount]); ?>
+							</div>
+						</div>
+					</div>
+					<span class="caption-subject bold " style="float:center;">Gst Rate</span><hr style="margin: 6px 0;">
+						<div class="row" >
 							<div class="col-md-4">
 								<div class="form-group">
-									<label>Quantity </label>
-									<?php 
-									echo $this->Form->control('quantity',['class'=>'form-control input-sm qty calculation reverseCalculation','label'=>false,'placeholder'=>'Quantity','value'=>@$item->item_ledgers[0]->quantity]); ?>
+									<label style="font-size: 10px;">Gst Less than Equal to Amount </label>
+									<?php echo $this->Form->control('first_gst_figure_id',['class'=>'form-control input-sm','label'=>false,'empty'=>'-GST Figure-', 'options' => $gstFigures,'required'=>'required']); ?>
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
-									<label>Rate </label>
-									<?php echo $this->Form->control('rate',['class'=>'form-control input-sm rate calculation','label'=>false,'placeholder'=>'Rate','value'=>@$item->item_ledgers[0]->rate]); ?>
+									<label style="font-size: 10px;">Amount </label>
+									<?php echo $this->Form->control('gst_amount',['class'=>'form-control input-sm rate calculation','label'=>false,'placeholder'=>'Amount','required'=>'required']); ?>
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
-									<label>Value </label>
-									<?php echo $this->Form->control('amount',['class'=>'form-control input-sm amt reverseCalculation','label'=>false,'placeholder'=>'Value','value'=>@$item->item_ledgers[0]->amount]); ?>
+									<label style="font-size: 10px;">Gst Greter than to Amount </label>
+									<?php echo $this->Form->control('second_gst_figure_id',['class'=>'form-control input-sm','label'=>false,'empty'=>'-GST Figure-', 'options' => $gstFigures,'required'=>'required']); ?>
 								</div>
 							</div>
 						</div>

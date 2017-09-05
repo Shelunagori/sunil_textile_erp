@@ -52,12 +52,12 @@ $this->set('title', 'Create Item');
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-md-6">
+							<!--<div class="col-md-6">
 								<div class="form-group">
 									<label>GST Figure <span class="required">*</span></label>
-									<?php echo $this->Form->control('gst_figure_id',['class'=>'form-control input-sm','label'=>false,'empty'=>'-GST Figure-', 'options' => $gstFigures,'required'=>'required']); ?>
+									<?php //echo $this->Form->control('gst_figure_id',['class'=>'form-control input-sm','label'=>false,'empty'=>'-GST Figure-', 'options' => $gstFigures,'required'=>'required']); ?>
 								</div>
-							</div>
+							</div>-->
 							<div class="col-md-6">
 								<div class="form-group">
 									<label>Shade </label>
@@ -93,6 +93,27 @@ $this->set('title', 'Create Item');
 								<div class="form-group">
 									<label>Value </label>
 									<?php echo $this->Form->control('amount',['class'=>'form-control input-sm amt reverseCalculation','label'=>false,'placeholder'=>'Value']); ?>
+								</div>
+							</div>
+						</div>
+						<span class="caption-subject bold " style="float:center;">Gst Rate</span><hr style="margin: 6px 0;">
+						<div class="row" >
+							<div class="col-md-4">
+								<div class="form-group">
+									<label style="font-size: 10px;">Gst Less than Equal to Amount </label>
+									<?php echo $this->Form->control('first_gst_figure_id',['class'=>'form-control input-sm','label'=>false,'empty'=>'-GST Figure-', 'options' => $gstFigures,'required'=>'required']); ?>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label style="font-size: 10px;">Amount </label>
+									<?php echo $this->Form->control('gst_amount',['class'=>'form-control input-sm rate calculation','label'=>false,'placeholder'=>'Amount','required'=>'required']); ?>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label style="font-size: 10px;">Gst Greter than to Amount </label>
+									<?php echo $this->Form->control('second_gst_figure_id',['class'=>'form-control input-sm','label'=>false,'empty'=>'-GST Figure-', 'options' => $gstFigures,'required'=>'required']); ?>
 								</div>
 							</div>
 						</div>

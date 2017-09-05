@@ -38,16 +38,23 @@ class GrnsTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
-        $this->belongsTo('Locations', [
+       /*  $this->belongsTo('Locations', [
             'foreignKey' => 'location_id',
             'joinType' => 'INNER'
-        ]);
+        ]); */
         $this->belongsTo('Companies', [
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'
         ]);
         $this->hasMany('GrnRows', [
-            'foreignKey' => 'grn_id'
+            'foreignKey' => 'grn_id',
+			'saveStrategy' => 'replace'
+        ]);
+		
+		$this->hasMany('ItemLedgers', [
+            'foreignKey' => 'item_ledger_id',
+			'joinType' => 'INNER',
+			'saveStrategy' => 'replace'
         ]);
     }
 
@@ -85,7 +92,7 @@ class GrnsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['location_id'], 'Locations'));
+        //$rules->add($rules->existsIn(['location_id'], 'Locations'));
         $rules->add($rules->existsIn(['company_id'], 'Companies'));
 
         return $rules;

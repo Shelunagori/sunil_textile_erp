@@ -45,6 +45,12 @@ class GrnRowsTable extends Table
             'foreignKey' => 'item_id',
             'joinType' => 'INNER'
         ]);
+		
+		$this->hasMany('ItemLedgers', [
+            'foreignKey' => 'item_ledger_id',
+			'joinType' => 'INNER',
+			'saveStrategy' => 'replace'
+        ]);
     }
 
     /**

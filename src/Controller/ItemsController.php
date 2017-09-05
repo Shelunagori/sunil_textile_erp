@@ -68,24 +68,6 @@ class ItemsController extends AppController
 				$item->item_code=1;
 			} 
 			$quantity = $this->request->data['quantity'];
-			$input_cgst_ledger = $this->Items->input_cgst_ledger->find()->where(['gst_type'=>'CGST','company_id'=>$company_id,'input_output'=>'input','gst_figure_id'=>$item->gst_figure_id])->first();
-			
-			$input_sgst_ledger = $this->Items->input_sgst_ledger->find()->where(['gst_type'=>'SGST','company_id'=>$company_id,'input_output'=>'input','gst_figure_id'=>$item->gst_figure_id])->first();
-			
-			$input_igst_ledger = $this->Items->input_igst_ledger->find()->where(['gst_type'=>'IGST','company_id'=>$company_id,'input_output'=>'input','gst_figure_id'=>$item->gst_figure_id])->first();
-			
-			$output_cgst_ledger = $this->Items->output_cgst_ledger->find()->where(['gst_type'=>'CGST','company_id'=>$company_id,'input_output'=>'output','gst_figure_id'=>$item->gst_figure_id])->first();
-			
-			$output_sgst_ledger = $this->Items->output_sgst_ledger->find()->where(['gst_type'=>'SGST','company_id'=>$company_id,'input_output'=>'output','gst_figure_id'=>$item->gst_figure_id])->first();
-			
-			$output_igst_ledger = $this->Items->output_igst_ledger->find()->where(['gst_type'=>'IGST','company_id'=>$company_id,'input_output'=>'output','gst_figure_id'=>$item->gst_figure_id])->first();
-			
-			$item->input_cgst_ledger_id  = $input_cgst_ledger->id;
-			$item->input_sgst_ledger_id  = $input_sgst_ledger->id;
-			$item->input_igst_ledger_id  = $input_igst_ledger->id;
-			$item->output_cgst_ledger_id = $output_cgst_ledger->id;
-			$item->output_sgst_ledger_id = $output_sgst_ledger->id;
-			$item->output_igst_ledger_id = $output_igst_ledger->id;
 			
             if ($this->Items->save($item)) 
 			{
@@ -215,5 +197,58 @@ class ItemsController extends AppController
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+	
+	public function uplodeCsv()
+    {
+		$this->viewBuilder()->layout('index_layout');
+        $uplode_csv = $this->Items->newEntity();
+		
+		if ($this->request->is('post')) 
+		{
+			
+			$csv = $this->request->data['csv'];
+			if(!empty($csv['tmp_name']))
+			{
+				
+				$ext = substr(strtolower(strrchr($csv['name'], '.')), 1); //get the extension 
+				
+				$arr_ext = array('csv'); 									   
+				if (in_array($ext, $arr_ext)) 
+				{
+								
+					$f = fopen($csv['tmp_name'], 'r') or die("ERROR OPENING DATA");
+					$batchcount=0;
+					$records=0;
+					while (($line = fgetcsv($f, 4096, ';')) !== false) 
+					{
+						$numcols = count($line);
+						$test[]=$line;
+						++$records;
+					}
+					foreach($test as $test1)
+					{ 
+					
+						 $data = explode(",",$test1[0]);
+						 $item = $this->Items->newEntity();
+						 $item->name           = $data[0];
+						 $item->item_code      = $data[1]; 
+						 $item->hsn_code       = $data[2];
+						 $item->unit_id        = $data[3];
+						 $item->stock_group_id = $data[4];
+						 $item->company_id     = $data[5];
+						 $this->Items->save($item);
+					} 
+					fclose($f);
+					$records;
+
+					move_uploaded_file($csv['tmp_name'], WWW_ROOT . '/csv/csv_'.date("d-m-Y").'.'.$ext);
+				}
+			   
+				
+			}
+		}
+        $this->set(compact('uplode_csv'));
+        $this->set('_serialize', ['uplode_csv']);
     }
 }
