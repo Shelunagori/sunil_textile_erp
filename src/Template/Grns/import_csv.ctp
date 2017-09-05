@@ -24,7 +24,7 @@ $this->set('title', 'Import CSV');
 							 <b>Step First</b>
 						</div>
 						</a>
-						
+						<li><?php echo $this->Html->link($this->Html->tag('i', '').' Step First', '/Grns/import',['escape' => false]); ?></li>
 					</div>
 					<div class="col-md-6" align="center">
 						<a href="#" class="icon-btn">
