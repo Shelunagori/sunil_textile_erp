@@ -45,7 +45,7 @@ $this->set('title', 'Edit Ledger');
 									}
 									else
 									{
-										$value =$ledger->accounting_entries[0]->credit;
+										$value =@$ledger->accounting_entries[0]->credit;
 									}
 							echo $this->Form->control('opening_balance_value',['class'=>'form-control input-sm','label'=>false,'value'=>$value]);
 							?>

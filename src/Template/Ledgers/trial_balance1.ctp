@@ -67,7 +67,7 @@ $this->set('title', 'Trial balance report');
 							<th scope="col" colspan="2" style="text-align:center";>Closing balance</th>
 						</tr>
 						<tr>
-							<th scope="col">Ledgers</th>
+							<th scope="col">Account Group</th>
 							<th scope="col" style="text-align:center";>Debit</th>
 							<th scope="col" style="text-align:center";>Credit</th>
 							<th scope="col" style="text-align:center";>Debit</th>
@@ -90,7 +90,7 @@ $this->set('title', 'Trial balance report');
 									$closing_debit=0;
 							?>
 									<tr>
-										<td scope="col"><?php echo @$TrialBalance->ledger->name;?></td>
+										<td scope="col"><?php echo @$TrialBalance->ledger->accounting_group->name;?></td>
 										<td scope="col" align="right">
 										<?php
 										    echo $TrialBalance->debit_opening_balance;
@@ -200,13 +200,13 @@ $this->set('title', 'Trial balance report');
 							<th scope="col" >Opening Stock</th>
 							<th style="text-align:right";>
 								<?php 
-								if(@$coreVariable['fyValidFrom']<$from_date)
+								if(@$coreVariable['fyValidFrom']<@$from_date)
 								{
-									if($totalDebit>0)
+									if(@$totalDebit>0)
 									{ 
 									   echo @$totalDebit;
-									   $openingBalanceDebitTotal +=round($totalDebit,2);
-									   $total1 +=$totalDebit;
+									   $openingBalanceDebitTotal +=round(@$totalDebit,2);
+									   $total1 +=@$totalDebit;
 									}
 									
 								} 
@@ -216,7 +216,7 @@ $this->set('title', 'Trial balance report');
 								<?php 
 								 if(@$coreVariable['fyValidFrom']<$from_date)
 								{
-									if($totalDebit<0)
+									if(@$totalDebit<0)
 									{
 									   echo @$totalDebit;
 									   $openingBalanceCreditTotal +=round($totalDebit,2);
