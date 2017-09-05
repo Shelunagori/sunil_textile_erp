@@ -1,4 +1,20 @@
 <?php
+// sample data to encode
+			$data_to_encode = 'BLAHBLAH01234';
+				
+			$barcode=$this->barcode;
+			// Generate Barcode data
+			$barcode->barcode();
+			$barcode->setType('C128');
+			$barcode->setCode($data_to_encode);
+			$barcode->setSize(80,200);
+				
+			// Generate filename            
+			$random = rand(0,1000000);
+			$file = 'img/barcode/code_'.$random.'.png';
+				
+			// Generates image file on server            
+			$this->barcode->writeBarcodeFile($file);
 /**
  * @Author: PHP Poets IT Solutions Pvt. Ltd.
  */
