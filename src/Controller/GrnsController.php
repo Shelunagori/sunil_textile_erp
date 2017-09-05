@@ -221,10 +221,8 @@ class GrnsController extends AppController
 	public function import()
 	{
 		$this->viewBuilder()->layout('index_layout');
-		$import = $this->Grns->newEntity();
-		$uplode_csv = $this->Items->newEntity();
-		
-		if ($this->request->is('post')) 
+		$grn = $this->Grns->newEntity();
+		/* if ($this->request->is('post')) 
 		{
 			
 			$csv = $this->request->data['csv'];
@@ -267,7 +265,7 @@ class GrnsController extends AppController
 			   
 				
 			}
-		}
+		} */
 		$this->set(compact('import'));
         $this->set('_serialize', ['import']);
 	}
