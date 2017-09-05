@@ -333,8 +333,11 @@ class LedgersController extends AppController
 			->where(['AccountingEntries.company_id'=>$company_id])
 			->group('ParentAccountingGroups.id')
 			->autoFields(true)
-			->contain(['Ledgers'=>['AccountingGroups'=>['ParentAccountingGroups']]]);
+			->contain(['Ledgers'=>['AccountingGroups'=> function($q){
+								return $q->find('children', ['for' => 1])->find('threaded')->contain(['ParentAccountingGroups']);
+							}]]);
 			$TrialBalances = ($query);
+			pr($TrialBalances->toArray());exit;
 		$this->set(compact('ledger','from_date','to_date','TrialBalances'));
         $this->set('_serialize', ['ledger']);
 	}

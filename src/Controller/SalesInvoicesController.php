@@ -172,7 +172,7 @@ class SalesInvoicesController extends AppController
 		}
 		$customers = $this->SalesInvoices->Customers->find()
 					->where(['company_id'=>$company_id]);
-						$customerOptions=[];
+		$customerOptions=[];
 		foreach($customers as $customer){
 			$customerOptions[]=['text' =>$customer->name, 'value' => $customer->id ,'customer_state_id'=>$customer->state_id];
 		}

@@ -73,18 +73,17 @@ class GrnsController extends AppController
 			{
 				$grn->voucher_no = 1;
 			} 
-			pr($grn);
+			
             if ($this->Grns->save($grn)) 
 			{
 				//Create Item_Ledger//
-				$item_ledger = $this->Grns->ItemLedgers->newEntity();
-				$item_ledger->transaction_date = $grn->transaction_date;
-				$item_ledger->grn_id = $grn->id;
-				
 				
 				foreach($grn->grn_rows as $grn_row)
 				{
+					
 					$item_ledger = $this->Grns->ItemLedgers->newEntity();
+					$item_ledger->transaction_date = $grn->transaction_date;
+					$item_ledger->grn_id = $grn->id;
 					$item_ledger->grn_row_id = $grn_row->id;
 					$item_ledger->item_id = $grn_row->item_id;
 					$item_ledger->quantity = $grn_row->quantity;
@@ -93,13 +92,9 @@ class GrnsController extends AppController
 					$item_ledger->company_id =$company_id;
 					$item_ledger->status ='in';
 					$item_ledger->amount=$grn_row->quantity*$grn_row->purchase_rate;
-					
-					
-					pr($item_ledger);  exit;
 					$this->Grns->ItemLedgers->save($item_ledger);
-					
-				
 				}
+				
 				
                 $this->Flash->success(__('The grn has been saved.'));
 
@@ -152,7 +147,29 @@ class GrnsController extends AppController
             $grn = $this->Grns->patchEntity($grn, $this->request->getData());
 			$grn->transaction_date = date("Y-m-d",strtotime($this->request->getData()['transaction_date']));
             if ($this->Grns->save($grn)) {
-                $this->Flash->success(__('The grn has been saved.'));
+				$query = $this->Grns->ItemLedgers->query();
+				$query->delete()->where(['grn_id'=> $id,'company_id'=>$company_id])->execute();
+				foreach($grn->grn_rows as $grn_row)
+				{
+					
+					$item_ledger = $this->Grns->ItemLedgers->newEntity();
+					$item_ledger->transaction_date = $grn->transaction_date;
+					$item_ledger->grn_id = $grn->id;
+					$item_ledger->grn_row_id = $grn_row->id;
+					$item_ledger->item_id = $grn_row->item_id;
+					$item_ledger->quantity = $grn_row->quantity;
+					$item_ledger->rate = $grn_row->purchase_rate;
+					$item_ledger->sale_rate = $grn_row->sale_rate;
+					$item_ledger->company_id =$company_id;
+					$item_ledger->status ='in';
+					$item_ledger->amount=$grn_row->quantity*$grn_row->purchase_rate;
+					$this->Grns->ItemLedgers->save($item_ledger);
+				
+					
+				
+				}
+				
+				$this->Flash->success(__('The grn has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
@@ -192,4 +209,12 @@ class GrnsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+	
+	public function importCsv()
+	{
+		$this->viewBuilder()->layout('index_layout');
+		$import_csv = $this->Grns->newEntity();
+		$this->set(compact('import_csv'));
+        $this->set('_serialize', ['import_csv']);
+	}
 }
