@@ -216,4 +216,57 @@ class ItemsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+	
+	public function uplodeCsv()
+    {
+		$this->viewBuilder()->layout('index_layout');
+        $uplode_csv = $this->Items->newEntity();
+		
+		if ($this->request->is('post')) 
+		{
+			
+			$csv = $this->request->data['csv'];
+			if(!empty($csv['tmp_name']))
+			{
+				
+				$ext = substr(strtolower(strrchr($csv['name'], '.')), 1); //get the extension 
+				
+				$arr_ext = array('csv'); 									   
+				if (in_array($ext, $arr_ext)) 
+				{
+								
+					$f = fopen($csv['tmp_name'], 'r') or die("ERROR OPENING DATA");
+					$batchcount=0;
+					$records=0;
+					while (($line = fgetcsv($f, 4096, ';')) !== false) 
+					{
+						$numcols = count($line);
+						$test[]=$line;
+						++$records;
+					}
+					foreach($test as $test1)
+					{ 
+					
+						 $data = explode(",",$test1[0]);
+						 $item = $this->Items->newEntity();
+						 $item->name           = $data[0];
+						 $item->item_code      = $data[1]; 
+						 $item->hsn_code       = $data[2];
+						 $item->unit_id        = $data[3];
+						 $item->stock_group_id = $data[4];
+						 $item->company_id     = $data[5];
+						 $this->Items->save($item);
+					} 
+					fclose($f);
+					$records;
+
+					move_uploaded_file($csv['tmp_name'], WWW_ROOT . '/csv/csv_'.date("d-m-Y").'.'.$ext);
+				}
+			   
+				
+			}
+		}
+        $this->set(compact('uplode_csv'));
+        $this->set('_serialize', ['uplode_csv']);
+    }
 }
