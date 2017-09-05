@@ -180,12 +180,11 @@ class SalesInvoicesController extends AppController
 		$items = $this->SalesInvoices->SalesInvoiceRows->Items->find()
 					->where(['Items.company_id'=>$company_id])
 					->contain(['GstFigures', 'ItemLedgers', 'Units']);
-					
-					
+				
+
 		$itemOptions=[];
 		foreach($items as $item){
 				$qty=0;
-				
 				$first_gst_figure_id=$item->first_gst_figure_id;
 				$second_gst_figure_id=$item->second_gst_figure_id;
 				
@@ -197,19 +196,65 @@ class SalesInvoicesController extends AppController
 				$secondGsts = $this->SalesInvoices->SalesInvoiceRows->Items->GstFigures->find()
 				->where(['GstFigures.id'=>$second_gst_figure_id, 'GstFigures.company_id'=>$company_id ])->first();
 				$secondGstsLedgers = $this->SalesInvoices->SalesInvoiceRows->Items->GstFigures->Ledgers->find()
-				->where(['Ledgers.gst_figure_id'=>$second_gst_figure_id, 'Ledgers.company_id'=>$company_id, 'Ledgers.input_output'=>'output', 'Ledgers.company_id'=>$company_id ]);
+				->where(['Ledgers.gst_figure_id'=>$second_gst_figure_id, 'Ledgers.company_id'=>$company_id, 'Ledgers.input_output'=>'output', 'Ledgers.company_id'=>$company_id]);
+				$item->firstGstFigure=$firstGsts;
+				$item->firstGstLedger=$firstGstLedgers->toArray();
+				$item->secondGstFigure=$secondGsts;
+				$item->secondGstLedger=$secondGstsLedgers->toArray();
 				
 				
-				
-				foreach($item->item_ledgers as $data)
+				foreach($item->firstGstLedger as $firstGstLedgerdata)
 				{
-				 $qty+=$data->quantity;
+					if($firstGstLedgerdata->gst_type='CGST')
+					{
+					$first_output_cgst_ledger_id=$firstGstLedgerdata->id;
+					}
+					if($firstGstLedgerdata->gst_type='SGST')
+					{
+					$first_output_sgst_ledger_id=$firstGstLedgerdata->id;
+					}
+					if($firstGstLedgerdata->gst_type='IGST')
+					{
+					$first_output_igst_ledger_id=$firstGstLedgerdata->id;
+					}
 				}
-			$itemOptions[]=['text' =>$item->item_code.' '.$item->name, 'value' => $item->id ,'gst_figure_id'=>$item->gst_figure_id, 'gst_figure_tax_percentage'=>$item->gst_figure->tax_percentage,'gst_figure_tax_name'=>$item->gst_figure->name, 'output_cgst_ledger_id'=>$item->output_cgst_ledger_id, 'output_sgst_ledger_id'=>$item->output_sgst_ledger_id, 'output_igst_ledger_id'=>$item->output_igst_ledger_id, 'item_qty'=>$qty, 'item_unit'=>$item->unit->name];
+				foreach($item->secondGstLedger as $secondGstLedgerdata)
+				{
+					if($secondGstLedgerdata->gst_type='CGST')
+					{
+					$second_output_cgst_ledger_id=$secondGstLedgerdata->id;
+					}
+					if($secondGstLedgerdata->gst_type='SGST')
+					{
+					$second_output_sgst_ledger_id=$secondGstLedgerdata->id;
+					}
+					if($secondGstLedgerdata->gst_type='IGST')
+					{
+					$second_output_igst_ledger_id=$secondGstLedgerdata->id;
+					}
+				}
+			foreach($item->item_ledgers as $data)
+			{
+			  $qty+=$data->quantity;
+			}
+			$itemOptions[]=['text' =>$item->item_code.' '.$item->name, 'value' => $item->id ,'gst_figure_id'=>$item->gst_figure_id,'first_gst_figure_id'=>$item->first_gst_figure_id,'second_gst_figure_id'=>$item->second_gst_figure_id,'gst_amount'=>$item->gst_amount, 'gst_figure_tax_percentage'=>$item->gst_figure->tax_percentage,'gst_figure_tax_name'=>$item->gst_figure->name, 
+			
+			'first_gst_figure_tax_percentage'=>$item->firstGstFigure->tax_percentage,'first_gst_figure_tax_name'=>$item->firstGstFigure->name,
+			'second_figure_tax_percentage'=>$item->secondGstFigure->tax_percentage,'second_gst_figure_tax_name'=>$item->secondGstFigure->name,
+			
+			'output_cgst_ledger_id'=>$item->output_cgst_ledger_id, 'output_sgst_ledger_id'=>$item->output_sgst_ledger_id, 'output_igst_ledger_id'=>$item->output_igst_ledger_id, 'item_qty'=>$qty, 'item_unit'=>$item->unit->name,
+			
+			'first_output_cgst_ledger_id'=>$first_output_cgst_ledger_id,
+			'first_output_sgst_ledger_id'=>$first_output_sgst_ledger_id,
+			'first_output_igst_ledger_id'=>$first_output_igst_ledger_id,
+			'second_output_cgst_ledger_id'=>$second_output_cgst_ledger_id,
+			'second_output_sgst_ledger_id'=>$second_output_sgst_ledger_id,
+			'second_output_igst_ledger_id'=>$second_output_igst_ledger_id];
 		}
 		
         $partyLedgers = $this->SalesInvoices->SalesInvoiceRows->Ledgers->AccountingGroups->find()
 						->where(['AccountingGroups.company_id'=>$company_id, 'AccountingGroups.sale_invoice_party'=>'1']);
+		
 		foreach($partyLedgers as $partyLedger)
 		{
 			$accountingGroups = $this->SalesInvoices->SalesInvoiceRows->Ledgers->AccountingGroups
@@ -217,6 +262,7 @@ class SalesInvoicesController extends AppController
 			->find('List')->toArray();
 			$accountingGroups[$partyLedger->id]=$partyLedger->name;
 		}
+		
 		ksort($accountingGroups);
 		if($accountingGroups)
 		{   
@@ -226,10 +272,14 @@ class SalesInvoicesController extends AppController
 				$account_ids .=$key.',';
 			}
 			$account_ids = explode(",",trim($account_ids,','));
+			
 			$Partyledgers = $this->SalesInvoices->SalesInvoiceRows->Ledgers->find()
 			->where(['Ledgers.accounting_group_id IN' =>$account_ids])
 			->contain(['Customers']);
+			
         }
+		
+		
 		$partyOptions=[];
 		foreach($Partyledgers as $Partyledger){
 			$partyOptions[]=['text' =>$Partyledger->name, 'value' => $Partyledger->id ,'party_state_id'=>$Partyledger->customer->state_id];
@@ -397,15 +447,78 @@ public function edit($id = null)
 		$items = $this->SalesInvoices->SalesInvoiceRows->Items->find()
 					->where(['Items.company_id'=>$company_id])
 					->contain(['GstFigures', 'ItemLedgers', 'Units']);
+		
 		$itemOptions=[];
 		foreach($items as $item){
 				$qty=0;
-				foreach($item->item_ledgers as $data)
+				$first_gst_figure_id=$item->first_gst_figure_id;
+				$second_gst_figure_id=$item->second_gst_figure_id;
+				
+				$firstGsts = $this->SalesInvoices->SalesInvoiceRows->Items->GstFigures->find()
+				->where(['GstFigures.id'=>$first_gst_figure_id, 'GstFigures.company_id'=>$company_id ])->first();
+				$firstGstLedgers = $this->SalesInvoices->SalesInvoiceRows->Items->GstFigures->Ledgers->find()
+				->where(['Ledgers.gst_figure_id'=>$first_gst_figure_id, 'Ledgers.company_id'=>$company_id, 'Ledgers.input_output'=>'output', 'Ledgers.company_id'=>$company_id ]);
+				
+				$secondGsts = $this->SalesInvoices->SalesInvoiceRows->Items->GstFigures->find()
+				->where(['GstFigures.id'=>$second_gst_figure_id, 'GstFigures.company_id'=>$company_id ])->first();
+				$secondGstsLedgers = $this->SalesInvoices->SalesInvoiceRows->Items->GstFigures->Ledgers->find()
+				->where(['Ledgers.gst_figure_id'=>$second_gst_figure_id, 'Ledgers.company_id'=>$company_id, 'Ledgers.input_output'=>'output', 'Ledgers.company_id'=>$company_id]);
+				$item->firstGstFigure=$firstGsts;
+				$item->firstGstLedger=$firstGstLedgers->toArray();
+				$item->secondGstFigure=$secondGsts;
+				$item->secondGstLedger=$secondGstsLedgers->toArray();
+				
+				
+				foreach($item->firstGstLedger as $firstGstLedgerdata)
 				{
-				 $qty+=$data->quantity;
+					if($firstGstLedgerdata->gst_type='CGST')
+					{
+					$first_output_cgst_ledger_id=$firstGstLedgerdata->id;
+					}
+					if($firstGstLedgerdata->gst_type='SGST')
+					{
+					$first_output_sgst_ledger_id=$firstGstLedgerdata->id;
+					}
+					if($firstGstLedgerdata->gst_type='IGST')
+					{
+					$first_output_igst_ledger_id=$firstGstLedgerdata->id;
+					}
 				}
-			$itemOptions[]=['text' =>$item->item_code.' '.$item->name, 'value' => $item->id ,'gst_figure_id'=>$item->gst_figure_id, 'gst_figure_tax_percentage'=>$item->gst_figure->tax_percentage,'gst_figure_tax_name'=>$item->gst_figure->name, 'output_cgst_ledger_id'=>$item->output_cgst_ledger_id, 'output_sgst_ledger_id'=>$item->output_sgst_ledger_id, 'output_igst_ledger_id'=>$item->output_igst_ledger_id, 'item_qty'=>$qty, 'item_unit'=>$item->unit->name];
+				foreach($item->secondGstLedger as $secondGstLedgerdata)
+				{
+					if($secondGstLedgerdata->gst_type='CGST')
+					{
+					$second_output_cgst_ledger_id=$secondGstLedgerdata->id;
+					}
+					if($secondGstLedgerdata->gst_type='SGST')
+					{
+					$second_output_sgst_ledger_id=$secondGstLedgerdata->id;
+					}
+					if($secondGstLedgerdata->gst_type='IGST')
+					{
+					$second_output_igst_ledger_id=$secondGstLedgerdata->id;
+					}
+				}
+			foreach($item->item_ledgers as $data)
+			{
+			  $qty+=$data->quantity;
+			}
+			$itemOptions[]=['text' =>$item->item_code.' '.$item->name, 'value' => $item->id ,'gst_figure_id'=>$item->gst_figure_id,'first_gst_figure_id'=>$item->first_gst_figure_id,'second_gst_figure_id'=>$item->second_gst_figure_id,'gst_amount'=>$item->gst_amount, 'gst_figure_tax_percentage'=>$item->gst_figure->tax_percentage,'gst_figure_tax_name'=>$item->gst_figure->name, 
+			
+			'first_gst_figure_tax_percentage'=>$item->firstGstFigure->tax_percentage,'first_gst_figure_tax_name'=>$item->firstGstFigure->name,
+			'second_figure_tax_percentage'=>$item->secondGstFigure->tax_percentage,'second_gst_figure_tax_name'=>$item->secondGstFigure->name,
+			
+			'output_cgst_ledger_id'=>$item->output_cgst_ledger_id, 'output_sgst_ledger_id'=>$item->output_sgst_ledger_id, 'output_igst_ledger_id'=>$item->output_igst_ledger_id, 'item_qty'=>$qty, 'item_unit'=>$item->unit->name,
+			
+			'first_output_cgst_ledger_id'=>$first_output_cgst_ledger_id,
+			'first_output_sgst_ledger_id'=>$first_output_sgst_ledger_id,
+			'first_output_igst_ledger_id'=>$first_output_igst_ledger_id,
+			'second_output_cgst_ledger_id'=>$second_output_cgst_ledger_id,
+			'second_output_sgst_ledger_id'=>$second_output_sgst_ledger_id,
+			'second_output_igst_ledger_id'=>$second_output_igst_ledger_id];
 		}
+		
+		
 		$partyLedgers = $this->SalesInvoices->SalesInvoiceRows->Ledgers->AccountingGroups->find()
 						->where(['AccountingGroups.company_id'=>$company_id, 'AccountingGroups.sale_invoice_party'=>'1']);
 		foreach($partyLedgers as $partyLedger)
@@ -428,6 +541,8 @@ public function edit($id = null)
 			->where(['Ledgers.accounting_group_id IN' =>$account_ids])
 			->contain(['Customers']);
         }
+		
+		
 		$partyOptions=[];
 		foreach($Partyledgers as $Partyledger){
 			$partyOptions[]=['text' =>$Partyledger->name, 'value' => $Partyledger->id ,'party_state_id'=>$Partyledger->customer->state_id];
