@@ -68,8 +68,28 @@ class ItemsController extends AppController
 			} 
 			$quantity = $this->request->data['quantity'];
 			
+			
+			
+			
             if ($this->Items->save($item)) 
 			{
+				$barcode = new BarcodeHelper(new \Cake\View\View());
+				// sample data to encode BLAHBLAH01234
+				$data_to_encode = str_pad($item->id, 13, '0', STR_PAD_LEFT);
+					
+				// Generate Barcode data
+				$barcode->barcode();
+				$barcode->setType('C128');
+				$barcode->setCode($data_to_encode);
+				$barcode->setSize(80,200);
+					
+				// Generate filename            
+				$file = 'img/barcode/'.$item->id.'.png';
+					
+				// Generates image file on server            
+				$barcode->writeBarcodeFile($file);
+			
+			
 				$transaction_date=$this->Auth->User('session_company')->books_beginning_from;
 				if($quantity>0)
 				{
