@@ -18,7 +18,7 @@ $this->set('title', 'Progress Csv');
 				    <div class="col-md-3"></div>
 				    <div class="col-md-6">
 					    <div class="progress progress-striped active">
-							<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 10%">
+							<div class="progress-bar progress-bar-danger progress_bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="500" style="width: 0%">
 								<span class="sr-only">
 								80% Complete (danger) </span>
 							</div>
@@ -26,7 +26,13 @@ $this->set('title', 'Progress Csv');
 					</div>
 					<div class="col-md-3"></div>
 				</div>
-				
+				<div class="row">
+				    <div class="col-md-3"></div>
+				    <div class="col-md-6 show_link" style="display:none;">
+					     <?php echo $this->Html->link(' Download CSV File', '/FirstTampGrnRecords/import',['escape' => false,'class'=>'']); ?>
+					</div>
+					<div class="col-md-3"></div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -35,13 +41,23 @@ $this->set('title', 'Progress Csv');
 	$js="
 	$(document).ready(function() {
 		process_data();
-		function process_data(){ alert('function');
+		function process_data(){ //alert('function');
 			var url='".$this->Url->build(['controller'=>'FirstTampGrnRecords','action'=>'ProcessData'])."'
 			$.ajax({
 				url: url,
 				type: 'GET',
-			}).done(function(response) { alert(response);
-				//process_data();
+			}).done(function(response) { 
+			    response = $.parseJSON(response);
+			    //alert(response.percantage);
+				$('.progress_bar').css('width',response.percantage+'%');
+				if(response.status=='true')
+				{
+					process_data();
+				}
+				else
+				{ alert(response.status);
+					$('.show_link').show();
+				}
 				
 			});
 		}

@@ -186,20 +186,43 @@ class FirstTampGrnRecordsController extends AppController
 		$FirstTampGrnRecords = $this->FirstTampGrnRecords->find()
 								->where(['user_id'=>$user_id,'company_id'=>$company_id,'processed'=>'no'])
 								->limit(10);
+		
 		foreach($FirstTampGrnRecords as $FirstTampGrnRecord)
 		{
 			$CheckItem = $this->FirstTampGrnRecords->Companies->Items->exists(['Items.item_code'=>$FirstTampGrnRecord->item_code,'Items.company_id'=>$company_id]);
-			
+			$query = $this->FirstTampGrnRecords->query();
 			if(!$CheckItem)
 			{
-				$query = $this->FirstTampGrnRecords->query();
+				
 				$query->update()
 					->set(['is_addition_item_data_required' => 'Yes'])
 					->where(['item_code' =>$FirstTampGrnRecord->item_code, 'company_id' => $company_id])
 					->execute();
 			}
+			
+				$query->update()
+					->set(['processed' => 'Yes'])
+					->where(['item_code' =>$FirstTampGrnRecord->item_code, 'company_id' => $company_id])
+					->execute();
+					
 		}
-		 
+		
+		$FirstTampGrnTotalRecords = $this->FirstTampGrnRecords->find()->where(['user_id'=>$user_id,'company_id'=>$company_id])->count();
+		$FirstTampGrnTotalProcessedYesRecords = $this->FirstTampGrnRecords->find()->where(['user_id'=>$user_id,'company_id'=>$company_id,'processed'=>'yes'])->count();
+		
+		
+		$progress_percentage = round((($FirstTampGrnTotalProcessedYesRecords*100)/$FirstTampGrnTotalRecords),2);
+		$data['percantage'] = $progress_percentage;
+		pr($FirstTampGrnRecords->toArray());
+		 if($FirstTampGrnRecords)
+		 {
+			 $data['status'] = "true";
+		 }
+		 else
+		 {
+			 $data['status'] = "false";
+		 }
+		 echo json_encode($data);
 		exit;
 	}
 }
