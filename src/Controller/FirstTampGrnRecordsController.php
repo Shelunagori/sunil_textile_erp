@@ -186,7 +186,8 @@ class FirstTampGrnRecordsController extends AppController
 		$FirstTampGrnRecords = $this->FirstTampGrnRecords->find()
 								->where(['user_id'=>$user_id,'company_id'=>$company_id,'processed'=>'no'])
 								->limit(10);
-		
+								//pr($FirstTampGrnRecords->toArray());
+		$count = $FirstTampGrnRecords->count();
 		foreach($FirstTampGrnRecords as $FirstTampGrnRecord)
 		{
 			$CheckItem = $this->FirstTampGrnRecords->Companies->Items->exists(['Items.item_code'=>$FirstTampGrnRecord->item_code,'Items.company_id'=>$company_id]);
@@ -196,13 +197,13 @@ class FirstTampGrnRecordsController extends AppController
 				
 				$query->update()
 					->set(['is_addition_item_data_required' => 'Yes'])
-					->where(['item_code' =>$FirstTampGrnRecord->item_code, 'company_id' => $company_id])
+					->where(['FirstTampGrnRecords.id' =>$FirstTampGrnRecord->id])
 					->execute();
 			}
 			
 				$query->update()
 					->set(['processed' => 'Yes'])
-					->where(['item_code' =>$FirstTampGrnRecord->item_code, 'company_id' => $company_id])
+					->where(['FirstTampGrnRecords.id' =>$FirstTampGrnRecord->id])
 					->execute();
 					
 		}
@@ -214,15 +215,15 @@ class FirstTampGrnRecordsController extends AppController
 		$progress_percentage = round((($FirstTampGrnTotalProcessedYesRecords*100)/$FirstTampGrnTotalRecords),2);
 		$data['percantage'] = $progress_percentage;
 		
-		 if(empty($FirstTampGrnRecords))
-		 { 
-			 $data['status'] = "false";
-		 }
-		 else
-		 {
-			 $data['status'] = "true";
-		 }
-		 echo json_encode($data);
+		if($count<=0)
+		{ 
+			$data['status'] = "false";
+		}
+		else
+		{
+			$data['status'] = "true";
+		}
+		echo json_encode($data);
 		exit;
 	}
 	

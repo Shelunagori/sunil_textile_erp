@@ -28,7 +28,7 @@ $this->set('title', 'Progress Csv');
 				</div>
 				<div class="row">
 				    <div class="col-md-3"></div>
-				    <div class="col-md-6 show_link" style="display:;">
+				    <div class="col-md-6 show_link" style="display:none;">
 					     <?php echo $this->Html->link(' Download CSV File', '/FirstTampGrnRecords/csvDownload',['escape' => false,'class'=>'']); ?>
 					</div>
 					<div class="col-md-3"></div>
@@ -46,16 +46,16 @@ $this->set('title', 'Progress Csv');
 			$.ajax({
 				url: url,
 				type: 'GET',
-			}).done(function(response) { 
+			}).done(function(response) {  
 			    response = $.parseJSON(response);
-			    //alert(response); 
+			    
 				$('.progress_bar').css('width',response.percantage+'%');
 				if(response.status=='true')
 				{
 					process_data();
 				}
 				else
-				{ alert(response.status);
+				{ 
 					$('.show_link').show();
 				}
 				
