@@ -109,6 +109,11 @@ class ItemsTable extends Table
 			'foreignKey' => 'output_igst_ledger_id',
 			'propertyName' => 'output_igst_ledger',
 		]);
+		
+		$this->belongsTo('Companies', [
+            'foreignKey' => 'company_id',
+            'joinType' => 'INNER'
+		]);
     }
 
     /**

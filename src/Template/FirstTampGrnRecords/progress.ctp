@@ -35,14 +35,14 @@ $this->set('title', 'Progress Csv');
 	$js="
 	$(document).ready(function() {
 		process_data();
-		function process_data(){
-			var url='<?php echo $this->Url->build(['controller'=>'FirstTampGrnRecords','action'=>'ProcessData']); ?>';
+		function process_data(){ alert('function');
+			var url='".$this->Url->build(['controller'=>'FirstTampGrnRecords','action'=>'ProcessData'])."'
 			$.ajax({
 				url: url,
 				type: 'GET',
-			}).done(function(response) {
-				process_data();
-				else{eer}
+			}).done(function(response) { alert(response);
+				//process_data();
+				
 			});
 		}
     });
