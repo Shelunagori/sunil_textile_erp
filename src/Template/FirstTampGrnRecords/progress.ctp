@@ -28,8 +28,8 @@ $this->set('title', 'Progress Csv');
 				</div>
 				<div class="row">
 				    <div class="col-md-3"></div>
-				    <div class="col-md-6 show_link" style="display:none;">
-					     <?php echo $this->Html->link(' Download CSV File', '/FirstTampGrnRecords/import',['escape' => false,'class'=>'']); ?>
+				    <div class="col-md-6 show_link" style="display:;">
+					     <?php echo $this->Html->link(' Download CSV File', '/FirstTampGrnRecords/csvDownload',['escape' => false,'class'=>'']); ?>
 					</div>
 					<div class="col-md-3"></div>
 				</div>
@@ -41,14 +41,14 @@ $this->set('title', 'Progress Csv');
 	$js="
 	$(document).ready(function() {
 		process_data();
-		function process_data(){ //alert('function');
+		function process_data(){ 
 			var url='".$this->Url->build(['controller'=>'FirstTampGrnRecords','action'=>'ProcessData'])."'
 			$.ajax({
 				url: url,
 				type: 'GET',
 			}).done(function(response) { 
 			    response = $.parseJSON(response);
-			    //alert(response.percantage);
+			    //alert(response); 
 				$('.progress_bar').css('width',response.percantage+'%');
 				if(response.status=='true')
 				{
