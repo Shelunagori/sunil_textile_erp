@@ -41,7 +41,7 @@ $this->set('title', 'Create Sales Invoice');
 						<div class="col-md-3">
 							<div class="form-group">
 								<label>Sales Account</label>
-								<?php echo $this->Form->control('sales_ledger_id',['empty'=>'-Select Account-', 'class'=>'form-control input-sm sales_ledger_id select2me','label'=>false, 'options' => $Accountledgers,'required'=>'required']);
+								<?php echo $this->Form->control('sales_ledger_id',['class'=>'form-control input-sm sales_ledger_id select2me','label'=>false, 'options' => $Accountledgers,'required'=>'required']);
 								?>
 							</div>
 						</div> 
@@ -66,16 +66,14 @@ $this->set('title', 'Create Sales Invoice');
 								<tr class="main_tr" class="tab">
 			<td>
 			<input type="hidden" name="gst_figure_id" class="gst_figure_id" value="">
-			<input type="hidden" name="output_cgst_ledger_id" class="output_cgst_ledger_id" value="">
-			<input type="hidden" name="output_sgst_ledger_id" class="output_sgst_ledger_id" value="">
-			<input type="hidden" name="output_igst_ledger_id" class="output_igst_ledger_id" value="">
+			<input type="hidden" name="gst_amount" class="gst_amount" value="">
 			<input type="hidden" name="gst_figure_tax_percentage" class="gst_figure_tax_percentage calculation" value="">
 			<input type="hidden" name="tot" class="totamount calculation" value="">
 			<input type="hidden" name="gst_value" class="gstValue calculation" value="">
 			<input type="hidden" name="discountvalue" class="discountvalue calculation" value="">
 
 			
-				<?php echo $this->Form->input('item_id', ['empty'=>'-Item Name-', 'options'=>$itemOptions,'label' => false,'class' =>'form-control input-sm attrGet','required'=>'required']); ?>
+				<?php echo $this->Form->input('item_id', ['empty'=>'-Item Name-', 'options'=>$itemOptions,'label' => false,'class' =>'form-control input-sm attrGet calculation','required'=>'required']); ?>
 				<span class="itemQty" style="color:red"></span>
 			</td>
 			<td>
@@ -113,7 +111,6 @@ $this->set('title', 'Create Sales Invoice');
 						<?php echo $this->Form->input('amount_before_tax', ['label' => false,'class' => 'form-control input-sm amount_before_tax rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
 						</td>
 						</tr>
-									
 						<tr id="add_cgst">
 						<td colspan="6" align="right"><b>Total CGST</b>
 						</td>
@@ -136,7 +133,6 @@ $this->set('title', 'Create Sales Invoice');
 						<?php echo $this->Form->input('total_igst', ['label' => false,'class' => 'form-control input-sm add_igst rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
 						</td>
 						</tr>
-									
 						<tr>
 						<td colspan="6" align="right"><b>Round OFF</b>
 						</td>
@@ -220,16 +216,13 @@ $this->set('title', 'Create Sales Invoice');
 		<tr class="main_tr" class="tab">
 			<td>
 			<input type="hidden" name="gst_figure_id" class="gst_figure_id" value="">
-			<input type="hidden" name="output_cgst_ledger_id" class="output_cgst_ledger_id" value="">
-			<input type="hidden" name="output_sgst_ledger_id" class="output_sgst_ledger_id" value="">
-			<input type="hidden" name="output_igst_ledger_id" class="output_igst_ledger_id" value="">
+			<input type="hidden" name="gst_amount" class="gst_amount" value="">
 			<input type="hidden" name="gst_figure_tax_percentage" class="gst_figure_tax_percentage calculation" value="">
 			<input type="hidden" name="tot" class="totamount calculation" value="">
 			<input type="hidden" name="gst_value" class="gstValue calculation" value="">
 			<input type="hidden" name="discountvalue" class="discountvalue calculation" value="">
 
-			
-				<?php echo $this->Form->input('item_id', ['empty'=>'-Item Name-', 'options'=>$itemOptions,'label' => false,'class' =>'form-control input-sm attrGet','required'=>'required']); ?>
+				<?php echo $this->Form->input('item_id', ['empty'=>'-Item Name-', 'options'=>$itemOptions,'label' => false,'class' =>'form-control input-sm attrGet calculation','required'=>'required']); ?>
 				<span class="itemQty" style="color:red"></span>
 			</td>
 			<td>
@@ -261,23 +254,15 @@ $this->set('title', 'Create Sales Invoice');
 	$js="
 	$(document).ready(function() {
 		$('.attrGet').die().live('change',function(){
-			var gst_figure_id=$('option:selected', this).attr('gst_figure_id');
-			var gst_figure_tax_percentage=$('option:selected', this).attr('gst_figure_tax_percentage');
-			var gst_figure_tax_name=$('option:selected', this).attr('gst_figure_tax_name');
-			var output_cgst_ledger_id=$('option:selected', this).attr('output_cgst_ledger_id');
-			var output_sgst_ledger_id=$('option:selected', this).attr('output_sgst_ledger_id');
-			var output_igst_ledger_id=$('option:selected', this).attr('output_igst_ledger_id');
-			var item_qty=$('option:selected', this).attr('item_qty');
-			var item_unit=$('option:selected', this).attr('item_unit');
-			var itemText=item_qty+' '+item_unit;
+			var gst_amount=$('option:selected', this).attr('gst_amount');
+			//var item_qty=$('option:selected', this).attr('item_qty');
+			//var item_unit=$('option:selected', this).attr('item_unit');
+			//var itemText='Current Stock';
+			//var itemText=itemText+' '+item_qty+' '+item_unit;
 			
-			$(this).closest('tr').find('.gst_figure_id').val(gst_figure_id);
-			$(this).closest('tr').find('.gst_figure_tax_percentage').val(gst_figure_tax_percentage);
-			$(this).closest('tr').find('.gst_figure_tax_name').val(gst_figure_tax_name);
-			$(this).closest('tr').find('.output_cgst_ledger_id').val(output_cgst_ledger_id);
-			$(this).closest('tr').find('.output_sgst_ledger_id').val(output_sgst_ledger_id);
-			$(this).closest('tr').find('.output_igst_ledger_id').val(output_igst_ledger_id);
-			$('.itemQty').html(itemText);
+			$(this).closest('tr').find('.gst_amount').val(gst_amount);
+			//$(this).closest('tr').find('.itemQty').html(itemText);
+		forward_total_amount();
 		});
 		
 		$('.party_ledger_id').die().live('change',function(){
@@ -285,13 +270,32 @@ $this->set('title', 'Create Sales Invoice');
 			var state_id=$('.state_id').val();
 			if(customer_state_id!=state_id)
 			{
+			if(customer_state_id>0)
+			{
 			$('#gstDisplay').html('IGST');
 			$('#add_igst').show();
 			$('#add_cgst').hide();
 			$('#add_sgst').hide();
 			$('#is_interstate').val('1');
 			}
-			else{
+			else if(!customer_state_id)
+			{
+			$('#gstDisplay').html('GST');
+			$('#add_cgst').show();
+			$('#add_sgst').show();
+			$('#add_igst').hide();
+			$('#is_interstate').val('0');
+			}
+			else if(customer_state_id==0)
+			{
+			$('#gstDisplay').html('GST');
+			$('#add_cgst').show();
+			$('#add_sgst').show();
+			$('#add_igst').hide();
+			$('#is_interstate').val('0');
+			}
+			}
+			else if(customer_state_id==state_id){
 			$('#gstDisplay').html('GST');
 			$('#add_cgst').show();
 			$('#add_sgst').show();
@@ -334,6 +338,7 @@ $this->set('title', 'Create Sales Invoice');
 		$('#main_table tbody#main_tbody').append(tr);
 		//$('.attrGet').select2();
 		rename_rows();
+		forward_total_amount();
 		
 	}
 	function rename_rows()
@@ -349,22 +354,21 @@ $this->set('title', 'Create Sales Invoice');
 		  
 		  $(this).find('.gst_figure_id').attr({name:'sales_invoice_rows['+i+'][gst_figure_id]',id:'sales_invoice_rows['+i+'][gst_figure_id]'});
 		  
-		  $(this).find('.output_cgst_ledger_id').attr({name:'sales_invoice_rows['+i+'][output_cgst_ledger_id]',id:'sales_invoice_rows['+i+'][output_cgst_ledger_id]'});
 		  
-		  $(this).find('.output_sgst_ledger_id').attr({name:'sales_invoice_rows['+i+'][output_sgst_ledger_id]',id:'sales_invoice_rows['+i+'][output_sgst_ledger_id]'});
-		  
-		  $(this).find('.output_igst_ledger_id').attr({name:'sales_invoice_rows['+i+'][output_igst_ledger_id]',id:'sales_invoice_rows['+i+'][output_igst_ledger_id]'});
 		  $(this).find('.gstAmount').attr({name:'sales_invoice_rows['+i+'][net_amount]',id:'sales_invoice_rows['+i+'][net_amount]'});
-		$(this).find('.gstValue').attr({name:'sales_invoice_rows['+i+'][gst_value]',id:'sales_invoice_rows['+i+'][gst_value]'});	
-		  		  
-		  
-		i++;
+         $(this).find('.gstValue').attr({name:'sales_invoice_rows['+i+'][gst_value]',id:'sales_invoice_rows['+i+'][gst_value]'});	i++;
 		});
 	}
-	$('.calculation').die().live('keyup',function()
-	{
-		forward_total_amount();
-	});
+		$('.calculation').die().live('keyup',function()
+		{
+			forward_total_amount();
+		});
+		
+		
+		$( document ).ready( readyFn );
+		function readyFn( jQuery ) {
+		
+		}
 		
 		function forward_total_amount()
 		{
@@ -378,7 +382,7 @@ $this->set('title', 'Create Sales Invoice');
 			var igst_value=0;
 			$('#main_table tbody#main_tbody tr.main_tr').each(function()
 			{
-				var quantity  = parseFloat($(this).find('.quantity').val());
+				var quantity  = Math.round($(this).find('.quantity').val());
 				if(!quantity){quantity=0;}
 				var rate  = parseFloat($(this).find('.rate').val());
 				if(!rate){rate=0;}
@@ -386,18 +390,46 @@ $this->set('title', 'Create Sales Invoice');
 				$(this).find('.totamount').val(totamount);
 				   
 				var discount  = parseFloat($(this).find('.discount').val());
+				if(!discount){discount=0;}
 				var discountValue=(discount*totamount)/100;
 				var discountAmount=totamount-discountValue;
 				
 				if(!discountAmount){discountAmount=0;}
 				$(this).find('.discountAmount').val(discountAmount.toFixed(2));
+				var gst_ietmamount  = $(this).find('.gst_amount').val();
+				var discountAmount  = $(this).find('.discountAmount').val();
+				var item_gst_amount=discountAmount/quantity;
+				
+				if(item_gst_amount<gst_ietmamount)
+				{
+					var first_gst_figure_tax_percentage=$('option:selected', this).attr('FirstGstFigure');
+					var first_gst_figure_tax_name=$('option:selected', this).attr('FirstGstFigure');
+					var first_gst_figure_id=$('option:selected', this).attr('first_gst_figure_id');
+						
+					$(this).closest('tr').find('.gst_figure_id').val(first_gst_figure_id);
+					$(this).closest('tr').find('.gst_figure_tax_percentage').val(first_gst_figure_tax_percentage);
+					$(this).closest('tr').find('.gst_figure_tax_name').val(first_gst_figure_tax_name);
+                }
+				else if(item_gst_amount>=gst_ietmamount)
+				{
+					var second_gst_figure_tax_percentage=$('option:selected', this).attr('SecondGstFigure');
+					var second_gst_figure_tax_name=$('option:selected', this).attr('SecondGstFigure');
+					var second_gst_figure_id=$('option:selected', this).attr('second_gst_figure_id');
+
+					$(this).closest('tr').find('.gst_figure_id').val(second_gst_figure_id);
+					$(this).closest('tr').find('.gst_figure_tax_percentage').val(second_gst_figure_tax_percentage);
+					$(this).closest('tr').find('.gst_figure_tax_name').val(second_gst_figure_tax_name);
+				}
+				
 				$(this).find('.discountvalue').val(discountValue.toFixed(2));
 				
 				var gst_figure_tax_percentage  = parseFloat($(this).find('.gst_figure_tax_percentage').val());
 				if(!gst_figure_tax_percentage){gst_figure_tax_percentage=0;}
 				var discountAmount  = parseFloat($(this).find('.discountAmount').val());
 				if(!discountAmount){discountAmount=0;}
-				var gstValue=(discountAmount*gst_figure_tax_percentage)/100;
+				var divideValue=100;
+				var divideval=divideValue+gst_figure_tax_percentage;
+				var gstValue=discountAmount/divideval;
 	            var gstAmount=discountAmount-gstValue;
 				$(this).find('.gstAmount').val(gstAmount.toFixed(2));
 				$(this).find('.gstValue').val(gstValue.toFixed(2));
@@ -528,6 +560,7 @@ $this->set('title', 'Create Sales Invoice');
 	{  
 		var amount_before_tax  = $('.amount_before_tax').val();
 		var amount_after_tax = $('.amount_after_tax').val();
+		var attrGet  = parseFloat($(this).find('.attrGet').val());
 		if(amount_before_tax && amount_after_tax)
 		{
 			if(confirm('Are you sure you want to submit!'))
@@ -542,6 +575,8 @@ $this->set('title', 'Create Sales Invoice');
 		else{
 		       alert('Please enter your data!');
 		}
+				
+				
 	}";
 
 echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 

@@ -13,9 +13,9 @@
 		<?php foreach($invoiceBills->toArray() as $data){
 		foreach($data->sales_invoice_rows as $sales_invoice_row){?>
 			<?php }}?>
-		<tr><td colspan="4"><?=$data->company->name?></td></tr>
-		<tr><td colspan="4"><?=$data->company->address?></td></tr>
-		<tr><td colspan="4"><?=$data->company->state->name?></td></tr>
+		<tr><td colspan="4"><?=@$data->company->name?></td></tr>
+		<tr><td colspan="4"><?=@$data->company->address?></td></tr>
+		<tr><td colspan="4"><?=@$data->company->state->name?></td></tr>
 		
 		
 		
@@ -77,17 +77,12 @@
 		$totalAmount=0;
 		
 		foreach($data->sales_invoice_rows as $sales_invoice_row){
-		if($data->company->state_id==$data->partyDetails->state_id){
+		if(@$data->company->state_id==$data->partyDetails->state_id){
 		$gstValue=$sales_invoice_row->gst_value;
 		$gst=$gstValue/2;
-		
 		$cgst+=$gst;
 		$sgst+=$gst;
-		
 		$totalAmount+=$sales_invoice_row->quantity*$sales_invoice_row->rate;
-		
-		
-		
 		}
 		else{
 		$gstValue=$sales_invoice_row->gst_value;
@@ -97,7 +92,7 @@
 		?>
 		<tr>
 		<td><?=$sales_invoice_row->item->name ?></td>
-		<td><?=$sales_invoice_row->item->size->name ?></td>
+		<td><?=@$sales_invoice_row->item->size->name ?></td>
 		<td><?=$sales_invoice_row->quantity ?></td>
 		<td><?=$sales_invoice_row->rate ?></td>
 		</tr>

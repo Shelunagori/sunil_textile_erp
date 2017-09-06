@@ -45,6 +45,10 @@ class CompanyUsersTable extends Table
             'foreignKey' => 'user_id',
             'joinType' => 'INNER'
         ]);
+		$this->belongsTo('Locations', [
+            'foreignKey' => 'location_id',
+            'joinType' => 'INNER'
+        ]);
     }
 
     /**
@@ -73,6 +77,7 @@ class CompanyUsersTable extends Table
     {
         $rules->add($rules->existsIn(['company_id'], 'Companies'));
         $rules->add($rules->existsIn(['user_id'], 'Users'));
+        $rules->add($rules->existsIn(['location_id'], 'Locations'));
 
         return $rules;
     }

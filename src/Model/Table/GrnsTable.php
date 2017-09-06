@@ -56,6 +56,7 @@ class GrnsTable extends Table
 			'joinType' => 'INNER',
 			'saveStrategy' => 'replace'
         ]);
+		 $this->belongsTo('SecondTampGrnRecords');
     }
 
     /**

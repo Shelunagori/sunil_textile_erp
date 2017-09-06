@@ -1,4 +1,20 @@
 <?php
+// sample data to encode
+			$data_to_encode = 'BLAHBLAH01234';
+				
+			$barcode=$this->barcode;
+			// Generate Barcode data
+			$barcode->barcode();
+			$barcode->setType('C128');
+			$barcode->setCode($data_to_encode);
+			$barcode->setSize(80,200);
+				
+			// Generate filename            
+			$random = rand(0,1000000);
+			$file = 'img/barcode/code_'.$random.'.png';
+				
+			// Generates image file on server            
+			$this->barcode->writeBarcodeFile($file);
 /**
  * @Author: PHP Poets IT Solutions Pvt. Ltd.
  */
@@ -54,12 +70,6 @@ $this->set('title', 'Create Item');
 						<div class="row">
 							<div class="col-md-6">
 								<div class="form-group">
-									<label>GST Figure <span class="required">*</span></label>
-									<?php echo $this->Form->control('gst_figure_id',['class'=>'form-control input-sm','label'=>false,'empty'=>'-GST Figure-', 'options' => $gstFigures,'required'=>'required']); ?>
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="form-group">
 									<label>Shade </label>
 									<?php echo $this->Form->control('shade_id',['class'=>'form-control input-sm','label'=>false,'empty'=>'-Shade-', 'options' => $shades]); ?>
 								</div>
@@ -75,8 +85,8 @@ $this->set('title', 'Create Item');
 						</div>
 					</div>
 					<div class="col-md-6">
-					<span class="caption-subject bold " style="float:center;">Opening Balance</span><hr style="margin: 6px 0;">
-					<div class="row">
+						<span class="caption-subject bold " style="float:center;">Opening Balance</span><hr style="margin: 6px 0;">
+						<div class="row">
 							<div class="col-md-4">
 								<div class="form-group">
 									<label>Quantity </label>
@@ -93,6 +103,70 @@ $this->set('title', 'Create Item');
 								<div class="form-group">
 									<label>Value </label>
 									<?php echo $this->Form->control('amount',['class'=>'form-control input-sm amt reverseCalculation','label'=>false,'placeholder'=>'Value']); ?>
+								</div>
+							</div>
+						</div>
+						<span class="caption-subject bold " style="float:center;">Gst Rate</span><hr style="margin: 6px 0;">
+						<div class="row" >
+							<div class="col-md-3">
+								<div class="form-group">
+									<div class="radio-list">
+										<div class="radio-inline" style="padding-left: 0px;">
+											<?php echo $this->Form->radio(
+											'kind_of_gst',
+											[
+												['value' => 'fix', 'text' => 'Fix','class' => 'radio-task kind_of_gst'],
+												['value' => 'fluid', 'text' => 'Fluid','class' => 'radio-task kind_of_gst','checked' => 'checked']
+											]
+											); ?>
+										</div>
+                                    </div>
+								</div>
+							</div>
+						</div>	
+						<div class="row" >
+							<div class="col-md-4">
+								<div class="form-group">
+									<label style="font-size: 10px;">Gst Less than Equal to Amount </label>
+									<?php echo $this->Form->control('first_gst_figure_id',['class'=>'form-control input-sm','label'=>false,'empty'=>'-GST Figure-', 'options' => $gstFigures,'required'=>'required']); ?>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group hide_gst">
+									<label style="font-size: 10px;">Amount </label>
+									<?php echo $this->Form->control('gst_amount',['class'=>'form-control input-sm ','label'=>false,'placeholder'=>'Amount','required'=>'required']); ?>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group hide_gst">
+									<label style="font-size: 10px;">Gst Greter than to Amount </label>
+									<?php echo $this->Form->control('second_gst_figure_id',['class'=>'form-control input-sm ','label'=>false,'empty'=>'-GST Figure-', 'options' => $gstFigures,'required'=>'required']); ?>
+								</div>
+							</div>
+						</div>
+						<span class="caption-subject bold " style="float:center;">Barcode Generation</span><hr style="margin: 6px 0;">
+						<div class="row" >
+							<div class="col-md-12">
+								<div class="form-group">
+									<div class="radio-list">
+										<div class="radio-inline" style="padding-left: 0px;">
+											<?php echo $this->Form->radio(
+											'kind_of_gst',
+											[
+												['value' => '1', 'text' => 'Let system  generate barcode','class' => 'barcode_decision','checked' => 'checked'],
+												['value' => '2', 'text' => 'Already have barcode','class' => 'barcode_decision']
+											]
+											); ?>
+										</div>
+                                    </div>
+								</div>
+							</div>
+						</div>
+						<div class="row" >
+							<div class="col-md-4">
+								<div class="form-group item_code_div" style="display:none;">
+									<label>Item Code </label>
+									<?php echo $this->Form->control('item_code',['class'=>'form-control input-sm','label'=>false, 'placeholder'=>'Item Code', 'type'=>'text']); ?>
 								</div>
 							</div>
 						</div>
@@ -134,6 +208,33 @@ $this->set('title', 'Create Item');
 		  {
 		  $('.rate').val(rate.toFixed(2));  }}
 	  }
+	  
+		$('.kind_of_gst').die().live('change',function(){
+			var gst_type = $(this).val();
+			if(gst_type=='fix')
+			{
+			  $('.hide_gst').hide();
+			}
+			else
+			{
+			  $('.hide_gst').show();
+			}
+		});
+		
+		$('.barcode_decision').die().live('click',function(){
+			var barcode_decision = $(this).val();
+			if(barcode_decision=='1')
+			{
+			  $('.item_code_div').hide();
+			  $('input[name=item_code]').removeAttr('required');
+			}
+			else
+			{
+			  $('.item_code_div').show();
+			  $('input[name=item_code]').attr('required','required');
+			}
+		});
+		
     });
 	";
 

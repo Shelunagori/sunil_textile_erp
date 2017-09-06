@@ -50,6 +50,18 @@ class CompaniesTable extends Table
 		$this->hasMany('ItemLedgers', [
             'foreignKey' => 'company_id'
         ]);
+		$this->hasMany('Locations', [
+            'foreignKey' => 'location_id'
+        ]);
+		$this->hasMany('FirstTampGrnRecords', [
+            'foreignKey' => 'company_id'
+        ]);
+		$this->hasMany('Items', [
+            'foreignKey' => 'company_id'
+        ]);
+		$this->hasMany('SecondTampGrnRecords', [
+            'foreignKey' => 'company_id'
+        ]);
     }
 
     /**

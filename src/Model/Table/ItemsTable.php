@@ -65,7 +65,19 @@ class ItemsTable extends Table
             'foreignKey' => 'gst_figure_id',
             'joinType' => 'LEFT'
 		]);
+		$this->belongsTo('FirstGstFigures', [
+			'className' => 'GstFigures',
+			'foreignKey' => 'first_gst_figure_id',
+			'propertyName' => 'FirstGstFigures',
+		]);
+		$this->belongsTo('SecondGstFigures', [
+			'className' => 'GstFigures',
+			'foreignKey' => 'second_gst_figure_id',
+			'propertyName' => 'SecondGstFigures',
+		]);
 		
+<<<<<<< HEAD
+=======
 		$this->belongsTo('input_cgst_ledger', [
 			'className' => 'Ledgers',
 			'foreignKey' => 'input_cgst_ledger_id',
@@ -99,6 +111,12 @@ class ItemsTable extends Table
 			'foreignKey' => 'output_igst_ledger_id',
 			'propertyName' => 'output_igst_ledger',
 		]);
+		
+		$this->belongsTo('Companies', [
+            'foreignKey' => 'company_id',
+            'joinType' => 'INNER'
+		]);
+>>>>>>> b6cdfcf8a0a777d15713ef6995860661d01adddd
     }
 
     /**
@@ -134,7 +152,7 @@ class ItemsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['unit_id'], 'Units'));
-        $rules->add($rules->existsIn(['stock_group_id'], 'StockGroups'));
+        //$rules->add($rules->existsIn(['stock_group_id'], 'StockGroups'));
 		$rules->add($rules->existsIn(['gst_figure_id'], 'GstFigures'));
         $rules->add($rules->existsIn(['output_cgst_ledger_id'], 'output_cgst_ledger'));
         $rules->add($rules->existsIn(['output_sgst_ledger_id'], 'output_sgst_ledger'));

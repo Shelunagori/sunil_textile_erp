@@ -35,6 +35,7 @@ class UsersController extends AppController
 					'contain' => ['CompanyUsers']
 				]);
 				$user->session_company_id=$user->company_users[0]->company_id;
+				$user->session_location_id=$user->company_users[0]->location_id;
 				unset($user->company_users);
 				$company=$this->Users->CompanyUsers->Companies->get($user->session_company_id, [
 					'contain' => ['FinancialYears'=>function($q){

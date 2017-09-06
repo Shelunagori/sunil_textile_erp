@@ -80,8 +80,7 @@ class SalesInvoicesController extends AppController
 			{
 				$salesInvoice->customer_id=0;
 			}
-			
-			
+		
 			
 		   if ($this->SalesInvoices->save($salesInvoice)) {
 		    $partyData = $this->SalesInvoices->AccountingEntries->query();
@@ -133,8 +132,15 @@ class SalesInvoicesController extends AppController
 			   {
 			   $gstVal=$sales_invoice_row->gst_value/2;
 			   if($i==0){
-			   $ledgerId=$sales_invoice_row->output_cgst_ledger_id; }
-			   if($i==1){ $ledgerId=$sales_invoice_row->output_sgst_ledger_id; }
+			   $gstLedgers = $this->SalesInvoices->SalesInvoiceRows->Ledgers->find()
+							->where(['Ledgers.gst_figure_id' =>$sales_invoice_row->gst_figure_id,'Ledgers.company_id'=>$company_id, 'Ledgers.input_output'=>'output', 'Ledgers.gst_type'=>'CGST'])->first();
+			   $ledgerId=$gstLedgers->id;
+			   }
+			   if($i==1){ 
+			   $gstLedgers = $this->SalesInvoices->SalesInvoiceRows->Ledgers->find()
+							->where(['Ledgers.gst_figure_id' =>$sales_invoice_row->gst_figure_id,'Ledgers.company_id'=>$company_id, 'Ledgers.input_output'=>'output', 'Ledgers.gst_type'=>'SGST'])->first();
+			   $ledgerId=$gstLedgers->id;
+			   }
 			   $accountData = $this->SalesInvoices->AccountingEntries->query();
 						$accountData->insert(['ledger_id', 'debit','credit', 'transaction_date', 'company_id', 'sales_invoice_id'])
 								->values([
@@ -149,13 +155,15 @@ class SalesInvoicesController extends AppController
 			   }
 			 }
 		   }else if($salesInvoice->is_interstate=='1'){
-		 
 		   foreach($salesInvoice->sales_invoice_rows as $sales_invoice_row)
 			   {
+			   $gstLedgers = $this->SalesInvoices->SalesInvoiceRows->Ledgers->find()
+							->where(['Ledgers.gst_figure_id' =>$sales_invoice_row->gst_figure_id,'Ledgers.company_id'=>$company_id, 'Ledgers.input_output'=>'output', 'Ledgers.gst_type'=>'IGST'])->first();
+			   $ledgerId=$gstLedgers->id;
 			   $accountData = $this->SalesInvoices->AccountingEntries->query();
 						$accountData->insert(['ledger_id', 'debit','credit', 'transaction_date', 'company_id', 'sales_invoice_id'])
 								->values([
-								'ledger_id' => $sales_invoice_row->output_igst_ledger_id,
+								'ledger_id' => $ledgerId,
 								'debit' => '',
 								'credit' => $sales_invoice_row->gst_value,
 								'transaction_date' => $salesInvoice->transaction_date,
@@ -172,50 +180,42 @@ class SalesInvoicesController extends AppController
 		}
 		$customers = $this->SalesInvoices->Customers->find()
 					->where(['company_id'=>$company_id]);
-						$customerOptions=[];
+		$customerOptions=[];
 		foreach($customers as $customer){
 			$customerOptions[]=['text' =>$customer->name, 'value' => $customer->id ,'customer_state_id'=>$customer->state_id];
 		}
 		
 		$items = $this->SalesInvoices->SalesInvoiceRows->Items->find()
 					->where(['Items.company_id'=>$company_id])
-					->contain(['GstFigures', 'ItemLedgers', 'Units']);
-					
+					->contain(['FirstGstFigures', 'SecondGstFigures', 'Units']);
 		$itemOptions=[];
 		foreach($items as $item){
-				$qty=0;
-				foreach($item->item_ledgers as $data)
-				{
-				 $qty+=$data->quantity;
-				}
-			$itemOptions[]=['text' =>$item->item_code.' '.$item->name, 'value' => $item->id ,'gst_figure_id'=>$item->gst_figure_id, 'gst_figure_tax_percentage'=>$item->gst_figure->tax_percentage,'gst_figure_tax_name'=>$item->gst_figure->name, 'output_cgst_ledger_id'=>$item->output_cgst_ledger_id, 'output_sgst_ledger_id'=>$item->output_sgst_ledger_id, 'output_igst_ledger_id'=>$item->output_igst_ledger_id, 'item_qty'=>$qty, 'item_unit'=>$item->unit->name];
+			$itemOptions[]=['text'=>$item->item_code.' '.$item->name, 'value'=>$item->id, 'first_gst_figure_id'=>$item->first_gst_figure_id, 'gst_amount'=>$item->gst_amount, 'second_gst_figure_id'=>$item->second_gst_figure_id, 'FirstGstFigure'=>$item->FirstGstFigures->tax_percentage, 'SecondGstFigure'=>$item->SecondGstFigures->tax_percentage];
 		}
 		
-        $partyLedgers = $this->SalesInvoices->SalesInvoiceRows->Ledgers->AccountingGroups->find()
+	
+        $partyParentGroups = $this->SalesInvoices->SalesInvoiceRows->Ledgers->AccountingGroups->find()
 						->where(['AccountingGroups.company_id'=>$company_id, 'AccountingGroups.sale_invoice_party'=>'1']);
-		foreach($partyLedgers as $partyLedger)
+		
+		$partyGroups=[];
+		foreach($partyParentGroups as $partyParentGroup)
 		{
 			$accountingGroups = $this->SalesInvoices->SalesInvoiceRows->Ledgers->AccountingGroups
-			->find('children', ['for' => $partyLedger->id])
-			->find('List')->toArray();
-			$accountingGroups[$partyLedger->id]=$partyLedger->name;
-		}
-		ksort($accountingGroups);
-		if($accountingGroups)
-		{   
-			$account_ids="";
-			foreach($accountingGroups as $key=>$accountingGroup)
-			{
-				$account_ids .=$key.',';
+			->find('children', ['for' => $partyParentGroup->id])->toArray();
+			$partyGroups[]=$partyParentGroup->id;
+			foreach($accountingGroups as $accountingGroup){
+				$partyGroups[]=$accountingGroup->id;
 			}
-			$account_ids = explode(",",trim($account_ids,','));
+		}
+		if($partyGroups)
+		{  
 			$Partyledgers = $this->SalesInvoices->SalesInvoiceRows->Ledgers->find()
-			->where(['Ledgers.accounting_group_id IN' =>$account_ids])
-			->contain(['Customers']);
+							->where(['Ledgers.accounting_group_id IN' =>$partyGroups,'Ledgers.company_id'=>$company_id])
+							->contain(['Customers']);
         }
 		$partyOptions=[];
 		foreach($Partyledgers as $Partyledger){
-			$partyOptions[]=['text' =>$Partyledger->name, 'value' => $Partyledger->id ,'party_state_id'=>$Partyledger->customer->state_id];
+			$partyOptions[]=['text' =>$Partyledger->name, 'value' => $Partyledger->id ,'party_state_id'=>@$Partyledger->customer->state_id];
 		}
 		
 		$accountLedgers = $this->SalesInvoices->SalesInvoiceRows->Ledgers->AccountingGroups->find()->where(['AccountingGroups.sale_invoice_sales_account'=>1,'AccountingGroups.company_id'=>$company_id])->first();
@@ -236,10 +236,10 @@ class SalesInvoicesController extends AppController
 			$Accountledgers = $this->SalesInvoices->SalesInvoiceRows->Ledgers->find('list')->where(['Ledgers.accounting_group_id IN' =>$account_ids]);
         }
 						
-			$gstFigures = $this->SalesInvoices->GstFigures->find('list')
-			->where(['company_id'=>$company_id]);
+		$gstFigures = $this->SalesInvoices->GstFigures->find('list')
+						->where(['company_id'=>$company_id]);
 
-			$this->set(compact('salesInvoice', 'companies', 'customerOptions', 'gstFigures', 'voucher_no','company_id','itemOptions','state_id', 'partyOptions', 'Accountledgers'));
+		$this->set(compact('salesInvoice', 'companies', 'customerOptions', 'gstFigures', 'voucher_no','company_id','itemOptions','state_id', 'partyOptions', 'Accountledgers'));
         $this->set('_serialize', ['salesInvoice']);
     }	
 
@@ -326,8 +326,15 @@ public function edit($id = null)
 			   {
 			   $gstVal=$sales_invoice_row->gst_value/2;
 			   if($i==0){
-			   $ledgerId=$sales_invoice_row->output_cgst_ledger_id; }
-			   if($i==1){ $ledgerId=$sales_invoice_row->output_sgst_ledger_id; }
+			   $gstLedgers = $this->SalesInvoices->SalesInvoiceRows->Ledgers->find()
+							->where(['Ledgers.gst_figure_id' =>$sales_invoice_row->gst_figure_id,'Ledgers.company_id'=>$company_id, 'Ledgers.input_output'=>'output', 'Ledgers.gst_type'=>'CGST'])->first();
+			   $ledgerId=$gstLedgers->id;
+			   }
+			   if($i==1){ 
+			   $gstLedgers = $this->SalesInvoices->SalesInvoiceRows->Ledgers->find()
+							->where(['Ledgers.gst_figure_id' =>$sales_invoice_row->gst_figure_id,'Ledgers.company_id'=>$company_id, 'Ledgers.input_output'=>'output', 'Ledgers.gst_type'=>'SGST'])->first();
+			   $ledgerId=$gstLedgers->id;
+			   }
 			   $accountData = $this->SalesInvoices->AccountingEntries->query();
 						$accountData->insert(['ledger_id', 'debit','credit', 'transaction_date', 'company_id', 'sales_invoice_id'])
 								->values([
@@ -345,10 +352,13 @@ public function edit($id = null)
 		   else if($salesInvoice->is_interstate=='1'){
 		   foreach($salesInvoice->sales_invoice_rows as $sales_invoice_row)
 			   {
+			   $gstLedgers = $this->SalesInvoices->SalesInvoiceRows->Ledgers->find()
+							->where(['Ledgers.gst_figure_id' =>$sales_invoice_row->gst_figure_id,'Ledgers.company_id'=>$company_id, 'Ledgers.input_output'=>'output', 'Ledgers.gst_type'=>'IGST'])->first();
+			   $ledgerId=$gstLedgers->id;
 			   $accountData = $this->SalesInvoices->AccountingEntries->query();
 						$accountData->insert(['ledger_id', 'debit','credit', 'transaction_date', 'company_id', 'sales_invoice_id'])
 								->values([
-								'ledger_id' => $sales_invoice_row->output_igst_ledger_id,
+								'ledger_id' => $ledgerId,
 								'debit' => '',
 								'credit' => $sales_invoice_row->gst_value,
 								'transaction_date' => $salesInvoice->transaction_date,
@@ -379,42 +389,37 @@ public function edit($id = null)
 		
 		$items = $this->SalesInvoices->SalesInvoiceRows->Items->find()
 					->where(['Items.company_id'=>$company_id])
-					->contain(['GstFigures', 'ItemLedgers', 'Units']);
+					->contain(['FirstGstFigures', 'SecondGstFigures', 'Units']);
 		$itemOptions=[];
 		foreach($items as $item){
-				$qty=0;
-				foreach($item->item_ledgers as $data)
-				{
-				 $qty+=$data->quantity;
-				}
-			$itemOptions[]=['text' =>$item->item_code.' '.$item->name, 'value' => $item->id ,'gst_figure_id'=>$item->gst_figure_id, 'gst_figure_tax_percentage'=>$item->gst_figure->tax_percentage,'gst_figure_tax_name'=>$item->gst_figure->name, 'output_cgst_ledger_id'=>$item->output_cgst_ledger_id, 'output_sgst_ledger_id'=>$item->output_sgst_ledger_id, 'output_igst_ledger_id'=>$item->output_igst_ledger_id, 'item_qty'=>$qty, 'item_unit'=>$item->unit->name];
+			$itemOptions[]=['text'=>$item->item_code.' '.$item->name, 'value'=>$item->id, 'first_gst_figure_id'=>$item->first_gst_figure_id, 'gst_amount'=>$item->gst_amount, 'second_gst_figure_id'=>$item->second_gst_figure_id, 'FirstGstFigure'=>$item->FirstGstFigures->tax_percentage, 'SecondGstFigure'=>$item->SecondGstFigures->tax_percentage];
 		}
-		$partyLedgers = $this->SalesInvoices->SalesInvoiceRows->Ledgers->AccountingGroups->find()
+		
+	
+        $partyParentGroups = $this->SalesInvoices->SalesInvoiceRows->Ledgers->AccountingGroups->find()
 						->where(['AccountingGroups.company_id'=>$company_id, 'AccountingGroups.sale_invoice_party'=>'1']);
-		foreach($partyLedgers as $partyLedger)
+		
+		$partyGroups=[];
+		foreach($partyParentGroups as $partyParentGroup)
 		{
 			$accountingGroups = $this->SalesInvoices->SalesInvoiceRows->Ledgers->AccountingGroups
-			->find('children', ['for' => $partyLedger->id])
-			->find('List')->toArray();
-			$accountingGroups[$partyLedger->id]=$partyLedger->name;
-		}
-		ksort($accountingGroups);
-		if($accountingGroups)
-		{   
-			$account_ids="";
-			foreach($accountingGroups as $key=>$accountingGroup)
-			{
-				$account_ids .=$key.',';
+			->find('children', ['for' => $partyParentGroup->id])->toArray();
+			$partyGroups[]=$partyParentGroup->id;
+			foreach($accountingGroups as $accountingGroup){
+				$partyGroups[]=$accountingGroup->id;
 			}
-			$account_ids = explode(",",trim($account_ids,','));
+		}
+		if($partyGroups)
+		{  
 			$Partyledgers = $this->SalesInvoices->SalesInvoiceRows->Ledgers->find()
-			->where(['Ledgers.accounting_group_id IN' =>$account_ids])
-			->contain(['Customers']);
+							->where(['Ledgers.accounting_group_id IN' =>$partyGroups,'Ledgers.company_id'=>$company_id])
+							->contain(['Customers']);
         }
 		$partyOptions=[];
 		foreach($Partyledgers as $Partyledger){
-			$partyOptions[]=['text' =>$Partyledger->name, 'value' => $Partyledger->id ,'party_state_id'=>$Partyledger->customer->state_id];
+			$partyOptions[]=['text' =>$Partyledger->name, 'value' => $Partyledger->id ,'party_state_id'=>@$Partyledger->customer->state_id];
 		}
+		
 		
 		$accountLedgers = $this->SalesInvoices->SalesInvoiceRows->Ledgers->AccountingGroups->find()->where(['AccountingGroups.sale_invoice_sales_account'=>1,'AccountingGroups.company_id'=>$company_id])->first();
 

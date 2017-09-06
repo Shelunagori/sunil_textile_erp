@@ -1,8 +1,7 @@
 <?php
 namespace App\Controller;
-
 use App\Controller\AppController;
-
+use Cake\View\Helper\BarcodeHelper;
 /**
  * Items Controller
  *
@@ -13,6 +12,23 @@ use App\Controller\AppController;
 class ItemsController extends AppController
 {
 
+	function arrayToCsvDownload($array, $filename = "export.csv", $delimiter=";") {
+		// open raw memory as file so no temp files needed, you might run out of memory though
+		$f = fopen('php://memory', 'w'); 
+		// loop over the input array
+		foreach ($array as $line) { 
+			// generate csv lines from the inner arrays
+			fputcsv($f, $line, $delimiter); 
+		}
+		// reset the file pointer to the start of the file
+		fseek($f, 0);
+		// tell the browser it's going to be a csv file
+		header('Content-Type: application/csv');
+		// tell the browser we want to save it instead of displaying it
+		header('Content-Disposition: attachment; filename="'.$filename.'";');
+		// make php send the generated csv lines to the browser
+		fpassthru($f);
+	}
     /**
      * Index method
      *
@@ -68,27 +84,32 @@ class ItemsController extends AppController
 				$item->item_code=1;
 			} 
 			$quantity = $this->request->data['quantity'];
-			$input_cgst_ledger = $this->Items->input_cgst_ledger->find()->where(['gst_type'=>'CGST','company_id'=>$company_id,'input_output'=>'input','gst_figure_id'=>$item->gst_figure_id])->first();
-			
-			$input_sgst_ledger = $this->Items->input_sgst_ledger->find()->where(['gst_type'=>'SGST','company_id'=>$company_id,'input_output'=>'input','gst_figure_id'=>$item->gst_figure_id])->first();
-			
-			$input_igst_ledger = $this->Items->input_igst_ledger->find()->where(['gst_type'=>'IGST','company_id'=>$company_id,'input_output'=>'input','gst_figure_id'=>$item->gst_figure_id])->first();
-			
-			$output_cgst_ledger = $this->Items->output_cgst_ledger->find()->where(['gst_type'=>'CGST','company_id'=>$company_id,'input_output'=>'output','gst_figure_id'=>$item->gst_figure_id])->first();
-			
-			$output_sgst_ledger = $this->Items->output_sgst_ledger->find()->where(['gst_type'=>'SGST','company_id'=>$company_id,'input_output'=>'output','gst_figure_id'=>$item->gst_figure_id])->first();
-			
-			$output_igst_ledger = $this->Items->output_igst_ledger->find()->where(['gst_type'=>'IGST','company_id'=>$company_id,'input_output'=>'output','gst_figure_id'=>$item->gst_figure_id])->first();
-			
-			$item->input_cgst_ledger_id  = $input_cgst_ledger->id;
-			$item->input_sgst_ledger_id  = $input_sgst_ledger->id;
-			$item->input_igst_ledger_id  = $input_igst_ledger->id;
-			$item->output_cgst_ledger_id = $output_cgst_ledger->id;
-			$item->output_sgst_ledger_id = $output_sgst_ledger->id;
-			$item->output_igst_ledger_id = $output_igst_ledger->id;
-			
+
+			$gst_type = $this->request->data['kind_of_gst'];
+			if($gst_type=='fix')
+			{
+				$first_gst_figure_id = $this->request->data['first_gst_figure_id'];
+				$this->request->data['second_gst_figure_id'] = $first_gst_figure_id;
+			}
             if ($this->Items->save($item)) 
 			{
+				$barcode = new BarcodeHelper(new \Cake\View\View());
+				// sample data to encode BLAHBLAH01234
+				$data_to_encode = str_pad($item->id, 13, '0', STR_PAD_LEFT);
+					
+				// Generate Barcode data
+				$barcode->barcode();
+				$barcode->setType('C128');
+				$barcode->setCode($data_to_encode);
+				$barcode->setSize(80,200);
+					
+				// Generate filename            
+				$file = 'img/barcode/'.$item->id.'.png';
+					
+				// Generates image file on server            
+				$barcode->writeBarcodeFile($file);
+			
+			
 				$transaction_date=$this->Auth->User('session_company')->books_beginning_from;
 				if($quantity>0)
 				{
@@ -138,24 +159,13 @@ class ItemsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $item = $this->Items->patchEntity($item, $this->request->getData());
 			
-			$input_cgst_ledger = $this->Items->input_cgst_ledger->find()->where(['gst_type'=>'CGST','company_id'=>$company_id,'input_output'=>'input','gst_figure_id'=>$item->gst_figure_id])->first();
-			
-			$input_sgst_ledger = $this->Items->input_sgst_ledger->find()->where(['gst_type'=>'SGST','company_id'=>$company_id,'input_output'=>'input','gst_figure_id'=>$item->gst_figure_id])->first();
-			
-			$input_igst_ledger = $this->Items->input_igst_ledger->find()->where(['gst_type'=>'IGST','company_id'=>$company_id,'input_output'=>'input','gst_figure_id'=>$item->gst_figure_id])->first();
-			
-			$output_cgst_ledger = $this->Items->output_cgst_ledger->find()->where(['gst_type'=>'CGST','company_id'=>$company_id,'input_output'=>'output','gst_figure_id'=>$item->gst_figure_id])->first();
-			
-			$output_sgst_ledger = $this->Items->output_sgst_ledger->find()->where(['gst_type'=>'SGST','company_id'=>$company_id,'input_output'=>'output','gst_figure_id'=>$item->gst_figure_id])->first();
-			
-			$output_igst_ledger = $this->Items->output_igst_ledger->find()->where(['gst_type'=>'IGST','company_id'=>$company_id,'input_output'=>'output','gst_figure_id'=>$item->gst_figure_id])->first();
-			
-			$item->input_cgst_ledger_id  = $input_cgst_ledger->id;
-			$item->input_sgst_ledger_id  = $input_sgst_ledger->id;
-			$item->input_igst_ledger_id  = $input_igst_ledger->id;
-			$item->output_cgst_ledger_id = $output_cgst_ledger->id;
-			$item->output_sgst_ledger_id = $output_sgst_ledger->id;
-			$item->output_igst_ledger_id = $output_igst_ledger->id;
+			$gst_type = $this->request->data['kind_of_gst'];
+			if($gst_type=='fix')
+			{
+				$first_gst_figure_id = $item->first_gst_figure_id;
+				$item->second_gst_figure_id = $first_gst_figure_id;
+				$item->gst_amount           = '0';
+			}
 			//pr($item);exit;
 			if ($this->Items->save($item)) {
 				if($item->quantity>0)
