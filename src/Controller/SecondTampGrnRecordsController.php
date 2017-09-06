@@ -93,7 +93,8 @@ class SecondTampGrnRecordsController extends AppController
         $this->set(compact('secondTampGrnRecord', 'users'));
         $this->set('_serialize', ['secondTampGrnRecord']);
     }
-
+	
+	
     /**
      * Delete method
      *
@@ -113,4 +114,57 @@ class SecondTampGrnRecordsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+	
+	public function progress()
+	{
+		$this->viewBuilder()->layout('index_layout');
+		$SecondTampGrnRecords = $this->SecondTampGrnRecords->newEntity();
+		$this->set(compact('SecondTampGrnRecords'));
+        $this->set('_serialize', ['SecondTampGrnRecords']);
+	}
+	
+	public function ProcessData()
+	{
+		$user_id=$this->Auth->User('id');
+		$company_id=$this->Auth->User('session_company_id');
+		
+		$SecondTampGrnRecords = $this->SecondTampGrnRecords->find()
+								->where(['user_id'=>$user_id,'company_id'=>$company_id,'processed'=>'no'])
+								->limit(10);
+		
+		
+		foreach($SecondTampGrnRecords as $SecondTampGrnRecords)
+		{
+			$items=$this->SecondTampGrnRecords->Companies->Items->find()
+			->where(['Items.item_code'=>$SecondTampGrnRecords->item_code])->first();
+			if($items)
+			{
+				$query = $this->SecondTampGrnRecords->query();
+				$query->update()
+					->set(['item_id' => $items->id])
+					->where(['item_code' =>$SecondTampGrnRecords->item_code, 'company_id' => $company_id])
+					->execute();
+			}
+			 $unit_id=$units->id;
+			$units=$this->SecondTampGrnRecords->Units->find()
+			->where(['Units.name'=>$SecondTampGrnRecords->unit])->first();
+			 $unit_id=$units->id;
+			
+			$items = $this->SecondTampGrnRecords->Companies->Items->newEntity();
+				$items->name=$SecondTampGrnRecords->item_name ;
+				$items->item_code=$SecondTampGrnRecords->item_code ;
+				$items->hsn_code=$SecondTampGrnRecords->hsn_code ;
+				$items->unit_id=$unit_id;
+				/* 
+				$items->first_gst_figure_id=$SecondTampGrnRecords->hsn_code ;
+				$items->gst_amount=$SecondTampGrnRecords->item_code ;
+				$items->second_gst_figure_id=$SecondTampGrnRecords->hsn_code ; */
+				$items->company_id=$company_id;
+				$this->SecondTampGrnRecords->Companies->Items->save($items);
+			
+		}
+		 exit;
+		
+	}
 }
+

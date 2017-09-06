@@ -35,9 +35,14 @@ class SecondTampGrnRecordsTable extends Table
         $this->setTable('second_tamp_grn_records');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
-
+		$this->belongsTo('Units');
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
+            'joinType' => 'INNER'
+        ]);
+		
+		$this->belongsTo('Companies', [
+            'foreignKey' => 'company_id',
             'joinType' => 'INNER'
         ]);
     }
