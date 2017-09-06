@@ -217,7 +217,7 @@ class GrnsController extends AppController
 		$this->set(compact('import_csv'));
         $this->set('_serialize', ['import_csv']);
 	}
-	
+
 	public function import()
 	{
 		$this->viewBuilder()->layout('index_layout');
@@ -318,7 +318,8 @@ class GrnsController extends AppController
 							$this->Grns->SecondTampGrnRecords->save($second_tamp_grn_records);
 						}						
 					} 
-					
+					$this->redirect(array("controller" => "SecondTampGrnRecords", 
+                    "action" => "progress"));
 					fclose($f);
 					$records;
 				}
@@ -329,3 +330,4 @@ class GrnsController extends AppController
 	}
 
 }
+
