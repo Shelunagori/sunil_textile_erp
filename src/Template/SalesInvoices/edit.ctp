@@ -8,12 +8,18 @@ foreach($partyOptions as $partyOption)
 $value=$partyOption['value'];
 if($value==$salesInvoice->party_ledger_id)
 {
-$party_state_id=$partyOption['party_state_id'];
+$party_states=$partyOption['party_state_id'];
+if($party_states>'0')
+{
+$party_state_id=$party_states;
+}
+else
+{
+$party_state_id=$state_id;
+}
 }
 }
 ?>
-
-
 
 <div class="row">
 	<div class="col-md-12">
@@ -43,7 +49,10 @@ $party_state_id=$partyOption['party_state_id'];
 						</div>
 						<input type="hidden" name="company_id" class="company_id" value="<?php echo $company_id;?>">
 						<input type="hidden" name="state_id" class="state_id" value="<?php echo $state_id;?>">
-						<input type="hidden" name="is_interstate" id="is_interstate" value="<?php if(@$party_state_id==$state_id){ echo '0';} else { echo '1';} ?>">
+						<input type="hidden" name="is_interstate" id="is_interstate" value="<?php if(@$party_state_id!=$state_id){if($party_state_id>0){echo '1';}
+									else if($party_state_id==0){echo '0';}else if(!$party_state_id){echo '0';}
+									}else if(@$party_state_id==$state_id) { echo '0';}
+									?>">
 						<input type="hidden" name="isRoundofType" id="isRoundofType" class="isRoundofType" value="0">
 						<input type="hidden" name="voucher_no" id="" value="<?= h($voucher_no, 4, '0') ?>">
 						<div class="col-md-3">
@@ -72,7 +81,10 @@ $party_state_id=$partyOption['party_state_id'];
 									<td><label>Taxable Value<label></td>
 									
 									<td><label id="gstDisplay">
-									<?php if(@$party_state_id==$state_id){ echo 'GST';} else { echo 'IGST';} ?>
+									<?php if(@$party_state_id!=$state_id){if($party_state_id>0){echo 'IGST';}
+									else if($party_state_id==0){echo 'GST';}else if(!$party_state_id){echo 'GST';}
+									}else if(@$party_state_id==$state_id) { echo 'GST';}
+									?>
 									<label></td>
 									<td><label>Net Amount<label></td>
 									<td></td>
@@ -88,9 +100,6 @@ $party_state_id=$partyOption['party_state_id'];
 										<td>
 				<input type="hidden" name="gst_amount" class="gst_amount" value="">	
 				<input type="hidden" name="salesInvoiceRow<?php echo $i;?>gst_figure_id" class="gst_figure_id" value="<?php echo $salesInvoiceRow->gst_figure_id;?>">
-				<input type="hidden" name="salesInvoiceRow<?php echo $i;?>output_cgst_ledger_id" class="output_cgst_ledger_id" value="<?php echo $salesInvoiceRow->output_cgst_ledger_id;?>">
-				<input type="hidden" name="salesInvoiceRow<?php echo $i;?>output_sgst_ledger_id" class="output_sgst_ledger_id" value="<?php echo $salesInvoiceRow->output_sgst_ledger_id;?>">
-				<input type="hidden" name="salesInvoiceRow<?php echo $i;?>output_igst_ledger_id" class="output_igst_ledger_id" value="<?php echo $salesInvoiceRow->output_igst_ledger_id;?>">
 				<input type="hidden" name="" class="gst_figure_tax_percentage calculation" value="<?php echo $salesInvoiceRow->gst_figure->tax_percentage;?>">
 				<input type="hidden" name="" class="totamount calculation" value="">
 				<input type="hidden" name="salesInvoiceRow<?php echo $i;?>gst_value" class="gstValue calculation" value="<?php echo $salesInvoiceRow->gst_value;?>">
@@ -139,7 +148,9 @@ $party_state_id=$partyOption['party_state_id'];
 						<?php echo $this->Form->input('amount_before_tax', ['label' => false,'class' => 'form-control input-sm amount_before_tax rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
 						</td>
 						</tr>
-						<?php if(@$party_state_id==$state_id){?>
+						<?php 
+						
+						if($party_state_id==$state_id){?>
 						<tr id="add_cgst">
 						<td colspan="6" align="right"><b>Total CGST</b>
 						</td>
@@ -154,7 +165,7 @@ $party_state_id=$partyOption['party_state_id'];
 						<?php echo $this->Form->input('total_sgst', ['label' => false,'class' => 'form-control input-sm add_sgst rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
 						</td>
 						</tr>
-						<?php } else { ?>
+						<?php } else if($party_state_id!=$state_id){ ?>
 						
 						<tr id="add_igst" style="">
 						<td colspan="6" align="right"><b>Total IGST</b>
@@ -246,9 +257,6 @@ $party_state_id=$partyOption['party_state_id'];
 			<td>
 			<input type="hidden" name="gst_amount" class="gst_amount" value="">
 			<input type="hidden" name="gst_figure_id" class="gst_figure_id" value="">
-			<input type="hidden" name="output_cgst_ledger_id" class="output_cgst_ledger_id" value="">
-			<input type="hidden" name="output_sgst_ledger_id" class="output_sgst_ledger_id" value="">
-			<input type="hidden" name="output_igst_ledger_id" class="output_igst_ledger_id" value="">
 			<input type="hidden" name="" class="gst_figure_tax_percentage calculation" value="">
 			<input type="hidden" name="" class="totamount calculation" value="">
 			<input type="hidden" name="gst_value" class="gstValue calculation" value="">
@@ -286,28 +294,14 @@ $party_state_id=$partyOption['party_state_id'];
 	$js="
 	$(document).ready(function() {
 		$('.attrGet').die().live('change',function(){
-			var gst_figure_id=$('option:selected', this).attr('gst_figure_id');
-			//alert(gst_figure_id);
-			//var gst_figure_tax_percentage=$('option:selected', this).attr('gst_figure_tax_percentage');
-			//var gst_figure_tax_name=$('option:selected', this).attr('gst_figure_tax_name');
-			//var output_cgst_ledger_id=$('option:selected', this).attr('output_cgst_ledger_id');
-			//var output_sgst_ledger_id=$('option:selected', this).attr('output_sgst_ledger_id');
-			//var output_igst_ledger_id=$('option:selected', this).attr('output_igst_ledger_id');
 			var gst_amount=$('option:selected', this).attr('gst_amount');
-			var item_qty=$('option:selected', this).attr('item_qty');
-			var item_unit=$('option:selected', this).attr('item_unit');
-			var itemText='Current Stock';
-			var itemText=itemText+' '+item_qty+' '+item_unit;
-			
-			
-			//$(this).closest('tr').find('.gst_figure_id').val(gst_figure_id);
-			//$(this).closest('tr').find('.gst_figure_tax_percentage').val(gst_figure_tax_percentage);
-			//$(this).closest('tr').find('.gst_figure_tax_name').val(gst_figure_tax_name);
-			//$(this).closest('tr').find('.output_cgst_ledger_id').val(output_cgst_ledger_id);
-			//$(this).closest('tr').find('.output_sgst_ledger_id').val(output_sgst_ledger_id);
-			//$(this).closest('tr').find('.output_igst_ledger_id').val(output_igst_ledger_id);
+			//var item_qty=$('option:selected', this).attr('item_qty');
+			//var item_unit=$('option:selected', this).attr('item_unit');
+			//var itemText='Current Stock';
+			//var itemText=itemText+' '+item_qty+' '+item_unit;
+		
 			$(this).closest('tr').find('.gst_amount').val(gst_amount);
-			$(this).closest('tr').find('.itemQty').html(itemText);
+			//$(this).closest('tr').find('.itemQty').html(itemText);
 		
 		forward_total_amount();
 		});
@@ -317,13 +311,32 @@ $party_state_id=$partyOption['party_state_id'];
 			var state_id=$('.state_id').val();
 			if(customer_state_id!=state_id)
 			{
+			if(customer_state_id>0)
+			{
 			$('#gstDisplay').html('IGST');
 			$('#add_igst').show();
 			$('#add_cgst').hide();
 			$('#add_sgst').hide();
 			$('#is_interstate').val('1');
 			}
-			else{
+			else if(!customer_state_id)
+			{
+			$('#gstDisplay').html('GST');
+			$('#add_cgst').show();
+			$('#add_sgst').show();
+			$('#add_igst').hide();
+			$('#is_interstate').val('0');
+			}
+			else if(customer_state_id==0)
+			{
+			$('#gstDisplay').html('GST');
+			$('#add_cgst').show();
+			$('#add_sgst').show();
+			$('#add_igst').hide();
+			$('#is_interstate').val('0');
+			}
+			}
+			else if(customer_state_id==state_id){
 			$('#gstDisplay').html('GST');
 			$('#add_cgst').show();
 			$('#add_sgst').show();
@@ -381,11 +394,6 @@ $party_state_id=$partyOption['party_state_id'];
 		  
 		  $(this).find('.gst_figure_id').attr({name:'sales_invoice_rows['+i+'][gst_figure_id]',id:'sales_invoice_rows['+i+'][gst_figure_id]'});
 		  
-		  $(this).find('.output_cgst_ledger_id').attr({name:'sales_invoice_rows['+i+'][output_cgst_ledger_id]',id:'sales_invoice_rows['+i+'][output_cgst_ledger_id]'});
-		  
-		  $(this).find('.output_sgst_ledger_id').attr({name:'sales_invoice_rows['+i+'][output_sgst_ledger_id]',id:'sales_invoice_rows['+i+'][output_sgst_ledger_id]'});
-		  
-		  $(this).find('.output_igst_ledger_id').attr({name:'sales_invoice_rows['+i+'][output_igst_ledger_id]',id:'sales_invoice_rows['+i+'][output_igst_ledger_id]'});
 		  $(this).find('.gstAmount').attr({name:'sales_invoice_rows['+i+'][net_amount]',id:'sales_invoice_rows['+i+'][net_amount]'});
 		  $(this).find('.gstValue').attr({name:'sales_invoice_rows['+i+'][gst_value]',id:'sales_invoice_rows['+i+'][gst_value]'});
 		  
@@ -434,39 +442,24 @@ $party_state_id=$partyOption['party_state_id'];
 				
 				if(item_gst_amount<gst_ietmamount)
 				{
-				var first_gst_figure_tax_percentage=$('option:selected', this).attr('first_gst_figure_tax_percentage');
-				var first_gst_figure_tax_name=$('option:selected', this).attr('first_gst_figure_tax_name');
-				var first_gst_figure_id=$('option:selected', this).attr('first_gst_figure_id');
-				
-				var first_output_cgst_ledger_id=$('option:selected', this).attr('first_output_cgst_ledger_id');
-				var first_output_sgst_ledger_id=$('option:selected', this).attr('first_output_sgst_ledger_id');
-				var first_output_igst_ledger_id=$('option:selected', this).attr('first_output_igst_ledger_id');
-				
-				$(this).closest('tr').find('.gst_figure_id').val(first_gst_figure_id);
-				$(this).closest('tr').find('.gst_figure_tax_percentage').val(first_gst_figure_tax_percentage);
-				$(this).closest('tr').find('.gst_figure_tax_name').val(first_gst_figure_tax_name);
-				$(this).closest('tr').find('.output_cgst_ledger_id').val(first_output_cgst_ledger_id);
-				$(this).closest('tr').find('.output_sgst_ledger_id').val(first_output_sgst_ledger_id);
-				$(this).closest('tr').find('.output_igst_ledger_id').val(first_output_igst_ledger_id);
-				}
+					var first_gst_figure_tax_percentage=$('option:selected', this).attr('FirstGstFigure');
+					var first_gst_figure_tax_name=$('option:selected', this).attr('FirstGstFigure');
+					var first_gst_figure_id=$('option:selected', this).attr('first_gst_figure_id');
+						
+					$(this).closest('tr').find('.gst_figure_id').val(first_gst_figure_id);
+					$(this).closest('tr').find('.gst_figure_tax_percentage').val(first_gst_figure_tax_percentage);
+					$(this).closest('tr').find('.gst_figure_tax_name').val(first_gst_figure_tax_name);
+                }
 				else if(item_gst_amount>=gst_ietmamount)
 				{
-				var second_gst_figure_tax_percentage=$('option:selected', this).attr('second_gst_figure_tax_percentage');
-				var second_gst_figure_tax_name=$('option:selected', this).attr('second_gst_figure_tax_name');
-				var second_gst_figure_id=$('option:selected', this).attr('second_gst_figure_id');
-				
-				var second_output_cgst_ledger_id=$('option:selected', this).attr('second_output_cgst_ledger_id');
-				var second_output_sgst_ledger_id=$('option:selected', this).attr('second_output_sgst_ledger_id');
-				var second_output_igst_ledger_id=$('option:selected', this).attr('second_output_igst_ledger_id');
-				
-				$(this).closest('tr').find('.gst_figure_id').val(second_gst_figure_id);
-				$(this).closest('tr').find('.gst_figure_tax_percentage').val(second_gst_figure_tax_percentage);
-				$(this).closest('tr').find('.gst_figure_tax_name').val(second_gst_figure_tax_name);
-				$(this).closest('tr').find('.output_cgst_ledger_id').val(second_output_cgst_ledger_id);
-				$(this).closest('tr').find('.output_sgst_ledger_id').val(second_output_sgst_ledger_id);
-				$(this).closest('tr').find('.output_igst_ledger_id').val(second_output_igst_ledger_id);
+					var second_gst_figure_tax_percentage=$('option:selected', this).attr('SecondGstFigure');
+					var second_gst_figure_tax_name=$('option:selected', this).attr('SecondGstFigure');
+					var second_gst_figure_id=$('option:selected', this).attr('second_gst_figure_id');
+
+					$(this).closest('tr').find('.gst_figure_id').val(second_gst_figure_id);
+					$(this).closest('tr').find('.gst_figure_tax_percentage').val(second_gst_figure_tax_percentage);
+					$(this).closest('tr').find('.gst_figure_tax_name').val(second_gst_figure_tax_name);
 				}
-				
 				
 				$(this).find('.discountvalue').val(discountValue.toFixed(2));
 				

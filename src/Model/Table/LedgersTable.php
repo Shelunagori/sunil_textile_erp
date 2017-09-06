@@ -54,7 +54,7 @@ class LedgersTable extends Table
         ]);
         $this->belongsTo('Customers', [
             'foreignKey' => 'customer_id',
-            'joinType' => 'INNER'
+            'joinType' => 'LEFT'
         ]);
         $this->hasMany('AccountingEntries', [
             'foreignKey' => 'ledger_id'
