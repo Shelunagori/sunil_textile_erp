@@ -26,6 +26,12 @@ $this->set('title', 'Import');
 							</div>
 						</div>
 					</div>
+					<div class="col-md-6">
+						<?php 
+						$url=$this->request->webroot.'samplecsv/importGRNSapmle.csv';
+						?>
+						<a href="<?php echo $url; ?>"><b>Download sample file from here.</b> </a>
+					</div>
 				</div>
 				<?= $this->Form->button(__('Submit'),['class'=>'btn btn-success']) ?>
 				<?= $this->Form->end() ?>
