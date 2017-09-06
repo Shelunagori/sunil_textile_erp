@@ -129,8 +129,7 @@ class SecondTampGrnRecordsController extends AppController
 		$company_id=$this->Auth->User('session_company_id');
 		
 		$SecondTampGrnRecords = $this->SecondTampGrnRecords->find()
-								->where(['user_id'=>$user_id,'company_id'=>$company_id,'processed'=>'no'])
-								->limit(10);
+								->where(['user_id'=>$user_id,'company_id'=>$company_id,'processed'=>'no']);
 		
 		
 		foreach($SecondTampGrnRecords as $SecondTampGrnRecords)
@@ -145,23 +144,26 @@ class SecondTampGrnRecordsController extends AppController
 					->where(['item_code' =>$SecondTampGrnRecords->item_code, 'company_id' => $company_id])
 					->execute();
 			}
-			 $unit_id=$units->id;
-			$units=$this->SecondTampGrnRecords->Units->find()
-			->where(['Units.name'=>$SecondTampGrnRecords->unit])->first();
-			 $unit_id=$units->id;
+			else{
+				
+				$units=$this->SecondTampGrnRecords->Units->find()
+				->where(['Units.name'=>$SecondTampGrnRecords->unit])->first();
+				$unit_id=$units->id;
 			
-			$items = $this->SecondTampGrnRecords->Companies->Items->newEntity();
-				$items->name=$SecondTampGrnRecords->item_name ;
-				$items->item_code=$SecondTampGrnRecords->item_code ;
-				$items->hsn_code=$SecondTampGrnRecords->hsn_code ;
-				$items->unit_id=$unit_id;
+				$new_items = $this->SecondTampGrnRecords->Companies->Items->newEntity();
+				$new_items->name=$SecondTampGrnRecords->item_name ;
+				$new_items->item_code=$SecondTampGrnRecords->item_code ;
+				$new_items->hsn_code=$SecondTampGrnRecords->hsn_code ;
+				$new_items->unit_id=$unit_id;
 				/* 
 				$items->first_gst_figure_id=$SecondTampGrnRecords->hsn_code ;
 				$items->gst_amount=$SecondTampGrnRecords->item_code ;
 				$items->second_gst_figure_id=$SecondTampGrnRecords->hsn_code ; */
-				$items->company_id=$company_id;
-				$this->SecondTampGrnRecords->Companies->Items->save($items);
+				$new_items->company_id=$company_id;
+				$this->SecondTampGrnRecords->Companies->Items->save($new_items);
+				
 			
+			}
 		}
 		 exit;
 		
