@@ -264,4 +264,68 @@ class GrnsController extends AppController
 		$this->set(compact('grn'));
         $this->set('_serialize', ['grn']);
 	}
+
+
+
+	public function importStep2()
+	{
+		$this->viewBuilder()->layout('index_layout');
+		$grn = $this->Grns->SecondTampGrnRecords->newEntity();
+		$user_id=$this->Auth->User('id');
+		if ($this->request->is('post')) 
+		{
+			
+			$csv = $this->request->data['csv'];
+			if(!empty($csv['tmp_name']))
+			{
+				$ext = substr(strtolower(strrchr($csv['name'], '.')), 1); //get the extension 
+				
+				$arr_ext = array('csv'); 									   
+				if (in_array($ext, $arr_ext)) 
+				{
+                  move_uploaded_file($csv['tmp_name'], WWW_ROOT . '/step_second/'.$user_id.'.'.$ext);
+				  
+				  $f = fopen($csv['tmp_name'], 'r') or die("ERROR OPENING DATA");
+					$records=0;
+					while (($line = fgetcsv($f, 4096, ';')) !== false) 
+					{
+						$test[]=$line;
+						++$records;
+					}
+					foreach($test as $key => $test1)
+					{ 
+						
+						$data = explode(",",$test1[0]);
+						
+						if($key!=0)
+						{
+							$second_tamp_grn_records = $this->Grns->SecondTampGrnRecords->newEntity();
+							$second_tamp_grn_records->item_code      = $data[0]; 
+							$second_tamp_grn_records->quantity       = $data[1];
+							$second_tamp_grn_records->purchase_rate  = $data[2];
+							$second_tamp_grn_records->sales_rate     = $data[3];
+							$second_tamp_grn_records->user_id        = $data[4];
+							$second_tamp_grn_records->processed      = $data[5]; 
+							$second_tamp_grn_records->is_addition_item_data_required = $data[6];
+							$second_tamp_grn_records->item_name      = $data[7]; 
+							$second_tamp_grn_records->hsn_code       = $data[8];
+							$second_tamp_grn_records->unit           = $data[9];
+							$second_tamp_grn_records->gst_rate_fixed_or_fluid = $data[10];
+							$second_tamp_grn_records->first_gst_rate = $data[11];
+							$second_tamp_grn_records->amount_in_ref_of_gst_rate = $data[12];
+							$second_tamp_grn_records->second_gst_rate = $data[13];
+
+							$this->Grns->SecondTampGrnRecords->save($second_tamp_grn_records);
+						}						
+					} 
+					
+					fclose($f);
+					$records;
+				}
+			}
+		} 
+		$this->set(compact('grn'));
+        $this->set('_serialize', ['grn']);
+	}
+
 }

@@ -21,12 +21,9 @@ $this->set('title', 'Import CSV');
 					    <?php echo $this->Html->link($this->Html->tag('i', '').' Step First', '/Grns/import',['escape' => false,'class'=>'icon-btn']); ?>
 					</div>
 					<div class="col-md-6" align="center">
-						<a href="#" class="icon-btn">
-						<i class=""></i>
-						<div>
-							 <b>Step Second</b>
-						</div>
-						</a>
+						<?php echo $this->Html->link($this->Html->tag('i', '').' Step Second', '/Grns/import_step2',['escape' => false,'class'=>'icon-btn']); ?>
+					</div>
+						
 					</div>
 				</div>
 			</div>
