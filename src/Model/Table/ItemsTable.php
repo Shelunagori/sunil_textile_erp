@@ -76,8 +76,7 @@ class ItemsTable extends Table
 			'propertyName' => 'SecondGstFigures',
 		]);
 		
-<<<<<<< HEAD
-=======
+
 		$this->belongsTo('input_cgst_ledger', [
 			'className' => 'Ledgers',
 			'foreignKey' => 'input_cgst_ledger_id',
@@ -116,7 +115,6 @@ class ItemsTable extends Table
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'
 		]);
->>>>>>> b6cdfcf8a0a777d15713ef6995860661d01adddd
     }
 
     /**

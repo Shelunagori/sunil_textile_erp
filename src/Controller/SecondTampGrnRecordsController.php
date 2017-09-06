@@ -127,10 +127,8 @@ class SecondTampGrnRecordsController extends AppController
 	{
 		$user_id=$this->Auth->User('id');
 		$company_id=$this->Auth->User('session_company_id');
-		
 		$SecondTampGrnRecords = $this->SecondTampGrnRecords->find()
 								->where(['user_id'=>$user_id,'company_id'=>$company_id,'processed'=>'no']);
-		
 		
 		foreach($SecondTampGrnRecords as $SecondTampGrnRecords)
 		{
@@ -143,9 +141,13 @@ class SecondTampGrnRecordsController extends AppController
 					->set(['item_id' => $items->id])
 					->where(['item_code' =>$SecondTampGrnRecords->item_code, 'company_id' => $company_id])
 					->execute();
+					
+				$query->update()
+					->set(['processed' => 'Yes'])
+					->where(['SecondTampGrnRecords.id' =>$SecondTampGrnRecords->id])
+					->execute();
 			}
 			else{
-				
 				$units=$this->SecondTampGrnRecords->Units->find()
 				->where(['Units.name'=>$SecondTampGrnRecords->unit])->first();
 				$unit_id=$units->id;
@@ -162,6 +164,16 @@ class SecondTampGrnRecordsController extends AppController
 				$new_items->company_id=$company_id;
 				$this->SecondTampGrnRecords->Companies->Items->save($new_items);
 				
+				$query = $this->SecondTampGrnRecords->query();
+				$query->update()
+					->set(['item_id' => $new_items->id])
+					->where(['item_code' =>$SecondTampGrnRecords->item_code, 'company_id' => $company_id])
+					->execute();
+					
+				$query->update()
+					->set(['processed' => 'Yes'])
+					->where(['SecondTampGrnRecords.id' =>$SecondTampGrnRecords->id])
+					->execute();
 			
 			}
 		}
