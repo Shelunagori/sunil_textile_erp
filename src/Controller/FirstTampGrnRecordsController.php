@@ -174,4 +174,10 @@ class FirstTampGrnRecordsController extends AppController
 		$this->set(compact('FirstTampGrnRecords'));
         $this->set('_serialize', ['FirstTampGrnRecords']);
 	}
+	
+	
+	public function ProcessData()
+	{
+		$FirstTampGrnRecords = $this->Ledgers->AccountingGroups->find('all')->where(['supplier'=>1,'company_id'=>$company_id]);
+	}
 }

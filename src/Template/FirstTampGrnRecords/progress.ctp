@@ -31,3 +31,22 @@ $this->set('title', 'Progress Csv');
 		</div>
 	</div>
 </div>
+<?php
+	$js="
+	$(document).ready(function() {
+		process_data();
+		function process_data(){
+			var url='<?php echo $this->Url->build(['controller'=>'FirstTampGrnRecords','action'=>'ProcessData']); ?>';
+			$.ajax({
+				url: url,
+				type: 'GET',
+			}).done(function(response) {
+				process_data();
+				else{eer}
+			});
+		}
+    });
+	";
+
+echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 
+?>
