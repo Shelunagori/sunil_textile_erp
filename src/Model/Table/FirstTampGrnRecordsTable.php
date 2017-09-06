@@ -40,6 +40,10 @@ class FirstTampGrnRecordsTable extends Table
             'foreignKey' => 'user_id',
             'joinType' => 'INNER'
         ]);
+		$this->belongsTo('Companies', [
+            'foreignKey' => 'company_id',
+            'joinType' => 'INNER'
+        ]);
     }
 
     /**

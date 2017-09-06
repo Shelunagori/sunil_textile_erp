@@ -119,6 +119,7 @@ class FirstTampGrnRecordsController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		$FirstTampGrnRecords = $this->FirstTampGrnRecords->newEntity();
 		$user_id=$this->Auth->User('id');
+		$company_id=$this->Auth->User('session_company_id');
 		if ($this->request->is('post')) 
 		{
 			
@@ -151,6 +152,7 @@ class FirstTampGrnRecordsController extends AppController
 							$FirstTampGrnRecords->purchase_rate                   = $data[2];
 							$FirstTampGrnRecords->sales_rate                      = $data[3];
 							$FirstTampGrnRecords->user_id                         = $user_id;
+							$FirstTampGrnRecords->company_id                      = $company_id;
 							$FirstTampGrnRecords->processed                       = 'no';
 							$FirstTampGrnRecords->is_addition_item_data_required  = 'no';
 							$this->FirstTampGrnRecords->save($FirstTampGrnRecords);
@@ -178,6 +180,26 @@ class FirstTampGrnRecordsController extends AppController
 	
 	public function ProcessData()
 	{
-		$FirstTampGrnRecords = $this->Ledgers->AccountingGroups->find('all')->where(['supplier'=>1,'company_id'=>$company_id]);
+		$user_id=$this->Auth->User('id');
+		$company_id=$this->Auth->User('session_company_id');
+		
+		$FirstTampGrnRecords = $this->FirstTampGrnRecords->find()
+								->where(['user_id'=>$user_id,'company_id'=>$company_id,'processed'=>'no'])
+								->limit(10);
+		foreach($FirstTampGrnRecords as $FirstTampGrnRecord)
+		{
+			$CheckItem = $this->FirstTampGrnRecords->Companies->Items->exists(['Items.item_code'=>$FirstTampGrnRecord->item_code,'Items.company_id'=>$company_id]);
+			
+			if(!$CheckItem)
+			{
+				$query = $this->FirstTampGrnRecords->query();
+				$query->update()
+					->set(['is_addition_item_data_required' => 'Yes'])
+					->where(['item_code' =>$FirstTampGrnRecord->item_code, 'company_id' => $company_id])
+					->execute();
+			}
+		}
+		 
+		exit;
 	}
 }
