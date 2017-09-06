@@ -7,19 +7,19 @@ use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * FirstTampGrnRecords Model
+ * SecondTampGrnRecords Model
  *
  * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\BelongsTo $Users
  *
- * @method \App\Model\Entity\FirstTampGrnRecord get($primaryKey, $options = [])
- * @method \App\Model\Entity\FirstTampGrnRecord newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\FirstTampGrnRecord[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\FirstTampGrnRecord|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\FirstTampGrnRecord patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\FirstTampGrnRecord[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\FirstTampGrnRecord findOrCreate($search, callable $callback = null, $options = [])
+ * @method \App\Model\Entity\SecondTampGrnRecord get($primaryKey, $options = [])
+ * @method \App\Model\Entity\SecondTampGrnRecord newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\SecondTampGrnRecord[] newEntities(array $data, array $options = [])
+ * @method \App\Model\Entity\SecondTampGrnRecord|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
+ * @method \App\Model\Entity\SecondTampGrnRecord patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\SecondTampGrnRecord[] patchEntities($entities, array $data, array $options = [])
+ * @method \App\Model\Entity\SecondTampGrnRecord findOrCreate($search, callable $callback = null, $options = [])
  */
-class FirstTampGrnRecordsTable extends Table
+class SecondTampGrnRecordsTable extends Table
 {
 
     /**
@@ -32,16 +32,12 @@ class FirstTampGrnRecordsTable extends Table
     {
         parent::initialize($config);
 
-        $this->setTable('first_tamp_grn_records');
+        $this->setTable('second_tamp_grn_records');
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
-            'joinType' => 'INNER'
-        ]);
-		$this->belongsTo('Companies', [
-            'foreignKey' => 'company_id',
             'joinType' => 'INNER'
         ]);
     }
@@ -82,8 +78,41 @@ class FirstTampGrnRecordsTable extends Table
             ->notEmpty('processed');
 
         $validator
+            ->integer('is_addition_item_data_required')
             ->requirePresence('is_addition_item_data_required', 'create')
             ->notEmpty('is_addition_item_data_required');
+
+        $validator
+            ->requirePresence('item_name', 'create')
+            ->notEmpty('item_name');
+
+        $validator
+            ->requirePresence('hsn_code', 'create')
+            ->notEmpty('hsn_code');
+
+        $validator
+            ->requirePresence('unit', 'create')
+            ->notEmpty('unit');
+
+        $validator
+            ->integer('gst_rate_fixed_or_fluid')
+            ->requirePresence('gst_rate_fixed_or_fluid', 'create')
+            ->notEmpty('gst_rate_fixed_or_fluid');
+
+        $validator
+            ->decimal('first_gst_rate')
+            ->requirePresence('first_gst_rate', 'create')
+            ->notEmpty('first_gst_rate');
+
+        $validator
+            ->decimal('amount_in_ref_of_gst_rate')
+            ->requirePresence('amount_in_ref_of_gst_rate', 'create')
+            ->notEmpty('amount_in_ref_of_gst_rate');
+
+        $validator
+            ->decimal('second_gst_rate')
+            ->requirePresence('second_gst_rate', 'create')
+            ->notEmpty('second_gst_rate');
 
         return $validator;
     }

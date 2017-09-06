@@ -146,22 +146,27 @@ $this->set('title', 'Create Item');
 						</div>
 						<span class="caption-subject bold " style="float:center;">Barcode Generation</span><hr style="margin: 6px 0;">
 						<div class="row" >
-							<div class="col-md-4">
+							<div class="col-md-12">
 								<div class="form-group">
-									<label style="font-size: 10px;">Gst Less than Equal to Amount </label>
-									<?php echo $this->Form->control('first_gst_figure_id',['class'=>'form-control input-sm','label'=>false,'empty'=>'-GST Figure-', 'options' => $gstFigures,'required'=>'required']); ?>
+									<div class="radio-list">
+										<div class="radio-inline" style="padding-left: 0px;">
+											<?php echo $this->Form->radio(
+											'kind_of_gst',
+											[
+												['value' => '1', 'text' => 'Let system  generate barcode','class' => 'barcode_decision','checked' => 'checked'],
+												['value' => '2', 'text' => 'Already have barcode','class' => 'barcode_decision']
+											]
+											); ?>
+										</div>
+                                    </div>
 								</div>
 							</div>
+						</div>
+						<div class="row" >
 							<div class="col-md-4">
-								<div class="form-group">
-									<label style="font-size: 10px;">Amount </label>
-									<?php echo $this->Form->control('gst_amount',['class'=>'form-control input-sm rate calculation','label'=>false,'placeholder'=>'Amount','required'=>'required']); ?>
-								</div>
-							</div>
-							<div class="col-md-4">
-								<div class="form-group">
-									<label style="font-size: 10px;">Gst Greter than to Amount </label>
-									<?php echo $this->Form->control('second_gst_figure_id',['class'=>'form-control input-sm','label'=>false,'empty'=>'-GST Figure-', 'options' => $gstFigures,'required'=>'required']); ?>
+								<div class="form-group item_code_div" style="display:none;">
+									<label>Item Code </label>
+									<?php echo $this->Form->control('item_code',['class'=>'form-control input-sm','label'=>false, 'placeholder'=>'Item Code', 'type'=>'text']); ?>
 								</div>
 							</div>
 						</div>
@@ -204,17 +209,32 @@ $this->set('title', 'Create Item');
 		  $('.rate').val(rate.toFixed(2));  }}
 	  }
 	  
-	  $('.kind_of_gst').die().live('change',function(){
-		  var gst_type = $(this).val();
-		  if(gst_type=='fix')
-		  {
+		$('.kind_of_gst').die().live('change',function(){
+			var gst_type = $(this).val();
+			if(gst_type=='fix')
+			{
 			  $('.hide_gst').hide();
-		  }
-		  else
-		  {
+			}
+			else
+			{
 			  $('.hide_gst').show();
-		  }
-	  })
+			}
+		});
+		
+		$('.barcode_decision').die().live('click',function(){
+			var barcode_decision = $(this).val();
+			if(barcode_decision=='1')
+			{
+			  $('.item_code_div').hide();
+			  $('input[name=item_code]').removeAttr('required');
+			}
+			else
+			{
+			  $('.item_code_div').show();
+			  $('input[name=item_code]').attr('required','required');
+			}
+		});
+		
     });
 	";
 

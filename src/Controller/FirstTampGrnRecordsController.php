@@ -119,6 +119,7 @@ class FirstTampGrnRecordsController extends AppController
 		$this->viewBuilder()->layout('index_layout');
 		$FirstTampGrnRecords = $this->FirstTampGrnRecords->newEntity();
 		$user_id=$this->Auth->User('id');
+		$company_id=$this->Auth->User('session_company_id');
 		if ($this->request->is('post')) 
 		{
 			
@@ -151,6 +152,7 @@ class FirstTampGrnRecordsController extends AppController
 							$FirstTampGrnRecords->purchase_rate                   = $data[2];
 							$FirstTampGrnRecords->sales_rate                      = $data[3];
 							$FirstTampGrnRecords->user_id                         = $user_id;
+							$FirstTampGrnRecords->company_id                      = $company_id;
 							$FirstTampGrnRecords->processed                       = 'no';
 							$FirstTampGrnRecords->is_addition_item_data_required  = 'no';
 							$this->FirstTampGrnRecords->save($FirstTampGrnRecords);
@@ -173,5 +175,88 @@ class FirstTampGrnRecordsController extends AppController
 		$FirstTampGrnRecords = $this->FirstTampGrnRecords->newEntity();
 		$this->set(compact('FirstTampGrnRecords'));
         $this->set('_serialize', ['FirstTampGrnRecords']);
+	}
+	
+	
+	public function ProcessData()
+	{
+		$user_id=$this->Auth->User('id');
+		$company_id=$this->Auth->User('session_company_id');
+		
+		$FirstTampGrnRecords = $this->FirstTampGrnRecords->find()
+								->where(['user_id'=>$user_id,'company_id'=>$company_id,'processed'=>'no'])
+								->limit(10);
+								//pr($FirstTampGrnRecords->toArray());
+		$count = $FirstTampGrnRecords->count();
+		foreach($FirstTampGrnRecords as $FirstTampGrnRecord)
+		{
+			$CheckItem = $this->FirstTampGrnRecords->Companies->Items->exists(['Items.item_code'=>$FirstTampGrnRecord->item_code,'Items.company_id'=>$company_id]);
+			$query = $this->FirstTampGrnRecords->query();
+			if(!$CheckItem)
+			{
+				
+				$query->update()
+					->set(['is_addition_item_data_required' => 'Yes'])
+					->where(['FirstTampGrnRecords.id' =>$FirstTampGrnRecord->id])
+					->execute();
+			}
+			
+				$query->update()
+					->set(['processed' => 'Yes'])
+					->where(['FirstTampGrnRecords.id' =>$FirstTampGrnRecord->id])
+					->execute();
+					
+		}
+		
+		$FirstTampGrnTotalRecords = $this->FirstTampGrnRecords->find()->where(['user_id'=>$user_id,'company_id'=>$company_id])->count();
+		$FirstTampGrnTotalProcessedYesRecords = $this->FirstTampGrnRecords->find()->where(['user_id'=>$user_id,'company_id'=>$company_id,'processed'=>'yes'])->count();
+		
+		
+		$progress_percentage = round((($FirstTampGrnTotalProcessedYesRecords*100)/$FirstTampGrnTotalRecords),2);
+		$data['percantage'] = $progress_percentage;
+		
+		if($count<=0)
+		{ 
+			$data['status'] = "false";
+		}
+		else
+		{
+			$data['status'] = "true";
+		}
+		echo json_encode($data);
+		exit;
+	}
+	
+	function csvDownload()
+	{
+
+		$this->viewBuilder()->layout('');
+		$filename="Item_csv";
+		header ("Expires: 0");
+		header ("Last-Modified: " . gmdate("D,d M YH:i:s") . "GMT");
+		header ("Cache-Control: no-cache, must-revalidate");
+		header ("Pragma: no-cache");
+		header ("Content-type: application/vnd.ms-excel");
+		header ("Content-Disposition: attachment; filename=".$filename.".csv");
+		header ("Content-Description: Generated Report" ); 
+
+		//$this->ath();
+		$date=date('d-m-y');
+		$company_id = $this->Auth->User('session_company_id');
+		$user_id=$this->Auth->User('id');
+		//$this->loadmodel('FirstTampGrnRecords');
+		$FirstTampGrnRecords = $this->FirstTampGrnRecords->find()
+								->where(['user_id'=>$user_id,'company_id'=>$company_id,'is_addition_item_data_required'=>'yes']);
+
+		$excel = "Item Code,Quantity,Purchase Rate,Sales Rate,Addition Item Data Required \n";
+
+		foreach($FirstTampGrnRecords as $FirstTampGrnRecord)
+		{
+
+			$excel.="$FirstTampGrnRecord->item_code,$FirstTampGrnRecord->quantity,$FirstTampGrnRecord->purchase_rate,$FirstTampGrnRecord->sales_rate,yes \n";               
+		}
+
+		echo $excel;      
+
 	}
 }
