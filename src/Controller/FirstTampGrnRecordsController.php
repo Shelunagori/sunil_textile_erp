@@ -230,7 +230,7 @@ class FirstTampGrnRecordsController extends AppController
 	function csvDownload()
 	{
 
-		$this->layout="";
+		$this->viewBuilder()->layout('');
 		$filename="Item_csv";
 		header ("Expires: 0");
 		header ("Last-Modified: " . gmdate("D,d M YH:i:s") . "GMT");
@@ -240,7 +240,7 @@ class FirstTampGrnRecordsController extends AppController
 		header ("Content-Disposition: attachment; filename=".$filename.".csv");
 		header ("Content-Description: Generated Report" ); 
 
-		$this->ath();
+		//$this->ath();
 		$date=date('d-m-y');
 		$company_id = $this->Auth->User('session_company_id');
 		$user_id=$this->Auth->User('id');
