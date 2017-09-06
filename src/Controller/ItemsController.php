@@ -103,10 +103,10 @@ class ItemsController extends AppController
 				$barcode->setCode($data_to_encode);
 				$barcode->setSize(80,200);
 					
-				// Generate filename            
+				// Generate filename     
 				$file = 'img/barcode/'.$item->id.'.png';
 					
-				// Generates image file on server            
+				// Generates image file on server    
 				$barcode->writeBarcodeFile($file);
 			
 			
