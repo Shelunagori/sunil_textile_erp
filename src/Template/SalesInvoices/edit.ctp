@@ -402,7 +402,7 @@ $party_state_id=$state_id;
 	{
 		var i=0;
 		$('#main_table tbody#main_tbody tr.main_tr').each(function(){ 
-			$(this).find('.attrGet').attr({name:'sales_invoice_rows['+i+'][item_id]',id:'sales_invoice_rows['+i+'][item_id]'});
+			$(this).find('.attrGet').select2().attr({name:'sales_invoice_rows['+i+'][item_id]',id:'sales_invoice_rows['+i+'][item_id]'});
 		  $(this).find('.quantity').attr({name:'sales_invoice_rows['+i+'][quantity]',id:'sales_invoice_rows['+i+'][quantity]'});
 		  $(this).find('.rate').attr({name:'sales_invoice_rows['+i+'][rate]',id:'sales_invoice_rows['+i+'][rate]'});
 		  $(this).find('.discount').attr({name:'sales_invoice_rows['+i+'][discount_percentage]',id:'sales_invoice_rows['+i+'][discount_percentage]'});
@@ -462,7 +462,7 @@ $party_state_id=$state_id;
 				var discountAmount  = $(this).find('.discountAmount').val();
 				var item_gst_amount=discountAmount/quantity;
 				
-				if(item_gst_amount<gst_ietmamount)
+				if(item_gst_amount<=gst_ietmamount)
 				{
 					var first_gst_figure_tax_percentage=$('option:selected', this).attr('FirstGstFigure');
 					var first_gst_figure_tax_name=$('option:selected', this).attr('FirstGstFigure');
@@ -472,7 +472,7 @@ $party_state_id=$state_id;
 					$(this).closest('tr').find('.gst_figure_tax_percentage').val(first_gst_figure_tax_percentage);
 					$(this).closest('tr').find('.gst_figure_tax_name').val(first_gst_figure_tax_name);
                 }
-				else if(item_gst_amount>=gst_ietmamount)
+				else if(item_gst_amount>gst_ietmamount)
 				{
 					var second_gst_figure_tax_percentage=$('option:selected', this).attr('SecondGstFigure');
 					var second_gst_figure_tax_name=$('option:selected', this).attr('SecondGstFigure');
@@ -491,10 +491,10 @@ $party_state_id=$state_id;
 				if(!discountAmount){discountAmount=0;}
 			    var divideValue=100;
 				var divideval=divideValue+gst_figure_tax_percentage;
-				var gstValue=discountAmount/divideval;
-	            var gstAmount=discountAmount-gstValue;
+				var gstAmount=(discountAmount*100)/divideval;
+	            var gstValue=(gstAmount*gst_figure_tax_percentage)/100;
 				$(this).find('.gstAmount').val(gstAmount.toFixed(2));
-				$(this).find('.gstValue').val(gstValue.toFixed(2));;
+				$(this).find('.gstValue').val(gstValue.toFixed(2));
 
 				var taxable_value1=parseFloat($(this).find('.discountAmount').val());
 				total=parseFloat(total)+taxable_value1;

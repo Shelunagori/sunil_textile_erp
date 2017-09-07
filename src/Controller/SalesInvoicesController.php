@@ -567,23 +567,40 @@ public function salesInvoiceBill($id=null)
 		->autoFields(true)
 		->contain(['Items']);
         $itemLedgers = ($query);
-		  foreach($itemLedgers as $itemLedger){
-			   $available_stock=$itemLedger->total_in;
-			   $stock_issue=$itemLedger->total_out;
-			 @$remaining=number_format($available_stock-$stock_issue, 2);
-			 $stock='Current stock is '. $remaining. ' ' .$itemUnit;
-			 if($remaining>0)
-			 {
-			 $stockType='false';
-			 }
-			 else{
-			 $stockType='true';
-			 }
-			 $h=array('text'=>$stock, 'type'=>$stockType);
-			 echo  $f=json_encode($h);
+		if($itemLedgers->toArray())
+		{
+			  foreach($itemLedgers as $itemLedger){
+				   $available_stock=$itemLedger->total_in;
+				   $stock_issue=$itemLedger->total_out;
+				 @$remaining=number_format($available_stock-$stock_issue, 2);
+				 $stock='Current stock is '. $remaining. ' ' .$itemUnit;
+				 if($remaining>0)
+				 {
+				 $stockType='false';
+				 }
+				 else{
+				 $stockType='true';
+				 }
+				 $h=array('text'=>$stock, 'type'=>$stockType);
+				 echo  $f=json_encode($h);
+			  }
+		  }
+		  else{
+		 
+				 @$remaining=0;
+				 $stock='Current stock is '. $remaining. ' ' .$itemUnit;
+				 if($remaining>0)
+				 {
+				 $stockType='false';
+				 }
+				 else{
+				 $stockType='true';
+				 }
+				 $h=array('text'=>$stock, 'type'=>$stockType);
+				 echo  $f=json_encode($h);
 		  }
 		  exit;
-		  }	
+}	
 
     /**
      * Edit method
