@@ -8,11 +8,11 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $voucher_no
+ * @property string $sales_invoice_no
  * @property int $company_id
  * @property \Cake\I18n\FrozenDate $transaction_date
- * @property string $cash_or_credit
- * @property int $customer_id
- * @property int $gst_figure_id
+ * @property int $party_ledger_id
+ * @property int $sales_ledger_id
  * @property float $amount_before_tax
  * @property float $total_cgst
  * @property float $total_sgst
@@ -20,8 +20,9 @@ use Cake\ORM\Entity;
  * @property float $amount_after_tax
  *
  * @property \App\Model\Entity\Company $company
+ * @property \App\Model\Entity\Ledger $party_ledger
  * @property \App\Model\Entity\Customer $customer
- * @property \App\Model\Entity\GstFigure $gst_figure
+ * @property \App\Model\Entity\Ledger $sales_ledger
  * @property \App\Model\Entity\CreditNoteRow[] $credit_note_rows
  */
 class CreditNote extends Entity

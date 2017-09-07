@@ -24,9 +24,6 @@ class CreditNoteRowsFixture extends TestFixture
         'rate' => ['type' => 'decimal', 'length' => 15, 'precision' => 2, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => ''],
         'taxable_value' => ['type' => 'decimal', 'length' => 15, 'precision' => 2, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => ''],
         'gst_figure_id' => ['type' => 'integer', 'length' => 10, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        'input_cgst_ledger_id' => ['type' => 'integer', 'length' => 10, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        'input_sgst_ledger_id' => ['type' => 'integer', 'length' => 10, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        'input_igst_ledger_id' => ['type' => 'integer', 'length' => 10, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
         ],
@@ -50,10 +47,7 @@ class CreditNoteRowsFixture extends TestFixture
             'quantity' => 1.5,
             'rate' => 1.5,
             'taxable_value' => 1.5,
-            'gst_figure_id' => 1,
-            'input_cgst_ledger_id' => 1,
-            'input_sgst_ledger_id' => 1,
-            'input_igst_ledger_id' => 1
+            'gst_figure_id' => 1
         ],
     ];
 }

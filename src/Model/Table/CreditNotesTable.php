@@ -10,8 +10,8 @@ use Cake\Validation\Validator;
  * CreditNotes Model
  *
  * @property \App\Model\Table\CompaniesTable|\Cake\ORM\Association\BelongsTo $Companies
- * @property \App\Model\Table\CustomersTable|\Cake\ORM\Association\BelongsTo $Customers
- * @property \App\Model\Table\GstFiguresTable|\Cake\ORM\Association\BelongsTo $GstFigures
+ * @property \App\Model\Table\LedgersTable|\Cake\ORM\Association\BelongsTo $PartyLedgers
+ * @property \App\Model\Table\LedgersTable|\Cake\ORM\Association\BelongsTo $SalesLedgers
  * @property \App\Model\Table\CreditNoteRowsTable|\Cake\ORM\Association\HasMany $CreditNoteRows
  *
  * @method \App\Model\Entity\CreditNote get($primaryKey, $options = [])
@@ -43,17 +43,22 @@ class CreditNotesTable extends Table
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'
         ]);
-        $this->belongsTo('Customers', [
+        $this->belongsTo('PartyLedgers', [
+			'className' => 'Ledgers',
+            'foreignKey' => 'party_ledger_id',
+            'joinType' => 'INNER'
+        ]);
+		
+		$this->belongsTo('Customers', [
             'foreignKey' => 'customer_id',
             'joinType' => 'INNER'
         ]);
-        $this->belongsTo('GstFigures', [
-            'foreignKey' => 'gst_figure_id',
+		
+        $this->belongsTo('SalesLedgers', [
+			'className' => 'Ledgers',
+            'foreignKey' => 'sales_ledger_id',
             'joinType' => 'INNER'
         ]);
-		
-		
-		
         $this->hasMany('CreditNoteRows', [
             'foreignKey' => 'credit_note_id'
         ]);
@@ -77,13 +82,13 @@ class CreditNotesTable extends Table
             ->notEmpty('voucher_no');
 
         $validator
+            ->requirePresence('sales_invoice_no', 'create')
+            ->notEmpty('sales_invoice_no');
+
+        $validator
             ->date('transaction_date')
             ->requirePresence('transaction_date', 'create')
             ->notEmpty('transaction_date');
-
-        $validator
-            ->requirePresence('cash_or_credit', 'create')
-            ->notEmpty('cash_or_credit');
 
         $validator
             ->decimal('amount_before_tax')
@@ -92,18 +97,15 @@ class CreditNotesTable extends Table
 
         $validator
             ->decimal('total_cgst')
-            ->requirePresence('total_cgst', 'create')
-            ->notEmpty('total_cgst');
+            ->allowEmpty('total_cgst');
 
         $validator
             ->decimal('total_sgst')
-            ->requirePresence('total_sgst', 'create')
-            ->notEmpty('total_sgst');
+            ->allowEmpty('total_sgst');
 
         $validator
             ->decimal('total_igst')
-            ->requirePresence('total_igst', 'create')
-            ->notEmpty('total_igst');
+            ->allowEmpty('total_igst');
 
         $validator
             ->decimal('amount_after_tax')
@@ -123,8 +125,8 @@ class CreditNotesTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['company_id'], 'Companies'));
-        $rules->add($rules->existsIn(['customer_id'], 'Customers'));
-        $rules->add($rules->existsIn(['gst_figure_id'], 'GstFigures'));
+        $rules->add($rules->existsIn(['party_ledger_id'], 'PartyLedgers'));
+        $rules->add($rules->existsIn(['sales_ledger_id'], 'SalesLedgers'));
 
         return $rules;
     }

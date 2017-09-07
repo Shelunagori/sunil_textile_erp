@@ -13,10 +13,10 @@
         <li><?= $this->Html->link(__('New Credit Note'), ['action' => 'add']) ?> </li>
         <li><?= $this->Html->link(__('List Companies'), ['controller' => 'Companies', 'action' => 'index']) ?> </li>
         <li><?= $this->Html->link(__('New Company'), ['controller' => 'Companies', 'action' => 'add']) ?> </li>
+        <li><?= $this->Html->link(__('List Party Ledgers'), ['controller' => 'Ledgers', 'action' => 'index']) ?> </li>
+        <li><?= $this->Html->link(__('New Party Ledger'), ['controller' => 'Ledgers', 'action' => 'add']) ?> </li>
         <li><?= $this->Html->link(__('List Customers'), ['controller' => 'Customers', 'action' => 'index']) ?> </li>
         <li><?= $this->Html->link(__('New Customer'), ['controller' => 'Customers', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Gst Figures'), ['controller' => 'GstFigures', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Gst Figure'), ['controller' => 'GstFigures', 'action' => 'add']) ?> </li>
         <li><?= $this->Html->link(__('List Credit Note Rows'), ['controller' => 'CreditNoteRows', 'action' => 'index']) ?> </li>
         <li><?= $this->Html->link(__('New Credit Note Row'), ['controller' => 'CreditNoteRows', 'action' => 'add']) ?> </li>
     </ul>
@@ -25,20 +25,20 @@
     <h3><?= h($creditNote->id) ?></h3>
     <table class="vertical-table">
         <tr>
+            <th scope="row"><?= __('Sales Invoice No') ?></th>
+            <td><?= h($creditNote->sales_invoice_no) ?></td>
+        </tr>
+        <tr>
             <th scope="row"><?= __('Company') ?></th>
             <td><?= $creditNote->has('company') ? $this->Html->link($creditNote->company->name, ['controller' => 'Companies', 'action' => 'view', $creditNote->company->id]) : '' ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Cash Or Credit') ?></th>
-            <td><?= h($creditNote->cash_or_credit) ?></td>
+            <th scope="row"><?= __('Party Ledger') ?></th>
+            <td><?= $creditNote->has('party_ledger') ? $this->Html->link($creditNote->party_ledger->name, ['controller' => 'Ledgers', 'action' => 'view', $creditNote->party_ledger->id]) : '' ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Customer') ?></th>
-            <td><?= $creditNote->has('customer') ? $this->Html->link($creditNote->customer->name, ['controller' => 'Customers', 'action' => 'view', $creditNote->customer->id]) : '' ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Gst Figure') ?></th>
-            <td><?= $creditNote->has('gst_figure') ? $this->Html->link($creditNote->gst_figure->name, ['controller' => 'GstFigures', 'action' => 'view', $creditNote->gst_figure->id]) : '' ?></td>
+            <th scope="row"><?= __('Sales Ledger') ?></th>
+            <td><?= $creditNote->has('sales_ledger') ? $this->Html->link($creditNote->sales_ledger->name, ['controller' => 'Ledgers', 'action' => 'view', $creditNote->sales_ledger->id]) : '' ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Id') ?></th>
@@ -85,9 +85,6 @@
                 <th scope="col"><?= __('Rate') ?></th>
                 <th scope="col"><?= __('Taxable Value') ?></th>
                 <th scope="col"><?= __('Gst Figure Id') ?></th>
-                <th scope="col"><?= __('Input Cgst Ledger Id') ?></th>
-                <th scope="col"><?= __('Input Sgst Ledger Id') ?></th>
-                <th scope="col"><?= __('Input Igst Ledger Id') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
             <?php foreach ($creditNote->credit_note_rows as $creditNoteRows): ?>
@@ -99,9 +96,6 @@
                 <td><?= h($creditNoteRows->rate) ?></td>
                 <td><?= h($creditNoteRows->taxable_value) ?></td>
                 <td><?= h($creditNoteRows->gst_figure_id) ?></td>
-                <td><?= h($creditNoteRows->input_cgst_ledger_id) ?></td>
-                <td><?= h($creditNoteRows->input_sgst_ledger_id) ?></td>
-                <td><?= h($creditNoteRows->input_igst_ledger_id) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['controller' => 'CreditNoteRows', 'action' => 'view', $creditNoteRows->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['controller' => 'CreditNoteRows', 'action' => 'edit', $creditNoteRows->id]) ?>

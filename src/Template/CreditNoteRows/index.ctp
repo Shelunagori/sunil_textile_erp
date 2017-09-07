@@ -28,9 +28,6 @@
                 <th scope="col"><?= $this->Paginator->sort('rate') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('taxable_value') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('gst_figure_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('input_cgst_ledger_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('input_sgst_ledger_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('input_igst_ledger_id') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
@@ -44,9 +41,6 @@
                 <td><?= $this->Number->format($creditNoteRow->rate) ?></td>
                 <td><?= $this->Number->format($creditNoteRow->taxable_value) ?></td>
                 <td><?= $creditNoteRow->has('gst_figure') ? $this->Html->link($creditNoteRow->gst_figure->name, ['controller' => 'GstFigures', 'action' => 'view', $creditNoteRow->gst_figure->id]) : '' ?></td>
-                <td><?= $this->Number->format($creditNoteRow->input_cgst_ledger_id) ?></td>
-                <td><?= $this->Number->format($creditNoteRow->input_sgst_ledger_id) ?></td>
-                <td><?= $this->Number->format($creditNoteRow->input_igst_ledger_id) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $creditNoteRow->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $creditNoteRow->id]) ?>

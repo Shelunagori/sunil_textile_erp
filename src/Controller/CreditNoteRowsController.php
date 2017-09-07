@@ -21,7 +21,7 @@ class CreditNoteRowsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['CreditNotes', 'Items', 'GstFigures', 'InputCgstLedgers', 'InputSgstLedgers', 'InputIgstLedgers']
+            'contain' => ['CreditNotes', 'Items', 'GstFigures']
         ];
         $creditNoteRows = $this->paginate($this->CreditNoteRows);
 
@@ -39,7 +39,7 @@ class CreditNoteRowsController extends AppController
     public function view($id = null)
     {
         $creditNoteRow = $this->CreditNoteRows->get($id, [
-            'contain' => ['CreditNotes', 'Items', 'GstFigures', 'InputCgstLedgers', 'InputSgstLedgers', 'InputIgstLedgers']
+            'contain' => ['CreditNotes', 'Items', 'GstFigures']
         ]);
 
         $this->set('creditNoteRow', $creditNoteRow);
@@ -66,10 +66,7 @@ class CreditNoteRowsController extends AppController
         $creditNotes = $this->CreditNoteRows->CreditNotes->find('list', ['limit' => 200]);
         $items = $this->CreditNoteRows->Items->find('list', ['limit' => 200]);
         $gstFigures = $this->CreditNoteRows->GstFigures->find('list', ['limit' => 200]);
-        $inputCgstLedgers = $this->CreditNoteRows->InputCgstLedgers->find('list', ['limit' => 200]);
-        $inputSgstLedgers = $this->CreditNoteRows->InputSgstLedgers->find('list', ['limit' => 200]);
-        $inputIgstLedgers = $this->CreditNoteRows->InputIgstLedgers->find('list', ['limit' => 200]);
-        $this->set(compact('creditNoteRow', 'creditNotes', 'items', 'gstFigures', 'inputCgstLedgers', 'inputSgstLedgers', 'inputIgstLedgers'));
+        $this->set(compact('creditNoteRow', 'creditNotes', 'items', 'gstFigures'));
         $this->set('_serialize', ['creditNoteRow']);
     }
 
@@ -97,10 +94,7 @@ class CreditNoteRowsController extends AppController
         $creditNotes = $this->CreditNoteRows->CreditNotes->find('list', ['limit' => 200]);
         $items = $this->CreditNoteRows->Items->find('list', ['limit' => 200]);
         $gstFigures = $this->CreditNoteRows->GstFigures->find('list', ['limit' => 200]);
-        $inputCgstLedgers = $this->CreditNoteRows->InputCgstLedgers->find('list', ['limit' => 200]);
-        $inputSgstLedgers = $this->CreditNoteRows->InputSgstLedgers->find('list', ['limit' => 200]);
-        $inputIgstLedgers = $this->CreditNoteRows->InputIgstLedgers->find('list', ['limit' => 200]);
-        $this->set(compact('creditNoteRow', 'creditNotes', 'items', 'gstFigures', 'inputCgstLedgers', 'inputSgstLedgers', 'inputIgstLedgers'));
+        $this->set(compact('creditNoteRow', 'creditNotes', 'items', 'gstFigures'));
         $this->set('_serialize', ['creditNoteRow']);
     }
 

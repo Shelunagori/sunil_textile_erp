@@ -20,9 +20,8 @@ class CreditNotesController extends AppController
      */
     public function index()
     {
-		$this->viewBuilder()->layout('index_layout');
         $this->paginate = [
-            'contain' => ['Companies', 'Customers', 'GstFigures']
+            'contain' => ['Companies', 'PartyLedgers', 'Customers', 'SalesLedgers']
         ];
         $creditNotes = $this->paginate($this->CreditNotes);
 
@@ -40,7 +39,7 @@ class CreditNotesController extends AppController
     public function view($id = null)
     {
         $creditNote = $this->CreditNotes->get($id, [
-            'contain' => ['Companies', 'Customers', 'GstFigures', 'CreditNoteRows']
+            'contain' => ['Companies', 'PartyLedgers', 'Customers', 'SalesLedgers', 'CreditNoteRows']
         ]);
 
         $this->set('creditNote', $creditNote);
@@ -54,28 +53,9 @@ class CreditNotesController extends AppController
      */
     public function add()
     {
-		$this->viewBuilder()->layout('index_layout');
-		$creditNote = $this->CreditNotes->newEntity();
-        $company_id=$this->Auth->User('session_company_id');
-		$stateDetails=$this->Auth->User('session_company');
-		$state_id=$stateDetails->state_id;
-		$Voucher_no = $this->CreditNotes->find()->select(['voucher_no'])->where(['company_id'=>$company_id])->order(['voucher_no' => 'DESC'])->first();
-		if($Voucher_no)
-		{
-			$voucher_no=$Voucher_no->voucher_no+1;
-		}
-		else
-		{
-			$voucher_no=1;
-		} 
-		if ($this->request->is('post')) {
-			$transaction_date=date('Y-m-d', strtotime($this->request->data['transaction_date']));
+        $creditNote = $this->CreditNotes->newEntity();
+        if ($this->request->is('post')) {
             $creditNote = $this->CreditNotes->patchEntity($creditNote, $this->request->getData());
-            $creditNote->transaction_date=$transaction_date;
-			if($creditNote->cash_or_credit=='cash')
-			{
-				$creditNote->customer_id=0;
-			}
             if ($this->CreditNotes->save($creditNote)) {
                 $this->Flash->success(__('The credit note has been saved.'));
 
@@ -83,51 +63,11 @@ class CreditNotesController extends AppController
             }
             $this->Flash->error(__('The credit note could not be saved. Please, try again.'));
         }
-		$customers = $this->CreditNotes->Customers->find()->where(['company_id'=>$company_id]);
-		$customerOptions=[];
-		foreach($customers as $customer){
-			$customerOptions[]=['text' =>$customer->name, 'value' => $customer->id ,'customer_state_id'=>$customer->state_id];
-		}
-		
-		$items = $this->CreditNotes->CreditNoteRows->Items->find()->where(['Items.company_id'=>$company_id])
-					->contain(['GstFigures', 'ItemLedgers', 'Units']);
-					
-		$itemOptions=[];
-		foreach($items as $item){
-			$qty=0;
-			foreach($item->item_ledgers as $data)
-			{
-				$qty+=$data->quantity;
-			}
-			$itemOptions[]=['text' =>$item->item_code.' '.$item->name, 'value' => $item->id ,'gst_figure_id'=>$item->gst_figure_id, 'gst_figure_tax_percentage'=>$item->gst_figure->tax_percentage,'gst_figure_tax_name'=>$item->gst_figure->name, 'output_cgst_ledger_id'=>$item->output_cgst_ledger_id, 'output_sgst_ledger_id'=>$item->output_sgst_ledger_id, 'output_igst_ledger_id'=>$item->output_igst_ledger_id, 'item_qty'=>$qty, 'item_unit'=>$item->unit->name];
-		}
-		$partyLedgers = $this->CreditNotes->CreditNoteRows->Ledgers->AccountingGroups->find()->where(['AccountingGroups.company_id'=>$company_id, 'AccountingGroups.sale_invoice_party'=>'1']);
-		foreach($partyLedgers as $partyLedger)
-		{
-			$accountingGroups = $this->CreditNotes->CreditNoteRows->Ledgers->AccountingGroups
-			->find('children', ['for' => $partyLedger->id])
-			->find('List')->toArray();
-			$accountingGroups[$partyLedger->id]=$partyLedger->name;
-		}
-		ksort($accountingGroups);
-		if($accountingGroups)
-		{   
-			$account_ids="";
-			foreach($accountingGroups as $key=>$accountingGroup)
-			{
-				$account_ids .=$key.',';
-			}
-			$account_ids = explode(",",trim($account_ids,','));
-			$Partyledgers = $this->CreditNotes->CreditNoteRows->Ledgers->find()
-								->where(['Ledgers.accounting_group_id IN' =>$account_ids])
-								->contain(['Customers']);
-        }
-		$partyOptions=[];
-		foreach($Partyledgers as $Partyledger){
-			$partyOptions[]=['text' =>$Partyledger->name, 'value' => $Partyledger->id ,'party_state_id'=>$Partyledger->customer->state_id];
-		}
-        $gstFigures = $this->CreditNotes->GstFigures->find('list')->where(['company_id'=>$company_id]);
-        $this->set(compact('creditNote', 'customerOptions','itemOptions', 'gstFigures','voucher_no','state_id','company_id','partyOptions'));
+        $companies = $this->CreditNotes->Companies->find('list', ['limit' => 200]);
+        $partyLedgers = $this->CreditNotes->PartyLedgers->find('list', ['limit' => 200]);
+        $customers = $this->CreditNotes->Customers->find('list', ['limit' => 200]);
+        $salesLedgers = $this->CreditNotes->SalesLedgers->find('list', ['limit' => 200]);
+        $this->set(compact('creditNote', 'companies', 'partyLedgers', 'customers', 'salesLedgers'));
         $this->set('_serialize', ['creditNote']);
     }
 
@@ -153,9 +93,10 @@ class CreditNotesController extends AppController
             $this->Flash->error(__('The credit note could not be saved. Please, try again.'));
         }
         $companies = $this->CreditNotes->Companies->find('list', ['limit' => 200]);
+        $partyLedgers = $this->CreditNotes->PartyLedgers->find('list', ['limit' => 200]);
         $customers = $this->CreditNotes->Customers->find('list', ['limit' => 200]);
-        $gstFigures = $this->CreditNotes->GstFigures->find('list', ['limit' => 200]);
-        $this->set(compact('creditNote', 'companies', 'customers', 'gstFigures'));
+        $salesLedgers = $this->CreditNotes->SalesLedgers->find('list', ['limit' => 200]);
+        $this->set(compact('creditNote', 'companies', 'partyLedgers', 'customers', 'salesLedgers'));
         $this->set('_serialize', ['creditNote']);
     }
 
