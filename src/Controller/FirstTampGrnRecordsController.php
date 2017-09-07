@@ -244,7 +244,7 @@ class FirstTampGrnRecordsController extends AppController
 		$FirstTampGrnRecords = $this->FirstTampGrnRecords->find()
 								->where(['user_id'=>$user_id,'company_id'=>$company_id]);
 
-		$excel = "Item Code,Quantity,Purchase Rate,Sales Rate,Addition Item Data Required \n";
+		$excel = "Item Code,Quantity,Purchase Rate,Sales Rate,Addition Item Data Required, item name, hsn code, unit, gst rate fixed or fluid, first gst rate, amount in refence to gst rate, second gst rate  \n";
 
 		foreach($FirstTampGrnRecords as $FirstTampGrnRecord)
 		{
