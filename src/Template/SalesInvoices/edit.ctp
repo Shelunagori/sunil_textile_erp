@@ -100,6 +100,7 @@ $party_state_id=$state_id;
 							    ?>
 									<tr class="main_tr" class="tab">
 										<td>
+				<input type="hidden" name="id" class="id" value="<?php echo $salesInvoiceRow->id; ?>">
 				<input type="hidden" name="" class="outStock" value="0">
 				<input type="hidden" name="gst_amount" class="gst_amount" value="">	
 				<input type="hidden" name="salesInvoiceRow<?php echo $i;?>gst_figure_id" class="gst_figure_id" value="<?php echo $salesInvoiceRow->gst_figure_id;?>">
@@ -406,6 +407,8 @@ $party_state_id=$state_id;
 	{
 		var i=0;
 		$('#main_table tbody#main_tbody tr.main_tr').each(function(){ 
+			
+			$(this).find('td:nth-child(1) input.id').attr({name:'sales_invoice_rows['+i+'][id]',id:'sales_invoice_rows['+i+'][id]'});
 			$(this).find('.attrGet').select2().attr({name:'sales_invoice_rows['+i+'][item_id]',id:'sales_invoice_rows['+i+'][item_id]'});
 		  $(this).find('.quantity').attr({name:'sales_invoice_rows['+i+'][quantity]',id:'sales_invoice_rows['+i+'][quantity]'});
 		  $(this).find('.rate').attr({name:'sales_invoice_rows['+i+'][rate]',id:'sales_invoice_rows['+i+'][rate]'});
@@ -549,78 +552,7 @@ $party_state_id=$state_id;
 		rename_rows();
 		}
 		
-		/*$(document).ready(function() {
-		$('.reverse_total_amount').die().live('keyup',function(){
-			var total=0;
-			var gst_amount=0;
-			var gst_value= 0;
-			var s_cgst_value=0;
-			var roundOff1=0;
-			var round_of=0;
-			$('#main_table tbody#main_tbody tr.main_tr').each(function()
-			{
-				var gstAmount  = parseFloat($(this).find('.gstAmount').val());
-				var gst_figure_tax_percentage  = parseFloat($(this).find('.gst_figure_tax_percentage').val());
-				if(!gst_figure_tax_percentage){gst_figure_tax_percentage=0;}
-				var discountAmount=parseFloat((gstAmount*100)/(100+gst_figure_tax_percentage));
-				var gstValue=parseFloat(gstAmount)-parseFloat(discountAmount);
-				 
-				var discount= parseFloat($(this).find('.discount').val()); 
-				var quantity= parseFloat($(this).find('.quantity').val()); 
-				var totamount=parseFloat((discountAmount*100)/(100-discount));
-				var discountvalue=parseFloat(totamount)-parseFloat(discountAmount);
-				 
-				 if(!discountAmount){discountAmount=0;}
-				$(this).find('.discountAmount').val(discountAmount.toFixed(2));
-				$(this).find('.gstValue').val(gstValue.toFixed(2));
-				$(this).find('.totamount').val(totamount.toFixed(2));
-				$(this).find('.discountvalue').val(discountvalue.toFixed(2));
-
-				var rate=parseFloat((totamount/quantity));
-				if(!rate){rate=0;}
-				$(this).find('.rate').val(rate.toFixed(2));
-				
-				var taxable_value1=parseFloat($(this).find('.discountAmount').val());
-				total=parseFloat(total)+taxable_value1;
-				
-				var gstAmount  = parseFloat($(this).find('.gstAmount').val());
-				gst_amount=parseFloat(gst_amount)+parseFloat(gstAmount);
-				roundOff1=Math.round(gst_amount);
-				
-				if(gst_amount<roundOff1)
-				{
-				round_of=parseFloat(roundOff1)-parseFloat(gst_amount);
-				}
-				if(gst_amount>roundOff1)
-				{
-				round_of=parseFloat(gst_amount)-parseFloat(roundOff1);
-				}
-				if(gst_amount==roundOff1)
-				{
-				round_of=parseFloat(gst_amount)-parseFloat(roundOff1);
-				}
-				
-				var gstValue  = parseFloat($(this).find('.gstValue').val());
-				var is_interstate  = parseFloat($('#is_interstate').val());
-				if(is_interstate=='0')
-				{
-				gst_value=parseFloat(gst_value)+gstValue;
-				s_cgst_value=parseFloat(gst_value/2);
-				igst_value=0;
-				}
-				else{
-				igst_value=parseFloat(gst_value)+gstValue;
-				s_cgst_value=0;
-				}
-			});
-				$('.amount_before_tax').val(total);
-				$('.amount_after_tax').val(roundOff1.toFixed(2));
-				$('.add_cgst').val(s_cgst_value.toFixed(2));
-				$('.add_sgst').val(s_cgst_value.toFixed(2));
-				$('.add_igst').val(igst_value.toFixed(2));
-				$('.roundValue').val(round_of.toFixed(2));
-		});
-		});*/
+		
 		
 function checkValidation() 
 	{  
