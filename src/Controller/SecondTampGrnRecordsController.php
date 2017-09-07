@@ -93,7 +93,8 @@ class SecondTampGrnRecordsController extends AppController
         $this->set(compact('secondTampGrnRecord', 'users'));
         $this->set('_serialize', ['secondTampGrnRecord']);
     }
-
+	
+	
     /**
      * Delete method
      *
@@ -113,4 +114,71 @@ class SecondTampGrnRecordsController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+	
+	public function progress()
+	{
+		$this->viewBuilder()->layout('index_layout');
+		$SecondTampGrnRecords = $this->SecondTampGrnRecords->newEntity();
+		$this->set(compact('SecondTampGrnRecords'));
+        $this->set('_serialize', ['SecondTampGrnRecords']);
+	}
+	
+	public function ProcessData()
+	{
+		$user_id=$this->Auth->User('id');
+		$company_id=$this->Auth->User('session_company_id');
+		$SecondTampGrnRecords = $this->SecondTampGrnRecords->find()
+								->where(['user_id'=>$user_id,'company_id'=>$company_id,'processed'=>'no']);
+		
+		foreach($SecondTampGrnRecords as $SecondTampGrnRecords)
+		{
+			$items=$this->SecondTampGrnRecords->Companies->Items->find()
+			->where(['Items.item_code'=>$SecondTampGrnRecords->item_code])->first();
+			if($items)
+			{
+				$query = $this->SecondTampGrnRecords->query();
+				$query->update()
+					->set(['item_id' => $items->id])
+					->where(['item_code' =>$SecondTampGrnRecords->item_code, 'company_id' => $company_id])
+					->execute();
+					
+				$query->update()
+					->set(['processed' => 'Yes'])
+					->where(['SecondTampGrnRecords.id' =>$SecondTampGrnRecords->id])
+					->execute();
+			}
+			else{
+				$units=$this->SecondTampGrnRecords->Units->find()
+				->where(['Units.name'=>$SecondTampGrnRecords->unit])->first();
+				$unit_id=$units->id;
+			
+				$new_items = $this->SecondTampGrnRecords->Companies->Items->newEntity();
+				$new_items->name=$SecondTampGrnRecords->item_name ;
+				$new_items->item_code=$SecondTampGrnRecords->item_code ;
+				$new_items->hsn_code=$SecondTampGrnRecords->hsn_code ;
+				$new_items->unit_id=$unit_id;
+				/* 
+				$items->first_gst_figure_id=$SecondTampGrnRecords->hsn_code ;
+				$items->gst_amount=$SecondTampGrnRecords->item_code ;
+				$items->second_gst_figure_id=$SecondTampGrnRecords->hsn_code ; */
+				$new_items->company_id=$company_id;
+				$this->SecondTampGrnRecords->Companies->Items->save($new_items);
+				
+				$query = $this->SecondTampGrnRecords->query();
+				$query->update()
+					->set(['item_id' => $new_items->id])
+					->where(['item_code' =>$SecondTampGrnRecords->item_code, 'company_id' => $company_id])
+					->execute();
+					
+				$query->update()
+					->set(['processed' => 'Yes'])
+					->where(['SecondTampGrnRecords.id' =>$SecondTampGrnRecords->id])
+					->execute();
+			
+			}
+		}
+		 exit;
+		
+	}
 }
+
