@@ -128,13 +128,14 @@ class SecondTampGrnRecordsController extends AppController
 		$user_id=$this->Auth->User('id');
 		$company_id=$this->Auth->User('session_company_id');
 		$SecondTampGrnRecords = $this->SecondTampGrnRecords->find()
-								->where(['user_id'=>$user_id,'company_id'=>$company_id,'processed'=>'no']);
+								->where(['user_id'=>$user_id,'company_id'=>$company_id,'processed'=>'no'])
+								->limit(10);
 		
 		foreach($SecondTampGrnRecords as $SecondTampGrnRecords)
 		{
-			$items=$this->SecondTampGrnRecords->Companies->Items->find()
-			->where(['Items.item_code'=>$SecondTampGrnRecords->item_code])->first();
-			if($items)
+			$item=$this->SecondTampGrnRecords->Companies->Items->find()
+					->where(['Items.item_code'=>$SecondTampGrnRecords->item_code,'company_id'=>$company_id])->first();
+			if($item)
 			{
 				$query = $this->SecondTampGrnRecords->query();
 				$query->update()

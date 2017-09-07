@@ -40,8 +40,8 @@ $this->set('title', 'Progress Csv');
 			$.ajax({
 				url: url,
 				type: 'GET',
-			}).done(function(response) { alert(response);
-				//process_data();
+			}).done(function(response) {
+				console.log(response);
 				
 			});
 		}
