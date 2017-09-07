@@ -49,6 +49,7 @@ $party_state_id=$state_id;
 						</div>
                         <input type="hidden" name="outOfStock" class="outOfStock" value="false">
 						<input type="hidden" name="company_id" class="company_id" value="<?php echo $company_id;?>">
+						<input type="hidden" name="location_id" class="location_id" value="<?php echo $location_id;?>">
 						<input type="hidden" name="state_id" class="state_id" value="<?php echo $state_id;?>">
 						<input type="hidden" name="is_interstate" id="is_interstate" value="<?php if(@$party_state_id!=$state_id){if($party_state_id>0){echo '1';}
 									else if($party_state_id==0){echo '0';}else if(!$party_state_id){echo '0';}
@@ -115,7 +116,7 @@ $party_state_id=$state_id;
 				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.quantity', ['label' => false,'class' => 'form-control input-sm calculation quantity rightAligntextClass','id'=>'check','required'=>'required','placeholder'=>'Quantity', 'value'=>$salesInvoiceRow->quantity]); ?>
 			</td>
 			<td>
-				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.rate', ['label' => false,'class' => 'form-control input-sm calculation rate rightAligntextClass','required'=>'required','placeholder'=>'Rate','value'=>$salesInvoiceRow->rate]); ?>
+				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.rate', ['label' => false,'class' => 'form-control input-sm calculation rate rightAligntextClass','required'=>'required','placeholder'=>'Rate','value'=>$salesInvoiceRow->rate, 'readonly'=>'readonly']); ?>
 			</td>
 			<td>
 				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.discount_percentage', ['label' => false,'class' => 'form-control input-sm calculation discount rightAligntextClass','required'=>'required','placeholder'=>'Dis.', 'value'=>$salesInvoiceRow->discount_percentage]); ?>	
@@ -272,7 +273,7 @@ $party_state_id=$state_id;
 				<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm calculation quantity rightAligntextClass','id'=>'check','required'=>'required','placeholder'=>'Quantity']); ?>
 			</td>
 			<td>
-				<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm calculation rate rightAligntextClass','required'=>'required','placeholder'=>'Rate']); ?>
+				<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm calculation rate rightAligntextClass','required'=>'required','placeholder'=>'Rate', 'readonly'=>'readonly']); ?>
 			</td>
 			<td>
 				<?php echo $this->Form->input('discount_percentage', ['label' => false,'class' => 'form-control input-sm calculation discount rightAligntextClass','required'=>'required','placeholder'=>'Dis.']); ?>	
@@ -299,7 +300,10 @@ $party_state_id=$state_id;
 		$('.attrGet').die().live('change',function(){
 		var itemQ=$(this).closest('tr');
 			var gst_amount=$('option:selected', this).attr('gst_amount');
+			var sales_rate=$('option:selected', this).attr('sales_rate');
 			$(this).closest('tr').find('.gst_amount').val(gst_amount);
+			$(this).closest('tr').find('.rate').val(sales_rate);
+			
 			var itemId=$(this).val();
 		var url='".$this->Url->build(["controller" => "SalesInvoices", "action" => "ajaxItemQuantity"])."';
 		url=url+'/'+itemId

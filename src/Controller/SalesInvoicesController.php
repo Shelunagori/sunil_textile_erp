@@ -57,6 +57,7 @@ class SalesInvoicesController extends AppController
 		$this->viewBuilder()->layout('index_layout');
         $salesInvoice = $this->SalesInvoices->newEntity();
 		$company_id=$this->Auth->User('session_company_id');
+		$location_id=$this->Auth->User('session_location_id');
 		$stateDetails=$this->Auth->User('session_company');
 		$state_id=$stateDetails->state_id;
 		
@@ -85,18 +86,20 @@ class SalesInvoicesController extends AppController
 		   if ($this->SalesInvoices->save($salesInvoice)) {
 		      foreach($salesInvoice->sales_invoice_rows as $sales_invoice_row)
 			   {
-			   $stockData = $this->SalesInvoices->ItemLedgers->query();
-						$stockData->insert(['item_id', 'transaction_date','quantity', 'rate', 'amount', 'status', 'company_id', 'sales_invoice_id', 'sales_invoice_row_id'])
+			   $exactRate=$sales_invoice_row->taxable_value/$sales_invoice_row->quantity;
+					 $stockData = $this->SalesInvoices->ItemLedgers->query();
+						$stockData->insert(['item_id', 'transaction_date','quantity', 'rate', 'amount', 'status', 'company_id', 'sales_invoice_id', 'sales_invoice_row_id', 'location_id'])
 								->values([
 								'item_id' => $sales_invoice_row->item_id,
 								'transaction_date' => $salesInvoice->transaction_date,
 								'quantity' => $sales_invoice_row->quantity,
-								'rate' => $sales_invoice_row->rate,
-								'amount' => $sales_invoice_row->net_amount,
+								'rate' => $exactRate,
+								'amount' => $sales_invoice_row->taxable_value,
 								'status' => 'out',
 								'company_id' => $salesInvoice->company_id,
 								'sales_invoice_id' => $salesInvoice->id,
-								'sales_invoice_row_id' => $sales_invoice_row->id
+								'sales_invoice_row_id' => $sales_invoice_row->id,
+								'location_id'=>$salesInvoice->location_id
 								])
 						->execute();
 			   }
@@ -205,11 +208,11 @@ class SalesInvoicesController extends AppController
 		}
 		
 		$items = $this->SalesInvoices->SalesInvoiceRows->Items->find()
-					->where(['Items.company_id'=>$company_id])
+					->where(['Items.company_id'=>$company_id, 'Items.location_id'=>$location_id])
 					->contain(['FirstGstFigures', 'SecondGstFigures', 'Units']);
 		$itemOptions=[];
 		foreach($items as $item){
-			$itemOptions[]=['text'=>$item->item_code.' '.$item->name, 'value'=>$item->id, 'first_gst_figure_id'=>$item->first_gst_figure_id, 'gst_amount'=>$item->gst_amount, 'second_gst_figure_id'=>$item->second_gst_figure_id, 'FirstGstFigure'=>$item->FirstGstFigures->tax_percentage, 'SecondGstFigure'=>$item->SecondGstFigures->tax_percentage];
+			$itemOptions[]=['text'=>$item->item_code.' '.$item->name, 'value'=>$item->id, 'first_gst_figure_id'=>$item->first_gst_figure_id, 'gst_amount'=>$item->gst_amount, 'sales_rate'=>$item->sales_rate, 'second_gst_figure_id'=>$item->second_gst_figure_id, 'FirstGstFigure'=>$item->FirstGstFigures->tax_percentage, 'SecondGstFigure'=>$item->SecondGstFigures->tax_percentage];
 		}
 		
 	
@@ -262,7 +265,7 @@ class SalesInvoicesController extends AppController
 		$gstFigures = $this->SalesInvoices->GstFigures->find('list')
 						->where(['company_id'=>$company_id]);
 
-		$this->set(compact('salesInvoice', 'companies', 'customerOptions', 'gstFigures', 'voucher_no','company_id','itemOptions','state_id', 'partyOptions', 'Accountledgers'));
+		$this->set(compact('salesInvoice', 'companies', 'customerOptions', 'gstFigures', 'voucher_no','company_id','itemOptions','state_id', 'partyOptions', 'Accountledgers', 'location_id'));
         $this->set('_serialize', ['salesInvoice']);
     }	
 
@@ -275,6 +278,7 @@ public function edit($id = null)
 		
 		$company_id=$this->Auth->User('session_company_id');
 		$stateDetails=$this->Auth->User('session_company');
+		$location_id=$this->Auth->User('session_location_id');
 		$state_id=$stateDetails->state_id;
 		$roundOffId = $this->SalesInvoices->SalesInvoiceRows->Ledgers->find()
 		->where(['Ledgers.company_id'=>$company_id, 'Ledgers.round_off'=>1])->first();
@@ -300,19 +304,20 @@ public function edit($id = null)
 				$deleteResult = $deleteItemLedger->delete()
 					->where(['sales_invoice_id' => $salesInvoice->id])
 					->execute(); 
-					
+					$exactRate=$sales_invoice_row->taxable_value/$sales_invoice_row->quantity;
 					 $stockData = $this->SalesInvoices->ItemLedgers->query();
-						$stockData->insert(['item_id', 'transaction_date','quantity', 'rate', 'amount', 'status', 'company_id', 'sales_invoice_id', 'sales_invoice_row_id'])
+						$stockData->insert(['item_id', 'transaction_date','quantity', 'rate', 'amount', 'status', 'company_id', 'sales_invoice_id', 'sales_invoice_row_id', 'location_id'])
 								->values([
 								'item_id' => $sales_invoice_row->item_id,
 								'transaction_date' => $salesInvoice->transaction_date,
 								'quantity' => $sales_invoice_row->quantity,
-								'rate' => $sales_invoice_row->rate,
-								'amount' => $sales_invoice_row->net_amount,
+								'rate' => $exactRate,
+								'amount' => $sales_invoice_row->taxable_value,
 								'status' => 'out',
 								'company_id' => $salesInvoice->company_id,
 								'sales_invoice_id' => $salesInvoice->id,
-								'sales_invoice_row_id' => $sales_invoice_row->id
+								'sales_invoice_row_id' => $sales_invoice_row->id,
+								'location_id'=>$salesInvoice->location_id
 								])
 						->execute();
 			}
@@ -433,11 +438,11 @@ public function edit($id = null)
 		}
 		
 		$items = $this->SalesInvoices->SalesInvoiceRows->Items->find()
-					->where(['Items.company_id'=>$company_id])
+					->where(['Items.company_id'=>$company_id, 'Items.location_id'=>$location_id])
 					->contain(['FirstGstFigures', 'SecondGstFigures', 'Units']);
 		$itemOptions=[];
 		foreach($items as $item){
-			$itemOptions[]=['text'=>$item->item_code.' '.$item->name, 'value'=>$item->id, 'first_gst_figure_id'=>$item->first_gst_figure_id, 'gst_amount'=>$item->gst_amount, 'second_gst_figure_id'=>$item->second_gst_figure_id, 'FirstGstFigure'=>$item->FirstGstFigures->tax_percentage, 'SecondGstFigure'=>$item->SecondGstFigures->tax_percentage];
+			$itemOptions[]=['text'=>$item->item_code.' '.$item->name, 'value'=>$item->id, 'first_gst_figure_id'=>$item->first_gst_figure_id, 'gst_amount'=>$item->gst_amount, 'sales_rate'=>$item->sales_rate, 'second_gst_figure_id'=>$item->second_gst_figure_id, 'FirstGstFigure'=>$item->FirstGstFigures->tax_percentage, 'SecondGstFigure'=>$item->SecondGstFigures->tax_percentage];
 		}
 		
 	
@@ -485,7 +490,7 @@ public function edit($id = null)
         }
         $gstFigures = $this->SalesInvoices->GstFigures->find('list')
 						->where(['company_id'=>$company_id]);
-        $this->set(compact('salesInvoice', 'companies', 'customerOptions', 'gstFigures', 'voucher_no','company_id','itemOptions','state_id', 'Accountledgers', 'partyOptions'));
+        $this->set(compact('salesInvoice', 'companies', 'customerOptions', 'gstFigures', 'voucher_no','company_id','itemOptions','state_id', 'Accountledgers', 'partyOptions', 'location_id'));
         $this->set('_serialize', ['salesInvoice']);
     }	
 	
@@ -538,10 +543,11 @@ public function salesInvoiceBill($id=null)
 	    $this->viewBuilder()->layout('');
 		$company_id=$this->Auth->User('session_company_id');
 		$stateDetails=$this->Auth->User('session_company');
+		$location_id=$this->Auth->User('session_location_id');
 		$state_id=$stateDetails->state_id;
 		
 		$items = $this->SalesInvoices->SalesInvoiceRows->Items->find()
-					->where(['Items.company_id'=>$company_id, 'Items.id'=>$itemId])
+					->where(['Items.company_id'=>$company_id, 'Items.location_id'=>$location_id, 'Items.id'=>$itemId])
 					->contain(['Units'])->first();
 					$itemUnit=$items->unit->name;
 		
