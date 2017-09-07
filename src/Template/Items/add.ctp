@@ -1,20 +1,4 @@
 <?php
-// sample data to encode
-			$data_to_encode = 'BLAHBLAH01234';
-				
-			$barcode=$this->barcode;
-			// Generate Barcode data
-			$barcode->barcode();
-			$barcode->setType('C128');
-			$barcode->setCode($data_to_encode);
-			$barcode->setSize(80,200);
-				
-			// Generate filename            
-			$random = rand(0,1000000);
-			$file = 'img/barcode/code_'.$random.'.png';
-				
-			// Generates image file on server            
-			$this->barcode->writeBarcodeFile($file);
 /**
  * @Author: PHP Poets IT Solutions Pvt. Ltd.
  */
@@ -30,7 +14,7 @@ $this->set('title', 'Create Item');
 				</div>
 			</div>
 			<div class="portlet-body">
-				<?= $this->Form->create($item) ?>
+				<?= $this->Form->create($item,['onsubmit'=>'return checkValidation()','allow_to_submit'=>'0','id'=>'CreateItem']) ?>
 				<div class="row">
 				
 					<div class="col-md-6">
@@ -106,6 +90,14 @@ $this->set('title', 'Create Item');
 								</div>
 							</div>
 						</div>
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label>Sales Rate </label>
+									<?php echo $this->Form->control('sales_rate',['class'=>'form-control input-sm','label'=>false,'placeholder'=>'Sales Rate','required'=>'required']); ?>
+								</div>
+							</div>
+						</div>
 						<span class="caption-subject bold " style="float:center;">Gst Rate</span><hr style="margin: 6px 0;">
 						<div class="row" >
 							<div class="col-md-3">
@@ -151,7 +143,7 @@ $this->set('title', 'Create Item');
 									<div class="radio-list">
 										<div class="radio-inline" style="padding-left: 0px;">
 											<?php echo $this->Form->radio(
-											'kind_of_gst',
+											'barcode_decision',
 											[
 												['value' => '1', 'text' => 'Let system  generate barcode','class' => 'barcode_decision','checked' => 'checked'],
 												['value' => '2', 'text' => 'Already have barcode','class' => 'barcode_decision']
@@ -166,7 +158,7 @@ $this->set('title', 'Create Item');
 							<div class="col-md-4">
 								<div class="form-group item_code_div" style="display:none;">
 									<label>Item Code </label>
-									<?php echo $this->Form->control('item_code',['class'=>'form-control input-sm','label'=>false, 'placeholder'=>'Item Code', 'type'=>'text']); ?>
+									<?php echo $this->Form->control('provided_item_code',['class'=>'form-control input-sm','label'=>false, 'placeholder'=>'Item Code', 'type'=>'text']); ?>
 								</div>
 							</div>
 						</div>
@@ -261,13 +253,15 @@ $this->set('title', 'Create Item');
 			var gst_type = $(this).val();
 			if(gst_type=='fix')
 			{
-				$('.removeAddRequired').removeAttr('required');
-			    $('.hide_gst').hide();
+				$('.hide_gst').hide();
+				$('input[name=gst_amount]').removeAttr('required');
+				$('select[name=second_gst_figure_id]').removeAttr('required');
 			}
 			else
 			{
-			   $('.hide_gst').show();
-			   $('.removeAddRequired').attr('required', 'true');
+				$('.hide_gst').show();
+				$('input[name=gst_amount]').attr('required','required');
+				$('select[name=second_gst_figure_id]').attr('required','required');
 			}
 		});
 		
@@ -276,15 +270,49 @@ $this->set('title', 'Create Item');
 			if(barcode_decision=='1')
 			{
 			  $('.item_code_div').hide();
-			  $('input[name=item_code]').removeAttr('required');
+			  $('input[name=provided_item_code]').removeAttr('required');
 			}
 			else
 			{
 			  $('.item_code_div').show();
-			  $('input[name=item_code]').attr('required','required');
+			  $('input[name=provided_item_code]').attr('required','required');
 			}
 		});
-		ComponentsPickers.init();
+
+		
+		
+		check_itemCode_uniqueness();
+		$('input[name=provided_item_code]').die().live('blur',function(){
+			check_itemCode_uniqueness();
+		});
+		function check_itemCode_uniqueness(){
+			var barcode_decision = $('input[name=barcode_decision]').val();
+			if(barcode_decision=='1'){
+				$('#CreateItem').attr('allow_to_submit','1');
+			}else{
+				var provided_item_code = $('input[name=provided_item_code]').val();
+				if(!provided_item_code){
+					$('#CreateItem').attr('allow_to_submit','1');
+				}else{
+					$('#CreateItem').attr('allow_to_submit','0');
+					var url='".$this->Url->build(['controller'=>'Items','action'=>'checkUnique'])."';
+					url=url+'/'+provided_item_code;
+					
+					$.ajax({
+						url: url,
+						type: 'GET',
+					}).done(function(response) {
+						response = $.parseJSON(response);
+						if(response.is_unique=='no')
+						{
+							$('input[name=provided_item_code]').closest('.form-group').append('<span class=error_unique>Not Unique.</span>');
+						}
+					});
+				}
+			}
+		}
+		
+ComponentsPickers.init();
     });
 	";
 

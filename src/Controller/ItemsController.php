@@ -76,13 +76,6 @@ class ItemsController extends AppController
 		$this->request->data['company_id'] =$company_id;
 		if ($this->request->is('post')) {
 			$item = $this->Items->patchEntity($item, $this->request->getData());
-			//item code Increment
-			$last_item_code=$this->Items->find()->select(['item_code'])->order(['item_code' => 'DESC'])->first();
-			if($last_item_code){
-				$item->item_code=$last_item_code->item_code+1;
-			}else{
-				$item->item_code=1;
-			} 
 			$quantity = $this->request->data['quantity'];
 
 			$gst_type = $this->request->data['kind_of_gst'];
@@ -91,17 +84,24 @@ class ItemsController extends AppController
 				$first_gst_figure_id = $this->request->data['first_gst_figure_id'];
 				$this->request->data['second_gst_figure_id'] = $first_gst_figure_id;
 			}
-            if ($this->Items->save($item)) 
+			if($item->barcode_decision==1){
+				$item->item_code=strtoupper(uniqid());
+				$data_to_encode = $item->item_code;
+			}else{
+				$item->item_code=strtoupper($item->provided_item_code);
+				$data_to_encode = strtoupper($item->provided_item_code);
+			}
+			$item->sales_rate_update_on = $this->Auth->User('session_company')->books_beginning_from;
+            if ($this->Items->save($item))
 			{
 				$barcode = new BarcodeHelper(new \Cake\View\View());
-				// sample data to encode BLAHBLAH01234
-				$data_to_encode = str_pad($item->id, 13, '0', STR_PAD_LEFT);
+				
 					
 				// Generate Barcode data
 				$barcode->barcode();
 				$barcode->setType('C128');
 				$barcode->setCode($data_to_encode);
-				$barcode->setSize(80,200);
+				$barcode->setSize(40,100);
 					
 				// Generate filename     
 				$file = 'img/barcode/'.$item->id.'.png';
@@ -166,7 +166,7 @@ class ItemsController extends AppController
 				$item->second_gst_figure_id = $first_gst_figure_id;
 				$item->gst_amount           = '0';
 			}
-			//pr($item);exit;
+			$item->sales_rate_update_on = $this->Auth->User('session_company')->books_beginning_from;
 			if ($this->Items->save($item)) {
 				if($item->quantity>0)
 				{
@@ -279,4 +279,10 @@ class ItemsController extends AppController
         $this->set(compact('uplode_csv'));
         $this->set('_serialize', ['uplode_csv']);
     }
+	
+	public function checkUnique($item_code){
+		$data['is_unique'] = "no";
+		echo json_encode($data);
+		exit;
+	}
 }

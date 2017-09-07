@@ -10,10 +10,10 @@
         <li><?= $this->Html->link(__('New Credit Note'), ['action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Companies'), ['controller' => 'Companies', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New Company'), ['controller' => 'Companies', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('List Party Ledgers'), ['controller' => 'Ledgers', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New Party Ledger'), ['controller' => 'Ledgers', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Customers'), ['controller' => 'Customers', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New Customer'), ['controller' => 'Customers', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Gst Figures'), ['controller' => 'GstFigures', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Gst Figure'), ['controller' => 'GstFigures', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Credit Note Rows'), ['controller' => 'CreditNoteRows', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New Credit Note Row'), ['controller' => 'CreditNoteRows', 'action' => 'add']) ?></li>
     </ul>
@@ -25,11 +25,11 @@
             <tr>
                 <th scope="col"><?= $this->Paginator->sort('id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('voucher_no') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('sales_invoice_no') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('company_id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('transaction_date') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('cash_or_credit') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('customer_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('gst_figure_id') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('party_ledger_id') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('sales_ledger_id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('amount_before_tax') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('total_cgst') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('total_sgst') ?></th>
@@ -43,11 +43,11 @@
             <tr>
                 <td><?= $this->Number->format($creditNote->id) ?></td>
                 <td><?= $this->Number->format($creditNote->voucher_no) ?></td>
+                <td><?= h($creditNote->sales_invoice_no) ?></td>
                 <td><?= $creditNote->has('company') ? $this->Html->link($creditNote->company->name, ['controller' => 'Companies', 'action' => 'view', $creditNote->company->id]) : '' ?></td>
                 <td><?= h($creditNote->transaction_date) ?></td>
-                <td><?= h($creditNote->cash_or_credit) ?></td>
-                <td><?= $creditNote->has('customer') ? $this->Html->link($creditNote->customer->name, ['controller' => 'Customers', 'action' => 'view', $creditNote->customer->id]) : '' ?></td>
-                <td><?= $creditNote->has('gst_figure') ? $this->Html->link($creditNote->gst_figure->name, ['controller' => 'GstFigures', 'action' => 'view', $creditNote->gst_figure->id]) : '' ?></td>
+                <td><?= $creditNote->has('party_ledger') ? $this->Html->link($creditNote->party_ledger->name, ['controller' => 'Ledgers', 'action' => 'view', $creditNote->party_ledger->id]) : '' ?></td>
+                <td><?= $creditNote->has('sales_ledger') ? $this->Html->link($creditNote->sales_ledger->name, ['controller' => 'Ledgers', 'action' => 'view', $creditNote->sales_ledger->id]) : '' ?></td>
                 <td><?= $this->Number->format($creditNote->amount_before_tax) ?></td>
                 <td><?= $this->Number->format($creditNote->total_cgst) ?></td>
                 <td><?= $this->Number->format($creditNote->total_sgst) ?></td>

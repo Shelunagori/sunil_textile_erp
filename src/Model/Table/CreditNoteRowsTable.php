@@ -12,9 +12,6 @@ use Cake\Validation\Validator;
  * @property \App\Model\Table\CreditNotesTable|\Cake\ORM\Association\BelongsTo $CreditNotes
  * @property \App\Model\Table\ItemsTable|\Cake\ORM\Association\BelongsTo $Items
  * @property \App\Model\Table\GstFiguresTable|\Cake\ORM\Association\BelongsTo $GstFigures
- * @property \App\Model\Table\InputCgstLedgersTable|\Cake\ORM\Association\BelongsTo $InputCgstLedgers
- * @property \App\Model\Table\InputSgstLedgersTable|\Cake\ORM\Association\BelongsTo $InputSgstLedgers
- * @property \App\Model\Table\InputIgstLedgersTable|\Cake\ORM\Association\BelongsTo $InputIgstLedgers
  *
  * @method \App\Model\Entity\CreditNoteRow get($primaryKey, $options = [])
  * @method \App\Model\Entity\CreditNoteRow newEntity($data = null, array $options = [])
@@ -53,18 +50,12 @@ class CreditNoteRowsTable extends Table
             'foreignKey' => 'gst_figure_id',
             'joinType' => 'INNER'
         ]);
-        $this->belongsTo('InputCgstLedgers', [
-            'foreignKey' => 'input_cgst_ledger_id',
+		
+		$this->belongsTo('Ledgers', [
+            'foreignKey' => 'ledger_id',
             'joinType' => 'INNER'
         ]);
-        $this->belongsTo('InputSgstLedgers', [
-            'foreignKey' => 'input_sgst_ledger_id',
-            'joinType' => 'INNER'
-        ]);
-        $this->belongsTo('InputIgstLedgers', [
-            'foreignKey' => 'input_igst_ledger_id',
-            'joinType' => 'INNER'
-        ]);
+		
     }
 
     /**
@@ -109,9 +100,6 @@ class CreditNoteRowsTable extends Table
         $rules->add($rules->existsIn(['credit_note_id'], 'CreditNotes'));
         $rules->add($rules->existsIn(['item_id'], 'Items'));
         $rules->add($rules->existsIn(['gst_figure_id'], 'GstFigures'));
-        $rules->add($rules->existsIn(['input_cgst_ledger_id'], 'InputCgstLedgers'));
-        $rules->add($rules->existsIn(['input_sgst_ledger_id'], 'InputSgstLedgers'));
-        $rules->add($rules->existsIn(['input_igst_ledger_id'], 'InputIgstLedgers'));
 
         return $rules;
     }

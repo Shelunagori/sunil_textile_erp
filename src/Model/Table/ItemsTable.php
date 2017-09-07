@@ -115,14 +115,8 @@ class ItemsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['unit_id'], 'Units'));
-        //$rules->add($rules->existsIn(['stock_group_id'], 'StockGroups'));
-		$rules->add($rules->existsIn(['gst_figure_id'], 'GstFigures'));
-        $rules->add($rules->existsIn(['output_cgst_ledger_id'], 'output_cgst_ledger'));
-        $rules->add($rules->existsIn(['output_sgst_ledger_id'], 'output_sgst_ledger'));
-        $rules->add($rules->existsIn(['output_igst_ledger_id'], 'output_igst_ledger'));
-		$rules->add($rules->existsIn(['Input_cgst_ledger_id'], 'Input_cgst_ledger'));
-        $rules->add($rules->existsIn(['Input_sgst_ledger_id'], 'Input_sgst_ledger'));
-        $rules->add($rules->existsIn(['Input_igst_ledger_id'], 'input_igst_ledger'));
+		$rules->add($rules->existsIn(['first_gst_figure_id'], 'FirstGstFigures'));
+		$rules->add($rules->existsIn(['second_gst_figure_id'], 'SecondGstFigures'));
         return $rules;
     }
 }

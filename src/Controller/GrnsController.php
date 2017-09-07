@@ -108,9 +108,12 @@ class GrnsController extends AppController
 					->contain(['GstFigures']);
 				
 		$itemOptions=[];
-		foreach($items as $item){
-			$itemOptions[]=['text' =>$item->name, 'value' => $item->id ,'gst_figure_id'=>$item->gst_figure_id, 'gst_figure_tax_percentage'=>$item->gst_figure->tax_percentage,'gst_figure_tax_name'=>$item->gst_figure->name, 'output_cgst_ledger_id'=>$item->output_cgst_ledger_id, 'output_sgst_ledger_id'=>$item->output_sgst_ledger_id, 'output_igst_ledger_id'=>$item->output_igst_ledger_id];
+		
+		foreach($items as $item)
+		{
+			$itemOptions[]=['text' =>$item->name, 'value' => $item->id, 'gst_figure_tax_name'=>@$item->gst_figure->name];
 		}
+		
 		$Voucher_no = $this->Grns->find()->select(['voucher_no'])->where(['company_id'=>$company_id])->order(['voucher_no' => 'DESC'])->first();
 		
 		if($Voucher_no)
@@ -154,6 +157,13 @@ class GrnsController extends AppController
 				foreach($grn->grn_rows as $grn_row)
 				{
 					
+					$query = $this->Grns->Items->query();
+					$query->update()
+							->set(['Items.sales_rate' => $grn_row->sale_rate])
+							->where(['Items.id' =>$grn_row->item_id])
+							->execute();
+			
+					
 					$item_ledger = $this->Grns->ItemLedgers->newEntity();
 					$item_ledger->transaction_date = $grn->transaction_date;
 					$item_ledger->grn_id = $grn->id;
@@ -183,7 +193,7 @@ class GrnsController extends AppController
 				
 		$itemOptions=[];
 		foreach($items as $item){
-			$itemOptions[]=['text' =>$item->name, 'value' => $item->id ,'gst_figure_id'=>$item->gst_figure_id, 'gst_figure_tax_percentage'=>$item->gst_figure->tax_percentage,'gst_figure_tax_name'=>$item->gst_figure->name, 'output_cgst_ledger_id'=>$item->output_cgst_ledger_id, 'output_sgst_ledger_id'=>$item->output_sgst_ledger_id, 'output_igst_ledger_id'=>$item->output_igst_ledger_id];
+			$itemOptions[]=['text' =>$item->name, 'value' => $item->id ,'gst_figure_id'=>$item->gst_figure_id, 'gst_figure_tax_name'=>@$item->gst_figure->name];
 		}
         //$locations = $this->Grns->Locations->find('list', ['limit' => 200]);
         $companies = $this->Grns->Companies->find('list');

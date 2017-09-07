@@ -14,15 +14,16 @@ $this->set('title', 'Progress Csv');
 			</div>
 			<div class="portlet-body">
 				<?= $this->Form->create($FirstTampGrnRecords,['enctype'=>'multipart/form-data']) ?>
-				<div class="row">
+				<div class="row" id="Process_div">
 				    <div class="col-md-3"></div>
 				    <div class="col-md-6">
-					    <div class="progress progress-striped active">
+					    <div class="progress progress-striped active" style=" margin-bottom: 2px; ">
 							<div class="progress-bar progress-bar-danger progress_bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="500" style="width: 0%">
 								<span class="sr-only">
 								80% Complete (danger) </span>
 							</div>
 						</div>
+						<div id="Processed_text">0% Processed</div>
 					</div>
 					<div class="col-md-3"></div>
 				</div>
@@ -48,14 +49,15 @@ $this->set('title', 'Progress Csv');
 				type: 'GET',
 			}).done(function(response) {  
 			    response = $.parseJSON(response);
-			    
 				$('.progress_bar').css('width',response.percantage+'%');
+				$('#Processed_text').html(response.percantage+'% Progressed');
 				if(response.status=='true')
 				{
 					process_data();
 				}
 				else
 				{ 
+					$('#Process_div').hide();
 					$('.show_link').show();
 				}
 				

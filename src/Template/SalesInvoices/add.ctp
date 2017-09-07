@@ -270,6 +270,7 @@ $this->set('title', 'Create Sales Invoice');
 			//dataType: 'text'
 		}).done(function(response) {
 		var fetch=$.parseJSON(response);
+		
 		var text=fetch.text;
 		var type=fetch.type;
 		itemQ.find('.itemQty').html(text);
@@ -355,16 +356,16 @@ $this->set('title', 'Create Sales Invoice');
 	{
 		var tr=$('#sample_table tbody tr.main_tr').clone();
 		$('#main_table tbody#main_tbody').append(tr);
+		//$('#main_table').find('.attrGet').select2();
 		//$('.attrGet').select2();
 		rename_rows();
 		forward_total_amount();
-		
 	}
 	function rename_rows()
 	{
 		var i=0;
 		$('#main_table tbody#main_tbody tr.main_tr').each(function(){ 
-			$(this).find('.attrGet').attr({name:'sales_invoice_rows['+i+'][item_id]',id:'sales_invoice_rows['+i+'][item_id]'});
+			$(this).find('.attrGet').select2().attr({name:'sales_invoice_rows['+i+'][item_id]',id:'sales_invoice_rows['+i+'][item_id]'});
 		  $(this).find('.quantity').attr({name:'sales_invoice_rows['+i+'][quantity]',id:'sales_invoice_rows['+i+'][quantity]'});
 		  $(this).find('.rate').attr({name:'sales_invoice_rows['+i+'][rate]',id:'sales_invoice_rows['+i+'][rate]'});
 		  $(this).find('.discount').attr({name:'sales_invoice_rows['+i+'][discount_percentage]',id:'sales_invoice_rows['+i+'][discount_percentage]'});
@@ -425,7 +426,7 @@ $this->set('title', 'Create Sales Invoice');
 				var discountAmount  = $(this).find('.discountAmount').val();
 				var item_gst_amount=discountAmount/quantity;
 				
-				if(item_gst_amount<gst_ietmamount)
+				if(item_gst_amount<=gst_ietmamount)
 				{
 					var first_gst_figure_tax_percentage=$('option:selected', this).attr('FirstGstFigure');
 					var first_gst_figure_tax_name=$('option:selected', this).attr('FirstGstFigure');
@@ -435,7 +436,7 @@ $this->set('title', 'Create Sales Invoice');
 					$(this).closest('tr').find('.gst_figure_tax_percentage').val(first_gst_figure_tax_percentage);
 					$(this).closest('tr').find('.gst_figure_tax_name').val(first_gst_figure_tax_name);
                 }
-				else if(item_gst_amount>=gst_ietmamount)
+				else if(item_gst_amount>gst_ietmamount)
 				{
 					var second_gst_figure_tax_percentage=$('option:selected', this).attr('SecondGstFigure');
 					var second_gst_figure_tax_name=$('option:selected', this).attr('SecondGstFigure');
@@ -454,8 +455,8 @@ $this->set('title', 'Create Sales Invoice');
 				if(!discountAmount){discountAmount=0;}
 				var divideValue=100;
 				var divideval=divideValue+gst_figure_tax_percentage;
-				var gstValue=discountAmount/divideval;
-	            var gstAmount=discountAmount-gstValue;
+				var gstAmount=(discountAmount*100)/divideval;
+	            var gstValue=(gstAmount*gst_figure_tax_percentage)/100;
 				$(this).find('.gstAmount').val(gstAmount.toFixed(2));
 				$(this).find('.gstValue').val(gstValue.toFixed(2));
 

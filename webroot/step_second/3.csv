@@ -1,0 +1,10 @@
+Item Code,Quantity,Purchase Rate,Sales Rate,Addition Item Data Required, item name, hsn code, unit, gst rate fixed or fluid, first gst rate, amount in refence to gst rate, second gst rate  
+QWERT1,98,850,1100, ,,,,,,,
+QWERT2,30,900,1200,Yes ,item 2,hsn2,Nos,fixed,12,,
+QWERT3,118,950,1300,Yes ,item 3,hsn3,Nos,fluid,5,1000,12
+QWERT4,102,1000,1400,Yes ,item 4,hsn4,Nos,fixed,12,,
+QWERT5,112,1050,1500,Yes ,item 5,hsn5,Nos,fluid,5,1000,12
+QWERT6,122,1100,1600,Yes ,item 6,hsn6,Nos,fixed,12,,
+QWERT7,132,1150,1700,Yes ,item 7,hsn7,Nos,fluid,5,1000,12
+QWERT8,142,1200,1800,Yes ,item 8,hsn8,Nos,fixed,12,,
+QWERT9,152,1250,1900,Yes ,item 9,hsn9,Nos,fluid,5,1000,12
