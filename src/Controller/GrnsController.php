@@ -156,13 +156,16 @@ class GrnsController extends AppController
 				$query->delete()->where(['grn_id'=> $id,'company_id'=>$company_id])->execute();
 				foreach($grn->grn_rows as $grn_row)
 				{
+					$item = $this->Grns->GrnRows->Items->find()->where(['Items.id'=>$grn_row->item_id])->first();
 					
-					$query = $this->Grns->GrnRows->Items->query();
-					$query->update()
-							->set(['Items.sales_rate' => $grn_row->sale_rate])
-							->where(['Items.id' =>$grn_row->item_id])
-							->execute();
-			
+					if($grn->transaction_date <= date("Y-m-d",strtotime($item->sales_rate_update_on)))
+					{
+						$query = $this->Grns->GrnRows->Items->query();
+						$query->update()
+								->set(['Items.sales_rate' => $grn_row->sale_rate])
+								->where(['Items.id' =>$grn_row->item_id])
+								->execute();
+			        }
 					
 					$item_ledger = $this->Grns->ItemLedgers->newEntity();
 					$item_ledger->transaction_date = $grn->transaction_date;
