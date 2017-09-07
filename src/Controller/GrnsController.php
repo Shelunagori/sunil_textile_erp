@@ -61,7 +61,8 @@ class GrnsController extends AppController
 		$company_id=$this->Auth->User('session_company_id');
         $grn = $this->Grns->newEntity();
 		$this->request->data['company_id'] =$company_id;
-        if ($this->request->is('post')) {
+        if ($this->request->is('post')) 
+		{
 			$grn = $this->Grns->patchEntity($grn, $this->request->getData());
 			$grn->transaction_date = date("Y-m-d",strtotime($this->request->getData()['transaction_date']));
 			$Voucher_no = $this->Grns->find()->select(['voucher_no'])->where(['company_id'=>$company_id])->order(['voucher_no' => 'DESC'])->first();
@@ -107,9 +108,12 @@ class GrnsController extends AppController
 					->contain(['GstFigures']);
 				
 		$itemOptions=[];
-		foreach($items as $item){
-			$itemOptions[]=['text' =>$item->name, 'value' => $item->id ,'gst_figure_id'=>$item->gst_figure_id, 'gst_figure_tax_percentage'=>$item->gst_figure->tax_percentage,'gst_figure_tax_name'=>$item->gst_figure->name, 'output_cgst_ledger_id'=>$item->output_cgst_ledger_id, 'output_sgst_ledger_id'=>$item->output_sgst_ledger_id, 'output_igst_ledger_id'=>$item->output_igst_ledger_id];
+		
+		foreach($items as $item)
+		{
+			$itemOptions[]=['text' =>$item->name, 'value' => $item->id, 'gst_figure_tax_name'=>@$item->gst_figure->name];
 		}
+		
 		$Voucher_no = $this->Grns->find()->select(['voucher_no'])->where(['company_id'=>$company_id])->order(['voucher_no' => 'DESC'])->first();
 		
 		if($Voucher_no)
@@ -146,11 +150,22 @@ class GrnsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $grn = $this->Grns->patchEntity($grn, $this->request->getData());
 			$grn->transaction_date = date("Y-m-d",strtotime($this->request->getData()['transaction_date']));
-            if ($this->Grns->save($grn)) {
+            if ($this->Grns->save($grn)) 
+			{
 				$query = $this->Grns->ItemLedgers->query();
 				$query->delete()->where(['grn_id'=> $id,'company_id'=>$company_id])->execute();
 				foreach($grn->grn_rows as $grn_row)
 				{
+					$item = $this->Grns->GrnRows->Items->find()->where(['Items.id'=>$grn_row->item_id])->first();
+					
+					if($grn->transaction_date <= date("Y-m-d",strtotime($item->sales_rate_update_on)))
+					{
+						$query = $this->Grns->GrnRows->Items->query();
+						$query->update()
+								->set(['Items.sales_rate' => $grn_row->sale_rate])
+								->where(['Items.id' =>$grn_row->item_id])
+								->execute();
+			        }
 					
 					$item_ledger = $this->Grns->ItemLedgers->newEntity();
 					$item_ledger->transaction_date = $grn->transaction_date;
@@ -181,7 +196,7 @@ class GrnsController extends AppController
 				
 		$itemOptions=[];
 		foreach($items as $item){
-			$itemOptions[]=['text' =>$item->name, 'value' => $item->id ,'gst_figure_id'=>$item->gst_figure_id, 'gst_figure_tax_percentage'=>$item->gst_figure->tax_percentage,'gst_figure_tax_name'=>$item->gst_figure->name, 'output_cgst_ledger_id'=>$item->output_cgst_ledger_id, 'output_sgst_ledger_id'=>$item->output_sgst_ledger_id, 'output_igst_ledger_id'=>$item->output_igst_ledger_id];
+			$itemOptions[]=['text' =>$item->name, 'value' => $item->id ,'gst_figure_id'=>$item->gst_figure_id, 'gst_figure_tax_name'=>@$item->gst_figure->name];
 		}
         //$locations = $this->Grns->Locations->find('list', ['limit' => 200]);
         $companies = $this->Grns->Companies->find('list');

@@ -72,17 +72,19 @@ class ItemsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $item = $this->Items->newEntity();
-		$company_id=$this->Auth->User('session_company_id');
+		$company_id  = $this->Auth->User('session_company_id');
+		$location_id = $this->Auth->User('session_location_id');
 		$this->request->data['company_id'] =$company_id;
 		if ($this->request->is('post')) {
 			$item = $this->Items->patchEntity($item, $this->request->getData());
 			$quantity = $this->request->data['quantity'];
 
-			$gst_type = $this->request->data['kind_of_gst'];
+			$gst_type = $item->kind_of_gst;
 			if($gst_type=='fix')
 			{
-				$first_gst_figure_id = $this->request->data['first_gst_figure_id'];
-				$this->request->data['second_gst_figure_id'] = $first_gst_figure_id;
+				$first_gst_figure_id        = $item->first_gst_figure_id;
+				$item->second_gst_figure_id = $first_gst_figure_id;
+				$item->gst_amount           = 0;
 			}
 			if($item->barcode_decision==1){
 				$item->item_code=strtoupper(uniqid());
@@ -91,7 +93,7 @@ class ItemsController extends AppController
 				$item->item_code=strtoupper($item->provided_item_code);
 				$data_to_encode = strtoupper($item->provided_item_code);
 			}
-			
+			$item->sales_rate_update_on = $this->Auth->User('session_company')->books_beginning_from;
             if ($this->Items->save($item))
 			{
 				$barcode = new BarcodeHelper(new \Cake\View\View());
@@ -122,6 +124,7 @@ class ItemsController extends AppController
 					$itemLedger->status             = 'in';
 					$itemLedger->is_opening_balance = 'yes';
 					$itemLedger->company_id         = $company_id;
+					$itemLedger->location_id        = $location_id;
 					$this->Items->ItemLedgers->save($itemLedger);
 				}
 				
@@ -156,17 +159,18 @@ class ItemsController extends AppController
 			}]
         ]);
 		$company_id=$this->Auth->User('session_company_id');
+		$location_id = $this->Auth->User('session_location_id ');
         if ($this->request->is(['patch', 'post', 'put'])) {
             $item = $this->Items->patchEntity($item, $this->request->getData());
 			
-			$gst_type = $this->request->data['kind_of_gst'];
+			$gst_type = $item->kind_of_gst;
 			if($gst_type=='fix')
 			{
-				$first_gst_figure_id = $item->first_gst_figure_id;
+				$first_gst_figure_id        = $item->first_gst_figure_id;
 				$item->second_gst_figure_id = $first_gst_figure_id;
-				$item->gst_amount           = '0';
+				$item->gst_amount           = 0;
 			}
-			//pr($item);exit;
+			$item->sales_rate_update_on = $this->Auth->User('session_company')->books_beginning_from;
 			if ($this->Items->save($item)) {
 				if($item->quantity>0)
 				{
@@ -185,6 +189,7 @@ class ItemsController extends AppController
 					$itemLedger->status             = 'in';
 					$itemLedger->is_opening_balance = 'yes';
 					$itemLedger->company_id         = $company_id;
+					$itemLedger->location_id        = $location_id;
 					$this->Items->ItemLedgers->save($itemLedger);
 				}
 				$this->Flash->success(__('The item has been saved.'));

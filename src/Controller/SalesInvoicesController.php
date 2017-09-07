@@ -174,9 +174,9 @@ class SalesInvoicesController extends AppController
 						->execute();
 			   }
 			 }
-		   }
-		   else if($salesInvoice->is_interstate=='1'){
-		   foreach($salesInvoice->sales_invoice_rows as $sales_invoice_row)
+			}
+			else if($salesInvoice->is_interstate=='1'){
+				foreach($salesInvoice->sales_invoice_rows as $sales_invoice_row)
 			   {
 			   $gstLedgers = $this->SalesInvoices->SalesInvoiceRows->Ledgers->find()
 							->where(['Ledgers.gst_figure_id' =>$sales_invoice_row->gst_figure_id,'Ledgers.company_id'=>$company_id, 'Ledgers.input_output'=>'output', 'Ledgers.gst_type'=>'IGST'])->first();
@@ -208,9 +208,10 @@ class SalesInvoicesController extends AppController
 		}
 		
 		$items = $this->SalesInvoices->SalesInvoiceRows->Items->find()
-					->where(['Items.company_id'=>$company_id, 'Items.location_id'=>$location_id])
+					->where(['Items.company_id'=>$company_id])
 					->contain(['FirstGstFigures', 'SecondGstFigures', 'Units']);
 		$itemOptions=[];
+		
 		foreach($items as $item){
 			$itemOptions[]=['text'=>$item->item_code.' '.$item->name, 'value'=>$item->id, 'first_gst_figure_id'=>$item->first_gst_figure_id, 'gst_amount'=>$item->gst_amount, 'sales_rate'=>$item->sales_rate, 'second_gst_figure_id'=>$item->second_gst_figure_id, 'FirstGstFigure'=>$item->FirstGstFigures->tax_percentage, 'SecondGstFigure'=>$item->SecondGstFigures->tax_percentage];
 		}
@@ -531,7 +532,8 @@ public function salesInvoiceBill($id=null)
 			}
 		}
 		}
-	
+	pr($invoiceBills->toArray());
+	exit;
 		
 		$this->set(compact('invoiceBills'));
         $this->set('_serialize', ['invoiceBills']);
@@ -547,7 +549,7 @@ public function salesInvoiceBill($id=null)
 		$state_id=$stateDetails->state_id;
 		
 		$items = $this->SalesInvoices->SalesInvoiceRows->Items->find()
-					->where(['Items.company_id'=>$company_id, 'Items.location_id'=>$location_id, 'Items.id'=>$itemId])
+					->where(['Items.company_id'=>$company_id, 'Items.id'=>$itemId])
 					->contain(['Units'])->first();
 					$itemUnit=$items->unit->name;
 		
@@ -579,7 +581,7 @@ public function salesInvoiceBill($id=null)
 				   $available_stock=$itemLedger->total_in;
 				   $stock_issue=$itemLedger->total_out;
 				 @$remaining=number_format($available_stock-$stock_issue, 2);
-				 $stock='Current stock is '. $remaining. ' ' .$itemUnit;
+				 $stock='current stock is '. $remaining. ' ' .$itemUnit;
 				 if($remaining>0)
 				 {
 				 $stockType='false';
@@ -594,7 +596,7 @@ public function salesInvoiceBill($id=null)
 		  else{
 		 
 				 @$remaining=0;
-				 $stock='Current stock is '. $remaining. ' ' .$itemUnit;
+				 $stock='current stock is '. $remaining. ' ' .$itemUnit;
 				 if($remaining>0)
 				 {
 				 $stockType='false';

@@ -19,7 +19,7 @@ $this->set('title', 'Edit');
 					<div class="col-md-3">
 						<div class="form-group">
 							<label>Voucher No :</label>&nbsp;&nbsp;
-							<?php echo $this->Form->control('voucher_no',['type'=>'text','readonly','label'=>false]); ?>
+							<?= h('#'.str_pad($grn->voucher_no, 4, '0', STR_PAD_LEFT)) ?>
 						</div>
 					</div>
 					<div class="col-md-3">
@@ -30,7 +30,7 @@ $this->set('title', 'Edit');
 					</div>
 					<div class="col-md-3">
 						<div class="form-group">
-							<label>Reference No.</label>
+							<label>Reference No</label>
 							<?php echo $this->Form->control('reference_no', ['label' => false,'class' => 'form-control input-sm ','placeholder'=>'Reference No.']); ?>
 						</div>	
 					</div>
@@ -50,10 +50,13 @@ $this->set('title', 'Edit');
 								</tr>
 							</thead>
 							<tbody id='main_tbody' class="tab">
-								<?php foreach($grn->grn_rows as $grnrow):?>
+								<?php $i=0; foreach($grn->grn_rows as $grnrow):?>
 								<tr class="main_tr" class="tab">
 									<td width="15%">
-										<?php echo $this->Form->input('item_id', ['empty'=>'---Select---','options'=>$itemOptions,'label' => false,'class' => 'form-control input-medium ','required'=>'required','value'=>$grnrow->item_id]); ?>
+										<?php echo $this->Form->input('item_id', ['empty'=>'---Select---','options'=>$itemOptions,'label' => false,'class' => 'form-control input-medium ','required'=>'required','value'=>$grnrow->item_id]); 
+										
+										echo $this->Form->input('grn_rows.'.$i.'.id',['type'=>'hidden','value'=>$grnrow->id]);
+										?>
 									</td>
 									<td width="25%" >
 										<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm ','placeholder'=>'Qty','required','value'=>$grnrow->quantity]); ?>
@@ -68,7 +71,7 @@ $this->set('title', 'Edit');
 										<a class="btn btn-danger delete-tr btn-xs" href="#" role="button" style="margin-bottom: 5px;"><i class="fa fa-times"></i></a>
 									</td>
 								</tr>
-								<?php endforeach; ?>
+								<?php endforeach; $i++;?>
 							</tbody>
 							<tfoot>
 								<tr>
