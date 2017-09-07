@@ -54,7 +54,7 @@ class CreditNotesTable extends Table
             'joinType' => 'INNER'
         ]);
 		
-        $this->belongsTo('SalesLedgers', [
+		$this->belongsTo('SalesLedgers', [
 			'className' => 'Ledgers',
             'foreignKey' => 'sales_ledger_id',
             'joinType' => 'INNER'

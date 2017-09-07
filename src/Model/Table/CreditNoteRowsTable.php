@@ -50,6 +50,12 @@ class CreditNoteRowsTable extends Table
             'foreignKey' => 'gst_figure_id',
             'joinType' => 'INNER'
         ]);
+		
+		$this->belongsTo('Ledgers', [
+            'foreignKey' => 'ledger_id',
+            'joinType' => 'INNER'
+        ]);
+		
     }
 
     /**
