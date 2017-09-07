@@ -73,6 +73,8 @@ class SalesInvoicesController extends AppController
 			$voucher_no=1;
 		} 		
 		
+		
+		
         if ($this->request->is('post')) {
 		    $transaction_date=date('Y-m-d', strtotime($this->request->data['transaction_date']));
             $salesInvoice = $this->SalesInvoices->patchEntity($salesInvoice, $this->request->getData());
@@ -81,7 +83,9 @@ class SalesInvoicesController extends AppController
 			{
 				$salesInvoice->customer_id=0;
 			}
-			
+		
+		pr($salesInvoice->toArray());
+		exit;
 		
 		   if ($this->SalesInvoices->save($salesInvoice)) {
 		      foreach($salesInvoice->sales_invoice_rows as $sales_invoice_row)
@@ -299,12 +303,12 @@ public function edit($id = null)
             $salesInvoice->transaction_date=$transaction_date;
 			
 			if ($this->SalesInvoices->save($salesInvoice)) {
-			foreach($salesInvoice->sales_invoice_rows as $sales_invoice_row)
-			   {
-			   $deleteItemLedger = $this->SalesInvoices->ItemLedgers->query();
+			 $deleteItemLedger = $this->SalesInvoices->ItemLedgers->query();
 				$deleteResult = $deleteItemLedger->delete()
 					->where(['sales_invoice_id' => $salesInvoice->id])
-					->execute(); 
+					->execute();
+			foreach($salesInvoice->sales_invoice_rows as $sales_invoice_row)
+			   {
 					$exactRate=$sales_invoice_row->taxable_value/$sales_invoice_row->quantity;
 					 $stockData = $this->SalesInvoices->ItemLedgers->query();
 						$stockData->insert(['item_id', 'transaction_date','quantity', 'rate', 'amount', 'status', 'company_id', 'sales_invoice_id', 'sales_invoice_row_id', 'location_id'])
@@ -439,7 +443,7 @@ public function edit($id = null)
 		}
 		
 		$items = $this->SalesInvoices->SalesInvoiceRows->Items->find()
-					->where(['Items.company_id'=>$company_id, 'Items.location_id'=>$location_id])
+					->where(['Items.company_id'=>$company_id])
 					->contain(['FirstGstFigures', 'SecondGstFigures', 'Units']);
 		$itemOptions=[];
 		foreach($items as $item){
@@ -532,9 +536,7 @@ public function salesInvoiceBill($id=null)
 			}
 		}
 		}
-	pr($invoiceBills->toArray());
-	exit;
-		
+
 		$this->set(compact('invoiceBills'));
         $this->set('_serialize', ['invoiceBills']);
     }	

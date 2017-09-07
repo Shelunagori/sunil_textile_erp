@@ -100,7 +100,7 @@ $party_state_id=$state_id;
 							    ?>
 									<tr class="main_tr" class="tab">
 										<td>
-				<input type="hidden" name="id" class="id" value="<?php echo $salesInvoiceRow->id; ?>">
+				<input type="hidden" name="salesInvoiceRow<?php echo $i;?>id" class="id" value="<?php echo $salesInvoiceRow->id; ?>">
 				<input type="hidden" name="" class="outStock" value="0">
 				<input type="hidden" name="gst_amount" class="gst_amount" value="">	
 				<input type="hidden" name="salesInvoiceRow<?php echo $i;?>gst_figure_id" class="gst_figure_id" value="<?php echo $salesInvoiceRow->gst_figure_id;?>">
@@ -120,7 +120,7 @@ $party_state_id=$state_id;
 				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.rate', ['label' => false,'class' => 'form-control input-sm calculation rate rightAligntextClass','required'=>'required','placeholder'=>'Rate','value'=>$salesInvoiceRow->rate, 'readonly'=>'readonly']); ?>
 			</td>
 			<td>
-				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.discount_percentage', ['label' => false,'class' => 'form-control input-sm calculation discount rightAligntextClass','required'=>'required','placeholder'=>'Dis.', 'value'=>$salesInvoiceRow->discount_percentage]); ?>	
+				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.discount_percentage', ['label' => false,'class' => 'form-control input-sm calculation discount rightAligntextClass','placeholder'=>'Dis.', 'value'=>$salesInvoiceRow->discount_percentage]); ?>	
 			</td>
 			<td>
 			<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.taxable_value', ['label' => false,'class' => 'form-control input-sm gstAmount reverse_total_amount rightAligntextClass','required'=>'required', 'placeholder'=>'Amount', 'value'=>$salesInvoiceRow->taxable_value, 'readonly'=>'readonly']); ?>	
@@ -268,7 +268,7 @@ $party_state_id=$state_id;
             <input type="hidden" name="" class="discountvalue calculation" value="">
 			
 				<?php echo $this->Form->input('item_id', ['empty'=>'-Item Name-','options'=>$itemOptions,'label' => false,'class' => 'form-control input-sm attrGet calculation','required'=>'required']); ?>
-			<span class="itemQty" style="color:red"></span>
+			<span class="itemQty" style="color:red;font-size:10px;"></span>
 			</td>
 			<td>
 				<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm calculation quantity rightAligntextClass','id'=>'check','required'=>'required','placeholder'=>'Quantity']); ?>
@@ -277,7 +277,7 @@ $party_state_id=$state_id;
 				<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm calculation rate rightAligntextClass','required'=>'required','placeholder'=>'Rate', 'readonly'=>'readonly']); ?>
 			</td>
 			<td>
-				<?php echo $this->Form->input('discount_percentage', ['label' => false,'class' => 'form-control input-sm calculation discount rightAligntextClass','required'=>'required','placeholder'=>'Dis.']); ?>	
+				<?php echo $this->Form->input('discount_percentage', ['label' => false,'class' => 'form-control input-sm calculation discount rightAligntextClass','placeholder'=>'Dis.','value'=>0]); ?>	
 			</td>
 			<td>
 				<?php echo $this->Form->input('taxable_value', ['label' => false,'class' => 'form-control input-sm gstAmount reverse_total_amount rightAligntextClass','required'=>'required','placeholder'=>'Amount', 'readonly'=>'readonly']); ?>
@@ -400,7 +400,6 @@ $party_state_id=$state_id;
 		var tr=$('#sample_table tbody tr.main_tr').clone();
 		$('#main_table tbody#main_tbody').append(tr);
 		rename_rows();
-		//$('.attrGet').select2();
 		forward_total_amount();
 	}
 	function rename_rows()
@@ -409,7 +408,7 @@ $party_state_id=$state_id;
 		$('#main_table tbody#main_tbody tr.main_tr').each(function(){ 
 			
 			$(this).find('td:nth-child(1) input.id').attr({name:'sales_invoice_rows['+i+'][id]',id:'sales_invoice_rows['+i+'][id]'});
-			$(this).find('.attrGet').select2().attr({name:'sales_invoice_rows['+i+'][item_id]',id:'sales_invoice_rows['+i+'][item_id]'});
+			$(this).find('td:nth-child(1) select.attrGet').select2().attr({name:'sales_invoice_rows['+i+'][item_id]',id:'sales_invoice_rows['+i+'][item_id]'});
 		  $(this).find('.quantity').attr({name:'sales_invoice_rows['+i+'][quantity]',id:'sales_invoice_rows['+i+'][quantity]'});
 		  $(this).find('.rate').attr({name:'sales_invoice_rows['+i+'][rate]',id:'sales_invoice_rows['+i+'][rate]'});
 		  $(this).find('.discount').attr({name:'sales_invoice_rows['+i+'][discount_percentage]',id:'sales_invoice_rows['+i+'][discount_percentage]'});
@@ -517,7 +516,7 @@ $party_state_id=$state_id;
 				}
 				if(total>roundOff1)
 				{
-				round_of=parseFloat(total)-parseFloat(roundOff1);
+				round_of=parseFloat(roundOff1)-parseFloat(total);
 				isRoundofType='1';
 				}
 				if(total==roundOff1)

@@ -201,7 +201,7 @@ $this->set('title', 'Create Sales Invoice');
 				<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm calculation rate rightAligntextClass','required'=>'required','placeholder'=>'Rate', 'readonly'=>'readonly']); ?>
 			</td>
 			<td>
-				<?php echo $this->Form->input('discount_percentage', ['label' => false,'class' => 'form-control input-sm calculation discount rightAligntextClass','required'=>'required','placeholder'=>'Dis.']); ?>	
+				<?php echo $this->Form->input('discount_percentage', ['label' => false,'class' => 'form-control input-sm calculation discount rightAligntextClass','placeholder'=>'Dis.','value'=>0]); ?>	
 			</td>
 			<td>
 				<?php echo $this->Form->input('taxable_value', ['label' => false,'class' => 'form-control input-sm gstAmount reverse_total_amount rightAligntextClass','required'=>'required','placeholder'=>'Amount', 'readonly'=>'readonly']); ?>
@@ -440,7 +440,7 @@ $this->set('title', 'Create Sales Invoice');
 			}
 			if(total>roundOff1)
 			{
-				round_of=parseFloat(total)-parseFloat(roundOff1);
+				round_of=parseFloat(roundOff1)-parseFloat(total);
 				isRoundofType='1';
 			}
 			if(total==roundOff1)
