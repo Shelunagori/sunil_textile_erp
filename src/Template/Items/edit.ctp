@@ -189,11 +189,13 @@ $this->set('title', 'Edit Item');
 		  var gst_type = $(this).val();
 		  if(gst_type=='fix')
 		  {
+			  $('.removeAddRequired').removeAttr('required');
 			  $('.hide_gst').hide();
 		  }
 		  else
 		  {
 			  $('.hide_gst').show();
+			  $('.removeAddRequired').attr('required', 'true');
 		  }
 	  })
     });
