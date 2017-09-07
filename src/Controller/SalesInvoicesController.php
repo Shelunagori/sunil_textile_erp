@@ -211,6 +211,7 @@ class SalesInvoicesController extends AppController
 					->where(['Items.company_id'=>$company_id, 'Items.location_id'=>$location_id])
 					->contain(['FirstGstFigures', 'SecondGstFigures', 'Units']);
 		$itemOptions=[];
+		
 		foreach($items as $item){
 			$itemOptions[]=['text'=>$item->item_code.' '.$item->name, 'value'=>$item->id, 'first_gst_figure_id'=>$item->first_gst_figure_id, 'gst_amount'=>$item->gst_amount, 'sales_rate'=>$item->sales_rate, 'second_gst_figure_id'=>$item->second_gst_figure_id, 'FirstGstFigure'=>$item->FirstGstFigures->tax_percentage, 'SecondGstFigure'=>$item->SecondGstFigures->tax_percentage];
 		}
@@ -579,7 +580,7 @@ public function salesInvoiceBill($id=null)
 				   $available_stock=$itemLedger->total_in;
 				   $stock_issue=$itemLedger->total_out;
 				 @$remaining=number_format($available_stock-$stock_issue, 2);
-				 $stock='Current stock is '. $remaining. ' ' .$itemUnit;
+				 $stock='current stock is '. $remaining. ' ' .$itemUnit;
 				 if($remaining>0)
 				 {
 				 $stockType='false';
@@ -594,7 +595,7 @@ public function salesInvoiceBill($id=null)
 		  else{
 		 
 				 @$remaining=0;
-				 $stock='Current stock is '. $remaining. ' ' .$itemUnit;
+				 $stock='current stock is '. $remaining. ' ' .$itemUnit;
 				 if($remaining>0)
 				 {
 				 $stockType='false';
