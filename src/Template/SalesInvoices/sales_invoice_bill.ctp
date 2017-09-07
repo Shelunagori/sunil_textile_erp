@@ -3,11 +3,15 @@
 	font: 11px arial, sans-serif
   }
 </style>
-
+<?php foreach($invoiceBills->toArray() as $data){
+		foreach($data->sales_invoice_rows as $sales_invoice_row){?>
+			<?php }}?>
+			
+			
 <div style="width:300px; border:1px solid #333">
 
-		<table style=" font-family:Century Gothic; font-size:10px; padding-left:2px;padding-right:2px" width='100%' border='0'>
-   <tr><td class="strongClass"  height="40px" style="font-size:14px; text-align:center" colspan="4">  GST INVOICE
+		<table style=" font-family:arial, sans-serif; font-size:10px; padding-left:2px;padding-right:2px" width='100%' border='0'>
+   <tr><td class="strongClass"  height="40px" style="font-size:14px; text-align:center" colspan="4">  <strong>GST INVOICE</strong>
 		</td></tr>
 		
 		<?php foreach($invoiceBills->toArray() as $data){
@@ -135,10 +139,10 @@
 		<td></td>
 		</tr>
 		<tr class="strongClass">
-		<td></td>
-		<td>SGST</td>
-		<td><?php echo number_format($sgst,2); ?></td>
-		<td></td>
+		<td style="padding-bottom:20px"></td>
+		<td style="padding-bottom:20px">SGST</td>
+		<td style="padding-bottom:20px"><?php echo number_format($sgst,2); ?></td>
+		<td style="padding-bottom:20px"></td>
 		</tr>
 		<?php }else {?>
 		<tr>
@@ -148,10 +152,10 @@
 		<td></td>
 		</tr>
 		<tr class="strongClass">
-		<td></td>
-		<td>IGST</td>
-		<td><?php echo number_format($igst,2);  ?></td>
-		<td></td>
+		<td style="padding-bottom:20px"></td>
+		<td style="padding-bottom:20px">IGST</td>
+		<td style="padding-bottom:20px"><?php echo number_format($igst,2);  ?></td>
+		<td style="padding-bottom:20px"></td>
 		</tr>
 		<?php }?>
 		
@@ -171,7 +175,7 @@
 		<td>Net Total</td>
 		<td></td>
 		<td></td>
-		<td><?php echo $data->amount_after_tax;  ?></td>
+		<td><?php echo number_format($data->amount_after_tax, 2);  ?></td>
 		</tr>
 
         </table>

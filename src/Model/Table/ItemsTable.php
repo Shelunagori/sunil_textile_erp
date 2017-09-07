@@ -75,42 +75,7 @@ class ItemsTable extends Table
 			'foreignKey' => 'second_gst_figure_id',
 			'propertyName' => 'SecondGstFigures',
 		]);
-		
 
-		$this->belongsTo('input_cgst_ledger', [
-			'className' => 'Ledgers',
-			'foreignKey' => 'input_cgst_ledger_id',
-			'propertyName' => 'input_cgst_ledger',
-		]);
-		
-		$this->belongsTo('input_sgst_ledger', [
-			'className' => 'Ledgers',
-			'foreignKey' => 'input_sgst_ledger_id',
-			'propertyName' => 'input_sgst_ledger',
-		]);
-		$this->belongsTo('input_igst_ledger', [
-			'className' => 'Ledgers',
-			'foreignKey' => 'input_igst_ledger_id',
-			'propertyName' => 'input_igst_ledger',
-		]);
-		
-		$this->belongsTo('output_cgst_ledger', [
-			'className' => 'Ledgers',
-			'foreignKey' => 'output_cgst_ledger_id',
-			'propertyName' => 'output_cgst_ledger',
-		]);
-		
-		$this->belongsTo('output_sgst_ledger', [
-			'className' => 'Ledgers',
-			'foreignKey' => 'output_sgst_ledger_id',
-			'propertyName' => 'output_sgst_ledger',
-		]);
-		$this->belongsTo('output_igst_ledger', [
-			'className' => 'Ledgers',
-			'foreignKey' => 'output_igst_ledger_id',
-			'propertyName' => 'output_igst_ledger',
-		]);
-		
 		$this->belongsTo('Companies', [
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'
@@ -150,14 +115,8 @@ class ItemsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['unit_id'], 'Units'));
-        //$rules->add($rules->existsIn(['stock_group_id'], 'StockGroups'));
-		$rules->add($rules->existsIn(['gst_figure_id'], 'GstFigures'));
-        $rules->add($rules->existsIn(['output_cgst_ledger_id'], 'output_cgst_ledger'));
-        $rules->add($rules->existsIn(['output_sgst_ledger_id'], 'output_sgst_ledger'));
-        $rules->add($rules->existsIn(['output_igst_ledger_id'], 'output_igst_ledger'));
-		$rules->add($rules->existsIn(['Input_cgst_ledger_id'], 'Input_cgst_ledger'));
-        $rules->add($rules->existsIn(['Input_sgst_ledger_id'], 'Input_sgst_ledger'));
-        $rules->add($rules->existsIn(['Input_igst_ledger_id'], 'input_igst_ledger'));
+		$rules->add($rules->existsIn(['first_gst_figure_id'], 'FirstGstFigures'));
+		$rules->add($rules->existsIn(['second_gst_figure_id'], 'SecondGstFigures'));
         return $rules;
     }
 }

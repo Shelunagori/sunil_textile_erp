@@ -55,6 +55,10 @@ class SalesInvoicesTable extends Table
             'foreignKey' => 'sales_invoice_id',
 			'saveStrategy'=>'replace'
         ]);
+		 $this->hasMany('ItemLedgers', [
+            'foreignKey' => 'sales_invoice_id',
+			'saveStrategy'=>'replace'
+        ]);
 		$this->hasMany('AccountingEntries', [
             'foreignKey' => 'sales_invoice_id',
             'joinType' => 'INNER'

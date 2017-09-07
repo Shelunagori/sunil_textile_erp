@@ -47,6 +47,7 @@ $party_state_id=$state_id;
 								<?php echo $this->Form->control('transaction_date',['class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'placeholder'=>'DD-MM-YYYY','type'=>'text','data-date-start-date'=>@$coreVariable[fyValidFrom],'data-date-end-date'=>@$coreVariable[fyValidTo],'value'=>$salesInvoice->transaction_date]); ?>
 							</div>
 						</div>
+                        <input type="hidden" name="outOfStock" class="outOfStock" value="false">
 						<input type="hidden" name="company_id" class="company_id" value="<?php echo $company_id;?>">
 						<input type="hidden" name="state_id" class="state_id" value="<?php echo $state_id;?>">
 						<input type="hidden" name="is_interstate" id="is_interstate" value="<?php if(@$party_state_id!=$state_id){if($party_state_id>0){echo '1';}
@@ -54,7 +55,7 @@ $party_state_id=$state_id;
 									}else if(@$party_state_id==$state_id) { echo '0';}
 									?>">
 						<input type="hidden" name="isRoundofType" id="isRoundofType" class="isRoundofType" value="0">
-						<input type="hidden" name="voucher_no" id="" value="<?= h($voucher_no, 4, '0') ?>">
+						<input type="hidden" name="voucher_no" id="" value="<?=$salesInvoice->voucher_no?>">
 						<div class="col-md-3">
 								<label>Party</label>
 								<?php echo $this->Form->control('party_ledger_id',['empty'=>'-Select Party-', 'class'=>'form-control input-sm party_ledger_id select2me','label'=>false, 'options' => $partyOptions,'required'=>'required', 'value'=>$salesInvoice->party_ledger_id]);
@@ -98,6 +99,7 @@ $party_state_id=$state_id;
 							    ?>
 									<tr class="main_tr" class="tab">
 										<td>
+				<input type="hidden" name="" class="outStock" value="0">
 				<input type="hidden" name="gst_amount" class="gst_amount" value="">	
 				<input type="hidden" name="salesInvoiceRow<?php echo $i;?>gst_figure_id" class="gst_figure_id" value="<?php echo $salesInvoiceRow->gst_figure_id;?>">
 				<input type="hidden" name="" class="gst_figure_tax_percentage calculation" value="<?php echo $salesInvoiceRow->gst_figure->tax_percentage;?>">
@@ -119,13 +121,13 @@ $party_state_id=$state_id;
 				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.discount_percentage', ['label' => false,'class' => 'form-control input-sm calculation discount rightAligntextClass','required'=>'required','placeholder'=>'Dis.', 'value'=>$salesInvoiceRow->discount_percentage]); ?>	
 			</td>
 			<td>
-			<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.taxable_value', ['label' => false,'class' => 'form-control input-sm gstAmount reverse_total_amount rightAligntextClass','required'=>'required', 'placeholder'=>'Amount', 'value'=>$salesInvoiceRow->net_amount, 'readonly'=>'readonly']); ?>	
+			<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.taxable_value', ['label' => false,'class' => 'form-control input-sm gstAmount reverse_total_amount rightAligntextClass','required'=>'required', 'placeholder'=>'Amount', 'value'=>$salesInvoiceRow->taxable_value, 'readonly'=>'readonly']); ?>	
 			</td>
 			<td>
 				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.gst_figure_tax_name', ['label' => false,'class' => 'form-control input-sm gst_figure_tax_name rightAligntextClass', 'readonly'=>'readonly','required'=>'required','placeholder'=>'', 'value'=>$salesInvoiceRow->gst_figure->name]); ?>	
 			</td>
 			<td>
-				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.net_amount', ['label' => false,'class' => 'form-control input-sm discountAmount calculation rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'Taxable Value', 'value'=>$salesInvoiceRow->taxable_value]); ?>	
+				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.net_amount', ['label' => false,'class' => 'form-control input-sm discountAmount calculation rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'Taxable Value', 'value'=>$salesInvoiceRow->net_amount]); ?>	
 			</td>
 										
 										<td align="center">
@@ -255,6 +257,7 @@ $party_state_id=$state_id;
 	<tbody>
 		<tr class="main_tr" class="tab">
 			<td>
+			<input type="hidden" name="" class="outStock" value="0">
 			<input type="hidden" name="gst_amount" class="gst_amount" value="">
 			<input type="hidden" name="gst_figure_id" class="gst_figure_id" value="">
 			<input type="hidden" name="" class="gst_figure_tax_percentage calculation" value="">
@@ -294,15 +297,29 @@ $party_state_id=$state_id;
 	$js="
 	$(document).ready(function() {
 		$('.attrGet').die().live('change',function(){
+		var itemQ=$(this).closest('tr');
 			var gst_amount=$('option:selected', this).attr('gst_amount');
-			//var item_qty=$('option:selected', this).attr('item_qty');
-			//var item_unit=$('option:selected', this).attr('item_unit');
-			//var itemText='Current Stock';
-			//var itemText=itemText+' '+item_qty+' '+item_unit;
-		
 			$(this).closest('tr').find('.gst_amount').val(gst_amount);
-			//$(this).closest('tr').find('.itemQty').html(itemText);
-		
+			var itemId=$(this).val();
+		var url='".$this->Url->build(["controller" => "SalesInvoices", "action" => "ajaxItemQuantity"])."';
+		url=url+'/'+itemId
+		$.ajax({
+			url: url,
+			type: 'GET'
+			//dataType: 'text'
+		}).done(function(response) {
+		var fetch=$.parseJSON(response);
+		var text=fetch.text;
+		var type=fetch.type;
+		itemQ.find('.itemQty').html(text);
+		if(type=='true')
+		{
+		itemQ.find('.outStock').val(1);
+		}
+		else{
+		itemQ.find('.outStock').val(0);
+		}
+		});	
 		forward_total_amount();
 		});
 		
@@ -385,16 +402,16 @@ $party_state_id=$state_id;
 	{
 		var i=0;
 		$('#main_table tbody#main_tbody tr.main_tr').each(function(){ 
-			$(this).find('.attrGet').attr({name:'sales_invoice_rows['+i+'][item_id]',id:'sales_invoice_rows['+i+'][item_id]'});
+			$(this).find('.attrGet').select2().attr({name:'sales_invoice_rows['+i+'][item_id]',id:'sales_invoice_rows['+i+'][item_id]'});
 		  $(this).find('.quantity').attr({name:'sales_invoice_rows['+i+'][quantity]',id:'sales_invoice_rows['+i+'][quantity]'});
 		  $(this).find('.rate').attr({name:'sales_invoice_rows['+i+'][rate]',id:'sales_invoice_rows['+i+'][rate]'});
 		  $(this).find('.discount').attr({name:'sales_invoice_rows['+i+'][discount_percentage]',id:'sales_invoice_rows['+i+'][discount_percentage]'});
 		  
-		  $(this).find('.discountAmount').attr({name:'sales_invoice_rows['+i+'][taxable_value]',id:'sales_invoice_rows['+i+'][taxable_value]'});
+		  $(this).find('.gstAmount').attr({name:'sales_invoice_rows['+i+'][taxable_value]',id:'sales_invoice_rows['+i+'][taxable_value]'});
 		  
 		  $(this).find('.gst_figure_id').attr({name:'sales_invoice_rows['+i+'][gst_figure_id]',id:'sales_invoice_rows['+i+'][gst_figure_id]'});
 		  
-		  $(this).find('.gstAmount').attr({name:'sales_invoice_rows['+i+'][net_amount]',id:'sales_invoice_rows['+i+'][net_amount]'});
+		  $(this).find('.discountAmount').attr({name:'sales_invoice_rows['+i+'][net_amount]',id:'sales_invoice_rows['+i+'][net_amount]'});
 		  $(this).find('.gstValue').attr({name:'sales_invoice_rows['+i+'][gst_value]',id:'sales_invoice_rows['+i+'][gst_value]'});
 		  
 		i++;
@@ -417,8 +434,13 @@ $party_state_id=$state_id;
 			var round_of=0;
 			var isRoundofType=0;
 			var igst_value=0;
+			var outOfStockValue=0;
 			$('#main_table tbody#main_tbody tr.main_tr').each(function()
 			{
+			
+			    var outdata=$(this).closest('tr').find('.outStock').val();
+				if(!outdata){outdata=0;}
+				outOfStockValue=parseFloat(outOfStockValue)+parseFloat(outdata);
 			
 			    var gstpaid=$('option:selected', this).attr('gst_amount');
 			    $(this).closest('tr').find('.gst_amount').val(gstpaid);
@@ -440,7 +462,7 @@ $party_state_id=$state_id;
 				var discountAmount  = $(this).find('.discountAmount').val();
 				var item_gst_amount=discountAmount/quantity;
 				
-				if(item_gst_amount<gst_ietmamount)
+				if(item_gst_amount<=gst_ietmamount)
 				{
 					var first_gst_figure_tax_percentage=$('option:selected', this).attr('FirstGstFigure');
 					var first_gst_figure_tax_name=$('option:selected', this).attr('FirstGstFigure');
@@ -450,7 +472,7 @@ $party_state_id=$state_id;
 					$(this).closest('tr').find('.gst_figure_tax_percentage').val(first_gst_figure_tax_percentage);
 					$(this).closest('tr').find('.gst_figure_tax_name').val(first_gst_figure_tax_name);
                 }
-				else if(item_gst_amount>=gst_ietmamount)
+				else if(item_gst_amount>gst_ietmamount)
 				{
 					var second_gst_figure_tax_percentage=$('option:selected', this).attr('SecondGstFigure');
 					var second_gst_figure_tax_name=$('option:selected', this).attr('SecondGstFigure');
@@ -469,10 +491,10 @@ $party_state_id=$state_id;
 				if(!discountAmount){discountAmount=0;}
 			    var divideValue=100;
 				var divideval=divideValue+gst_figure_tax_percentage;
-				var gstValue=discountAmount/divideval;
-	            var gstAmount=discountAmount-gstValue;
+				var gstAmount=(discountAmount*100)/divideval;
+	            var gstValue=(gstAmount*gst_figure_tax_percentage)/100;
 				$(this).find('.gstAmount').val(gstAmount.toFixed(2));
-				$(this).find('.gstValue').val(gstValue.toFixed(2));;
+				$(this).find('.gstValue').val(gstValue.toFixed(2));
 
 				var taxable_value1=parseFloat($(this).find('.discountAmount').val());
 				total=parseFloat(total)+taxable_value1;
@@ -519,6 +541,7 @@ $party_state_id=$state_id;
 				$('.add_igst').val(igst_value.toFixed(2));
 				$('.roundValue').val(round_of.toFixed(2));
 				$('.isRoundofType').val(isRoundofType);
+				$('.outOfStock').val(outOfStockValue);
 		rename_rows();
 		}
 		
@@ -595,11 +618,12 @@ $party_state_id=$state_id;
 		});
 		});*/
 		
-	function checkValidation() 
+function checkValidation() 
 	{  
 		var amount_before_tax  = $('.amount_before_tax').val();
 		var amount_after_tax = $('.amount_after_tax').val();
-		if(amount_before_tax && amount_after_tax)
+		var outOfStock = $('.outOfStock').val();
+		if(amount_before_tax && amount_after_tax && outOfStock==0)
 		{
 			if(confirm('Are you sure you want to submit!'))
 			{
@@ -610,9 +634,12 @@ $party_state_id=$state_id;
 				return false;
 			}
 		}
-		else{
-		       alert('Please enter your data!');
+		else if(outOfStock>0) {
+		       alert('Please check, you have added out of stock data!');
+			   return false;
 		}
+				
+				
 	}";
 
 echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 
