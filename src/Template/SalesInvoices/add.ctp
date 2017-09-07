@@ -28,6 +28,7 @@ $this->set('title', 'Create Sales Invoice');
 								<?php echo $this->Form->control('transaction_date',['class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'placeholder'=>'DD-MM-YYYY','type'=>'text','data-date-start-date'=>@$coreVariable[fyValidFrom],'data-date-end-date'=>@$coreVariable[fyValidTo],'value'=>date('d-m-Y')]); ?>
 							</div>
 						</div>
+						<input type="hidden" name="outOfStock" class="outOfStock" value="0">
 						<input type="hidden" name="company_id" class="customer_id" value="<?php echo $company_id;?>">
 						<input type="hidden" name="state_id" class="state_id" value="<?php echo $state_id;?>">
 						<input type="hidden" name="is_interstate" id="is_interstate" value="0">
@@ -65,6 +66,7 @@ $this->set('title', 'Create Sales Invoice');
 								<tbody id='main_tbody' class="tab">
 								<tr class="main_tr" class="tab">
 			<td>
+			<input type="hidden" name="" class="outStock" value="0">
 			<input type="hidden" name="gst_figure_id" class="gst_figure_id" value="">
 			<input type="hidden" name="gst_amount" class="gst_amount" value="">
 			<input type="hidden" name="gst_figure_tax_percentage" class="gst_figure_tax_percentage calculation" value="">
@@ -215,6 +217,7 @@ $this->set('title', 'Create Sales Invoice');
 	<tbody>
 		<tr class="main_tr" class="tab">
 			<td>
+			<input type="hidden" name="" class="outStock" value="0">
 			<input type="hidden" name="gst_figure_id" class="gst_figure_id" value="">
 			<input type="hidden" name="gst_amount" class="gst_amount" value="">
 			<input type="hidden" name="gst_figure_tax_percentage" class="gst_figure_tax_percentage calculation" value="">
@@ -254,14 +257,30 @@ $this->set('title', 'Create Sales Invoice');
 	$js="
 	$(document).ready(function() {
 		$('.attrGet').die().live('change',function(){
+		var itemQ=$(this).closest('tr');
 			var gst_amount=$('option:selected', this).attr('gst_amount');
-			//var item_qty=$('option:selected', this).attr('item_qty');
-			//var item_unit=$('option:selected', this).attr('item_unit');
-			//var itemText='Current Stock';
-			//var itemText=itemText+' '+item_qty+' '+item_unit;
-			
 			$(this).closest('tr').find('.gst_amount').val(gst_amount);
-			//$(this).closest('tr').find('.itemQty').html(itemText);
+			
+			var itemId=$(this).val();
+		var url='".$this->Url->build(["controller" => "SalesInvoices", "action" => "ajaxItemQuantity"])."';
+		url=url+'/'+itemId
+		$.ajax({
+			url: url,
+			type: 'GET'
+			//dataType: 'text'
+		}).done(function(response) {
+		var fetch=$.parseJSON(response);
+		var text=fetch.text;
+		var type=fetch.type;
+		itemQ.find('.itemQty').html(text);
+		if(type=='true')
+		{
+		itemQ.find('.outStock').val(1);
+		}
+		else{
+		itemQ.find('.outStock').val(0);
+		}
+		});	
 		forward_total_amount();
 		});
 		
@@ -350,12 +369,12 @@ $this->set('title', 'Create Sales Invoice');
 		  $(this).find('.rate').attr({name:'sales_invoice_rows['+i+'][rate]',id:'sales_invoice_rows['+i+'][rate]'});
 		  $(this).find('.discount').attr({name:'sales_invoice_rows['+i+'][discount_percentage]',id:'sales_invoice_rows['+i+'][discount_percentage]'});
 		  
-		  $(this).find('.discountAmount').attr({name:'sales_invoice_rows['+i+'][taxable_value]',id:'sales_invoice_rows['+i+'][taxable_value]'});
+		  $(this).find('.gstAmount').attr({name:'sales_invoice_rows['+i+'][taxable_value]',id:'sales_invoice_rows['+i+'][taxable_value]'});
 		  
 		  $(this).find('.gst_figure_id').attr({name:'sales_invoice_rows['+i+'][gst_figure_id]',id:'sales_invoice_rows['+i+'][gst_figure_id]'});
 		  
 		  
-		  $(this).find('.gstAmount').attr({name:'sales_invoice_rows['+i+'][net_amount]',id:'sales_invoice_rows['+i+'][net_amount]'});
+		  $(this).find('.discountAmount').attr({name:'sales_invoice_rows['+i+'][net_amount]',id:'sales_invoice_rows['+i+'][net_amount]'});
          $(this).find('.gstValue').attr({name:'sales_invoice_rows['+i+'][gst_value]',id:'sales_invoice_rows['+i+'][gst_value]'});	i++;
 		});
 	}
@@ -364,6 +383,7 @@ $this->set('title', 'Create Sales Invoice');
 			forward_total_amount();
 		});
 		
+	
 		
 		$( document ).ready( readyFn );
 		function readyFn( jQuery ) {
@@ -380,8 +400,13 @@ $this->set('title', 'Create Sales Invoice');
 			var round_of=0;
 			var isRoundofType=0;
 			var igst_value=0;
+			var outOfStockValue=0;
 			$('#main_table tbody#main_tbody tr.main_tr').each(function()
 			{
+			    var outdata=$(this).closest('tr').find('.outStock').val();
+				if(!outdata){outdata=0;}
+				outOfStockValue=parseFloat(outOfStockValue)+parseFloat(outdata);
+				
 				var quantity  = Math.round($(this).find('.quantity').val());
 				if(!quantity){quantity=0;}
 				var rate  = parseFloat($(this).find('.rate').val());
@@ -480,6 +505,7 @@ $this->set('title', 'Create Sales Invoice');
 				$('.add_igst').val(igst_value.toFixed(2));
 				$('.roundValue').val(round_of.toFixed(2));
 				$('.isRoundofType').val(isRoundofType);
+				$('.outOfStock').val(outOfStockValue);
 		rename_rows();
 		}
 		
@@ -556,12 +582,13 @@ $this->set('title', 'Create Sales Invoice');
 		});
 		});*/
 		
+		
 	function checkValidation() 
 	{  
 		var amount_before_tax  = $('.amount_before_tax').val();
 		var amount_after_tax = $('.amount_after_tax').val();
-		var attrGet  = parseFloat($(this).find('.attrGet').val());
-		if(amount_before_tax && amount_after_tax)
+		var outOfStock = $('.outOfStock').val();
+		if(amount_before_tax && amount_after_tax && outOfStock==0)
 		{
 			if(confirm('Are you sure you want to submit!'))
 			{
@@ -572,8 +599,9 @@ $this->set('title', 'Create Sales Invoice');
 				return false;
 			}
 		}
-		else{
-		       alert('Please enter your data!');
+		else if(outOfStock>0) {
+		       alert('Please check, you have added out of stock data!');
+			   return false;
 		}
 				
 				

@@ -206,6 +206,7 @@ $this->set('title', 'Edit Item');
 				$('select[name=second_gst_figure_id]').attr('required','required');
 			}
 		}
+
     });
 	";
 

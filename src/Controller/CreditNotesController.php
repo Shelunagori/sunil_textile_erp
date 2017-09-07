@@ -101,10 +101,33 @@ class CreditNotesController extends AppController
 			}
 			$itemOptions[]=['text' =>$item->item_code.' '.$item->name, 'value' => $item->id ,'gst_figure_id'=>$item->gst_figure_id, 'gst_figure_tax_percentage'=>$item->gst_figure->tax_percentage,'gst_figure_tax_name'=>$item->gst_figure->name, 'output_cgst_ledger_id'=>$item->output_cgst_ledger_id, 'output_sgst_ledger_id'=>$item->output_sgst_ledger_id, 'output_igst_ledger_id'=>$item->output_igst_ledger_id, 'item_qty'=>$qty, 'item_unit'=>$item->unit->name];
 		}
-		
-		
+		$partyLedgers = $this->CreditNotes->CreditNoteRows->Ledgers->AccountingGroups->find()->where(['AccountingGroups.company_id'=>$company_id, 'AccountingGroups.sale_invoice_party'=>'1']);
+		foreach($partyLedgers as $partyLedger)
+		{
+			$accountingGroups = $this->CreditNotes->CreditNoteRows->Ledgers->AccountingGroups
+			->find('children', ['for' => $partyLedger->id])
+			->find('List')->toArray();
+			$accountingGroups[$partyLedger->id]=$partyLedger->name;
+		}
+		ksort($accountingGroups);
+		if($accountingGroups)
+		{   
+			$account_ids="";
+			foreach($accountingGroups as $key=>$accountingGroup)
+			{
+				$account_ids .=$key.',';
+			}
+			$account_ids = explode(",",trim($account_ids,','));
+			$Partyledgers = $this->CreditNotes->CreditNoteRows->Ledgers->find()
+								->where(['Ledgers.accounting_group_id IN' =>$account_ids])
+								->contain(['Customers']);
+        }
+		$partyOptions=[];
+		foreach($Partyledgers as $Partyledger){
+			$partyOptions[]=['text' =>$Partyledger->name, 'value' => $Partyledger->id ,'party_state_id'=>$Partyledger->customer->state_id];
+		}
         $gstFigures = $this->CreditNotes->GstFigures->find('list')->where(['company_id'=>$company_id]);
-        $this->set(compact('creditNote', 'customerOptions','itemOptions', 'gstFigures','voucher_no','state_id','company_id'));
+        $this->set(compact('creditNote', 'customerOptions','itemOptions', 'gstFigures','voucher_no','state_id','company_id','partyOptions'));
         $this->set('_serialize', ['creditNote']);
     }
 

@@ -325,7 +325,7 @@ $this->set('title', 'Create Stock Journal');
 			});
 			}
 	
-	function checkValidation() 
+	function checkValidation()
 	{
 	   var inward_rowCount = $('#main_table tbody#main_tbody tr.main_tr').length;
 	   var outward_rowCount = $('#main_table2 tbody#main_tbody2 tr.main_tr').length;

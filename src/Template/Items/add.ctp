@@ -118,13 +118,13 @@ $this->set('title', 'Create Item');
 							<div class="col-md-4">
 								<div class="form-group hide_gst">
 									<label style="font-size: 10px;">Amount </label>
-									<?php echo $this->Form->control('gst_amount',['class'=>'form-control input-sm ','label'=>false,'placeholder'=>'Amount','required'=>'required']); ?>
+									<?php echo $this->Form->control('gst_amount',['class'=>'form-control input-sm removeAddRequired','label'=>false,'placeholder'=>'Amount','required'=>'required']); ?>
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group hide_gst">
 									<label style="font-size: 10px;">Gst Greter than to Amount </label>
-									<?php echo $this->Form->control('second_gst_figure_id',['class'=>'form-control input-sm ','label'=>false,'empty'=>'-GST Figure-', 'options' => $gstFigures,'required'=>'required']); ?>
+									<?php echo $this->Form->control('second_gst_figure_id',['class'=>'form-control input-sm removeAddRequired','label'=>false,'empty'=>'-GST Figure-', 'options' => $gstFigures,'required'=>'required']); ?>
 								</div>
 							</div>
 						</div>

@@ -80,9 +80,24 @@ class SalesInvoicesController extends AppController
 			{
 				$salesInvoice->customer_id=0;
 			}
-		
 			
 		   if ($this->SalesInvoices->save($salesInvoice)) {
+		      foreach($salesInvoice->sales_invoice_rows as $sales_invoice_row)
+			   {
+			   $accountData = $this->SalesInvoices->ItemLedgers->query();
+						$accountData->insert(['item_id', 'transaction_date','quantity', 'rate', 'amount', 'status', 'company_id', 'sales_invoice_id'])
+								->values([
+								'item_id' => $sales_invoice_row->item_id,
+								'transaction_date' => $salesInvoice->transaction_date,
+								'quantity' => $sales_invoice_row->quantity,
+								'rate' => $sales_invoice_row->rate,
+								'amount' => $sales_invoice_row->net_amount,
+								'status' => 'out',
+								'company_id' => $salesInvoice->company_id,
+								'sales_invoice_id' => $salesInvoice->id
+								])
+						->execute();
+			   }
 		    $partyData = $this->SalesInvoices->AccountingEntries->query();
 						$partyData->insert(['ledger_id', 'debit','credit', 'transaction_date', 'company_id', 'sales_invoice_id'])
 								->values([
@@ -154,7 +169,8 @@ class SalesInvoicesController extends AppController
 						->execute();
 			   }
 			 }
-		   }else if($salesInvoice->is_interstate=='1'){
+		   }
+		   else if($salesInvoice->is_interstate=='1'){
 		   foreach($salesInvoice->sales_invoice_rows as $sales_invoice_row)
 			   {
 			   $gstLedgers = $this->SalesInvoices->SalesInvoiceRows->Ledgers->find()
@@ -271,6 +287,21 @@ public function edit($id = null)
             $salesInvoice->transaction_date=$transaction_date;
 			
 			if ($this->SalesInvoices->save($salesInvoice)) {
+			foreach($salesInvoice->sales_invoice_rows as $sales_invoice_row)
+			   {
+			   $ItemLedger = $this->SalesInvoices->ItemLedgers->query();
+					$result = $ItemLedger->update()
+						->set(['item_id' => $sales_invoice_row->item_id,
+								'transaction_date' => $salesInvoice->transaction_date,
+								'quantity' => $sales_invoice_row->quantity,
+								'rate' => $sales_invoice_row->rate,
+								'amount' => $sales_invoice_row->net_amount,
+								'status' => 'out',
+								'company_id' => $salesInvoice->company_id,
+								'sales_invoice_id' => $salesInvoice->id])
+						->where(['sales_invoice_id' => $salesInvoice->id])
+						->execute();
+			}
 			$deleteAccountEntries = $this->SalesInvoices->AccountingEntries->query();
 					$result = $deleteAccountEntries->delete()
 						->where(['AccountingEntries.sales_invoice_id' => $id])
@@ -477,6 +508,59 @@ public function salesInvoiceBill($id=null)
 		$this->set(compact('invoiceBills'));
         $this->set('_serialize', ['invoiceBills']);
     }	
+	
+	public function ajaxItemQuantity($itemId=null)
+    {
+	
+	    $this->viewBuilder()->layout('');
+		$company_id=$this->Auth->User('session_company_id');
+		$stateDetails=$this->Auth->User('session_company');
+		$state_id=$stateDetails->state_id;
+		
+		$items = $this->SalesInvoices->SalesInvoiceRows->Items->find()
+					->where(['Items.company_id'=>$company_id, 'Items.id'=>$itemId])
+					->contain(['Units'])->first();
+					$itemUnit=$items->unit->name;
+		
+		$query = $this->SalesInvoices->SalesInvoiceRows->Items->ItemLedgers->find();
+		$totalInCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['status' => 'In']),
+				$query->newExpr()->add(['quantity']),
+				'integer'
+			);
+		$totalOutCase = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['status' => 'out']),
+				$query->newExpr()->add(['quantity']),
+				'integer'
+			);
+		$query->select([
+			'total_in' => $query->func()->sum($totalInCase),
+			'total_out' => $query->func()->sum($totalOutCase),'id','item_id'
+		])
+		->where(['ItemLedgers.item_id' => $itemId, 'ItemLedgers.company_id' => $company_id])
+		->group('item_id')
+		->autoFields(true)
+		->contain(['Items']);
+        $itemLedgers = ($query);
+		  foreach($itemLedgers as $itemLedger){
+			   $available_stock=$itemLedger->total_in;
+			   $stock_issue=$itemLedger->total_out;
+			 @$remaining=number_format($available_stock-$stock_issue, 2);
+			 $stock='Current stock is '. $remaining. ' ' .$itemUnit;
+			 if($remaining>0)
+			 {
+			 $stockType='false';
+			 }
+			 else{
+			 $stockType='true';
+			 }
+			 $h=array('text'=>$stock, 'type'=>$stockType);
+			 echo  $f=json_encode($h);
+		  }
+		  exit;
+		  }	
 
     /**
      * Edit method
