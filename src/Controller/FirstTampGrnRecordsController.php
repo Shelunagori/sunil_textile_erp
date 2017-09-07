@@ -237,20 +237,21 @@ class FirstTampGrnRecordsController extends AppController
 		header ("Content-Disposition: attachment; filename=".$filename.".csv");
 		header ("Content-Description: Generated Report" ); 
 
-		//$this->ath();
+		
 		$date=date('d-m-y');
 		$company_id = $this->Auth->User('session_company_id');
 		$user_id=$this->Auth->User('id');
-		//$this->loadmodel('FirstTampGrnRecords');
 		$FirstTampGrnRecords = $this->FirstTampGrnRecords->find()
-								->where(['user_id'=>$user_id,'company_id'=>$company_id,'is_addition_item_data_required'=>'yes']);
+								->where(['user_id'=>$user_id,'company_id'=>$company_id]);
 
 		$excel = "Item Code,Quantity,Purchase Rate,Sales Rate,Addition Item Data Required \n";
 
 		foreach($FirstTampGrnRecords as $FirstTampGrnRecord)
 		{
-
-			$excel.="$FirstTampGrnRecord->item_code,$FirstTampGrnRecord->quantity,$FirstTampGrnRecord->purchase_rate,$FirstTampGrnRecord->sales_rate,yes \n";               
+			if($FirstTampGrnRecord->is_addition_item_data_required=="no"){
+				$FirstTampGrnRecord->is_addition_item_data_required="";
+			}
+			$excel.="$FirstTampGrnRecord->item_code,$FirstTampGrnRecord->quantity,$FirstTampGrnRecord->purchase_rate,$FirstTampGrnRecord->sales_rate,$FirstTampGrnRecord->is_addition_item_data_required \n";               
 		}
 
 		echo $excel;      

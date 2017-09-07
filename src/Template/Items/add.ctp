@@ -259,10 +259,3 @@ $this->set('title', 'Create Item');
 
 echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 
 ?>
-<script>
-function checkValidation()
-		{
-			alert('hello');
-			return false;
-		}
-</script>
