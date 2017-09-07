@@ -32,9 +32,6 @@
             echo $this->Form->control('rate');
             echo $this->Form->control('taxable_value');
             echo $this->Form->control('gst_figure_id', ['options' => $gstFigures]);
-            echo $this->Form->control('input_cgst_ledger_id');
-            echo $this->Form->control('input_sgst_ledger_id');
-            echo $this->Form->control('input_igst_ledger_id');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

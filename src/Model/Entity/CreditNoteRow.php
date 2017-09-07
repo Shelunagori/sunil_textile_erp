@@ -13,16 +13,10 @@ use Cake\ORM\Entity;
  * @property float $rate
  * @property float $taxable_value
  * @property int $gst_figure_id
- * @property int $input_cgst_ledger_id
- * @property int $input_sgst_ledger_id
- * @property int $input_igst_ledger_id
  *
  * @property \App\Model\Entity\CreditNote $credit_note
  * @property \App\Model\Entity\Item $item
  * @property \App\Model\Entity\GstFigure $gst_figure
- * @property \App\Model\Entity\InputCgstLedger $input_cgst_ledger
- * @property \App\Model\Entity\InputSgstLedger $input_sgst_ledger
- * @property \App\Model\Entity\InputIgstLedger $input_igst_ledger
  */
 class CreditNoteRow extends Entity
 {

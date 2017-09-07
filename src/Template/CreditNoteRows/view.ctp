@@ -50,17 +50,5 @@
             <th scope="row"><?= __('Taxable Value') ?></th>
             <td><?= $this->Number->format($creditNoteRow->taxable_value) ?></td>
         </tr>
-        <tr>
-            <th scope="row"><?= __('Input Cgst Ledger Id') ?></th>
-            <td><?= $this->Number->format($creditNoteRow->input_cgst_ledger_id) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Input Sgst Ledger Id') ?></th>
-            <td><?= $this->Number->format($creditNoteRow->input_sgst_ledger_id) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Input Igst Ledger Id') ?></th>
-            <td><?= $this->Number->format($creditNoteRow->input_igst_ledger_id) ?></td>
-        </tr>
     </table>
 </div>
