@@ -174,9 +174,9 @@ class SalesInvoicesController extends AppController
 						->execute();
 			   }
 			 }
-		   }
-		   else if($salesInvoice->is_interstate=='1'){
-		   foreach($salesInvoice->sales_invoice_rows as $sales_invoice_row)
+			}
+			else if($salesInvoice->is_interstate=='1'){
+				foreach($salesInvoice->sales_invoice_rows as $sales_invoice_row)
 			   {
 			   $gstLedgers = $this->SalesInvoices->SalesInvoiceRows->Ledgers->find()
 							->where(['Ledgers.gst_figure_id' =>$sales_invoice_row->gst_figure_id,'Ledgers.company_id'=>$company_id, 'Ledgers.input_output'=>'output', 'Ledgers.gst_type'=>'IGST'])->first();
@@ -208,7 +208,7 @@ class SalesInvoicesController extends AppController
 		}
 		
 		$items = $this->SalesInvoices->SalesInvoiceRows->Items->find()
-					->where(['Items.company_id'=>$company_id, 'Items.location_id'=>$location_id])
+					->where(['Items.company_id'=>$company_id])
 					->contain(['FirstGstFigures', 'SecondGstFigures', 'Units']);
 		$itemOptions=[];
 		
@@ -532,7 +532,8 @@ public function salesInvoiceBill($id=null)
 			}
 		}
 		}
-	
+	pr($invoiceBills->toArray());
+	exit;
 		
 		$this->set(compact('invoiceBills'));
         $this->set('_serialize', ['invoiceBills']);
@@ -548,7 +549,7 @@ public function salesInvoiceBill($id=null)
 		$state_id=$stateDetails->state_id;
 		
 		$items = $this->SalesInvoices->SalesInvoiceRows->Items->find()
-					->where(['Items.company_id'=>$company_id, 'Items.location_id'=>$location_id, 'Items.id'=>$itemId])
+					->where(['Items.company_id'=>$company_id, 'Items.id'=>$itemId])
 					->contain(['Units'])->first();
 					$itemUnit=$items->unit->name;
 		
