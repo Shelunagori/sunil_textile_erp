@@ -122,7 +122,6 @@ class FirstTampGrnRecordsController extends AppController
 		$company_id=$this->Auth->User('session_company_id');
 		if ($this->request->is('post')) 
 		{
-			
 			$csv = $this->request->data['csv'];
 			if(!empty($csv['tmp_name']))
 			{
@@ -131,19 +130,18 @@ class FirstTampGrnRecordsController extends AppController
 				$arr_ext = array('csv'); 									   
 				if (in_array($ext, $arr_ext)) 
 				{
-                  move_uploaded_file($csv['tmp_name'], WWW_ROOT . '/step_first/'.$user_id.'.'.$ext);
-				  $file = WWW_ROOT . '/step_first/'.$user_id.'.csv';
-				  $f = fopen($file, 'r') or die("ERROR OPENING DATA");
+					move_uploaded_file($csv['tmp_name'], WWW_ROOT . '/step_first/'.$user_id.'.'.$ext);
+					$file = WWW_ROOT . '/step_first/'.$user_id.'.csv';
+					$f = fopen($file, 'r') or die("ERROR OPENING DATA");
 					$records=0;
 					while (($line = fgetcsv($f, 4096, ';')) !== false) 
 					{
 						$test[]=$line;
 						++$records;
 					}
-					//pr($test);exit;
 					foreach($test as $key => $test1)
 					{ 
-					    if($key!=0)
+						if($key!=0)
 						{
 							$data = explode(",",$test1[0]);
 							$FirstTampGrnRecords = $this->FirstTampGrnRecords->newEntity();
@@ -158,8 +156,7 @@ class FirstTampGrnRecordsController extends AppController
 							$this->FirstTampGrnRecords->save($FirstTampGrnRecords);
 						}
 					} 
-					$this->redirect(array("controller" => "FirstTampGrnRecords", 
-                    "action" => "progress"));
+					$this->redirect(array("controller" => "FirstTampGrnRecords", "action" => "progress"));
 					fclose($f);
 					$records;
 				}
@@ -231,7 +228,7 @@ class FirstTampGrnRecordsController extends AppController
 	{
 
 		$this->viewBuilder()->layout('');
-		$filename="Item_csv";
+		$filename="GRNdataAfterStep1";
 		header ("Expires: 0");
 		header ("Last-Modified: " . gmdate("D,d M YH:i:s") . "GMT");
 		header ("Cache-Control: no-cache, must-revalidate");
@@ -240,20 +237,21 @@ class FirstTampGrnRecordsController extends AppController
 		header ("Content-Disposition: attachment; filename=".$filename.".csv");
 		header ("Content-Description: Generated Report" ); 
 
-		//$this->ath();
+		
 		$date=date('d-m-y');
 		$company_id = $this->Auth->User('session_company_id');
 		$user_id=$this->Auth->User('id');
-		//$this->loadmodel('FirstTampGrnRecords');
 		$FirstTampGrnRecords = $this->FirstTampGrnRecords->find()
-								->where(['user_id'=>$user_id,'company_id'=>$company_id,'is_addition_item_data_required'=>'yes']);
+								->where(['user_id'=>$user_id,'company_id'=>$company_id]);
 
-		$excel = "Item Code,Quantity,Purchase Rate,Sales Rate,Addition Item Data Required \n";
+		$excel = "Item Code,Quantity,Purchase Rate,Sales Rate,Addition Item Data Required, item name, hsn code, unit, gst rate fixed or fluid, first gst rate, amount in refence to gst rate, second gst rate  \n";
 
 		foreach($FirstTampGrnRecords as $FirstTampGrnRecord)
 		{
-
-			$excel.="$FirstTampGrnRecord->item_code,$FirstTampGrnRecord->quantity,$FirstTampGrnRecord->purchase_rate,$FirstTampGrnRecord->sales_rate,yes \n";               
+			if($FirstTampGrnRecord->is_addition_item_data_required=="no"){
+				$FirstTampGrnRecord->is_addition_item_data_required="";
+			}
+			$excel.="$FirstTampGrnRecord->item_code,$FirstTampGrnRecord->quantity,$FirstTampGrnRecord->purchase_rate,$FirstTampGrnRecord->sales_rate,$FirstTampGrnRecord->is_addition_item_data_required \n";               
 		}
 
 		echo $excel;      

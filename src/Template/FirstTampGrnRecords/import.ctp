@@ -28,9 +28,9 @@ $this->set('title', 'Import');
 					</div>
 					<div class="col-md-6">
 						<?php 
-						$url=$this->request->webroot.'samplecsv/importGRNSapmle.csv';
+						$url=$this->request->webroot.'samplecsv/importGRNSapmleStep1.csv';
 						?>
-						<a href="<?php echo $url; ?>"><b>Download sample file from here.</b> </a>
+						<a href="<?php echo $url; ?>"><b>Download sample file from here.</b></a>
 					</div>
 				</div>
 				<?= $this->Form->button(__('Submit'),['class'=>'btn btn-success']) ?>

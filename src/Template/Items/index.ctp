@@ -20,6 +20,7 @@ $this->set('title', 'Items');
 						<thead>
 							<tr>
 								<th scope="col" class="actions"><?= __('Sr') ?></th>
+								<th scope="col"><?= $this->Paginator->sort('Item Code') ?></th>
 								<th scope="col"><?= $this->Paginator->sort('name') ?></th>
 								<th scope="col"><?= $this->Paginator->sort('unit_id') ?></th>
 								<th scope="col"><?= $this->Paginator->sort('HSN_code') ?></th>
@@ -30,6 +31,7 @@ $this->set('title', 'Items');
 							<?php foreach ($items as $item): ?>
 							<tr>
 								<td><?= h(++$page_no) ?></td>
+								<td><?= h($item->item_code) ?></td>
 								<td><?= h($item->name) ?></td>
 								<td><?= $item->unit->name ?></td>
 								<td><?= h($item->hsn_code) ?></td>
