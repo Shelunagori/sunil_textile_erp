@@ -122,7 +122,6 @@ class FirstTampGrnRecordsController extends AppController
 		$company_id=$this->Auth->User('session_company_id');
 		if ($this->request->is('post')) 
 		{
-			
 			$csv = $this->request->data['csv'];
 			if(!empty($csv['tmp_name']))
 			{
@@ -131,19 +130,18 @@ class FirstTampGrnRecordsController extends AppController
 				$arr_ext = array('csv'); 									   
 				if (in_array($ext, $arr_ext)) 
 				{
-                  move_uploaded_file($csv['tmp_name'], WWW_ROOT . '/step_first/'.$user_id.'.'.$ext);
-				  $file = WWW_ROOT . '/step_first/'.$user_id.'.csv';
-				  $f = fopen($file, 'r') or die("ERROR OPENING DATA");
+					move_uploaded_file($csv['tmp_name'], WWW_ROOT . '/step_first/'.$user_id.'.'.$ext);
+					$file = WWW_ROOT . '/step_first/'.$user_id.'.csv';
+					$f = fopen($file, 'r') or die("ERROR OPENING DATA");
 					$records=0;
 					while (($line = fgetcsv($f, 4096, ';')) !== false) 
 					{
 						$test[]=$line;
 						++$records;
 					}
-					//pr($test);exit;
 					foreach($test as $key => $test1)
 					{ 
-					    if($key!=0)
+						if($key!=0)
 						{
 							$data = explode(",",$test1[0]);
 							$FirstTampGrnRecords = $this->FirstTampGrnRecords->newEntity();
@@ -158,8 +156,7 @@ class FirstTampGrnRecordsController extends AppController
 							$this->FirstTampGrnRecords->save($FirstTampGrnRecords);
 						}
 					} 
-					$this->redirect(array("controller" => "FirstTampGrnRecords", 
-                    "action" => "progress"));
+					$this->redirect(array("controller" => "FirstTampGrnRecords", "action" => "progress"));
 					fclose($f);
 					$records;
 				}
@@ -231,7 +228,7 @@ class FirstTampGrnRecordsController extends AppController
 	{
 
 		$this->viewBuilder()->layout('');
-		$filename="Item_csv";
+		$filename="GRNdataAfterStep1";
 		header ("Expires: 0");
 		header ("Last-Modified: " . gmdate("D,d M YH:i:s") . "GMT");
 		header ("Cache-Control: no-cache, must-revalidate");
