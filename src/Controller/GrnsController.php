@@ -61,7 +61,8 @@ class GrnsController extends AppController
 		$company_id=$this->Auth->User('session_company_id');
         $grn = $this->Grns->newEntity();
 		$this->request->data['company_id'] =$company_id;
-        if ($this->request->is('post')) {
+        if ($this->request->is('post')) 
+		{
 			$grn = $this->Grns->patchEntity($grn, $this->request->getData());
 			$grn->transaction_date = date("Y-m-d",strtotime($this->request->getData()['transaction_date']));
 			$Voucher_no = $this->Grns->find()->select(['voucher_no'])->where(['company_id'=>$company_id])->order(['voucher_no' => 'DESC'])->first();
@@ -146,7 +147,8 @@ class GrnsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $grn = $this->Grns->patchEntity($grn, $this->request->getData());
 			$grn->transaction_date = date("Y-m-d",strtotime($this->request->getData()['transaction_date']));
-            if ($this->Grns->save($grn)) {
+            if ($this->Grns->save($grn)) 
+			{
 				$query = $this->Grns->ItemLedgers->query();
 				$query->delete()->where(['grn_id'=> $id,'company_id'=>$company_id])->execute();
 				foreach($grn->grn_rows as $grn_row)

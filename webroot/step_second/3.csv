@@ -1,5 +1,0 @@
-item code,quantity,purchase rate,sales rate,is addition item data required,item name,hsn code,unit,gst rate fixed or fluid,first gst rate,amount in ref of gst rate,second gst rate
-68HD876789,98,850,1100,No,dummy item1,HJ678NEJE,killo gram,22.25,15.25,1000.25,12.23
-68HD876,98,850,1100,No,dummy item2,HJ678NEJE,killo gram,22.25,15.25,1000.25,12.23
-ytyu676687990,98,850,1100,yes,dummy item3,HJ678NEJE,killo gram,22.25,15.25,1000.25,12.23
-68HD87jhgj66789,98,850,1100,No,dummy item 4,HJ678NEJE,killo gram,22.25,15.25,1000.25,12.23
