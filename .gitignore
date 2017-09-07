@@ -18,6 +18,7 @@
 !/logs/empty
 
 /tmp/debug_kit.sqlite
+/webroot/*
 
 # CakePHP 2
 
