@@ -49,7 +49,7 @@ $this->set('title', 'Create Credit Note');
 						</div>
 						<div class="col-md-2  cusomerIds" style="display:none">
 							<label>Party</label>
-							<?php echo $this->Form->control('party_ledger_id',['empty'=>'-Select Party-', 'class'=>'form-control input-sm party_ledger_id select2me customer_id ','label'=>false, 'options' => $partyOptions,'required'=>'required']);
+							<?php echo $this->Form->control('party_ledger_id',['empty'=>'-Select Party-', 'class'=>'form-control input-sm party_ledger_id select2me customer_id ','label'=>false, 'options' => $partyOptions]);
 							?>
 						</div>
 						<div class="col-md-2">
@@ -382,8 +382,13 @@ $this->set('title', 'Create Credit Note');
 			var round_of=0;
 			var isRoundofType=0;
 			var igst_value=0;
+			var outOfStockValue=0;
 			$('#main_table tbody#main_tbody tr.main_tr').each(function()
 			{
+			    var outdata=$(this).closest('tr').find('.outStock').val();
+				if(!outdata){outdata=0;}
+				outOfStockValue=parseFloat(outOfStockValue)+parseFloat(outdata);
+				
 				var quantity  = Math.round($(this).find('.quantity').val());
 				if(!quantity){quantity=0;}
 				var rate  = parseFloat($(this).find('.rate').val());
@@ -402,7 +407,7 @@ $this->set('title', 'Create Credit Note');
 				var discountAmount  = $(this).find('.discountAmount').val();
 				var item_gst_amount=discountAmount/quantity;
 				
-				if(item_gst_amount<gst_ietmamount)
+				if(item_gst_amount<=gst_ietmamount)
 				{
 					var first_gst_figure_tax_percentage=$('option:selected', this).attr('FirstGstFigure');
 					var first_gst_figure_tax_name=$('option:selected', this).attr('FirstGstFigure');
@@ -412,7 +417,7 @@ $this->set('title', 'Create Credit Note');
 					$(this).closest('tr').find('.gst_figure_tax_percentage').val(first_gst_figure_tax_percentage);
 					$(this).closest('tr').find('.gst_figure_tax_name').val(first_gst_figure_tax_name);
                 }
-				else if(item_gst_amount>=gst_ietmamount)
+				else if(item_gst_amount>gst_ietmamount)
 				{
 					var second_gst_figure_tax_percentage=$('option:selected', this).attr('SecondGstFigure');
 					var second_gst_figure_tax_name=$('option:selected', this).attr('SecondGstFigure');
@@ -431,8 +436,8 @@ $this->set('title', 'Create Credit Note');
 				if(!discountAmount){discountAmount=0;}
 				var divideValue=100;
 				var divideval=divideValue+gst_figure_tax_percentage;
-				var gstValue=discountAmount/divideval;
-	            var gstAmount=discountAmount-gstValue;
+				var gstAmount=(discountAmount*100)/divideval;
+	            var gstValue=(gstAmount*gst_figure_tax_percentage)/100;
 				$(this).find('.gstAmount').val(gstAmount.toFixed(2));
 				$(this).find('.gstValue').val(gstValue.toFixed(2));
 
@@ -472,6 +477,7 @@ $this->set('title', 'Create Credit Note');
 					igst_value=parseFloat(gst_value);
 					s_cgst_value=0;
 				}
+				
 			});
 			$('.amount_after_tax').val(roundOff1);
 			$('.amount_before_tax').val(gst_amount.toFixed(2));
@@ -480,6 +486,7 @@ $this->set('title', 'Create Credit Note');
 			$('.add_igst').val(igst_value.toFixed(2));
 			$('.roundValue').val(round_of.toFixed(2));
 			$('.isRoundofType').val(isRoundofType);
+			$('.outOfStock').val(outOfStockValue);
 			rename_rows();
 		}
 		//calculation end

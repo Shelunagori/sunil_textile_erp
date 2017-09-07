@@ -157,7 +157,7 @@ class GrnsController extends AppController
 				foreach($grn->grn_rows as $grn_row)
 				{
 					
-					$query = $this->Grns->Items->query();
+					$query = $this->Grns->GrnRows->Items->query();
 					$query->update()
 							->set(['Items.sales_rate' => $grn_row->sale_rate])
 							->where(['Items.id' =>$grn_row->item_id])
