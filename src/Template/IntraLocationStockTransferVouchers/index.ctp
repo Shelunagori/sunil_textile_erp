@@ -1,51 +1,41 @@
-<?php
-/**
-  * @var \App\View\AppView $this
-  * @var \App\Model\Entity\IntraLocationStockTransferVoucher[]|\Cake\Collection\CollectionInterface $intraLocationStockTransferVouchers
-  */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Intra Location Stock Transfer Voucher'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Companies'), ['controller' => 'Companies', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Company'), ['controller' => 'Companies', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Locations'), ['controller' => 'Locations', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Location'), ['controller' => 'Locations', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Intra Location Stock Transfer Voucher Rows'), ['controller' => 'IntraLocationStockTransferVoucherRows', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Intra Location Stock Transfer Voucher Row'), ['controller' => 'IntraLocationStockTransferVoucherRows', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="intraLocationStockTransferVouchers index large-9 medium-8 columns content">
-    <h3><?= __('Intra Location Stock Transfer Vouchers') ?></h3>
-    <table cellpadding="0" cellspacing="0">
-        <thead>
-            <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('transfer_from') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('transfer_to') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('transaction_date') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('company_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('location_id') ?></th>
+<div class="row">
+	<div class="col-md-12">
+		<div class="portlet light ">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="icon-bar-chart font-green-sharp hide"></i>
+					<span class="caption-subject font-green-sharp bold ">Inter Location Stock Transfer Vouchers</span>
+				</div>
+			</div>
+			<div class="portlet-body">
+				<div class="table-responsive">
+					<?php $page_no=$this->Paginator->current('intraLocationStockTransferVoucher'); $page_no=($page_no-1)*20; ?>
+					<table class="table table-bordered table-hover table-condensed">
+						<thead>
+							<tr>
+								<th scope="col" class="actions"><?= __('Sr') ?></th>
+								<th scope="col"><?= $this->Paginator->sort('voucher_no') ?></th>
+								<th scope="col"><?= $this->Paginator->sort('transaction_date') ?></th>
+								<th scope="col"><?= $this->Paginator->sort('Transfer From Location') ?></th>
+								<th scope="col"><?= $this->Paginator->sort('Transfer To Location') ?></th>
                 <th scope="col" class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($intraLocationStockTransferVouchers as $intraLocationStockTransferVoucher): ?>
+            <?php $i=0; foreach ($intraLocationStockTransferVouchers as $intraLocationStockTransferVoucher): ?>
             <tr>
-                <td><?= $this->Number->format($intraLocationStockTransferVoucher->id) ?></td>
-                <td><?= $this->Number->format($intraLocationStockTransferVoucher->transfer_from) ?></td>
-                <td><?= $this->Number->format($intraLocationStockTransferVoucher->transfer_to) ?></td>
-                <td><?= h($intraLocationStockTransferVoucher->transaction_date) ?></td>
-                <td><?= $intraLocationStockTransferVoucher->has('company') ? $this->Html->link($intraLocationStockTransferVoucher->company->name, ['controller' => 'Companies', 'action' => 'view', $intraLocationStockTransferVoucher->company->id]) : '' ?></td>
-                <td><?= $intraLocationStockTransferVoucher->has('location') ? $this->Html->link($intraLocationStockTransferVoucher->location->name, ['controller' => 'Locations', 'action' => 'view', $intraLocationStockTransferVoucher->location->id]) : '' ?></td>
-                <td class="actions">
+                <td><?= $this->Number->format($i+1) ?></td>
+				<td><?= h('#'.str_pad($intraLocationStockTransferVoucher->voucher_no, 4, '0', STR_PAD_LEFT)) ?></td>
+				<td><?= h($intraLocationStockTransferVoucher->transaction_date) ?></td>
+                <td><?= h($intraLocationStockTransferVoucher->TransferFromLocations->name) ?></td>
+                <td><?= h($intraLocationStockTransferVoucher->TransferToLocations->name) ?></td>
+               <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $intraLocationStockTransferVoucher->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $intraLocationStockTransferVoucher->id]) ?>
                     <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $intraLocationStockTransferVoucher->id], ['confirm' => __('Are you sure you want to delete # {0}?', $intraLocationStockTransferVoucher->id)]) ?>
                 </td>
             </tr>
-            <?php endforeach; ?>
+            <?php $i++; endforeach; ?>
         </tbody>
     </table>
     <div class="paginator">

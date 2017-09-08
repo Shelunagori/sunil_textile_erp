@@ -47,7 +47,22 @@ class IntraLocationStockTransferVouchersTable extends Table
             'joinType' => 'INNER'
         ]);
         $this->hasMany('IntraLocationStockTransferVoucherRows', [
-            'foreignKey' => 'intra_location_stock_transfer_voucher_id'
+            'foreignKey' => 'intra_location_stock_transfer_voucher_id',
+			'saveStrategy' => 'replace',
+        ]);
+		$this->belongsTo('TransferFromLocations', [
+			'className' => 'Locations',
+			'foreignKey' => 'transfer_from_location_id',
+			'propertyName' => 'TransferFromLocations',
+		]);
+		$this->belongsTo('TransferToLocations', [
+			'className' => 'Locations',
+			'foreignKey' => 'transfer_to_location_id',
+			'propertyName' => 'TransferToLocations',
+		]);
+		$this->hasMany('ItemLedgers', [
+            'foreignKey' => 'intra_location_stock_transfer_voucher__id',
+            'joinType' => 'INNER'
         ]);
     }
 
@@ -64,14 +79,14 @@ class IntraLocationStockTransferVouchersTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->integer('transfer_from')
-            ->requirePresence('transfer_from', 'create')
-            ->notEmpty('transfer_from');
+            ->integer('transfer_from_location_id')
+            ->requirePresence('transfer_from_location_id', 'create')
+            ->notEmpty('transfer_from_location_id');
 
         $validator
-            ->integer('transfer_to')
-            ->requirePresence('transfer_to', 'create')
-            ->notEmpty('transfer_to');
+            ->integer('transfer_to_location_id')
+            ->requirePresence('transfer_to_location_id', 'create')
+            ->notEmpty('transfer_to_location_id');
 
         $validator
             ->date('transaction_date')
@@ -91,7 +106,8 @@ class IntraLocationStockTransferVouchersTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['company_id'], 'Companies'));
-        $rules->add($rules->existsIn(['location_id'], 'Locations'));
+        $rules->add($rules->existsIn(['transfer_from_location_id'], 'TransferFromLocations'));
+        $rules->add($rules->existsIn(['transfer_to_location_id'], 'TransferToLocations'));
 
         return $rules;
     }

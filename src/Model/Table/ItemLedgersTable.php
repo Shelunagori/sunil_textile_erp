@@ -61,7 +61,15 @@ class ItemLedgersTable extends Table
             'joinType' => 'INNER'
         ]);
 		
+		$this->belongsTo('IntraLocationStockTransferVouchers', [
+            'foreignKey' => 'intra_location_stock_transfer_voucher_id',
+            'joinType' => 'INNER'
+        ]);
 		
+		$this->belongsTo('IntraLocationStockTransferVoucherRows', [
+            'foreignKey' => 'intra_location_stock_transfer_voucher_row_id',
+            'joinType' => 'INNER'
+        ]);
     }
 
     /**

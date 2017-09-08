@@ -45,6 +45,10 @@ class IntraLocationStockTransferVoucherRowsTable extends Table
             'foreignKey' => 'item_id',
             'joinType' => 'INNER'
         ]);
+		$this->hasMany('ItemLedgers', [
+            'foreignKey' => 'intra_location_stock_transfer_voucher_row_id',
+            'joinType' => 'INNER'
+        ]);
     }
 
     /**
