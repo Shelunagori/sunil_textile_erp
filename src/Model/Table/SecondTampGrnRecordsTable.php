@@ -45,6 +45,12 @@ class SecondTampGrnRecordsTable extends Table
             'foreignKey' => 'company_id',
             'joinType' => 'INNER'
         ]);
+		
+		$this->belongsTo('Units', [
+            'foreignKey' => 'unit_id',
+            'joinType' => 'LEFT'
+        ]);
+		
     }
 
     /**

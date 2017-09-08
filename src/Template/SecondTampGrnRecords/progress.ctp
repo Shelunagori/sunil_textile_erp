@@ -17,12 +17,13 @@ $this->set('title', 'Progress Csv');
 				<div class="row">
 				    <div class="col-md-3"></div>
 				    <div class="col-md-6">
-					    <div class="progress progress-striped active">
-							<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 10%">
+					    <div class="progress progress-striped active" style=" margin-bottom: 2px; ">
+							<div class="progress-bar progress-bar-danger progress_bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
 								<span class="sr-only">
 								80% Complete (danger) </span>
 							</div>
 						</div>
+						<div id="Processed_text">0% Processed</div>
 					</div>
 					<div class="col-md-3"></div>
 				</div>
@@ -41,8 +42,12 @@ $this->set('title', 'Progress Csv');
 				url: url,
 				type: 'GET',
 			}).done(function(response) {
-				console.log(response);
-				
+				response = $.parseJSON(response);
+				$('.progress_bar').css('width',response.percantage+'%');
+				$('#Processed_text').html(response.percantage+'% Progressed');
+				if(response.recallAjax=='true'){
+					process_data();
+				}
 			});
 		}
 		

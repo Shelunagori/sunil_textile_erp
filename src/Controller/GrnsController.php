@@ -289,9 +289,16 @@ class GrnsController extends AppController
 		$user_id=$this->Auth->User('id');
 		$company_id=$this->Auth->User('session_company_id');
 		$location_id=$this->Auth->User('session_location_id');
+		
+		$countSecondTampGrnRecords=$this->Grns->SecondTampGrnRecords->find()
+									->where(['user_id'=>$user_id,'company_id'=>$company_id])->count();
+		if($countSecondTampGrnRecords>0){
+			$notvalid_to_importRecords=$this->Grns->SecondTampGrnRecords->find()
+										->where(['user_id'=>$user_id,'company_id'=>$company_id,'valid_to_import'=>'no'])->count();
+		}
+		
 		if ($this->request->is('post')) 
 		{
-			
 			$csv = $this->request->data['csv'];
 			if(!empty($csv['tmp_name']))
 			{
@@ -322,13 +329,13 @@ class GrnsController extends AppController
 							$second_tamp_grn_records->purchase_rate  = $data[2];
 							$second_tamp_grn_records->sales_rate     = $data[3];
 							$second_tamp_grn_records->is_addition_item_data_required = $data[4];
-							$second_tamp_grn_records->item_name      = $data[5]; 
-							$second_tamp_grn_records->hsn_code       = $data[6];
-							$second_tamp_grn_records->unit           = $data[7];
-							$second_tamp_grn_records->gst_rate_fixed_or_fluid = $data[8];
-							$second_tamp_grn_records->first_gst_rate = $data[9];
-							$second_tamp_grn_records->amount_in_ref_of_gst_rate = $data[10];
-							$second_tamp_grn_records->second_gst_rate = $data[11];
+							$second_tamp_grn_records->item_name      = @$data[5]; 
+							$second_tamp_grn_records->hsn_code       = @$data[6];
+							$second_tamp_grn_records->provided_unit  = @$data[7];
+							$second_tamp_grn_records->gst_rate_fixed_or_fluid = @$data[8];
+							$second_tamp_grn_records->first_gst_rate = @$data[9];
+							$second_tamp_grn_records->amount_in_ref_of_gst_rate = @$data[10];
+							$second_tamp_grn_records->second_gst_rate = @$data[11];
 							$second_tamp_grn_records->processed      = 'no'; 
 							$second_tamp_grn_records->user_id        = $user_id;
 							$second_tamp_grn_records->company_id = $company_id;
@@ -343,7 +350,7 @@ class GrnsController extends AppController
 				}
 			}
 		} 
-		$this->set(compact('grn'));
+		$this->set(compact('grn', 'countSecondTampGrnRecords', 'notvalid_to_importRecords'));
         $this->set('_serialize', ['grn']);
 	}
 

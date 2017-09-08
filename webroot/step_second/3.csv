@@ -1,10 +1,21 @@
 Item Code,Quantity,Purchase Rate,Sales Rate,Addition Item Data Required, item name, hsn code, unit, gst rate fixed or fluid, first gst rate, amount in refence to gst rate, second gst rate  
-QWERT1,98,850,1100, ,,,,,,,
-QWERT2,30,900,1200,Yes ,item 2,hsn2,Nos,fixed,12,,
-QWERT3,118,950,1300,Yes ,item 3,hsn3,Nos,fluid,5,1000,12
-QWERT4,102,1000,1400,Yes ,item 4,hsn4,Nos,fixed,12,,
-QWERT5,112,1050,1500,Yes ,item 5,hsn5,Nos,fluid,5,1000,12
-QWERT6,122,1100,1600,Yes ,item 6,hsn6,Nos,fixed,12,,
-QWERT7,132,1150,1700,Yes ,item 7,hsn7,Nos,fluid,5,1000,12
-QWERT8,142,1200,1800,Yes ,item 8,hsn8,Nos,fixed,12,,
-QWERT9,152,1250,1900,Yes ,item 9,hsn9,Nos,fluid,5,1000,12
+barcode1,11,100,200, ,,,,,,,
+barcode2,22,110,210,Yes ,,hsn code 2,nos,fix,28,,
+barcode3,33,120,220,Yes ,item 3,,fdgf,fix,28,,
+barcode4,44,130,230,Yes ,item 4,hsn code 4,nos,,28,,
+barcode5,55,140,240,Yes ,item 5,hsn code 5,sdf,fix,,,
+barcode6,66,150,250,Yes ,item 6,hsn code 6,nos,fix,28,,
+barcode7,77,160,260,Yes ,item 7,hsn code 7,nos,fix,28,,
+barcode8,88,170,270,Yes ,item 8,hsn code 8,nos,fix,28,,
+barcode9,99,180,280,Yes ,item 9,hsn code 9,nos,fix,28,,
+barcode10,110,190,290,Yes ,item 10,hsn code 10,nos,fix,28,,
+barcode11,121,200,300,Yes ,item 11,hsn code 11,nos,fluid,12,,18
+barcode12,132,210,310,Yes ,item 12,hsn code 12,nos,fluid,12,1000,
+barcode13,143,220,320,Yes ,item 13,hsn code 13,nos,fluid,12,1000,18
+barcode14,154,230,330,Yes ,item 14,hsn code 14,nos,fluid,12,1000,18
+barcode15,165,240,340,Yes ,item 15,hsn code 15,nos,fluid,12,1000,18
+barcode16,176,250,350,Yes ,item 16,hsn code 16,nos,fluid,12,1000,18
+barcode17,187,260,360,Yes ,item 17,hsn code 17,nos,fluid,12,1000,18
+barcode18,198,270,370,Yes ,item 18,hsn code 18,nos,fluid,12,1000,18
+barcode19,209,280,380, ,,,,,,,
+barcode20,220,290,390,Yes ,item 20,hsn code 20,nos,fluid,12,1000,18
