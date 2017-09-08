@@ -49,8 +49,7 @@ $this->set('title', 'Sales Invoice List');
 								<td class="actions">
 									<?= $this->Html->link(__('View'), ['action' => 'view', $creditNote->id]) ?>
 									<?= $this->Html->link(__('Edit'), ['action' => 'edit', $creditNote->id]) ?>
-									<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $creditNote->id], ['confirm' => __('Are you sure you want to delete # {0}?', $creditNote->id)]) ?>
-								</td>
+										</td>
 							</tr>
 							<?php endforeach; ?>
 						</tbody>

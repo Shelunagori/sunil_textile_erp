@@ -113,11 +113,13 @@ else if($creditNote->cash_or_credit=="cash")
 							     ?>
 									<tr class="main_tr" class="tab">
 										<td>
-											<input type="hidden" name="creditNoteRow<?php echo $i;?>gst_figure_id" class="gst_figure_id" value="<?php echo $creditNote->gst_figure_id;?>">
+										<input type="hidden" name="creditNoteRow<?php echo $i;?>id" class="id" value="<?php echo $creditNoteRow->id; ?>">
+										<input type="hidden" name="" class="outStock" value="0">
+											<input type="hidden" name="creditNoteRow<?php echo $i;?>gst_figure_id" class="gst_figure_id" value="<?php echo $creditNoteRow->gst_figure_id;?>">
 											<input type="hidden" name="gst_amount" class="gst_amount" value="">
-											<input type="hidden" name="creditNoteRow<?php echo $i;?>gst_figure_tax_percentage" class="gst_figure_tax_percentage calculation" value="<?php echo $creditNote->tax_percentage;?>">
+											<input type="hidden" name="creditNoteRow<?php echo $i;?>gst_figure_tax_percentage" class="gst_figure_tax_percentage calculation" value="<?php echo $creditNoteRow->gst_figure->tax_percentage;?>">
 											<input type="hidden" name="tot" class="totamount calculation" value="">
-											<input type="hidden" name="creditNoteRow<?php echo $i;?>gst_value" class="gstValue calculation" value="<?php echo $creditNote->gst_value;?>">
+											<input type="hidden" name="creditNoteRow<?php echo $i;?>gst_value" class="gstValue calculation" value="<?php echo $creditNoteRow->gst_value;?>">
 											<input type="hidden" name="discountvalue" class="discountvalue calculation" value="">
 											
 											
@@ -254,6 +256,7 @@ else if($creditNote->cash_or_credit=="cash")
 	<tbody>
 		<tr class="main_tr" class="tab">
 			<td>
+			<input type="hidden" name="" class="outStock" value="0">
 				<input type="hidden" name="gst_figure_id" class="gst_figure_id" value="">
 				<input type="hidden" name="gst_amount" class="gst_amount" value="">
 				<input type="hidden" name="gst_figure_tax_percentage" class="gst_figure_tax_percentage calculation" value="">
@@ -427,7 +430,7 @@ else if($creditNote->cash_or_credit=="cash")
 		$( document ).ready( readyFn );
 		$( document ).ready( gstChange );
 		function readyFn( jQuery ) {
-		
+		forward_total_amount();
 		}
 		function gstChange()
 		{
@@ -465,6 +468,9 @@ else if($creditNote->cash_or_credit=="cash")
 			    var outdata=$(this).closest('tr').find('.outStock').val();
 				if(!outdata){outdata=0;}
 				outOfStockValue=parseFloat(outOfStockValue)+parseFloat(outdata);
+				
+				 var gstpaid=$('option:selected', this).attr('gst_amount');
+			    $(this).closest('tr').find('.gst_amount').val(gstpaid);
 				
 				var quantity  = Math.round($(this).find('.quantity').val());
 				if(!quantity){quantity=0;}

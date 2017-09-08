@@ -65,7 +65,8 @@ class CreditNotesTable extends Table
 		
 		$this->hasMany('AccountingEntries', [
             'foreignKey' => 'credit_note_id',
-            'joinType' => 'INNER'
+            'joinType' => 'INNER',
+			'saveStrategy'=>'replace'
         ]);
 		
 		$this->belongsTo('SalesLedgers', [

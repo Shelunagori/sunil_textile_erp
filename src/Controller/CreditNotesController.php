@@ -59,6 +59,7 @@ class CreditNotesController extends AppController
 		$this->viewBuilder()->layout('index_layout');
         $creditNote = $this->CreditNotes->newEntity();
 		$company_id=$this->Auth->User('session_company_id');
+		$location_id=$this->Auth->User('session_location_id');
 		$stateDetails=$this->Auth->User('session_company');
 		$state_id=$stateDetails->state_id;
 		
@@ -98,7 +99,7 @@ class CreditNotesController extends AppController
 				foreach($creditNote->credit_note_rows as $credit_note_row)
 				{
 					$stockData = $this->CreditNotes->ItemLedgers->query();
-					$stockData->insert(['item_id', 'transaction_date','quantity', 'rate', 'amount', 'status', 'company_id', 'credit_note_id'])
+					$stockData->insert(['item_id', 'transaction_date','quantity', 'rate', 'amount', 'status', 'company_id', 'credit_note_id', 'credit_note_row_id', 'location_id'])
 						->values([
 						'item_id' => $credit_note_row->item_id,
 						'transaction_date' => $creditNote->transaction_date,
@@ -107,7 +108,9 @@ class CreditNotesController extends AppController
 						'amount' => $credit_note_row->net_amount,
 						'status' => 'in',
 						'company_id' => $creditNote->company_id,
-						'credit_note_id' => $creditNote->id
+						'credit_note_id' => $creditNote->id,
+						'credit_note_row_id' => $credit_note_row->id,
+						'location_id'=>$location_id
 						])
 					->execute();
 				}
@@ -293,6 +296,7 @@ class CreditNotesController extends AppController
     {
        	$this->viewBuilder()->layout('index_layout');
 		$company_id=$this->Auth->User('session_company_id');
+		$location_id=$this->Auth->User('session_location_id');
 		$stateDetails=$this->Auth->User('session_company');
 		$state_id=$stateDetails->state_id;
 		
@@ -317,7 +321,7 @@ class CreditNotesController extends AppController
 		} 		
 		//auto increament voucher no end
 		
-		if ($this->request->is('post')) {
+		if ($this->request->is('put','post', 'patch')) {
 			$transaction_date=date('Y-m-d', strtotime($this->request->data['transaction_date']));
             $creditNote = $this->CreditNotes->patchEntity($creditNote, $this->request->getData());
 			$creditNote->transaction_date=$transaction_date;
@@ -329,17 +333,17 @@ class CreditNotesController extends AppController
 			else{
 				 $creditNote->party_ledger_id=$creditNote->cash_party_ledger_id;
 			}
-		
-		pr($creditNote->toArray());exit;
-		
-			
+	
             if ($this->CreditNotes->save($creditNote)) {
-				
+				$deleteItemLedger = $this->CreditNotes->ItemLedgers->query();
+				$deleteResult = $deleteItemLedger->delete()
+					->where(['credit_note_id' => $creditNote->id])
+					->execute();
 				//item ledger entry start
 				foreach($creditNote->credit_note_rows as $credit_note_row)
 				{
 					$stockData = $this->CreditNotes->ItemLedgers->query();
-					$stockData->insert(['item_id', 'transaction_date','quantity', 'rate', 'amount', 'status', 'company_id', 'credit_note_id'])
+					$stockData->insert(['item_id', 'transaction_date','quantity', 'rate', 'amount', 'status', 'company_id', 'credit_note_id', 'credit_note_row_id', 'location_id'])
 						->values([
 						'item_id' => $credit_note_row->item_id,
 						'transaction_date' => $creditNote->transaction_date,
@@ -348,7 +352,9 @@ class CreditNotesController extends AppController
 						'amount' => $credit_note_row->net_amount,
 						'status' => 'in',
 						'company_id' => $creditNote->company_id,
-						'credit_note_id' => $creditNote->id
+						'credit_note_id' => $creditNote->id,
+						'credit_note_row_id' => $credit_note_row->id,
+						'location_id'=> $location_id
 						])
 					->execute();
 				}
