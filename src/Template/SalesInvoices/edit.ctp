@@ -83,10 +83,10 @@ $party_state_id=$state_id;
 									<td><label>Taxable Value<label></td>
 									
 									<td><label id="gstDisplay">
-									<?php if(@$party_state_id!=$state_id){if($party_state_id>0){echo 'IGST';}
-									else if($party_state_id==0){echo 'GST';}else if(!$party_state_id){echo 'GST';}
-									}else if(@$party_state_id==$state_id) { echo 'GST';}
-									?>
+										<?php if(@$party_state_id!=$state_id){if($party_state_id>0){echo 'IGST';}
+										else if($party_state_id==0){echo 'GST';}else if(!$party_state_id){echo 'GST';}
+										}else if(@$party_state_id==$state_id) { echo 'GST';}
+										?>
 									<label></td>
 									<td><label>Net Amount<label></td>
 									<td></td>
@@ -97,45 +97,45 @@ $party_state_id=$state_id;
                                          $i=0;		
 								         foreach($salesInvoice->sales_invoice_rows as $salesInvoiceRow)
 									     {
-							    ?>
-									<tr class="main_tr" class="tab">
-										<td>
-				<input type="hidden" name="salesInvoiceRow<?php echo $i;?>id" class="id" value="<?php echo $salesInvoiceRow->id; ?>">
-				<input type="hidden" name="" class="outStock" value="0">
-				<input type="hidden" name="gst_amount" class="gst_amount" value="">	
-				<input type="hidden" name="salesInvoiceRow<?php echo $i;?>gst_figure_id" class="gst_figure_id" value="<?php echo $salesInvoiceRow->gst_figure_id;?>">
-				<input type="hidden" name="" class="gst_figure_tax_percentage calculation" value="<?php echo $salesInvoiceRow->gst_figure->tax_percentage;?>">
-				<input type="hidden" name="" class="totamount calculation" value="">
-				<input type="hidden" name="salesInvoiceRow<?php echo $i;?>gst_value" class="gstValue calculation" value="<?php echo $salesInvoiceRow->gst_value;?>">
-				<input type="hidden" name="" class="discountvalue calculation" value="">
-										
-				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.item_id', ['empty'=>'-Item Name-','options'=>$itemOptions,'label' => false,'class' => 'form-control input-sm attrGet calculation','required'=>'required','value'=>$salesInvoiceRow->item->id]);
-                echo $this->Form->input('salesInvoiceRow.'.$i.'.id', ['value'=>$salesInvoiceRow->id,'type'=>'hidden']);	?>
-				<span class="itemQty" style="color:red"></span>
-			</td>
-			<td>
-				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.quantity', ['label' => false,'class' => 'form-control input-sm calculation quantity rightAligntextClass','id'=>'check','required'=>'required','placeholder'=>'Quantity', 'value'=>$salesInvoiceRow->quantity]); ?>
-			</td>
-			<td>
-				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.rate', ['label' => false,'class' => 'form-control input-sm calculation rate rightAligntextClass','required'=>'required','placeholder'=>'Rate','value'=>$salesInvoiceRow->rate, 'readonly'=>'readonly']); ?>
-			</td>
-			<td>
-				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.discount_percentage', ['label' => false,'class' => 'form-control input-sm calculation discount rightAligntextClass','placeholder'=>'Dis.', 'value'=>$salesInvoiceRow->discount_percentage]); ?>	
-			</td>
-			<td>
-			<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.taxable_value', ['label' => false,'class' => 'form-control input-sm gstAmount reverse_total_amount rightAligntextClass','required'=>'required', 'placeholder'=>'Amount', 'value'=>$salesInvoiceRow->taxable_value, 'readonly'=>'readonly']); ?>	
-			</td>
-			<td>
-				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.gst_figure_tax_name', ['label' => false,'class' => 'form-control input-sm gst_figure_tax_name rightAligntextClass', 'readonly'=>'readonly','required'=>'required','placeholder'=>'', 'value'=>$salesInvoiceRow->gst_figure->name]); ?>	
-			</td>
-			<td>
-				<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.net_amount', ['label' => false,'class' => 'form-control input-sm discountAmount calculation rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'Taxable Value', 'value'=>$salesInvoiceRow->net_amount]); ?>	
-			</td>
-										
-										<td align="center">
-											<a class="btn btn-danger delete-tr btn-xs" href="#" role="button" style="margin-bottom: 5px;"><i class="fa fa-times"></i></a>
-										</td>
-									</tr>
+							     ?>
+								<tr class="main_tr" class="tab">
+									<td>
+										<input type="hidden" name="salesInvoiceRow<?php echo $i;?>id" class="id" value="<?php echo $salesInvoiceRow->id; ?>">
+										<input type="hidden" name="" class="outStock" value="0">
+										<input type="hidden" name="gst_amount" class="gst_amount" value="">	
+										<input type="hidden" name="salesInvoiceRow<?php echo $i;?>gst_figure_id" class="gst_figure_id" value="<?php echo $salesInvoiceRow->gst_figure_id;?>">
+										<input type="hidden" name="" class="gst_figure_tax_percentage calculation" value="<?php echo $salesInvoiceRow->gst_figure->tax_percentage;?>">
+										<input type="hidden" name="" class="totamount calculation" value="">
+										<input type="hidden" name="salesInvoiceRow<?php echo $i;?>gst_value" class="gstValue calculation" value="<?php echo $salesInvoiceRow->gst_value;?>">
+										<input type="hidden" name="" class="discountvalue calculation" value="">
+																
+										<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.item_id', ['empty'=>'-Item Name-','options'=>$itemOptions,'label' => false,'class' => 'form-control input-sm attrGet calculation','required'=>'required','value'=>$salesInvoiceRow->item->id]);
+										echo $this->Form->input('salesInvoiceRow.'.$i.'.id', ['value'=>$salesInvoiceRow->id,'type'=>'hidden']);	?>
+										<span class="itemQty" style="color:red"></span>
+								</td>
+								<td>
+									<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.quantity', ['label' => false,'class' => 'form-control input-sm calculation quantity rightAligntextClass','id'=>'check','required'=>'required','placeholder'=>'Quantity', 'value'=>$salesInvoiceRow->quantity]); ?>
+								</td>
+								<td>
+									<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.rate', ['label' => false,'class' => 'form-control input-sm calculation rate rightAligntextClass','required'=>'required','placeholder'=>'Rate','value'=>$salesInvoiceRow->rate, 'readonly'=>'readonly']); ?>
+								</td>
+								<td>
+									<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.discount_percentage', ['label' => false,'class' => 'form-control input-sm calculation discount rightAligntextClass','placeholder'=>'Dis.', 'value'=>$salesInvoiceRow->discount_percentage]); ?>	
+								</td>
+								<td>
+								<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.taxable_value', ['label' => false,'class' => 'form-control input-sm gstAmount reverse_total_amount rightAligntextClass','required'=>'required', 'placeholder'=>'Amount', 'value'=>$salesInvoiceRow->taxable_value, 'readonly'=>'readonly']); ?>	
+								</td>
+								<td>
+									<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.gst_figure_tax_name', ['label' => false,'class' => 'form-control input-sm gst_figure_tax_name rightAligntextClass', 'readonly'=>'readonly','required'=>'required','placeholder'=>'', 'value'=>$salesInvoiceRow->gst_figure->name]); ?>	
+								</td>
+								<td>
+									<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.net_amount', ['label' => false,'class' => 'form-control input-sm discountAmount calculation rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'Taxable Value', 'value'=>$salesInvoiceRow->net_amount]); ?>	
+								</td>
+															
+								<td align="center">
+									<a class="btn btn-danger delete-tr btn-xs" href="#" role="button" style="margin-bottom: 5px;"><i class="fa fa-times"></i></a>
+								</td>
+							</tr>
 								<?php $i++; } ?>
 								</tbody>
 								<tfoot>
@@ -266,7 +266,6 @@ $party_state_id=$state_id;
 			<input type="hidden" name="" class="totamount calculation" value="">
 			<input type="hidden" name="gst_value" class="gstValue calculation" value="">
             <input type="hidden" name="" class="discountvalue calculation" value="">
-			
 				<?php echo $this->Form->input('item_id', ['empty'=>'-Item Name-','options'=>$itemOptions,'label' => false,'class' => 'form-control input-sm attrGet calculation','required'=>'required']); ?>
 			<span class="itemQty" style="color:red;font-size:10px;"></span>
 			</td>
@@ -300,12 +299,11 @@ $party_state_id=$state_id;
 	$(document).ready(function() {
 		$('.attrGet').die().live('change',function(){
 		var itemQ=$(this).closest('tr');
-			var gst_amount=$('option:selected', this).attr('gst_amount');
-			var sales_rate=$('option:selected', this).attr('sales_rate');
-			$(this).closest('tr').find('.gst_amount').val(gst_amount);
-			$(this).closest('tr').find('.rate').val(sales_rate);
-			
-			var itemId=$(this).val();
+		var gst_amount=$('option:selected', this).attr('gst_amount');
+		var sales_rate=$('option:selected', this).attr('sales_rate');
+		$(this).closest('tr').find('.gst_amount').val(gst_amount);
+		$(this).closest('tr').find('.rate').val(sales_rate);
+		var itemId=$(this).val();
 		var url='".$this->Url->build(["controller" => "SalesInvoices", "action" => "ajaxItemQuantity"])."';
 		url=url+'/'+itemId
 		$.ajax({
@@ -313,16 +311,16 @@ $party_state_id=$state_id;
 			type: 'GET'
 			//dataType: 'text'
 		}).done(function(response) {
-		var fetch=$.parseJSON(response);
-		var text=fetch.text;
-		var type=fetch.type;
-		itemQ.find('.itemQty').html(text);
+			var fetch=$.parseJSON(response);
+			var text=fetch.text;
+			var type=fetch.type;
+			itemQ.find('.itemQty').html(text);
 		if(type=='true')
 		{
-		itemQ.find('.outStock').val(1);
+		 itemQ.find('.outStock').val(1);
 		}
 		else{
-		itemQ.find('.outStock').val(0);
+		 itemQ.find('.outStock').val(0);
 		}
 		});	
 		forward_total_amount();
@@ -335,35 +333,35 @@ $party_state_id=$state_id;
 			{
 			if(customer_state_id>0)
 			{
-			$('#gstDisplay').html('IGST');
-			$('#add_igst').show();
-			$('#add_cgst').hide();
-			$('#add_sgst').hide();
-			$('#is_interstate').val('1');
+				$('#gstDisplay').html('IGST');
+				$('#add_igst').show();
+				$('#add_cgst').hide();
+				$('#add_sgst').hide();
+				$('#is_interstate').val('1');
 			}
 			else if(!customer_state_id)
 			{
-			$('#gstDisplay').html('GST');
-			$('#add_cgst').show();
-			$('#add_sgst').show();
-			$('#add_igst').hide();
-			$('#is_interstate').val('0');
+				$('#gstDisplay').html('GST');
+				$('#add_cgst').show();
+				$('#add_sgst').show();
+				$('#add_igst').hide();
+				$('#is_interstate').val('0');
 			}
 			else if(customer_state_id==0)
 			{
-			$('#gstDisplay').html('GST');
-			$('#add_cgst').show();
-			$('#add_sgst').show();
-			$('#add_igst').hide();
-			$('#is_interstate').val('0');
+				$('#gstDisplay').html('GST');
+				$('#add_cgst').show();
+				$('#add_sgst').show();
+				$('#add_igst').hide();
+				$('#is_interstate').val('0');
 			}
 			}
 			else if(customer_state_id==state_id){
-			$('#gstDisplay').html('GST');
-			$('#add_cgst').show();
-			$('#add_sgst').show();
-			$('#add_igst').hide();
-			$('#is_interstate').val('0');
+				$('#gstDisplay').html('GST');
+				$('#add_cgst').show();
+				$('#add_sgst').show();
+				$('#add_igst').hide();
+				$('#is_interstate').val('0');
 			}
 			$(this).closest('tr').find('.output_igst_ledger_id').val(output_igst_ledger_id);
 		});
@@ -551,8 +549,6 @@ $party_state_id=$state_id;
 		rename_rows();
 		}
 		
-		
-		
 function checkValidation() 
 	{  
 		var amount_before_tax  = $('.amount_before_tax').val();
@@ -573,8 +569,7 @@ function checkValidation()
 		       alert('Please check, you have added out of stock data!');
 			   return false;
 		}
-				
-				
+
 	}";
 
 echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 

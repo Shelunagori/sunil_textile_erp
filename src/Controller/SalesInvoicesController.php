@@ -84,8 +84,6 @@ class SalesInvoicesController extends AppController
 				$salesInvoice->customer_id=0;
 			}
 		
-		pr($salesInvoice->toArray());
-		exit;
 		
 		   if ($this->SalesInvoices->save($salesInvoice)) {
 		      foreach($salesInvoice->sales_invoice_rows as $sales_invoice_row)
