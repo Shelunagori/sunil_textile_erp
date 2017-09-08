@@ -62,6 +62,9 @@ class CompaniesTable extends Table
 		$this->hasMany('SecondTampGrnRecords', [
             'foreignKey' => 'company_id'
         ]);
+		$this->hasMany('GstFigures', [
+            'foreignKey' => 'company_id'
+        ]);
     }
 
     /**
