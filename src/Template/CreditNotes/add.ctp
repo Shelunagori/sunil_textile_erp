@@ -11,7 +11,7 @@ $this->set('title', 'Create Credit Note');
 			<div class="portlet-title">
 				<div class="caption">
 					<i class="icon-bar-chart font-green-sharp hide"></i>
-					<span class="caption-subject font-green-sharp bold ">Sales Invoice</span>
+					<span class="caption-subject font-green-sharp bold ">Credit Note </span>
 				</div>
 			</div>
 			<div class="portlet-body">
@@ -42,7 +42,7 @@ $this->set('title', 'Create Credit Note');
 						<input type="hidden" name="voucher_no" id="" value="<?= h($voucher_no, 4, '0') ?>">
 						<div class="col-md-2">
 							<label>Type</label><span class="required">*</span></label>
-							<select name="cash_or_credit" id="UserGender" class="cashcredit">
+							<select name="cash_or_credit" id="UserGender" class="cashcredit  form-control input-sm">
 								<option value="cash" class="cash">Cash</option>
 								<option value="credit" class="credit">Credit</option>
 							</select>
@@ -50,6 +50,11 @@ $this->set('title', 'Create Credit Note');
 						<div class="col-md-2  cusomerIds" style="display:none">
 							<label>Party</label>
 							<?php echo $this->Form->control('party_ledger_id',['empty'=>'-Select Party-', 'class'=>'form-control input-sm party_ledger_id select2me customer_id ','label'=>false, 'options' => $partyOptions]);
+							?>
+						</div>
+						<div class="col-md-2  cashcusomerIds" style="display:none">
+							<label>Party</label>
+							<?php echo $this->Form->control('cash_party_ledger_id',[ 'class'=>'form-control input-sm party_ledger_id select2me customer_id ','label'=>false, 'options' => $CashPartyLedgers]);
 							?>
 						</div>
 						<div class="col-md-2">
@@ -244,6 +249,7 @@ $this->set('title', 'Create Credit Note');
 	</tbody>
 </table>
 
+
 <?php
 	$js="
 	$(document).ready(function() {
@@ -254,6 +260,15 @@ $this->set('title', 'Create Credit Note');
 			forward_total_amount();
 		});
 		//select item gst rate end
+		
+		
+		//item rate calcurate start
+		
+		
+		
+		
+		
+		//item rate calcurate end	
 		
 		
 		//change party state wise start
@@ -305,9 +320,11 @@ $this->set('title', 'Create Credit Note');
 			if(cashcredit=='cash')
 			{
 				$('.cusomerIds').hide();
+				//$('.cashcusomerIds').show();
 			}
 			else{
 				$('.cusomerIds').show();
+				//$('.cashcusomerIds').hide();
 			}
 		});
 		//cash or credit end

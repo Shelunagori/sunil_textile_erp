@@ -53,6 +53,20 @@ class CreditNotesTable extends Table
             'foreignKey' => 'customer_id',
             'joinType' => 'INNER'
         ]);
+		$this->belongsTo('Ledgers', [
+            'foreignKey' => 'ledger_id',
+            'joinType' => 'INNER'
+        ]);
+		
+		$this->hasMany('ItemLedgers', [
+			'foreignKey' => 'sales_invoice_id',
+			'saveStrategy'=>'replace'
+        ]);
+		
+		$this->hasMany('AccountingEntries', [
+            'foreignKey' => 'credit_note_id',
+            'joinType' => 'INNER'
+        ]);
 		
 		$this->belongsTo('SalesLedgers', [
 			'className' => 'Ledgers',
