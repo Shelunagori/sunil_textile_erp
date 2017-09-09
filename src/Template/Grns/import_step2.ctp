@@ -9,7 +9,10 @@ $this->set('title', 'Import');
 		There is already data processing. 
 		<?php echo $this->Html->link(' Check from here', '/SecondTampGrnRecords',['escape' => false]); ?>
 	</span><br/>
-	<span><?php echo $notvalid_to_importRecords; ?> Records are not valid to import. <a href="#">Invalid Records</a></span><br/>
+	<span>
+		<?php echo $notvalid_to_importRecords; ?> Records are not valid to import. 
+		<?php echo $this->Html->link(' Check from here', '/SecondTampGrnRecords/index/invalid',['escape' => false]); ?>
+	</span><br/>
 	<span>First fix the invalid records then import command will be appear.<span><br/>
 	<span>Delete existing data and start again step 2. <a href="#">Delete & Start</a><span>
 <?php goto Bottom; } ?>
