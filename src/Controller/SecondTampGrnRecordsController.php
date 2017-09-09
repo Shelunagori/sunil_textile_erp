@@ -19,7 +19,7 @@ class SecondTampGrnRecordsController extends AppController
      *
      * @return \Cake\Http\Response|void
      */
-    public function index()
+    public function index($invalid=null)
     {
 		$this->viewBuilder()->layout('index_layout');
 		$company_id=$this->Auth->User('session_company_id');
@@ -27,7 +27,12 @@ class SecondTampGrnRecordsController extends AppController
         $this->paginate = [
             'contain' => ['Units']
         ];
-        $secondTampGrnRecords = $this->paginate($this->SecondTampGrnRecords->find()->where(['SecondTampGrnRecords.company_id'=>$company_id,'SecondTampGrnRecords.user_id'=>$user_id]));
+		if($invalid){
+			$where=['SecondTampGrnRecords.company_id'=>$company_id,'SecondTampGrnRecords.user_id'=>$user_id, 'valid_to_import'=>'no'];
+		}else{
+			$where=['SecondTampGrnRecords.company_id'=>$company_id,'SecondTampGrnRecords.user_id'=>$user_id];
+		}
+        $secondTampGrnRecords = $this->paginate($this->SecondTampGrnRecords->find()->where($where));
 
         $this->set(compact('secondTampGrnRecords'));
         $this->set('_serialize', ['secondTampGrnRecords']);
