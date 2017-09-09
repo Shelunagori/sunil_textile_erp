@@ -334,8 +334,9 @@ $this->set('title', 'Create Credit Note');
 		{
 			var i=0;
 			$('#main_table tbody#main_tbody tr.main_tr').each(function(){ 
-		$(this).find('.attrGet').select2().attr({name:'credit_note_rows['+i+'][item_id]',id:'credit_note_rows['+i+'][item_id]'});
-			    $(this).find('.quantity').attr({name:'credit_note_rows['+i+'][quantity]',id:'credit_note_rows['+i+'][quantity]'});
+			    
+				$(this).find('td:nth-child(1) select.attrGet').select2().attr({name:'credit_note_rows['+i+'][item_id]',id:'credit_note_rows['+i+'][item_id]'});
+				$(this).find('.quantity').attr({name:'credit_note_rows['+i+'][quantity]',id:'credit_note_rows['+i+'][quantity]'});
 				$(this).find('.rate').attr({name:'credit_note_rows['+i+'][rate]',id:'credit_note_rows['+i+'][rate]'});
 				$(this).find('.gstAmount').attr({name:'credit_note_rows['+i+'][taxable_value]',id:'credit_note_rows['+i+'][taxable_value]'});
 			  

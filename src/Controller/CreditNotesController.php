@@ -93,6 +93,8 @@ class CreditNotesController extends AppController
 				 $creditNote->party_ledger_id=$creditNote->cash_party_ledger_id;
 			}
 		
+		
+		
             if ($this->CreditNotes->save($creditNote)) {
 				
 				//item ledger entry start
