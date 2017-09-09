@@ -438,20 +438,22 @@ else if($creditNote->cash_or_credit=="cash")
 		}
 		function gstChange()
 		{
-			var is_interstate=$('#is_interstate').val();
-			if(is_interstate=='1')
+			var cashcredit=$('.cashcredit').val();
+			if(cashcredit=='credit')
 			{
 					$('#gstDisplay').html('IGST');
-					$('#add_igst').show();
-					$('#add_cgst').hide();
-					$('#add_sgst').hide();
+					//$('#add_igst').show();
+					//$('#add_cgst').hide();
+					//$('#add_sgst').hide();
+					$('.cusomerIds').hide();
 					$('.cusomerIds').show();
 			}
-			else if(is_interstate=='0'){
-				$('#gstDisplay').html('GST');
-				$('#add_cgst').show();
-				$('#add_sgst').show();
-				$('#add_igst').hide();
+			else if(cashcredit=='cash'){
+				//$('#gstDisplay').html('GST');
+				//$('#add_cgst').show();
+				//$('#add_sgst').show();
+				//$('#add_igst').hide();
+				$('.cusomerIds').hide();
 				$('.cusomerIds').hide();
 			}
 		}
