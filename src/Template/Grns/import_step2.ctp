@@ -10,12 +10,14 @@ $this->set('title', 'Import');
 		<?php echo $this->Html->link(' Check from here', '/SecondTampGrnRecords',['escape' => false]); ?>
 	</span><br/>
 	<span>
+	
 		<?php echo $notvalid_to_importRecords; ?> Records are not valid to import. 
 		<?php echo $this->Html->link(' Check from here', '/SecondTampGrnRecords/index/invalid',['escape' => false]); ?>
 	</span><br/>
-	<span>First fix the invalid records then import command will be appear.<span><br/>
-	<span>Delete existing data and start again step 2. <a href="#">Delete & Start</a><span>
-<?php goto Bottom; } ?>
+	<?php if($notvalid_to_importRecords>0) { ?>
+	<span>First fix the invalid records then import command will be appear.<span><br/><?php } else { ?>Your Record is ready to Final Import. <?php echo $this->Html->link('Click here to Import', '/SecondTampGrnRecords/finalImport',['escape' => false]); ?> <?php } ?>
+	</br><span>Delete existing data and start again step 2. <a href="#">Delete & Start</a><span>
+	<?php goto Bottom; } ?>
 <div class="row">
 	<div class="col-md-12">
 		<div class="portlet light ">

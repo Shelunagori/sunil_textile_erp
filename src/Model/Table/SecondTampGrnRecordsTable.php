@@ -51,6 +51,22 @@ class SecondTampGrnRecordsTable extends Table
             'joinType' => 'LEFT'
         ]);
 		
+		$this->belongsTo('GstFigures', [
+            'foreignKey' => 'gst_figure_id',
+            'joinType' => 'LEFT'
+		]);
+		$this->belongsTo('FirstGstFigures', [
+			'className' => 'GstFigures',
+			'foreignKey' => 'first_gst_figure_id',
+			'propertyName' => 'FirstGstFigures',
+		]);
+		$this->belongsTo('SecondGstFigures', [
+			'className' => 'GstFigures',
+			'foreignKey' => 'second_gst_figure_id',
+			'propertyName' => 'SecondGstFigures',
+		]);
+
+		$this->belongsTo('Grns');
     }
 
     /**

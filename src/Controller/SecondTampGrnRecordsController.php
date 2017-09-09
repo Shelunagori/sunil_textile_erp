@@ -25,7 +25,7 @@ class SecondTampGrnRecordsController extends AppController
 		$company_id=$this->Auth->User('session_company_id');
 		$user_id=$this->Auth->User('id');
         $this->paginate = [
-            'contain' => ['Units']
+            'contain' => ['Units','FirstGstFigures','SecondGstFigures']
         ];
 		if($invalid){
 			$where=['SecondTampGrnRecords.company_id'=>$company_id,'SecondTampGrnRecords.user_id'=>$user_id, 'valid_to_import'=>'no'];
@@ -86,20 +86,65 @@ class SecondTampGrnRecordsController extends AppController
      */
     public function edit($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
+		$location_id=$this->Auth->User('session_location_id');
+		$user_id=$this->Auth->User('id');
         $secondTampGrnRecord = $this->SecondTampGrnRecords->get($id, [
-            'contain' => []
+            'contain' => ['Units']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
+			$secondTampGrnRecord->valid_to_import ='yes';
             $secondTampGrnRecord = $this->SecondTampGrnRecords->patchEntity($secondTampGrnRecord, $this->request->getData());
             if ($this->SecondTampGrnRecords->save($secondTampGrnRecord)) {
                 $this->Flash->success(__('The second tamp grn record has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+				$item=$this->SecondTampGrnRecords->Companies->Items->newEntity();
+				$item->name=$secondTampGrnRecord->item_name;
+				$item->item_code=$secondTampGrnRecord->item_code;
+				$item->hsn_code=$secondTampGrnRecord->hsn_code;
+				$item->unit_id=$secondTampGrnRecord->unit_id;
+				$item->company_id=$company_id;
+				$item->first_gst_figure_id=$secondTampGrnRecord->first_gst_figure_id;
+				$item->gst_amount=$secondTampGrnRecord->amount_in_ref_of_gst_rate;
+				$item->second_gst_figure_id=$secondTampGrnRecord->second_gst_figure_id;
+				$item->kind_of_gst=$secondTampGrnRecord->gst_rate_fixed_or_fluid;
+				$item->sales_rate=$secondTampGrnRecord->sales_rate;
+				$item->location_id=$location_id;
+				$item->item_code=strtoupper($secondTampGrnRecord->item_code);
+				$data_to_encode = strtoupper($secondTampGrnRecord->item_code);
+				$CheckItem = $this->SecondTampGrnRecords->Companies->Items->exists(['Items.item_code'=>$secondTampGrnRecord->item_code,'Items.company_id'=>$company_id]);
+				if(!$CheckItem)
+				{
+					if($this->SecondTampGrnRecords->Companies->Items->save($item)){
+					
+						$barcode = new BarcodeHelper(new \Cake\View\View());
+						// Generate Barcode data
+						$barcode->barcode();
+						$barcode->setType('C128');
+						$barcode->setCode($data_to_encode);
+						$barcode->setSize(40,100);
+							
+						// Generate filename     
+						$file = 'img/barcode/'.$item->id.'.png';
+							
+						// Generates image file on server    
+						$barcode->writeBarcodeFile($file);
+					
+						$query = $this->SecondTampGrnRecords->query();
+						$query->update()
+							->set(['item_id' => $item->id])
+							->where(['SecondTampGrnRecords.id' =>$secondTampGrnRecord->id])
+							->execute();
+					}
+				}
+                return $this->redirect(['action' => 'import_step2','controller' =>'Grns']);
             }
             $this->Flash->error(__('The second tamp grn record could not be saved. Please, try again.'));
         }
-        $users = $this->SecondTampGrnRecords->Users->find('list', ['limit' => 200]);
-        $this->set(compact('secondTampGrnRecord', 'users'));
+		$units = $this->SecondTampGrnRecords->Units->find('list');
+        $users = $this->SecondTampGrnRecords->Users->find('list');
+		$gstFigures = $this->SecondTampGrnRecords->GstFigures->find('list')->where(['GstFigures.company_id'=>$company_id]);
+        $this->set(compact('secondTampGrnRecord', 'users','units','gstFigures'));
         $this->set('_serialize', ['secondTampGrnRecord']);
     }
 	
@@ -124,6 +169,47 @@ class SecondTampGrnRecordsController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 	
+	public function finalImport(){
+		$this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
+        $location_id=$this->Auth->User('session_location_id');
+		$this->request->data['company_id'] =$company_id;
+		$grn = $this->SecondTampGrnRecords->Grns->newEntity();
+		if ($this->request->is('post')) 
+		{
+			$grn = $this->SecondTampGrnRecords->Grns->patchEntity($grn, $this->request->getData());
+			$grn->transaction_date = date("Y-m-d",strtotime($this->request->getData()['transaction_date']));
+			$Voucher_no = $this->SecondTampGrnRecords->Grns->find()->select(['voucher_no'])->where(['company_id'=>$company_id])->order(['voucher_no' => 'DESC'])->first();
+			if($Voucher_no)
+			{
+				$grn->voucher_no = $Voucher_no->voucher_no+1;
+			}
+			else
+			{
+				$grn->voucher_no = 1;
+			} 
+			
+            if ($this->SecondTampGrnRecords->Grns->save($grn)) 
+			{
+				$this->Flash->success(__('The grn has been saved.'));
+				return $this->redirect(['action' => 'progress1/'.$grn->id]);
+            }
+		}
+		$Voucher_no = $this->SecondTampGrnRecords->Grns->find()->select(['voucher_no'])->where(['company_id'=>$company_id])->order(['voucher_no' => 'DESC'])->first();
+		
+		if($Voucher_no)
+		{
+			$voucher_no=$Voucher_no->voucher_no+1;
+		}
+		else
+		{ 
+			$voucher_no=1;
+			
+		} 
+		$this->set(compact('SecondTampGrnRecords','grn','voucher_no'));
+        $this->set('_serialize', ['SecondTampGrnRecords']);
+	}
+
 	public function progress()
 	{
 		$this->viewBuilder()->layout('index_layout');
@@ -132,6 +218,62 @@ class SecondTampGrnRecordsController extends AppController
         $this->set('_serialize', ['SecondTampGrnRecords']);
 	}
 	
+	public function progress1($id=null)
+	{
+		$this->viewBuilder()->layout('index_layout');
+		$SecondTampGrnRecords = $this->SecondTampGrnRecords->newEntity();
+		$grn_id=$id;
+		$this->set(compact('SecondTampGrnRecords','grn_id'));
+        $this->set('_serialize', ['SecondTampGrnRecords']);
+	}
+
+	public function ProcessDataImport($grn_id=null)
+	{
+		$user_id=$this->Auth->User('id');
+		$company_id=$this->Auth->User('session_company_id');
+		$location_id=$this->Auth->User('session_location_id');
+		$SecondTampGrnRecords = $this->SecondTampGrnRecords->find()
+								->where(['user_id'=>$user_id,'company_id'=>$company_id,'import_to_grn'=>'no'])
+								->limit(10);
+		
+		if($SecondTampGrnRecords->count()==0){
+			goto Bottom;
+		}
+		foreach($SecondTampGrnRecords as $SecondTampGrnRecord){
+			
+			$GrnRows = $this->SecondTampGrnRecords->Grns->GrnRows->newEntity();;
+				$GrnRows->grn_id = $grn_id;
+				$GrnRows->item_id = $SecondTampGrnRecord->item_id;
+				$GrnRows->quantity = $SecondTampGrnRecord->quantity;
+				$GrnRows->rate = $SecondTampGrnRecord->purchase_rate;
+				$GrnRows->sale_rate = $SecondTampGrnRecord->sales_rate;
+				if($this->SecondTampGrnRecords->Grns->GrnRows->save($GrnRows)){
+				$query = $this->SecondTampGrnRecords->query();
+					$query->update()
+					->set(['import_to_grn' => 'yes'])
+					->where(['SecondTampGrnRecords.id' =>$SecondTampGrnRecord->id])
+					->execute();
+				}
+		}
+		Bottom:
+		$totalRecords=$this->SecondTampGrnRecords->find()
+						->where(['user_id'=>$user_id,'company_id'=>$company_id])
+						->count();
+		$processedRecords=$this->SecondTampGrnRecords->find()
+						->where(['user_id'=>$user_id,'company_id'=>$company_id,'import_to_grn'=>'yes'])
+						->count();
+		$progress_percentage = round((($processedRecords*100)/$totalRecords),2);
+		$data['percantage'] = $progress_percentage;
+
+		if($totalRecords==$processedRecords){ 
+			$data['recallAjax'] = "false";
+		}else{
+			$data['recallAjax'] = "true";
+		}
+		echo json_encode($data);
+		exit;
+	}
+
 	public function ProcessData()
 	{
 		$user_id=$this->Auth->User('id');

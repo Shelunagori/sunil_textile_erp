@@ -1,21 +1,15 @@
-Item Code,Quantity,Purchase Rate,Sales Rate,Addition Item Data Required, item name, hsn code, unit, gst rate fixed or fluid, first gst rate, amount in refence to gst rate, second gst rate  
-barcode1,11,100,200, ,,,,,,,
-barcode2,22,110,210,Yes ,,hsn code 2,nos,fix,28,,
-barcode3,33,120,220,Yes ,item 3,,fdgf,fix,28,,
-barcode4,44,130,230,Yes ,item 4,hsn code 4,nos,,28,,
-barcode5,55,140,240,Yes ,item 5,hsn code 5,sdf,fix,,,
-barcode6,66,150,250,Yes ,item 6,hsn code 6,nos,fix,28,,
-barcode7,77,160,260,Yes ,item 7,hsn code 7,nos,fix,28,,
-barcode8,88,170,270,Yes ,item 8,hsn code 8,nos,fix,28,,
-barcode9,99,180,280,Yes ,item 9,hsn code 9,nos,fix,28,,
-barcode10,110,190,290,Yes ,item 10,hsn code 10,nos,fix,28,,
-barcode11,121,200,300,Yes ,item 11,hsn code 11,nos,fluid,12,,18
-barcode12,132,210,310,Yes ,item 12,hsn code 12,nos,fluid,12,1000,
-barcode13,143,220,320,Yes ,item 13,hsn code 13,nos,fluid,12,1000,18
-barcode14,154,230,330,Yes ,item 14,hsn code 14,nos,fluid,12,1000,18
-barcode15,165,240,340,Yes ,item 15,hsn code 15,nos,fluid,12,1000,18
-barcode16,176,250,350,Yes ,item 16,hsn code 16,nos,fluid,12,1000,18
-barcode17,187,260,360,Yes ,item 17,hsn code 17,nos,fluid,12,1000,18
-barcode18,198,270,370,Yes ,item 18,hsn code 18,nos,fluid,12,1000,18
-barcode19,209,280,380, ,,,,,,,
-barcode20,220,290,390,Yes ,item 20,hsn code 20,nos,fluid,12,1000,18
+Item Code,Quantity,Purchase Rate,Sales Rate,Addition Item Data Required, item name, hsn code, unit, gst rate fix or fluid, first gst rate, amount in refence to gst rate, second gst rate  
+barcode1,10,850,1100,Yes ,item1,hsn1,killo gram,fix,5,,
+barcode2,12,900,1200,Yes ,,hsn2,killo gram,fix,5,,
+barcode3,14,950,1300,Yes ,item3,hsn3,killo gram,fix,5,,
+barcode4,16,1000,1400,Yes ,item4,hsn4,killo gram,fix,5,,
+barcode5,18,1050,1500,Yes ,item5,hsn5,,fix,5,,
+barcode6,20,1100,1600,Yes ,item6,hsn6,killo gram,fix,5,,
+barcode7,22,1150,1700,Yes ,item7,hsn7,killo gram,fix,5,,
+barcode8,24,1200,1800,Yes ,item8,hsn8,killo gram,fix,5,,
+barcode9,26,1250,1900,Yes ,item9,hsn9,killo gram,,5,,
+barcode10,28,1300,2000,Yes ,item10,hsn10,killo gram,fluid,12,200,500
+barcode11,30,1350,2100,Yes ,item11,hsn11,killo gram,fluid,12,300,510
+barcode12,32,1400,2200,Yes ,item12,hsn12,killo gram,fluid,12,400,520
+barcode13,34,1450,2300,Yes ,item13,hsn13,killo gram,fluid,12,500,530
+barcode14,36,1500,2400,Yes ,item14,hsn14,killo gram,fluid,12,600,540

@@ -257,7 +257,7 @@ $this->set('title', 'Edit Item');
 		  }
 	  });
 	  ComponentsPickers.init();
-=======
+
 		kind_of_gst('".$item->kind_of_gst."');
 		$('.kind_of_gst').die().live('change',function(){
 			var gst_type = $(this).val();
@@ -279,7 +279,6 @@ $this->set('title', 'Edit Item');
 			}
 		}
 
->>>>>>> origin/master
     });
 	";
 
