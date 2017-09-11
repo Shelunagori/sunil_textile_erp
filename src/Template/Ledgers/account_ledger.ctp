@@ -108,11 +108,12 @@ $this->set('title', 'Account Ledger report');
 									$total_debit=0;
 									foreach($AccountingLedgers as $AccountingLedger)
 									{
+										$id= $AccountingLedger->id
 						?>
 							<tr>
 								<td><?php echo date("d-m-Y",strtotime($AccountingLedger->transaction_date)); ?></td>
-								<td></td>
-								<td></td>
+								<td><?php echo @$voucher_type[$id]; ?></td>
+								<td><?php echo @$voucher_no[$id]; ?></td>
 								<td style="text-align:right";>
 								<?php 
 									if(!empty($AccountingLedger->debit))

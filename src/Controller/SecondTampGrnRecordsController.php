@@ -319,12 +319,6 @@ class SecondTampGrnRecordsController extends AppController
 		exit;
 	}
 
-	public function SendToImportStep2()
-	{
-		return $this->redirect(['action' => 'import_step2','controller' =>'Grns']);
-		exit;
-    }
-	
 	
 	public function ProcessData()
 	{
@@ -524,6 +518,18 @@ class SecondTampGrnRecordsController extends AppController
 		exit;
 	}
 	
+	public function deleteSecondTempRecords(){
+		$user_id=$this->Auth->User('id');
+		$company_id=$this->Auth->User('session_company_id');
+		$location_id=$this->Auth->User('session_location_id');
+		
+		$query = $this->SecondTampGrnRecords->query();
+				$query->delete()->where(['user_id'=> $user_id,'company_id'=>$company_id])->execute();
+				
+		return $this->redirect(['action' => 'import_step2','controller' =>'Grns']);
+           
+		
+	}
 	
 }
 

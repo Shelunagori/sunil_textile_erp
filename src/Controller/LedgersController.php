@@ -378,6 +378,11 @@ class LedgersController extends AppController
 			$openingBalance_debit=0;$openingBalance_credit=0;
 			foreach($AccountingLedgers as $AccountingLedgers1)
 			{
+				if(!empty($AccountingLedgers1->purchase_voucher_id)){
+					@$voucher_type[$AccountingLedgers1->id]='Purchase Vouchers';
+					@$url_link=$this->Ledgers->AccountingEntries->PurchaseVouchers->find()->where(['PurchaseVouchers.id'=>$AccountingLedgers1->purchase_voucher_id])->first();
+					$voucher_no[$AccountingLedgers1->id]=$url_link->voucher_no;
+				}
 				if($AccountingLedgers1->is_opening_balance!='yes')
 				{
 					$credit += $AccountingLedgers1->credit; 
@@ -441,7 +446,7 @@ class LedgersController extends AppController
 		}
 		//pr($AccountingLedgers->toArray());exit;
 		$ledgers = $this->Ledgers->find('list');
-		$this->set(compact('accountLedger','ledgers','openingBalance_debit1','closingBalance_debit1','openingBalance_credit1','closingBalance_credit1','AccountingLedgers','from_date','to_date'));
+		$this->set(compact('accountLedger','ledgers','openingBalance_debit1','closingBalance_debit1','openingBalance_credit1','closingBalance_credit1','AccountingLedgers','from_date','to_date','voucher_type','voucher_no'));
         $this->set('_serialize', ['ledger']);
     }
 }

@@ -122,6 +122,9 @@ class FirstTampGrnRecordsController extends AppController
 		$company_id=$this->Auth->User('session_company_id');
 		if ($this->request->is('post')) 
 		{
+			$query = $this->FirstTampGrnRecords->query();
+				$query->delete()->where(['user_id'=> $user_id,'company_id'=>$company_id])->execute();
+			
 			$csv = $this->request->data['csv'];
 			if(!empty($csv['tmp_name']))
 			{
