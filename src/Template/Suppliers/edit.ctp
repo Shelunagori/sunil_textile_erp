@@ -32,8 +32,8 @@ $this->set('title', 'Edit Supplier');
 									<?php echo $this->Form->control('accounting_group_id',['class'=>'form-control input-sm select2me','label'=>false, 'options' => $accountingGroups,'value'=>$supplier->ledgers[0]->accounting_group_id]); ?>
 								</div>
 								<div class="form-group">
-									<label>GSTIN <span class="required">*</span></label>
-									<?php echo $this->Form->control('gstin',['class'=>'form-control input-sm','placeholder'=>'GSTIN','label'=>false,'autofocus']); ?>
+									<label>GSTIN </label>
+									<?php echo $this->Form->control('gstin',['class'=>'form-control input-sm','placeholder'=>'GSTIN','label'=>false]); ?>
 								</div>
 								<div class="form-group">
 									<label>Mobile </label>

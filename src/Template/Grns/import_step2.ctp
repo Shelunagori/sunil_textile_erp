@@ -16,7 +16,7 @@ $this->set('title', 'Import');
 	</span><br/>
 	<?php if($notvalid_to_importRecords>0) { ?>
 	<span>First fix the invalid records then import command will be appear.<span><br/><?php } else { ?>Your Record is ready to Final Import. <?php echo $this->Html->link('Click here to Import', '/SecondTampGrnRecords/finalImport',['escape' => false]); ?> <?php } ?>
-	</br><span>Delete existing data and start again step 2. <a href="#">Delete & Start</a><span>
+	</br><span>Delete existing data and start again step 2. <?php echo $this->Html->link('Delete & Start', '/SecondTampGrnRecords/deleteSecondTempRecords',['escape' => false]); ?> <span>
 	<?php goto Bottom; } ?>
 <div class="row">
 	<div class="col-md-12">

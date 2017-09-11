@@ -304,6 +304,9 @@ class GrnsController extends AppController
 		
 		if ($this->request->is('post')) 
 		{
+			$query = $this->Grns->SecondTampGrnRecords->query();
+				$query->delete()->where(['user_id'=> $user_id,'company_id'=>$company_id])->execute();
+			
 			$csv = $this->request->data['csv'];
 			if(!empty($csv['tmp_name']))
 			{

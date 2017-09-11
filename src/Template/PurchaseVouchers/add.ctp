@@ -196,10 +196,10 @@ $this->set('title', 'Create Purchase Voucher');
 
 <?php
 	$js="
-	$(document).ready(function() {
-
+	$(document).ready(function() { 
+       
 		$('.calculation').die().live('keyup',function()
-		{
+		{ 
 			total_debit_credit();
 		});
 		
@@ -281,8 +281,14 @@ $this->set('title', 'Create Purchase Voucher');
 			});
 		}
 
-		function checkValidation() 
-		{
+		
+	
+	
+		ComponentsPickers.init();
+	});
+
+	function checkValidation() 
+	{ 
 			var total_debit  = $('.total_debit').val();
 			var total_credit = $('.total_credit').val();
 
@@ -292,7 +298,7 @@ $this->set('title', 'Create Purchase Voucher');
 				return false;
 			}
 			else
-			{
+			{ 
 				if(confirm('Are you sure you want to submit!'))
 				{
 					return true;
@@ -303,13 +309,7 @@ $this->set('title', 'Create Purchase Voucher');
 				}
 
 			}
-		}
-	
-	
-		ComponentsPickers.init();
-	});
-
-	
+	}
 	
 	
 	";

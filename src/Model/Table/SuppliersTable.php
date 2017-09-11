@@ -63,10 +63,6 @@ class SuppliersTable extends Table
             ->notEmpty('name');
 
         $validator
-            ->requirePresence('gstin', 'create')
-            ->notEmpty('gstin');
-
-        $validator
             ->email('email')
             ->allowEmpty('email');
 

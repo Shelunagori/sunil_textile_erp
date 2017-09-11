@@ -36,8 +36,8 @@ $this->set('title', 'Edit Stock Journal');
 						</div>
 					</div>
 					<br>
-                   <div class="row">
-					   <div class="table-responsive">
+                    <div class="row">
+					    <div class="table-responsive">
 							<table width="100%" class="table  table-bordered">
 								<tr>
 									<td width="50%">
@@ -113,9 +113,11 @@ $this->set('title', 'Edit Stock Journal');
 													 {
 												?>
 												<tr class="main_tr" class="tab">
-													<td width="7%"><?php echo $j+1;?></td>
+													<td width="7%"><?php echo $j+1;
+													?></td>
 													<td width="25%">
-														<?php echo $this->Form->input('outwards.'.$j.'.item_id', ['empty'=>'--Select--','options'=>$items,'label' => false,'class' => 'form-control input-sm select2me','required'=>'required','value'=>$outward->item->id]); 
+														<?php 
+														echo $this->Form->input('outwards.'.$j.'.item_id', ['empty'=>'--Select--','options'=>$items,'label' => false,'class' => 'form-control input-sm select2me','required'=>'required','value'=>$outward->item->id]); 
 														echo $this->Form->input('outwards.'.$j.'.id', ['value'=>$outward->id,'type'=>'hidden']);
 														?>
 													</td>
