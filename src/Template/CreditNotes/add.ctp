@@ -35,11 +35,11 @@ $this->set('title', 'Create Credit Note');
 								<?php echo $this->Form->control('transaction_date',['class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'placeholder'=>'DD-MM-YYYY','type'=>'text','data-date-start-date'=>@$coreVariable[fyValidFrom],'data-date-end-date'=>@$coreVariable[fyValidTo],'value'=>date('d-m-Y')]); ?>
 							</div>
 						</div>
-						<input type="hidden" name="company_id" class="customer_id" value="<?php echo $company_id;?>">
-						<input type="hidden" name="state_id" class="state_id" value="<?php echo $state_id;?>">
-						<input type="hidden" name="is_interstate" id="is_interstate" value="0">
-						<input type="hidden" name="isRoundofType" id="isRoundofType" class="isRoundofType" value="0">
-						<input type="hidden" name="voucher_no" id="" value="<?= h($voucher_no, 4, '0') ?>">
+							<input type="hidden" name="company_id" class="customer_id" value="<?php echo $company_id;?>">
+							<input type="hidden" name="state_id" class="state_id" value="<?php echo $state_id;?>">
+							<input type="hidden" name="is_interstate" id="is_interstate" value="0">
+							<input type="hidden" name="isRoundofType" id="isRoundofType" class="isRoundofType" value="0">
+							<input type="hidden" name="voucher_no" id="" value="<?= h($voucher_no, 4, '0') ?>">
 						<div class="col-md-2">
 							<label>Type</label><span class="required">*</span></label>
 							<select name="cash_or_credit" id="UserGender" class="cashcredit  form-control input-sm">
@@ -231,12 +231,6 @@ $this->set('title', 'Create Credit Note');
 			$(this).closest('tr').find('.gst_amount').val(gst_amount);
 			forward_total_amount();
 		});
-		//select item gst rate end
-		
-		//item rate calcurate start
-		
-		//item rate calcurate end	
-		
 		//change party state wise start
 		$('.party_ledger_id').die().live('change',function(){
 			var customer_state_id=$('option:selected', this).attr('party_state_id');
@@ -275,7 +269,7 @@ $this->set('title', 'Create Credit Note');
 				$('#add_igst').hide();
 				$('#is_interstate').val('0');
 			}
-			$(this).closest('tr').find('.output_igst_ledger_id').val(output_igst_ledger_id);
+			//$(this).closest('tr').find('.output_igst_ledger_id').val(output_igst_ledger_id);
 		});
 		//change party state wise end
 		
@@ -300,9 +294,6 @@ $this->set('title', 'Create Credit Note');
 			}
 		});
 		//cash or credit end
-		
-		
-		
 		// delete row start
 		$('.delete-tr').die().live('click',function() 
 		{
@@ -310,10 +301,7 @@ $this->set('title', 'Create Credit Note');
 			rename_rows();
 		});
 		//delete row end
-		
 		ComponentsPickers.init();
-	
-	
 		//add row start 
 		$('.add_row').click(function(){
 			add_row();
@@ -325,10 +313,8 @@ $this->set('title', 'Create Credit Note');
 			$('#main_table tbody#main_tbody').append(tr);
 			rename_rows();
 			forward_total_amount();
-			
 		}
 		//add row end
-	
 		//rename row start
 		function rename_rows()
 		{
@@ -352,21 +338,12 @@ $this->set('title', 'Create Credit Note');
 				i++;
 			});
 		}
-		
-		
-		
+
 		//calculation start 
 		$('.calculation').die().live('keyup',function()
 		{
 			forward_total_amount();
 		});
-		
-		
-		$( document ).ready( readyFn );
-		function readyFn( jQuery ) {
-		
-		}
-		
 		function forward_total_amount()
 		{
 			var total  = 0;
@@ -485,13 +462,11 @@ $this->set('title', 'Create Credit Note');
 			rename_rows();
 		}
 		//calculation end
-		
 		//form validation start
 		function checkValidation() 
 		{  
 			var amount_before_tax  = $('.amount_before_tax').val();
 			var amount_after_tax = $('.amount_after_tax').val();
-			var attrGet  = parseFloat($(this).find('.attrGet').val());
 			if(amount_before_tax && amount_after_tax)
 			{
 				if(confirm('Are you sure you want to submit!'))
@@ -506,8 +481,6 @@ $this->set('title', 'Create Credit Note');
 			else{
 				   alert('Please enter your data!');
 			}
-					
-					
 		};
 		//form validation end
 })";

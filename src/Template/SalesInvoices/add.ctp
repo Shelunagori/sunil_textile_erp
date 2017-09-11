@@ -65,7 +65,6 @@ $this->set('title', 'Create Sales Invoice');
 								</tr>
 								</thead>
 								<tbody id='main_tbody' class="tab">
-								
 								</tbody>
 								<tfoot>
 									<tr>
@@ -229,7 +228,7 @@ $this->set('title', 'Create Sales Invoice');
 			$(this).closest('tr').find('.gst_amount').val(gst_amount);
 			$(this).closest('tr').find('.rate').val(sales_rate);
 			
-			var itemId=$(this).val();
+		var itemId=$(this).val();
 		var url='".$this->Url->build(["controller" => "SalesInvoices", "action" => "ajaxItemQuantity"])."';
 		url=url+'/'+itemId
 		$.ajax({
@@ -259,37 +258,37 @@ $this->set('title', 'Create Sales Invoice');
 			{
 			if(customer_state_id>0)
 			{
-			$('#gstDisplay').html('IGST');
-			$('#add_igst').show();
-			$('#add_cgst').hide();
-			$('#add_sgst').hide();
-			$('#is_interstate').val('1');
+				$('#gstDisplay').html('IGST');
+				$('#add_igst').show();
+				$('#add_cgst').hide();
+				$('#add_sgst').hide();
+				$('#is_interstate').val('1');
 			}
 			else if(!customer_state_id)
 			{
-			$('#gstDisplay').html('GST');
-			$('#add_cgst').show();
-			$('#add_sgst').show();
-			$('#add_igst').hide();
-			$('#is_interstate').val('0');
+				$('#gstDisplay').html('GST');
+				$('#add_cgst').show();
+				$('#add_sgst').show();
+				$('#add_igst').hide();
+				$('#is_interstate').val('0');
 			}
 			else if(customer_state_id==0)
 			{
-			$('#gstDisplay').html('GST');
-			$('#add_cgst').show();
-			$('#add_sgst').show();
-			$('#add_igst').hide();
-			$('#is_interstate').val('0');
+				$('#gstDisplay').html('GST');
+				$('#add_cgst').show();
+				$('#add_sgst').show();
+				$('#add_igst').hide();
+				$('#is_interstate').val('0');
 			}
 			}
 			else if(customer_state_id==state_id){
-			$('#gstDisplay').html('GST');
-			$('#add_cgst').show();
-			$('#add_sgst').show();
-			$('#add_igst').hide();
-			$('#is_interstate').val('0');
+				$('#gstDisplay').html('GST');
+				$('#add_cgst').show();
+				$('#add_sgst').show();
+				$('#add_igst').hide();
+				$('#is_interstate').val('0');
 			}
-			$(this).closest('tr').find('.output_igst_ledger_id').val(output_igst_ledger_id);
+			//$(this).closest('tr').find('.output_igst_ledger_id').val(output_igst_ledger_id);
 		});
 		
 		$('.cashCredit').die().live('change',function(){
@@ -358,7 +357,6 @@ $this->set('title', 'Create Sales Invoice');
 		forward_total_amount();
 	});
 	
-		
 	function forward_total_amount()
 	{
 		var total  = 0;
@@ -448,8 +446,8 @@ $this->set('title', 'Create Sales Invoice');
 			}
 			if(total==roundOff1)
 			{
-			round_of=parseFloat(total)-parseFloat(roundOff1);
-			isRoundofType='0';
+				round_of=parseFloat(total)-parseFloat(roundOff1);
+				isRoundofType='0';
 			}
 			
 			var gstValue  = parseFloat($(this).find('.gstValue').val());

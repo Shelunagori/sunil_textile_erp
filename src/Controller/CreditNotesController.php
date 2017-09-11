@@ -138,18 +138,20 @@ class CreditNotesController extends AppController
 								'credit_note_id' => $creditNote->id
 								])
 						->execute();
-						$roundData = $this->CreditNotes->AccountingEntries->query();
+						if($creditNote->round_off>0)
+						{
+						 $roundData = $this->CreditNotes->AccountingEntries->query();
 						if($creditNote->isRoundofType=='0')
 						{
-						$debit=$creditNote->round_off;
-						$credit=0;
+						 $debit=$creditNote->round_off;
+						 $credit=0;
 						}
 						else if($creditNote->isRoundofType=='1')
 						{
-						$credit=$creditNote->round_off;
-						$debit=0;
+						 $credit=$creditNote->round_off;
+						 $debit=0;
 						}
-						$roundData->insert(['ledger_id', 'debit','credit', 'transaction_date', 'company_id', 'credit_note_id'])
+						 $roundData->insert(['ledger_id', 'debit','credit', 'transaction_date', 'company_id', 'credit_note_id'])
 								->values([
 								'ledger_id' => $roundOffId->id,
 								'debit' => $debit,
@@ -159,23 +161,24 @@ class CreditNotesController extends AppController
 								'credit_note_id' => $creditNote->id
 								])
 						->execute();
+						}
 						
            if($creditNote->is_interstate=='0'){
 		   for(@$i=0; $i<2; $i++){
 			   foreach($creditNote->credit_note_rows as $credit_note_row)
 			   {
-			   $gstVal=$credit_note_row->gst_value/2;
+			    $gstVal=$credit_note_row->gst_value/2;
 			   if($i==0){
-			   $gstLedgers = $this->CreditNotes->CreditNoteRows->Ledgers->find()
+			    $gstLedgers = $this->CreditNotes->CreditNoteRows->Ledgers->find()
 							->where(['Ledgers.gst_figure_id' =>$credit_note_row->gst_figure_id,'Ledgers.company_id'=>$company_id, 'Ledgers.input_output'=>'output', 'Ledgers.gst_type'=>'CGST'])->first();
-			   $ledgerId=$gstLedgers->id;
+			    $ledgerId=$gstLedgers->id;
 			   }
 			   if($i==1){ 
-			   $gstLedgers = $this->CreditNotes->CreditNoteRows->Ledgers->find()
+			    $gstLedgers = $this->CreditNotes->CreditNoteRows->Ledgers->find()
 							->where(['Ledgers.gst_figure_id' =>$credit_note_row->gst_figure_id,'Ledgers.company_id'=>$company_id, 'Ledgers.input_output'=>'output', 'Ledgers.gst_type'=>'SGST'])->first();
-			   $ledgerId=$gstLedgers->id;
+			    $ledgerId=$gstLedgers->id;
 			   }
-			   $accountData = $this->CreditNotes->AccountingEntries->query();
+			    $accountData = $this->CreditNotes->AccountingEntries->query();
 						$accountData->insert(['ledger_id', 'debit','credit', 'transaction_date', 'company_id', 'credit_note_id'])
 								->values([
 								'ledger_id' => $ledgerId,
@@ -225,17 +228,13 @@ class CreditNotesController extends AppController
 		$items = $this->CreditNotes->CreditNoteRows->Items->find()
 					->where(['Items.company_id'=>$company_id])
 					->contain(['FirstGstFigures', 'SecondGstFigures', 'Units']);
-		
 		$itemOptions=[];
 		foreach($items as $item){
-			
 			$itemOptions[]=['text'=>$item->item_code.' '.$item->name, 'value'=>$item->id, 'first_gst_figure_id'=>$item->first_gst_figure_id, 'gst_amount'=>$item->gst_amount, 'second_gst_figure_id'=>$item->second_gst_figure_id, 'FirstGstFigure'=>$item->FirstGstFigures->tax_percentage, 'SecondGstFigure'=>$item->SecondGstFigures->tax_percentage];
 		}
-		
 	
         $partyParentGroups = $this->CreditNotes->CreditNoteRows->Ledgers->AccountingGroups->find()
 						->where(['AccountingGroups.company_id'=>$company_id, 'AccountingGroups.credit_note_party'=>'1']);
-		
 		$partyGroups=[];
 		foreach($partyParentGroups as $partyParentGroup)
 		{
@@ -257,9 +256,6 @@ class CreditNotesController extends AppController
 			$partyOptions[]=['text' =>$Partyledger->name, 'value' => $Partyledger->id ,'party_state_id'=>@$Partyledger->customer->state_id];
 		}
 		
-		
-							
-		
 		$accountLedgers = $this->CreditNotes->CreditNoteRows->Ledgers->AccountingGroups->find()->where(['AccountingGroups.credit_note_sales_account'=>1,'AccountingGroups.company_id'=>$company_id])->first();
 
 		$accountingGroups2 = $this->CreditNotes->CreditNoteRows->Ledgers->AccountingGroups
@@ -277,7 +273,6 @@ class CreditNotesController extends AppController
 			$account_ids = explode(",",trim($account_ids,','));
 			$Accountledgers = $this->CreditNotes->CreditNoteRows->Ledgers->find('list')->where(['Ledgers.accounting_group_id IN' =>$account_ids]);
         }
-						
 		$gstFigures = $this->CreditNotes->CreditNoteRows->GstFigures->find('list')
 						->where(['company_id'=>$company_id]);
 		$CashPartyLedgers = $this->CreditNotes->Ledgers->find('list')
@@ -305,12 +300,10 @@ class CreditNotesController extends AppController
 		 $creditNote = $this->CreditNotes->get($id, [
             'contain' => (['CreditNoteRows'=>['Items', 'GstFigures']])
         ]);
-		
 		// roundoff id find in ledger table start
 		$roundOffId = $this->CreditNotes->CreditNoteRows->Ledgers->find()
 		->where(['Ledgers.company_id'=>$company_id, 'Ledgers.round_off'=>1])->first();
 		// roundoff id find in ledger table end
-		
 		//auto increament voucher no start
 		$Voucher_no = $this->CreditNotes->find()->select(['voucher_no'])->where(['company_id'=>$company_id])->order(['voucher_no' => 'DESC'])->first();
 		if($Voucher_no)
@@ -322,7 +315,6 @@ class CreditNotesController extends AppController
 			$voucher_no=1;
 		} 		
 		//auto increament voucher no end
-		
 		if ($this->request->is('put','post', 'patch')) {
 			$transaction_date=date('Y-m-d', strtotime($this->request->data['transaction_date']));
             $creditNote = $this->CreditNotes->patchEntity($creditNote, $this->request->getData());
@@ -382,6 +374,8 @@ class CreditNotesController extends AppController
 								'credit_note_id' => $creditNote->id
 								])
 						->execute();
+						if($creditNote->round_off>0)
+						{
 						$roundData = $this->CreditNotes->AccountingEntries->query();
 						if($creditNote->isRoundofType=='0')
 						{
@@ -403,23 +397,23 @@ class CreditNotesController extends AppController
 								'credit_note_id' => $creditNote->id
 								])
 						->execute();
-						
+						}
            if($creditNote->is_interstate=='0'){
 		   for(@$i=0; $i<2; $i++){
 			   foreach($creditNote->credit_note_rows as $credit_note_row)
 			   {
-			   $gstVal=$credit_note_row->gst_value/2;
+			    $gstVal=$credit_note_row->gst_value/2;
 			   if($i==0){
-			   $gstLedgers = $this->CreditNotes->CreditNoteRows->Ledgers->find()
+			    $gstLedgers = $this->CreditNotes->CreditNoteRows->Ledgers->find()
 							->where(['Ledgers.gst_figure_id' =>$credit_note_row->gst_figure_id,'Ledgers.company_id'=>$company_id, 'Ledgers.input_output'=>'output', 'Ledgers.gst_type'=>'CGST'])->first();
-			   $ledgerId=$gstLedgers->id;
+			    $ledgerId=$gstLedgers->id;
 			   }
 			   if($i==1){ 
-			   $gstLedgers = $this->CreditNotes->CreditNoteRows->Ledgers->find()
+			    $gstLedgers = $this->CreditNotes->CreditNoteRows->Ledgers->find()
 							->where(['Ledgers.gst_figure_id' =>$credit_note_row->gst_figure_id,'Ledgers.company_id'=>$company_id, 'Ledgers.input_output'=>'output', 'Ledgers.gst_type'=>'SGST'])->first();
-			   $ledgerId=$gstLedgers->id;
+			    $ledgerId=$gstLedgers->id;
 			   }
-			   $accountData = $this->CreditNotes->AccountingEntries->query();
+			    $accountData = $this->CreditNotes->AccountingEntries->query();
 						$accountData->insert(['ledger_id', 'debit','credit', 'transaction_date', 'company_id', 'credit_note_id'])
 								->values([
 								'ledger_id' => $ledgerId,
@@ -453,19 +447,15 @@ class CreditNotesController extends AppController
 			   }
 			
 		   }
-				
-	
-				
-				
+			
                 $this->Flash->success(__('The credit note has been saved.'));
-
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The credit note could not be saved. Please, try again.'));
         }
-		$customers = $this->CreditNotes->Customers->find()
+	     $customers = $this->CreditNotes->Customers->find()
 					->where(['company_id'=>$company_id]);
-		$customerOptions=[];
+		 $customerOptions=[];
 		foreach($customers as $customer){
 			$customerOptions[]=['text' =>$customer->name, 'value' => $customer->id ,'customer_state_id'=>$customer->state_id];
 		}
@@ -473,17 +463,13 @@ class CreditNotesController extends AppController
 		$items = $this->CreditNotes->CreditNoteRows->Items->find()
 					->where(['Items.company_id'=>$company_id])
 					->contain(['FirstGstFigures', 'SecondGstFigures', 'Units']);
-		
 		$itemOptions=[];
 		foreach($items as $item){
 			
 			$itemOptions[]=['text'=>$item->item_code.' '.$item->name, 'value'=>$item->id, 'first_gst_figure_id'=>$item->first_gst_figure_id, 'gst_amount'=>$item->gst_amount, 'second_gst_figure_id'=>$item->second_gst_figure_id, 'FirstGstFigure'=>$item->FirstGstFigures->tax_percentage, 'SecondGstFigure'=>$item->SecondGstFigures->tax_percentage];
 		}
-		
-	
         $partyParentGroups = $this->CreditNotes->CreditNoteRows->Ledgers->AccountingGroups->find()
 						->where(['AccountingGroups.company_id'=>$company_id, 'AccountingGroups.credit_note_party'=>'1']);
-		
 		$partyGroups=[];
 		foreach($partyParentGroups as $partyParentGroup)
 		{
@@ -504,9 +490,6 @@ class CreditNotesController extends AppController
 		foreach($Partyledgers as $Partyledger){
 			$partyOptions[]=['text' =>$Partyledger->name, 'value' => $Partyledger->id ,'party_state_id'=>@$Partyledger->customer->state_id];
 		}
-		
-		
-							
 		
 		$accountLedgers = $this->CreditNotes->CreditNoteRows->Ledgers->AccountingGroups->find()->where(['AccountingGroups.credit_note_sales_account'=>1,'AccountingGroups.company_id'=>$company_id])->first();
 

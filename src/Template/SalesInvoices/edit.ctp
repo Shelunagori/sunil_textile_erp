@@ -5,19 +5,19 @@
 $this->set('title', 'Update Sales Invoice');
 foreach($partyOptions as $partyOption)
 {
-$value=$partyOption['value'];
-if($value==$salesInvoice->party_ledger_id)
-{
-$party_states=$partyOption['party_state_id'];
-if($party_states>'0')
-{
-$party_state_id=$party_states;
-}
-else
-{
-$party_state_id=$state_id;
-}
-}
+		$value=$partyOption['value'];
+	if($value==$salesInvoice->party_ledger_id)
+	{
+		$party_states=$partyOption['party_state_id'];
+	if($party_states>'0')
+	{
+		$party_state_id=$party_states;
+	}
+	else
+	{
+		$party_state_id=$state_id;
+	}
+	}
 }
 ?>
 
@@ -32,8 +32,6 @@ $party_state_id=$state_id;
 			</div>
 			<div class="portlet-body">
 				<?= $this->Form->create($salesInvoice,['onsubmit'=>'return checkValidation()']) ?>
-					
-					
 					<div class="row">
 						<div class="col-md-3">
 							<div class="form-group">
@@ -363,7 +361,7 @@ $party_state_id=$state_id;
 				$('#add_igst').hide();
 				$('#is_interstate').val('0');
 			}
-			$(this).closest('tr').find('.output_igst_ledger_id').val(output_igst_ledger_id);
+			//$(this).closest('tr').find('.output_igst_ledger_id').val(output_igst_ledger_id);
 		});
 		
 		$('.cashCredit').die().live('change',function(){
@@ -509,32 +507,32 @@ $party_state_id=$state_id;
 				
 				if(total<roundOff1)
 				{
-				round_of=parseFloat(roundOff1)-parseFloat(total);
-				isRoundofType='0';
+					round_of=parseFloat(roundOff1)-parseFloat(total);
+					isRoundofType='0';
 				}
 				if(total>roundOff1)
 				{
-				round_of=parseFloat(roundOff1)-parseFloat(total);
-				isRoundofType='1';
+					round_of=parseFloat(roundOff1)-parseFloat(total);
+					isRoundofType='1';
 				}
 				if(total==roundOff1)
 				{
-				round_of=parseFloat(total)-parseFloat(roundOff1);
-				isRoundofType='0';
+					round_of=parseFloat(total)-parseFloat(roundOff1);
+					isRoundofType='0';
 				}
 				
 				var gstValue  = parseFloat($(this).find('.gstValue').val());
 				var is_interstate  = parseFloat($('#is_interstate').val());
 				if(is_interstate=='0')
 				{
-				gst_value=parseFloat(gst_value)+gstValue;
-				s_cgst_value=parseFloat(gst_value/2);
-				igst_value=0;
+					gst_value=parseFloat(gst_value)+gstValue;
+					s_cgst_value=parseFloat(gst_value/2);
+					igst_value=0;
 				}
 				else{
-				gst_value=parseFloat(gst_value)+gstValue;
-				igst_value=parseFloat(gst_value);
-				s_cgst_value=0;
+					gst_value=parseFloat(gst_value)+gstValue;
+					igst_value=parseFloat(gst_value);
+					s_cgst_value=0;
 				}
 				
 			});

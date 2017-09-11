@@ -11,14 +11,14 @@ if($creditNote->cash_or_credit=="credit")
 		$value=$partyOption['value'];
 		if($value==$creditNote->party_ledger_id)
 		{
-		$party_states=$partyOption['party_state_id'];
+			$party_states=$partyOption['party_state_id'];
 		if($party_states>'0')
 		{
-		$party_state_id=$party_states;
+			$party_state_id=$party_states;
 		}
 		else
 		{
-		$party_state_id=$state_id;
+			$party_state_id=$state_id;
 		}
 		}
 	}
@@ -58,11 +58,12 @@ else if($creditNote->cash_or_credit=="cash")
 								<?php echo $this->Form->control('transaction_date',['class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'placeholder'=>'DD-MM-YYYY','type'=>'text','data-date-start-date'=>@$coreVariable[fyValidFrom],'data-date-end-date'=>@$coreVariable[fyValidTo],'value'=>$creditNote->transaction_date]); ?>
 							</div>
 						</div>
-						<input type="hidden" name="company_id" class="customer_id" value="<?php echo $company_id;?>">
-						<input type="hidden" name="state_id" class="state_id" value="<?php echo $state_id;?>">
-						<input type="hidden" name="is_interstate" id="is_interstate" value="<?php if(@$party_state_id!=$state_id){echo '1';}else if($party_state_id==$state_id){echo '0';}?>">
-						<input type="hidden" name="isRoundofType" id="isRoundofType" class="isRoundofType" value="0">
-						<input type="hidden" name="voucher_no" id="" value="<?= $creditNote->voucher_no ?>">
+							<input type="hidden" name="company_id" class="customer_id" value="<?php echo $company_id;?>">
+							<input type="hidden" name="state_id" class="state_id" value="<?php echo $state_id;?>">
+							<input type="hidden" name="ps" class="ps" value="<?php echo $party_state_id;?>">
+							<input type="hidden" name="is_interstate" id="is_interstate" value="<?php if(@$party_state_id!=$state_id){echo '1';}else if($party_state_id==$state_id){echo '0';}?>">
+							<input type="hidden" name="isRoundofType" id="isRoundofType" class="isRoundofType" value="0">
+							<input type="hidden" name="voucher_no" id="" value="<?= $creditNote->voucher_no ?>">
 						<div class="col-md-2">
 							<label>Type</label><span class="required">*</span></label>
 							<select name="cash_or_credit" id="UserGender" class="cashcredit  form-control input-sm">
@@ -123,7 +124,7 @@ else if($creditNote->cash_or_credit=="cash")
 											<input type="hidden" name="discountvalue" class="discountvalue calculation" value="">
 											
 											
-											<?php echo $this->Form->input('creditNoteRow.'.$i.'.item_id', ['empty'=>'-Item Name-', 'options'=>$itemOptions,'label' => false,'class' =>'form-control input-sm attrGet calculation','required'=>'required', 'value'=>$creditNoteRow->item_id]); 
+											<?php echo $this->Form->input('creditNoteRow.'.$i.'.item_id', ['empty'=>'-Item Name-', 'options'=>$itemOptions,'label' => false,'class' =>'form-control input-sm attrGet calculation rightAligntextClass','required'=>'required', 'value'=>$creditNoteRow->item_id]); 
 											echo $this->Form->input('creditNoteRow.'.$i.'.id', ['value'=>$creditNoteRow->id,'type'=>'hidden']);	?>
 											<span class="itemQty" style="color:red"></span>
 										</td>
@@ -172,7 +173,7 @@ else if($creditNote->cash_or_credit=="cash")
 											<?php echo $this->Form->input('total_sgst', ['label' => false,'class' => 'form-control input-sm add_sgst rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
 										</td>
 									</tr>
-									<tr id="add_igst" style="display:none">
+									<tr id="add_igst">
 										<td colspan="5" align="right"><b>Total IGST</b></td>
 										<td colspan="2">
 											<?php echo $this->Form->input('total_igst', ['label' => false,'class' => 'form-control input-sm add_igst rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
@@ -201,8 +202,6 @@ else if($creditNote->cash_or_credit=="cash")
 		</div>
 	</div>
 </div>
-
-
 <!-- BEGIN PAGE LEVEL STYLES -->
 	<!-- BEGIN COMPONENTS PICKERS -->
 	<?php echo $this->Html->css('/assets/global/plugins/clockface/css/clockface.css', ['block' => 'PAGE_LEVEL_CSS']); ?>
@@ -287,8 +286,6 @@ else if($creditNote->cash_or_credit=="cash")
 		</tr>
 	</tbody>
 </table>
-
-
 <?php
 	$js="
 	$(document).ready(function() {
@@ -298,12 +295,6 @@ else if($creditNote->cash_or_credit=="cash")
 			$(this).closest('tr').find('.gst_amount').val(gst_amount);
 			forward_total_amount();
 		});
-		//select item gst rate end
-		
-		//item rate calcurate start
-		
-		//item rate calcurate end	
-		
 		//change party state wise start
 		$('.party_ledger_id').die().live('change',function(){
 			var customer_state_id=$('option:selected', this).attr('party_state_id');
@@ -342,7 +333,7 @@ else if($creditNote->cash_or_credit=="cash")
 				$('#add_igst').hide();
 				$('#is_interstate').val('0');
 			}
-			$(this).closest('tr').find('.output_igst_ledger_id').val(output_igst_ledger_id);
+			//$(this).closest('tr').find('.output_igst_ledger_id').val(output_igst_ledger_id);
 		});
 		//change party state wise end
 		
@@ -367,9 +358,6 @@ else if($creditNote->cash_or_credit=="cash")
 			}
 		});
 		//cash or credit end
-		
-		
-		
 		// delete row start
 		$('.delete-tr').die().live('click',function() 
 		{
@@ -377,10 +365,7 @@ else if($creditNote->cash_or_credit=="cash")
 			rename_rows();
 		});
 		//delete row end
-		
 		ComponentsPickers.init();
-	
-	
 		//add row start 
 		$('.add_row').click(function(){
 			add_row();
@@ -393,17 +378,13 @@ else if($creditNote->cash_or_credit=="cash")
 			//$('.attrGet').select2();
 			rename_rows();
 			forward_total_amount();
-			
 		}
 		//add row end
-	
 		//rename row start
 		function rename_rows()
 		{
 			var i=0;
 			$('#main_table tbody#main_tbody tr.main_tr').each(function(){ 
-			
-			
 			
 			$(this).find('td:nth-child(1) input.id').attr({name:'credit_note_rows['+i+'][id]',id:'credit_note_rows['+i+'][id]'});
 			
@@ -429,10 +410,9 @@ else if($creditNote->cash_or_credit=="cash")
 		{
 			forward_total_amount();
 		});
-		
-		
 		$( document ).ready( readyFn );
 		$( document ).ready( gstChange );
+		$( document ).ready( partyOnLoad );
 		function readyFn( jQuery ) {
 		forward_total_amount();
 		}
@@ -442,22 +422,49 @@ else if($creditNote->cash_or_credit=="cash")
 			if(cashcredit=='credit')
 			{
 					$('#gstDisplay').html('IGST');
-					//$('#add_igst').show();
-					//$('#add_cgst').hide();
-					//$('#add_sgst').hide();
 					$('.cusomerIds').hide();
 					$('.cusomerIds').show();
 			}
 			else if(cashcredit=='cash'){
-				//$('#gstDisplay').html('GST');
-				//$('#add_cgst').show();
-				//$('#add_sgst').show();
-				//$('#add_igst').hide();
 				$('.cusomerIds').hide();
 				$('.cusomerIds').hide();
 			}
 		}
-		
+		function partyOnLoad()
+		{
+		var customer_state_id=$('.ps').val();
+			var state_id=$('.state_id').val();
+			if(customer_state_id!=state_id)
+			{
+				if(customer_state_id>0)
+				{
+					$('#gstDisplay').html('IGST');
+					$('#add_igst').show();
+					$('#add_cgst').hide();
+					$('#add_sgst').hide();
+				}
+				else if(!customer_state_id)
+				{
+					$('#gstDisplay').html('GST');
+					$('#add_cgst').show();
+					$('#add_sgst').show();
+					$('#add_igst').hide();
+				}
+				else if(customer_state_id==0)
+				{
+					$('#gstDisplay').html('GST');
+					$('#add_cgst').show();
+					$('#add_sgst').show();
+					$('#add_igst').hide();
+				}
+			}
+			else if(customer_state_id==state_id){
+				$('#gstDisplay').html('GST');
+				$('#add_cgst').show();
+				$('#add_sgst').show();
+				$('#add_igst').hide();
+			}
+			}
 		function forward_total_amount()
 		{
 			var total  = 0;
@@ -585,7 +592,6 @@ else if($creditNote->cash_or_credit=="cash")
 		{  
 			var amount_before_tax  = $('.amount_before_tax').val();
 			var amount_after_tax = $('.amount_after_tax').val();
-			var attrGet  = parseFloat($(this).find('.attrGet').val());
 			if(amount_before_tax && amount_after_tax)
 			{
 				if(confirm('Are you sure you want to submit!'))
@@ -600,7 +606,6 @@ else if($creditNote->cash_or_credit=="cash")
 			else{
 				   alert('Please enter your data!');
 			}
-					
 					
 		};
 		//form validation end
