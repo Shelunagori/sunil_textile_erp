@@ -12,7 +12,8 @@ use Cake\View\Helper\BarcodeHelper;
 class ItemsController extends AppController
 {
 
-	function arrayToCsvDownload($array, $filename = "export.csv", $delimiter=";") {
+	function arrayToCsvDownload($array, $filename = "export.csv", $delimiter=";") 
+	{
 		// open raw memory as file so no temp files needed, you might run out of memory though
 		$f = fopen('php://memory', 'w'); 
 		// loop over the input array
@@ -159,7 +160,8 @@ class ItemsController extends AppController
 			}]
         ]);
 		$company_id=$this->Auth->User('session_company_id');
-		$location_id = $this->Auth->User('session_location_id ');
+		$location_id = $this->Auth->User('session_location_id');
+		
         if ($this->request->is(['patch', 'post', 'put'])) {
             $item = $this->Items->patchEntity($item, $this->request->getData());
 			

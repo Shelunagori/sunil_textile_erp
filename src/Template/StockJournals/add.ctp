@@ -36,84 +36,84 @@ $this->set('title', 'Create Stock Journal');
 						</div>
 					</div>
 					<br>
-                  <div class="row">
-				  <div class="table-responsive">
-					<table width="100%" class="table  table-bordered" >
-						<tr>
-							<td width="50%">
-								<table id="main_table" class="table table-condensed table-bordered" style="margin-bottom: 4px;" width="100%">
-								<thead>
-								<tr><td align="center" colspan="6">Inward</td></tr>
-								<tr align="center">
-									<td><label>Sr<label></td>
-									<td><label>Item<label></td>
-									<td><label>Qty<label></td>
-									<td><label>Rate<label></td>
-									<td><label>Amount<label></td>
-									<td></td>
-								</tr>
-								</thead>
-								<tbody id='main_tbody' class="tab">
+					<div class="row">
+					    <div class="table-responsive">
+							<table width="100%" class="table  table-bordered" >
+								<tr>
+									<td width="50%">
+										<table id="main_table" class="table table-condensed table-bordered" style="margin-bottom: 4px;" width="100%">
+											<thead>
+												<tr><td align="center" colspan="6">Inward</td></tr>
+												<tr align="center">
+													<td><label>Sr<label></td>
+													<td><label>Item<label></td>
+													<td><label>Qty<label></td>
+													<td><label>Rate<label></td>
+													<td><label>Amount<label></td>
+													<td></td>
+												</tr>
+											</thead>
+											<tbody id='main_tbody' class="tab">
 
-								</tbody>
-								<tfoot>
-									<tr>
-										<td colspan="4" >	
-											<button type="button" class="add_inward btn btn-default input-sm"><i class="fa fa-plus"></i> Add row</button>
-										</td>
-										<td width="25%"><?php echo $this->Form->input('inward_amount_total', ['label' => false,'class' => 'form-control input-sm','id'=>'total_inward','placeholder'=>'Total','type'=>'text']); ?></td>
-										<td></td>
-									</tr>
-								</tfoot>
-								</table>
-							</td>
-							<td width="50%">
-								<table id="main_table2" class="table table-condensed table-bordered" style="margin-bottom: 4px;" width="100%">
-								<thead>
-								<tr><td align="center" colspan="6">Outward</td></tr>
-								<tr align="center">
-									<td><label>Sr<label></td>
-									<td><label>Item<label></td>
-									<td><label>Qty<label></td>
-									<td><label>Rate<label></td>
-									<td><label>Amount<label></td>
-									<td></td>
-								</tr>
-								</thead>
-								<tbody id='main_tbody2' class="tab">
+											</tbody>
+											<tfoot>
+												<tr>
+													<td colspan="4" >	
+														<button type="button" class="add_inward btn btn-default input-sm"><i class="fa fa-plus"></i> Add row</button>
+													</td>
+													<td width="25%"><?php echo $this->Form->input('inward_amount_total', ['label' => false,'class' => 'form-control input-sm','id'=>'total_inward','placeholder'=>'Total','type'=>'text']); ?></td>
+													<td></td>
+												</tr>
+											</tfoot>
+										</table>
+									</td>
+									<td width="50%">
+										<table id="main_table2" class="table table-condensed table-bordered" style="margin-bottom: 4px;" width="100%">
+											<thead>
+												<tr><td align="center" colspan="6">Outward</td></tr>
+												<tr align="center">
+													<td><label>Sr<label></td>
+													<td><label>Item<label></td>
+													<td><label>Qty<label></td>
+													<td><label>Rate<label></td>
+													<td><label>Amount<label></td>
+													<td></td>
+												</tr>
+											</thead>
+											<tbody id='main_tbody2' class="tab">
 
-								</tbody>
-								<tfoot>
-									<tr>
-										<td colspan="4">
-											<button type="button" class="add_outward btn btn-default input-sm"><i class="fa fa-plus"></i> Add row</button>
-										</td>
-										<td width="25%"><?php echo $this->Form->input('outward_amount_total', ['label' => false,'class' => 'form-control input-sm','id'=>'total_outward','placeholder'=>'Total']); ?></td>
-										<td></td>
-									</tr>
-								</tfoot>
-								</table>
-							</td>
-						</tr>
-					</table>
-				   </div>
-				  </div>
+											</tbody>
+											<tfoot>
+												<tr>
+													<td colspan="4">
+														<button type="button" class="add_outward btn btn-default input-sm"><i class="fa fa-plus"></i> Add row</button>
+													</td>
+													<td width="25%"><?php echo $this->Form->input('outward_amount_total', ['label' => false,'class' => 'form-control input-sm','id'=>'total_outward','placeholder'=>'Total']); ?></td>
+													<td></td>
+												</tr>
+											</tfoot>
+										</table>
+									</td>
+								</tr>
+							</table>
+					    </div>
+				    </div>
 				  
-				 <div class="row">
+				    <div class="row">
 					<div class="col-md-4">
 							<div class="form-group">
 								<label>Narration </label>
 								<?php echo $this->Form->control('narration',['class'=>'form-control input-sm ','label'=>false,'placeholder'=>'Narration','rows'=>'2']); ?>
 							</div>
 						</div>
-				  </div>
-				</div>
-				<?= $this->Form->button(__('Submit'),['class'=>'btn btn-success']) ?>
-				<?= $this->Form->end() ?>
+				    </div>
 			</div>
+			<?= $this->Form->button(__('Submit'),['class'=>'btn btn-success']) ?>
+			<?= $this->Form->end() ?>
 		</div>
 	</div>
 </div>
+
 
 <!-- BEGIN PAGE LEVEL STYLES -->
 	<!-- BEGIN COMPONENTS PICKERS -->

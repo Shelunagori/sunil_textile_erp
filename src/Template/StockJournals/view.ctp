@@ -32,9 +32,9 @@ $this->set('title', 'Stock Journal View');
 					<td><?php echo $stockJournal->narration;?></td>
 				  </tr>
                 </table><br>
-       		 <table width="100%" class="table  table-bordered" style="border:none;" border="0">
-				<tr style="border:none;">
-				      <td width="50%" style="border:none;padding: 0px;">
+       		    <table width="100%" class="table  table-bordered" style="border:none;" border="0">
+					<tr style="border:none;">
+						<td width="50%" style="border:none;padding: 0px;">
 							<table id="main_table" class="table table-condensed table-bordered"  width="100%">
 								<thead>
 								<tr><td align="center" colspan="6"><b>Inward</b></td></tr>
@@ -47,11 +47,11 @@ $this->set('title', 'Stock Journal View');
 								</tr>
 								</thead>
 								<tbody id='main_tbody' class="tab">
-                                 <?php if(!empty($stockJournal->inwards))
-                                         $i=0;									
-								         foreach($stockJournal->inwards as $inward)
-									     {
-							    ?>
+								 <?php if(!empty($stockJournal->inwards))
+										 $i=0;									
+										 foreach($stockJournal->inwards as $inward)
+										 {
+								?>
 									<tr class="main_tr" class="tab">
 										<td width="7%"><?php echo $i+1; ?></td>
 										<td width="25%">
@@ -75,42 +75,42 @@ $this->set('title', 'Stock Journal View');
 										<td width="25%" class="rightAligntextClass"><?php echo $stockJournal->inward_amount_total;?></td>
 									</tr>
 								</tfoot>
-								</table>
-					  </td>
-				      <td width="50%" style="border:none;padding: 0px;">
-						<table id="main_table2" class="table table-condensed table-bordered" width="100%">
+							</table>
+						</td>
+						<td width="50%" style="border:none;padding: 0px;">
+							<table id="main_table2" class="table table-condensed table-bordered" width="100%">
 								<thead>
-								<tr><td align="center" colspan="6"><b>Outward</b></td></tr>
-								<tr align="center">
-									<td><b>Sr</b></td>
-									<td><b>Item</b></td>
-									<td><b>Qty</b></td>
-									<td><b>Rate</b></td>
-									<td><b>Amount</b></td>
-								</tr>
+									<tr><td align="center" colspan="6"><b>Outward</b></td></tr>
+									<tr align="center">
+										<td><b>Sr</b></td>
+										<td><b>Item</b></td>
+										<td><b>Qty</b></td>
+										<td><b>Rate</b></td>
+										<td><b>Amount</b></td>
+									</tr>
 								</thead>
 								<tbody id='main_tbody2' class="tab">
-								  <?php if(!empty($stockJournal->outwards))
-                                         $j=0;									
-								         foreach($stockJournal->outwards as $outward)
-									     {
-							        ?>
-									<tr class="main_tr" class="tab">
-										<td width="7%"><?php echo $j+1;?></td>
-										<td width="25%">
-											<?php echo $outward->item->name; ?>
-										</td>
-										<td width="15%" align="center">
-											<?php echo $outward->quantity; ?>
-										</td>
-										<td width="20%" class="rightAligntextClass">
-											<?php echo $outward->rate; ?>
-										</td>
-										<td width="25%" class="rightAligntextClass">
-											<?php echo $outward->amount; ?>	
-										</td>
-									</tr>
-								<?php $j++; } ?>
+									<?php if(!empty($stockJournal->outwards))
+											 $j=0;									
+											 foreach($stockJournal->outwards as $outward)
+											 {
+										?>
+										<tr class="main_tr" class="tab">
+											<td width="7%"><?php echo $j+1;?></td>
+											<td width="25%">
+												<?php echo $outward->item->name; ?>
+											</td>
+											<td width="15%" align="center">
+												<?php echo $outward->quantity; ?>
+											</td>
+											<td width="20%" class="rightAligntextClass">
+												<?php echo $outward->rate; ?>
+											</td>
+											<td width="25%" class="rightAligntextClass">
+												<?php echo $outward->amount; ?>	
+											</td>
+										</tr>
+									<?php $j++; } ?>
 								</tbody>
 								<tfoot>
 									<tr>
@@ -118,9 +118,9 @@ $this->set('title', 'Stock Journal View');
 										<td width="25%" class="rightAligntextClass"><?php echo $stockJournal->outward_amount_total;?></td>
 									</tr>
 								</tfoot>
-								</table>
-					  </td>
-				  </tr>			
+							</table>
+						</td>
+					</tr>			
 				</table>
             </div>
 		</div>

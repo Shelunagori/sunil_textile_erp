@@ -10,7 +10,7 @@ $this->set('title', 'Edit Item');
 			<div class="portlet-title">
 				<div class="caption">
 					<i class="icon-bar-chart font-green-sharp hide"></i>
-					<span class="caption-subject font-green-sharp bold ">Create Item</span>
+					<span class="caption-subject font-green-sharp bold ">Edit Item</span>
 				</div>
 			</div>
 			<div class="portlet-body">
@@ -242,29 +242,8 @@ $this->set('title', 'Edit Item');
 		  $('.rate').val(rate.toFixed(2));  }}
 	  }
 	  
-<<<<<<< HEAD
-	  $('.kind_of_gst').die().live('change',function(){
-		  var gst_type = $(this).val();
-		  if(gst_type=='fix')
-		  {
-			  $('.removeAddRequired').removeAttr('required');
-			  $('.hide_gst').hide();
-		  }
-		  else
-		  {
-			  $('.hide_gst').show();
-			  $('.removeAddRequired').attr('required', 'true');
-		  }
-	  });
-	  ComponentsPickers.init();
-
-		kind_of_gst('".$item->kind_of_gst."');
 		$('.kind_of_gst').die().live('change',function(){
 			var gst_type = $(this).val();
-			kind_of_gst(gst_type);
-		});
-		
-		function kind_of_gst(gst_type){
 			if(gst_type=='fix')
 			{
 				$('.hide_gst').hide();
@@ -277,10 +256,58 @@ $this->set('title', 'Edit Item');
 				$('input[name=gst_amount]').attr('required','required');
 				$('select[name=second_gst_figure_id]').attr('required','required');
 			}
-		}
+		});
+		
+		$('.barcode_decision').die().live('click',function(){
+			var barcode_decision = $(this).val();
+			if(barcode_decision=='1')
+			{
+			  $('.item_code_div').hide();
+			  $('input[name=provided_item_code]').removeAttr('required');
+			}
+			else
+			{
+			  $('.item_code_div').show();
+			  $('input[name=provided_item_code]').attr('required','required');
+			}
+		});
 
+		
+		
+		check_itemCode_uniqueness();
+		$('input[name=provided_item_code]').die().live('blur',function(){
+			check_itemCode_uniqueness();
+		});
+		function check_itemCode_uniqueness(){
+			var barcode_decision = $('input[name=barcode_decision]').val();
+			if(barcode_decision=='1'){
+				$('#CreateItem').attr('allow_to_submit','1');
+			}else{
+				var provided_item_code = $('input[name=provided_item_code]').val();
+				if(!provided_item_code){
+					$('#CreateItem').attr('allow_to_submit','1');
+				}else{
+					$('#CreateItem').attr('allow_to_submit','0');
+					var url='".$this->Url->build(['controller'=>'Items','action'=>'checkUnique'])."';
+					url=url+'/'+provided_item_code;
+					
+					$.ajax({
+						url: url,
+						type: 'GET',
+					}).done(function(response) {
+						response = $.parseJSON(response);
+						if(response.is_unique=='no')
+						{
+							$('input[name=provided_item_code]').closest('.form-group').append('<span class=error_unique>Not Unique.</span>');
+						}
+					});
+				}
+			}
+		}
+		
+ComponentsPickers.init();
     });
 	";
 
-echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 
+echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 ?>
