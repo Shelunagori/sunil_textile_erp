@@ -19,14 +19,14 @@ $this->set('title', 'Sales Invoice List');
 						<thead>
 							<tr>
 								<th scope="col">Sr. No.</th>
-								<th scope="col">Sales_invoice_no</th>
-								<th scope="col">Transaction_date</th>
-								<th scope="col">Customer</th>
-								<th scope="col">Amount_before_tax</th>
+								<th scope="col">Voucher No.</th>
+								<th scope="col">Transaction Date</th>
+								<th scope="col">Party</th>
+								<th scope="col">Amount Before Tax</th>
 								<th scope="col">Total CGST</th>
 								<th scope="col">Total SGST</th>
 								<th scope="col">Total IGST</th>
-								<th scope="col">Amount After Tax</th>
+								<th scope="col">net Amount</th>
 								<th scope="col" class="actions"><?= __('Actions') ?></th>
 							</tr>
 						</thead>
@@ -37,7 +37,7 @@ $this->set('title', 'Sales Invoice List');
 							?>
 							<tr>
 								<td><?= h($i) ?></td>
-								<td><?= h($creditNote->sales_invoice_no) ?></td>
+								<td><?= h($creditNote->voucher_no) ?></td>
 								<td><?= h($creditNote->transaction_date) ?></td>
 								<td><?= $creditNote->has('party_ledger') ? $this->Html->link($creditNote->party_ledger->name, ['controller' => 'Ledgers', 'action' => 'view', $creditNote->party_ledger->id]) : '' ?></td>
 								<td><?= $this->Number->format($creditNote->amount_before_tax) ?></td>
