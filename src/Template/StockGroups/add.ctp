@@ -1,3 +1,4 @@
+
 <?php
 /**
  * @Author: PHP Poets IT Solutions Pvt. Ltd.
@@ -14,7 +15,7 @@ $this->set('title', 'Create Stock Group');
 				</div>
 			</div>
 			<div class="portlet-body">
-				<?= $this->Form->create($stockGroup) ?>
+				<?= $this->Form->create($stockGroup,['onsubmit'=>'return checkValidation()']) ?>
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-group">
@@ -30,9 +31,18 @@ $this->set('title', 'Create Stock Group');
 								</div>
 							</div>
 						</div>
+						<div class="row"><span class="loading"></span>
+							<div class="col-md-6">
+								<div class="form-group">
+									<?= $this->Form->button(__('Submit'),['class'=>'btn btn-success submit']) ?>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
-				<?= $this->Form->button(__('Submit'),['class'=>'btn btn-success']) ?>
+				
+				
+				
 				<?= $this->Form->end() ?>
 			</div>
 		</div>
@@ -93,9 +103,13 @@ $this->set('title', 'Create Stock Group');
 <?php
 	$js="
 	$(document).ready(function() {
-	  
 	  ComponentsPickers.init();
     });
+	function checkValidation()
+	{
+	        $('.submit').attr('disabled','disabled');
+	        $('.submit').text('Submiting...');
+    }
 	";
 
 echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 

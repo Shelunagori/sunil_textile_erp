@@ -310,6 +310,7 @@ $this->set('title', 'Create Item');
 					});
 				}
 			}
+			
 		}
 		
 ComponentsPickers.init();

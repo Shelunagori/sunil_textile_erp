@@ -14,7 +14,7 @@ $this->set('title', 'Create Customer');
 				</div>
 			</div>
 			<div class="portlet-body">
-				<?= $this->Form->create($customer) ?>
+				<?= $this->Form->create($customer,['onsubmit'=>'return checkValidation()']) ?>
 				<div class="row">
 					<div class="col-md-12">
 						<div class="row">
@@ -82,7 +82,7 @@ $this->set('title', 'Create Customer');
 						</div>
 					</div>
 				</div>
-				<?= $this->Form->button(__('Submit'),['class'=>'btn btn-success']) ?>
+				<?= $this->Form->button(__('Submit'),['class'=>'btn btn-success submit']) ?>
 				<?= $this->Form->end() ?>
 			</div>
 		</div>
@@ -142,6 +142,11 @@ $this->set('title', 'Create Customer');
 	$(document).ready(function() {	
 		ComponentsPickers.init();
 	});	
+	function checkValidation()
+	{
+	        $('.submit').attr('disabled','disabled');
+	        $('.submit').text('Submiting...');
+    }
 	";
 
 echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 

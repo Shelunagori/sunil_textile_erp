@@ -92,14 +92,16 @@ class GrnsController extends AppController
 					$item_ledger->amount=$grn_row->quantity*$grn_row->purchase_rate;
 					$this->Grns->ItemLedgers->save($item_ledger);
 					$item = $this->Grns->GrnRows->Items->find()->where(['Items.id'=>$grn_row->item_id])->first();
+					
+					
 					if($item)
 					{
 						if($grn->transaction_date >= date("Y-m-d",strtotime($item->sales_rate_update_on)))
 						{
 							$query = $this->Grns->GrnRows->Items->query();
 							$query->update()
-									->set(['Items.sales_rate' => $grn_row->sale_rate, 'Items.sales_rate_update_on' => $grn->transaction_date])
-									->where(['Items.id' =>$grn_row->item_id])
+									->set(['sales_rate' => $grn_row->sale_rate, 'sales_rate_update_on' => $grn->transaction_date])
+									->where(['id' =>$grn_row->item_id])
 									->execute();
 						}
 					}
@@ -152,7 +154,6 @@ class GrnsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $grn = $this->Grns->patchEntity($grn, $this->request->getData());
 			$grn->transaction_date = date("Y-m-d",strtotime($this->request->getData()['transaction_date']));
-			pr($grn);exit;
 			
             if ($this->Grns->save($grn)) 
 			{
@@ -160,19 +161,6 @@ class GrnsController extends AppController
 				$query->delete()->where(['grn_id'=> $id,'company_id'=>$company_id])->execute();
 				foreach($grn->grn_rows as $grn_row)
 				{
-					$item = $this->Grns->GrnRows->Items->find()->where(['Items.id'=>$grn_row->item_id])->first();
-					if($item)
-					{
-						if($grn->transaction_date >= date("Y-m-d",strtotime($item->sales_rate_update_on)))
-						{
-							$query = $this->Grns->GrnRows->Items->query();
-							$query->update()
-									->set(['Items.sales_rate' => $grn_row->sale_rate, 'Items.sales_rate_update_on' => $grn->transaction_date])
-									->where(['Items.id' =>$grn_row->item_id])
-									->execute();
-						}
-					}
-					
 					$item_ledger = $this->Grns->ItemLedgers->newEntity();
 					$item_ledger->transaction_date = $grn->transaction_date;
 					$item_ledger->grn_id = $grn->id;
@@ -185,12 +173,18 @@ class GrnsController extends AppController
 					$item_ledger->status ='in';
 					$item_ledger->amount=$grn_row->quantity*$grn_row->purchase_rate;
 					$this->Grns->ItemLedgers->save($item_ledger);
-					
-					$updateItemRates = $this->Grns->ItemLedgers->Items->query();
-				    $updateItemRates = $updateItemRates->update()
-					->set(['Items.sales_rate' => $grn_row->sale_rate, 'Items.sales_rate_update_on' => $grn->transaction_date])
-					->where(['Items.id' => $grn_row->item_id])
-					->execute();
+					$item = $this->Grns->GrnRows->Items->find()->where(['Items.id'=>$grn_row->item_id])->first();
+					if($item)
+					{
+						if($grn->transaction_date >= date("Y-m-d",strtotime($item->sales_rate_update_on)))
+						{
+							$query = $this->Grns->GrnRows->Items->query();
+							$query->update()
+									->set(['sales_rate' => $grn_row->sale_rate, 'sales_rate_update_on' => $grn->transaction_date])
+									->where(['id' =>$grn_row->item_id])
+									->execute();
+						}
+					}
 					
 				}
 				
@@ -198,6 +192,7 @@ class GrnsController extends AppController
 
                 return $this->redirect(['action' => 'index']);
             }
+			exit;
             $this->Flash->error(__('The grn could not be saved. Please, try again.'));
         }
 		$items = $this->Grns->GrnRows->Items->find()

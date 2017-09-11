@@ -19,9 +19,6 @@ $this->set('title', 'View');
 					<div class="col-md-2">
 						<label>Voucher No :<?php echo $grn->voucher_no; ?></label>
 					</div>
-					<div class="col-md-3">
-						<label>Good Recieve No. :<?php echo $grn->id; ?></label>&nbsp;&nbsp;
-					</div>
 					<div class="col-md-4 form-group">
 						<label>Transaction Date: <?php echo $grn->transaction_date; ?></label>
 					</div>
@@ -52,11 +49,11 @@ $this->set('title', 'View');
 								</tr>
 								<?php endforeach; ?>
 							</tbody>
-							<tfoot>
+							<!--<tfoot>
 								<td class="rightAligntextClass" colspan="2" ><b>Total</b></td>
 								<td class="rightAligntextClass"><b><?php echo $grn->total_purchase; ?></b></td>
 								<td class="rightAligntextClass"><b><?php echo $grn->total_sale; ?></b></td>
-							</tfoot>
+							</tfoot>-->
 						</table>
 						<?php endif; ?>
 					</div>
