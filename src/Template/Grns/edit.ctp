@@ -43,8 +43,8 @@ $this->set('title', 'Edit');
 								<tr>
 									<td><label>Item<label></td>
 									<td><label>Quantity<label></td>
-									<td><label>Purchase Rate<label></td>
-									<td><label>Sale Rate<label></td>
+									<td><label>Purchase Rate Per Unit<label></td>
+									<td><label>Sale Rate Per Unit<label></td>
 									<td><label>Action<label></td>
 									
 								</tr>

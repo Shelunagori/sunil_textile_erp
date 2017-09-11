@@ -74,14 +74,11 @@ class GrnsController extends AppController
 			{
 				$grn->voucher_no = 1;
 			} 
-			
             if ($this->Grns->save($grn)) 
 			{
 				//Create Item_Ledger//
-				
 				foreach($grn->grn_rows as $grn_row)
 				{
-					
 					$item_ledger = $this->Grns->ItemLedgers->newEntity();
 					$item_ledger->transaction_date = $grn->transaction_date;
 					$item_ledger->grn_id = $grn->id;
@@ -94,11 +91,20 @@ class GrnsController extends AppController
 					$item_ledger->status ='in';
 					$item_ledger->amount=$grn_row->quantity*$grn_row->purchase_rate;
 					$this->Grns->ItemLedgers->save($item_ledger);
+					$item = $this->Grns->GrnRows->Items->find()->where(['Items.id'=>$grn_row->item_id])->first();
+					if($item)
+					{
+						if($grn->transaction_date >= date("Y-m-d",strtotime($item->sales_rate_update_on)))
+						{
+							$query = $this->Grns->GrnRows->Items->query();
+							$query->update()
+									->set(['Items.sales_rate' => $grn_row->sale_rate, 'Items.sales_rate_update_on' => $grn->transaction_date])
+									->where(['Items.id' =>$grn_row->item_id])
+									->execute();
+						}
+					}
 				}
-				
-				
                 $this->Flash->success(__('The grn has been saved.'));
-
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The grn could not be saved. Please, try again.'));
@@ -106,16 +112,12 @@ class GrnsController extends AppController
 		$items = $this->Grns->GrnRows->Items->find()
 					->where(['Items.company_id'=>$company_id])
 					->contain(['GstFigures']);
-				
 		$itemOptions=[];
-		
 		foreach($items as $item)
 		{
 			$itemOptions[]=['text' =>$item->name, 'value' => $item->id, 'gst_figure_tax_name'=>@$item->gst_figure->name];
 		}
-		
 		$Voucher_no = $this->Grns->find()->select(['voucher_no'])->where(['company_id'=>$company_id])->order(['voucher_no' => 'DESC'])->first();
-		
 		if($Voucher_no)
 		{
 			$voucher_no=$Voucher_no->voucher_no+1;
@@ -123,9 +125,7 @@ class GrnsController extends AppController
 		else
 		{ 
 			$voucher_no=1;
-			
 		} 
-		 
         //$locations = $this->Grns->Locations->find('list', ['limit' => 200]);
         $companies = $this->Grns->Companies->find('list');
         $this->set(compact('grn','companies','voucher_no','itemOptions'));
@@ -141,15 +141,19 @@ class GrnsController extends AppController
      */
     public function edit($id = null)
     {
+	
 		$this->viewBuilder()->layout('index_layout');
 		$company_id=$this->Auth->User('session_company_id');
         $grn = $this->Grns->get($id, [
             'contain' => ['GrnRows']
         ]);
 	
+			
         if ($this->request->is(['patch', 'post', 'put'])) {
             $grn = $this->Grns->patchEntity($grn, $this->request->getData());
 			$grn->transaction_date = date("Y-m-d",strtotime($this->request->getData()['transaction_date']));
+			pr($grn);exit;
+			
             if ($this->Grns->save($grn)) 
 			{
 				$query = $this->Grns->ItemLedgers->query();
@@ -157,15 +161,17 @@ class GrnsController extends AppController
 				foreach($grn->grn_rows as $grn_row)
 				{
 					$item = $this->Grns->GrnRows->Items->find()->where(['Items.id'=>$grn_row->item_id])->first();
-					
-					if($grn->transaction_date <= date("Y-m-d",strtotime($item->sales_rate_update_on)))
+					if($item)
 					{
-						$query = $this->Grns->GrnRows->Items->query();
-						$query->update()
-								->set(['Items.sales_rate' => $grn_row->sale_rate])
-								->where(['Items.id' =>$grn_row->item_id])
-								->execute();
-			        }
+						if($grn->transaction_date >= date("Y-m-d",strtotime($item->sales_rate_update_on)))
+						{
+							$query = $this->Grns->GrnRows->Items->query();
+							$query->update()
+									->set(['Items.sales_rate' => $grn_row->sale_rate, 'Items.sales_rate_update_on' => $grn->transaction_date])
+									->where(['Items.id' =>$grn_row->item_id])
+									->execute();
+						}
+					}
 					
 					$item_ledger = $this->Grns->ItemLedgers->newEntity();
 					$item_ledger->transaction_date = $grn->transaction_date;
@@ -179,9 +185,13 @@ class GrnsController extends AppController
 					$item_ledger->status ='in';
 					$item_ledger->amount=$grn_row->quantity*$grn_row->purchase_rate;
 					$this->Grns->ItemLedgers->save($item_ledger);
-				
 					
-				
+					$updateItemRates = $this->Grns->ItemLedgers->Items->query();
+				    $updateItemRates = $updateItemRates->update()
+					->set(['Items.sales_rate' => $grn_row->sale_rate, 'Items.sales_rate_update_on' => $grn->transaction_date])
+					->where(['Items.id' => $grn_row->item_id])
+					->execute();
+					
 				}
 				
 				$this->Flash->success(__('The grn has been saved.'));
