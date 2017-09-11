@@ -48,18 +48,11 @@ $this->set('title', 'Progress Csv');
 				if(response.recallAjax=='true'){
 					process_data();
 				}
-				else if(response.recallAjax=='false'){
-					send_to_import_step2();
-				}
+				
 			});
 		}
 		
-		function send_to_import_step2(){
-			var url='".$this->Url->build(['controller'=>'Grns','action'=>'ImportStep2'])."'
-			$.ajax({
-				url: url
-				});
-		}
+		
     });
 	";
 
