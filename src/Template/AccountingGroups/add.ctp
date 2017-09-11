@@ -26,7 +26,7 @@ $this->set('title', 'Create Accounting Group');
 						    <div class="col-md-6">
 								<div class="form-group">
 									<label>Under</label>
-									<?php echo $this->Form->control('parent_id',['class'=>'form-control input-sm select2me calculation','label'=>false,'empty'=>'-Primary-', 'options' => $parentAccountingGroups]); ?>
+									<?php echo $this->Form->control('parent_id',['class'=>'form-control input-sm select2me   calculation','label'=>false,'empty'=>'-Primary-', 'options' => $parentAccountingGroups]); ?>
 								</div>
 							</div>
 							<div class="col-md-6">
@@ -97,11 +97,11 @@ $this->set('title', 'Create Accounting Group');
 	$js="
 	$(document).ready(function() {
 	  $('.calculation').die().live('change',function(){
-		  check();
+		  check(); 
 	  });
 	  function check()
-	  {
-		  var parent_id =$('.calculation').val();
+	  { 
+		  var parent_id =$('.calculation option:selected').val(); 
 		  if(parent_id)
 		  {
 			  $('.attributeRem').removeAttr('required');
