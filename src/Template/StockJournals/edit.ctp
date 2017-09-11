@@ -36,120 +36,119 @@ $this->set('title', 'Edit Stock Journal');
 						</div>
 					</div>
 					<br>
-                  <div class="row">
-				  <div class="table-responsive">
-					<table width="100%" class="table  table-bordered">
-						<tr>
-							<td width="50%">
-								<table id="main_table" class="table table-condensed table-bordered" style="margin-bottom: 4px;" width="100%">
-								<thead>
-								<tr><td align="center" colspan="6">Inward</td></tr>
-								<tr align="center">
-									<td><label>Sr<label></td>
-									<td><label>Item<label></td>
-									<td><label>Qty<label></td>
-									<td><label>Rate<label></td>
-									<td><label>Amount<label></td>
-									<td></td>
-								</tr>
-								</thead>
-								<tbody id='main_tbody' class="tab">
-                                 <?php if(!empty($stockJournal->inwards))
-                                         $i=0;									
-								         foreach($stockJournal->inwards as $inward)
-									     {
-							    ?>
-									<tr class="main_tr" class="tab">
-										<td width="7%"><?php echo $i+1;
-										
-										?></td>
-										<td width="25%">
-											<?php echo $this->Form->input('inwards.'.$i.'.item_id', ['empty'=>'--Select--','options'=>$items,'label' => false,'class' => 'form-control input-sm select2me','required'=>'required','value'=>$inward->item->id]); 
-											echo $this->Form->input('inwards.'.$i.'.id', ['value'=>$inward->id,'type'=>'hidden']);
+                   <div class="row">
+					   <div class="table-responsive">
+							<table width="100%" class="table  table-bordered">
+								<tr>
+									<td width="50%">
+										<table id="main_table" class="table table-condensed table-bordered" style="margin-bottom: 4px;" width="100%">
+											<thead>
+												<tr><td align="center" colspan="6">Inward</td></tr>
+												<tr align="center">
+													<td><label>Sr<label></td>
+													<td><label>Item<label></td>
+													<td><label>Qty<label></td>
+													<td><label>Rate<label></td>
+													<td><label>Amount<label></td>
+													<td></td>
+												</tr>
+											</thead>
+											<tbody id='main_tbody' class="tab">
+											 <?php if(!empty($stockJournal->inwards))
+													 $i=0;									
+													 foreach($stockJournal->inwards as $inward)
+													 {
 											?>
-										</td>
-										<td width="15%">
-											<?php echo $this->Form->input('inwards.'.$i.'.quantity', ['label' => false,'class' => 'inward_reverseCalculation form-control input-sm ','id'=>'check','required'=>'required','value'=>$inward->quantity]); ?>
-										</td>
-										<td width="20%">
-											<?php echo $this->Form->input('inwards.'.$i.'.rate', ['label' => false,'class' => 'inward_calculation form-control input-sm rightAligntextClass','required'=>'required','value'=>$inward->rate]); ?>
-										</td>
-										<td width="25%">
-											<?php echo $this->Form->input('inwards.'.$i.'.amount', ['label' => false,'class' => 'inward_reverseCalculation form-control input-sm rightAligntextClass','required'=>'required','value'=>$inward->amount]); ?>	
-										</td>
-										<td align="center">
-											<a class="btn btn-danger delete-tr btn-xs" href="#" role="button" style="margin-bottom: 5px;"><i class="fa fa-times"></i></a>
-										</td>
-									</tr>
-								<?php $i++; } ?>
-								</tbody>
-								<tfoot>
-									<tr>
-										<td colspan="4">
-											<button type="button" class="add_inward btn btn-default input-sm"><i class="fa fa-plus"></i> Add row</button>
-										</td>
-										<td width="25%"><?php echo $this->Form->input('inward_amount_total', ['label' => false,'class' => 'form-control input-sm rightAligntextClass','id'=>'total_inward','placeholder'=>'Total','type'=>'text']); ?></td>
-										<td></td>
-									</tr>
-								</tfoot>
-								</table>
-							</td>
-							<td width="50%">
-								<table id="main_table2" class="table table-condensed table-bordered" style="margin-bottom: 4px;" width="100%">
-								<thead>
-								<tr><td align="center" colspan="6">Outward</td></tr>
-								<tr align="center">
-									<td><label>Sr<label></td>
-									<td><label>Item<label></td>
-									<td><label>Qty<label></td>
-									<td><label>Rate<label></td>
-									<td><label>Amount<label></td>
-									<td></td>
+												<tr class="main_tr" class="tab">
+													<td width="7%"><?php echo $i+1;
+													?></td>
+													<td width="25%">
+														<?php echo $this->Form->input('inwards.'.$i.'.item_id', ['empty'=>'--Select--','options'=>$items,'label' => false,'class' => 'form-control input-sm select2me','required'=>'required','value'=>$inward->item->id]); 
+														echo $this->Form->input('inwards.'.$i.'.id', ['value'=>$inward->id,'type'=>'hidden']);
+														?>
+													</td>
+													<td width="15%">
+														<?php echo $this->Form->input('inwards.'.$i.'.quantity', ['label' => false,'class' => 'inward_reverseCalculation form-control input-sm ','id'=>'check','required'=>'required','value'=>$inward->quantity]); ?>
+													</td>
+													<td width="20%">
+														<?php echo $this->Form->input('inwards.'.$i.'.rate', ['label' => false,'class' => 'inward_calculation form-control input-sm rightAligntextClass','required'=>'required','value'=>$inward->rate]); ?>
+													</td>
+													<td width="25%">
+														<?php echo $this->Form->input('inwards.'.$i.'.amount', ['label' => false,'class' => 'inward_reverseCalculation form-control input-sm rightAligntextClass','required'=>'required','value'=>$inward->amount]); ?>	
+													</td>
+													<td align="center">
+														<a class="btn btn-danger delete-tr btn-xs" href="#" role="button" style="margin-bottom: 5px;"><i class="fa fa-times"></i></a>
+													</td>
+												</tr>
+											<?php $i++; } ?>
+											</tbody>
+											<tfoot>
+												<tr>
+													<td colspan="4">
+														<button type="button" class="add_inward btn btn-default input-sm"><i class="fa fa-plus"></i> Add row</button>
+													</td>
+													<td width="25%"><?php echo $this->Form->input('inward_amount_total', ['label' => false,'class' => 'form-control input-sm rightAligntextClass','id'=>'total_inward','placeholder'=>'Total','type'=>'text']); ?></td>
+													<td></td>
+												</tr>
+											</tfoot>
+										</table>
+									</td>
+									<td width="50%">
+										<table id="main_table2" class="table table-condensed table-bordered" style="margin-bottom: 4px;" width="100%">
+											<thead>
+												<tr><td align="center" colspan="6">Outward</td></tr>
+												<tr align="center">
+													<td><label>Sr<label></td>
+													<td><label>Item<label></td>
+													<td><label>Qty<label></td>
+													<td><label>Rate<label></td>
+													<td><label>Amount<label></td>
+													<td></td>
+												</tr>
+											</thead>
+											<tbody id='main_tbody2' class="tab">
+											  <?php if(!empty($stockJournal->outwards))
+													 $j=0;									
+													 foreach($stockJournal->outwards as $outward)
+													 {
+												?>
+												<tr class="main_tr" class="tab">
+													<td width="7%"><?php echo $j+1;?></td>
+													<td width="25%">
+														<?php echo $this->Form->input('outwards.'.$j.'.item_id', ['empty'=>'--Select--','options'=>$items,'label' => false,'class' => 'form-control input-sm select2me','required'=>'required','value'=>$outward->item->id]); 
+														echo $this->Form->input('outwards.'.$j.'.id', ['value'=>$outward->id,'type'=>'hidden']);
+														?>
+													</td>
+													<td width="15%">
+														<?php echo $this->Form->input('outwards.'.$j.'.quantity', ['label' => false,'class' => 'outward_reverseCalculation form-control input-sm ','id'=>'check','required'=>'required','value'=>$outward->quantity]); ?>
+													</td>
+													<td width="20%">
+														<?php echo $this->Form->input('outwards.'.$j.'.rate', ['label' => false,'class' => 'outward_calculation form-control input-sm rightAligntextClass','required'=>'required','value'=>$outward->rate]); ?>
+													</td>
+													<td width="25%">
+														<?php echo $this->Form->input('outwards.'.$j.'.amount', ['label' => false,'class' => 'outward_reverseCalculation form-control input-sm rightAligntextClass','required'=>'required','value'=>$outward->amount]); ?>	
+													</td>
+													<td align="center">
+														<a class="btn btn-danger delete-tr btn-xs" href="#" role="button" style="margin-bottom: 5px;"><i class="fa fa-times"></i></a>
+													</td>
+												</tr>
+											<?php $j++; } ?>
+											</tbody>
+											<tfoot>
+												<tr>
+													<td colspan="4">
+														<button type="button" class="add_outward btn btn-default input-sm"><i class="fa fa-plus"></i> Add row</button>
+													</td>
+													<td width="25%"><?php echo $this->Form->input('outward_amount_total', ['label' => false,'class' => 'form-control input-sm rightAligntextClass','id'=>'total_outward','placeholder'=>'Total']); ?></td>
+													<td></td>
+												</tr>
+											</tfoot>
+										</table>
+									</td>
 								</tr>
-								</thead>
-								<tbody id='main_tbody2' class="tab">
-								  <?php if(!empty($stockJournal->outwards))
-                                         $j=0;									
-								         foreach($stockJournal->outwards as $outward)
-									     {
-							        ?>
-									<tr class="main_tr" class="tab">
-										<td width="7%"><?php echo $j+1;?></td>
-										<td width="25%">
-											<?php echo $this->Form->input('outwards.'.$j.'.item_id', ['empty'=>'--Select--','options'=>$items,'label' => false,'class' => 'form-control input-sm select2me','required'=>'required','value'=>$outward->item->id]); 
-											echo $this->Form->input('outwards.'.$j.'.id', ['value'=>$outward->id,'type'=>'hidden']);
-											?>
-										</td>
-										<td width="15%">
-											<?php echo $this->Form->input('outwards.'.$j.'.quantity', ['label' => false,'class' => 'outward_reverseCalculation form-control input-sm ','id'=>'check','required'=>'required','value'=>$outward->quantity]); ?>
-										</td>
-										<td width="20%">
-											<?php echo $this->Form->input('outwards.'.$j.'.rate', ['label' => false,'class' => 'outward_calculation form-control input-sm rightAligntextClass','required'=>'required','value'=>$outward->rate]); ?>
-										</td>
-										<td width="25%">
-											<?php echo $this->Form->input('outwards.'.$j.'.amount', ['label' => false,'class' => 'outward_reverseCalculation form-control input-sm rightAligntextClass','required'=>'required','value'=>$outward->amount]); ?>	
-										</td>
-										<td align="center">
-											<a class="btn btn-danger delete-tr btn-xs" href="#" role="button" style="margin-bottom: 5px;"><i class="fa fa-times"></i></a>
-										</td>
-									</tr>
-								<?php $j++; } ?>
-								</tbody>
-								<tfoot>
-									<tr>
-										<td colspan="4">
-											<button type="button" class="add_outward btn btn-default input-sm"><i class="fa fa-plus"></i> Add row</button>
-										</td>
-										<td width="25%"><?php echo $this->Form->input('outward_amount_total', ['label' => false,'class' => 'form-control input-sm rightAligntextClass','id'=>'total_outward','placeholder'=>'Total']); ?></td>
-										<td></td>
-									</tr>
-								</tfoot>
-								</table>
-							</td>
-						</tr>
-					</table>
-				   </div>
-				  </div>
+							</table>
+						</div>
+				    </div>
 				  
 				 <div class="row">
 					<div class="col-md-4">
@@ -159,10 +158,9 @@ $this->set('title', 'Edit Stock Journal');
 							</div>
 						</div>
 				  </div>
-				</div>
-				<?= $this->Form->button(__('Submit'),['class'=>'btn btn-success']) ?>
-				<?= $this->Form->end() ?>
 			</div>
+			<?= $this->Form->button(__('Submit'),['class'=>'btn btn-success']) ?>
+			<?= $this->Form->end() ?>
 		</div>
 	</div>
 </div>

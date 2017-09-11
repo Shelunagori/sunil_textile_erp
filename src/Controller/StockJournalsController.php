@@ -58,6 +58,7 @@ class StockJournalsController extends AppController
 		$this->viewBuilder()->layout('index_layout');
         $stockJournal = $this->StockJournals->newEntity();
 		$company_id=$this->Auth->User('session_company_id');
+		$location_id = $this->Auth->User('session_location_id');
 		$user_id=$this->Auth->User('id');
         if ($this->request->is('post')) {
             $stockJournal = $this->StockJournals->patchEntity($stockJournal, $this->request->getData());
@@ -72,6 +73,7 @@ class StockJournalsController extends AppController
 			$stockJournal->company_id       = $company_id;
 			$stockJournal->created_by       = $user_id;
 			$stockJournal->created_on       = date('Y-m-d');
+			$stockJournal->location_id      = $location_id;
             if ($this->StockJournals->save($stockJournal)) {
 				    if(!empty($stockJournal->inwards))
 					{
@@ -138,6 +140,7 @@ class StockJournalsController extends AppController
             'contain' => ['Inwards'=>['Items'],'Outwards'=>['Items']]
         ]);
 		$company_id=$this->Auth->User('session_company_id');
+		$location_id = $this->Auth->User('session_location_id');
 		$user_id=$this->Auth->User('id');
 		
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -145,6 +148,7 @@ class StockJournalsController extends AppController
 			$stockJournal->edited_by = $user_id;
 			$stockJournal->edited_on = date('Y-m-d');
 			$stockJournal->transaction_date = date("Y-m-d",strtotime($this->request->data['transaction_date']));
+			$stockJournal->location_id      = $location_id;
             if ($this->StockJournals->save($stockJournal)) {
 				 $query_delete = $this->StockJournals->ItemLedgers->query();
 					$query_delete->delete()

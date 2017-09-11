@@ -240,7 +240,6 @@ class SecondTampGrnRecordsController extends AppController
 			goto Bottom;
 		}
 		foreach($SecondTampGrnRecords as $SecondTampGrnRecord){
-			
 			$GrnRows = $this->SecondTampGrnRecords->Grns->GrnRows->newEntity();;
 				$GrnRows->grn_id = $grn_id;
 				$GrnRows->item_id = $SecondTampGrnRecord->item_id;
@@ -248,7 +247,7 @@ class SecondTampGrnRecordsController extends AppController
 				$GrnRows->rate = $SecondTampGrnRecord->purchase_rate;
 				$GrnRows->sale_rate = $SecondTampGrnRecord->sales_rate;
 				if($this->SecondTampGrnRecords->Grns->GrnRows->save($GrnRows)){
-				$query = $this->SecondTampGrnRecords->query();
+					$query = $this->SecondTampGrnRecords->query();
 					$query->update()
 					->set(['import_to_grn' => 'yes'])
 					->where(['SecondTampGrnRecords.id' =>$SecondTampGrnRecord->id])
@@ -398,6 +397,7 @@ class SecondTampGrnRecordsController extends AppController
 				$item->gst_amount=$SecondTampGrnRecord->amount_in_ref_of_gst_rate;
 				$item->second_gst_figure_id=$second_gst_figure_id;
 				$item->kind_of_gst=$SecondTampGrnRecord->gst_rate_fixed_or_fluid;
+				$item->purchase_rate=$SecondTampGrnRecord->purchase_rate;
 				$item->sales_rate=$SecondTampGrnRecord->sales_rate;
 				$item->sales_rate_update_on=date("Y-m-d",strtotime($transaction_date));
 				$item->location_id=$location_id;
