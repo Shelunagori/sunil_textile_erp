@@ -355,7 +355,7 @@ echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 	<tbody>
 		<tr class="main_tr" class="tab">
 			<td width="7%"></td>
-			<td width="25%">
+			<td>
 				<?php echo $this->Form->input('item_id', ['empty'=>'--Select--','options'=>$items,'label' => false,'class' => 'form-control input-medium','required'=>'required']); ?>
 			</td>
 			<td width="15%">

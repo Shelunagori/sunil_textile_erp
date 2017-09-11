@@ -34,7 +34,6 @@ $this->set('title', 'Sales Invoice List');
 							<?php 	$i=0;      
 									foreach ($creditNotes as $creditNote): 
 									$i++;
-									
 							?>
 							<tr>
 								<td><?= h($i) ?></td>
