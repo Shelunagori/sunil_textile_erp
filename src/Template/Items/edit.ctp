@@ -32,7 +32,7 @@ $this->set('title', 'Edit Item');
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
-									<label>HSN Code <span class="required">*</span></label>
+									<label>HSN Code </label>
 									<?php echo $this->Form->control('hsn_code',['class'=>'form-control input-sm','label'=>false,'placeholder'=>'HSN Code']); ?>
 								</div>
 							</div>

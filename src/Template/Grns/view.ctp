@@ -17,7 +17,7 @@ $this->set('title', 'View');
 				<?= $this->Form->create($grn) ?>
 				<div class="row">
 					<div class="col-md-2">
-						<label>Voucher No :<?php echo $grn->voucher_no; ?></label>
+						<label>Voucher No :<?php echo '#'.str_pad($grn->voucher_no, 4, '0', STR_PAD_LEFT); ?></label>
 					</div>
 					<div class="col-md-3">
 						<label>Good Recieve No. :<?php echo $grn->id; ?></label>&nbsp;&nbsp;

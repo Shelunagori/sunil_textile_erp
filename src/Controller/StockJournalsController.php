@@ -144,12 +144,17 @@ class StockJournalsController extends AppController
 		$user_id=$this->Auth->User('id');
 		
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $stockJournal = $this->StockJournals->patchEntity($stockJournal, $this->request->getData());
+			$data=$this->request->getData();
+			//$data['outwards']=null;
+			//pr($data); exit;
+			 $stockJournal = $this->StockJournals->get($id);
+            $stockJournal = $this->StockJournals->patchEntity($stockJournal, $data);
 			$stockJournal->edited_by = $user_id;
 			$stockJournal->edited_on = date('Y-m-d');
 			$stockJournal->transaction_date = date("Y-m-d",strtotime($this->request->data['transaction_date']));
-			$stockJournal->location_id      = $location_id;
-            if ($this->StockJournals->save($stockJournal)) {
+			$stockJournal->location_id = $location_id;
+			//pr($stockJournal);exit;
+            if($this->StockJournals->save($stockJournal)) {
 				 $query_delete = $this->StockJournals->ItemLedgers->query();
 					$query_delete->delete()
 					->where(['stock_journal_id' => $stockJournal->id,'company_id'=>$company_id])

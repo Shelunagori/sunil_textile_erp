@@ -98,10 +98,6 @@ class ItemsTable extends Table
             ->requirePresence('name', 'create')
             ->notEmpty('name');
 
-        $validator
-            ->requirePresence('hsn_code', 'create')
-            ->notEmpty('hsn_code');
-
         return $validator;
     }
 
