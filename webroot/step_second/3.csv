@@ -1,15 +1,15 @@
 Item Code,Quantity,Purchase Rate,Sales Rate,Addition Item Data Required, item name, hsn code, unit, gst rate fix or fluid, first gst rate, amount in refence to gst rate, second gst rate  
-barcode1,10,850,1100,Yes ,item1,hsn1,killo gram,fix,5,,
-barcode2,12,900,1200,Yes ,,hsn2,killo gram,fix,5,,
-barcode3,14,950,1300,Yes ,item3,hsn3,killo gram,fix,5,,
-barcode4,16,1000,1400,Yes ,item4,hsn4,killo gram,fix,5,,
-barcode5,18,1050,1500,Yes ,item5,hsn5,,fix,5,,
-barcode6,20,1100,1600,Yes ,item6,hsn6,killo gram,fix,5,,
-barcode7,22,1150,1700,Yes ,item7,hsn7,killo gram,fix,5,,
-barcode8,24,1200,1800,Yes ,item8,hsn8,killo gram,fix,5,,
-barcode9,26,1250,1900,Yes ,item9,hsn9,killo gram,,5,,
-barcode10,28,1300,2000,Yes ,item10,hsn10,killo gram,fluid,12,200,500
-barcode11,30,1350,2100,Yes ,item11,hsn11,killo gram,fluid,12,300,510
-barcode12,32,1400,2200,Yes ,item12,hsn12,killo gram,fluid,12,400,520
-barcode13,34,1450,2300,Yes ,item13,hsn13,killo gram,fluid,12,500,530
-barcode14,36,1500,2400,Yes ,item14,hsn14,killo gram,fluid,12,600,540
+barcode11,10,850,1100,Yes ,item11,hsn1,killo gram,fix,5,,
+barcode12,12,900,1200,Yes ,item12,hsn2,killo gram,fix,5,,
+barcode13,14,950,1300,Yes ,item13,hsn3,killo gram,fix,5,,
+barcode14,16,1000,1400,Yes ,item14,hsn4,killo gram,fix,5,,
+barcode15,18,1050,1500,Yes ,item15,hsn5,killo gram,fix,5,,
+barcode16,20,1100,1600,Yes ,item16,hsn6,killo gram,fix,5,,
+barcode17,22,1150,1700,Yes ,item17,hsn7,killo gram,fix,5,,
+barcode18,24,1200,1800,Yes ,item18,hsn8,killo gram,fix,5,,
+barcode19,26,1250,1900,Yes ,item19,hsn9,killo gram,fix,5,,
+barcode20,28,1300,2000,Yes ,item20,hsn10,killo gram,fluid,12,200,12
+barcode21,30,1350,2100,Yes ,item21,hsn11,killo gram,fluid,12,300,0
+barcode22,32,1400,2200,Yes ,item22,hsn12,killo gram,fluid,12,400,5
+barcode23,34,1450,2300,Yes ,item23,hsn13,killo gram,fluid,12,500,0
+barcode24,36,1500,2400,Yes ,item24,hsn14,killo gram,fluid,12,600,540

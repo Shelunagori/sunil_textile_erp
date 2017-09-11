@@ -67,6 +67,7 @@ class SecondTampGrnRecordsTable extends Table
 		]);
 
 		$this->belongsTo('Grns');
+		
     }
 
     /**

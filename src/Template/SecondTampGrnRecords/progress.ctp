@@ -48,8 +48,10 @@ $this->set('title', 'Progress Csv');
 				if(response.recallAjax=='true'){
 					process_data();
 				}
+				
 			});
 		}
+		
 		
     });
 	";

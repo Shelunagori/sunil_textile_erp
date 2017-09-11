@@ -301,7 +301,7 @@ class GrnsController extends AppController
 		$location_id=$this->Auth->User('session_location_id');
 		
 		$countSecondTampGrnRecords=$this->Grns->SecondTampGrnRecords->find()
-									->where(['user_id'=>$user_id,'company_id'=>$company_id])->count();
+									->where(['user_id'=>$user_id,'company_id'=>$company_id,'import_to_grn'=>'no'])->count();
 		if($countSecondTampGrnRecords>0){
 			$notvalid_to_importRecords=$this->Grns->SecondTampGrnRecords->find()
 										->where(['user_id'=>$user_id,'company_id'=>$company_id,'valid_to_import'=>'no'])->count();

@@ -96,8 +96,10 @@ class SecondTampGrnRecordsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
 			$secondTampGrnRecord->valid_to_import ='yes';
             $secondTampGrnRecord = $this->SecondTampGrnRecords->patchEntity($secondTampGrnRecord, $this->request->getData());
+			
             if ($this->SecondTampGrnRecords->save($secondTampGrnRecord)) {
-                $this->Flash->success(__('The second tamp grn record has been saved.'));
+				$this->Flash->success(__('The second tamp grn record has been saved.'));
+				$transaction_date=$this->Auth->User('session_company')->books_beginning_from;
 				$item=$this->SecondTampGrnRecords->Companies->Items->newEntity();
 				$item->name=$secondTampGrnRecord->item_name;
 				$item->item_code=$secondTampGrnRecord->item_code;
@@ -109,12 +111,15 @@ class SecondTampGrnRecordsController extends AppController
 				$item->second_gst_figure_id=$secondTampGrnRecord->second_gst_figure_id;
 				$item->kind_of_gst=$secondTampGrnRecord->gst_rate_fixed_or_fluid;
 				$item->sales_rate=$secondTampGrnRecord->sales_rate;
+				$item->sales_rate_update_on=date("Y-m-d",strtotime($transaction_date));
 				$item->location_id=$location_id;
 				$item->item_code=strtoupper($secondTampGrnRecord->item_code);
 				$data_to_encode = strtoupper($secondTampGrnRecord->item_code);
 				$CheckItem = $this->SecondTampGrnRecords->Companies->Items->exists(['Items.item_code'=>$secondTampGrnRecord->item_code,'Items.company_id'=>$company_id]);
 				if(!$CheckItem)
 				{
+					
+					
 					if($this->SecondTampGrnRecords->Companies->Items->save($item)){
 					
 						$barcode = new BarcodeHelper(new \Cake\View\View());
@@ -188,7 +193,7 @@ class SecondTampGrnRecordsController extends AppController
 			{
 				$grn->voucher_no = 1;
 			} 
-			
+			$grn->location_id=$location_id;
             if ($this->SecondTampGrnRecords->Grns->save($grn)) 
 			{
 				$this->Flash->success(__('The grn has been saved.'));
@@ -244,7 +249,7 @@ class SecondTampGrnRecordsController extends AppController
 				$GrnRows->grn_id = $grn_id;
 				$GrnRows->item_id = $SecondTampGrnRecord->item_id;
 				$GrnRows->quantity = $SecondTampGrnRecord->quantity;
-				$GrnRows->rate = $SecondTampGrnRecord->purchase_rate;
+				$GrnRows->purchase_rate = $SecondTampGrnRecord->purchase_rate;
 				$GrnRows->sale_rate = $SecondTampGrnRecord->sales_rate;
 				if($this->SecondTampGrnRecords->Grns->GrnRows->save($GrnRows)){
 					$query = $this->SecondTampGrnRecords->query();
@@ -254,6 +259,47 @@ class SecondTampGrnRecordsController extends AppController
 					->execute();
 				}
 		}
+		$grn_rows=$this->SecondTampGrnRecords->Grns->GrnRows->find()
+								->where(['GrnRows.grn_id'=>$grn_id,'import_to_itemledger' => 'no']);
+		
+		
+		$grn=$this->SecondTampGrnRecords->Grns->find()
+								->where(['company_id'=>$company_id,'Grns.id'=>$grn_id])->first();
+			
+		foreach($grn_rows as $grn_row)
+		{
+				$item = $this->SecondTampGrnRecords->Grns->GrnRows->Items->find()->where(['Items.id'=>$grn_row->item_id])->first();
+					
+					if($grn->transaction_date <= date("Y-m-d",strtotime($item->sales_rate_update_on)))
+					{
+						$query = $this->SecondTampGrnRecords->Grns->GrnRows->Items->query();
+						$query->update()
+								->set(['Items.sales_rate' => $grn_row->sale_rate])
+								->where(['Items.id' =>$grn_row->item_id])
+								->execute();
+			        }
+				$item_ledger = $this->SecondTampGrnRecords->Grns->ItemLedgers->newEntity();
+					$item_ledger->transaction_date = $grn->transaction_date;
+					$item_ledger->grn_id = $grn_id;
+					$item_ledger->grn_row_id = $grn_row->id;
+					$item_ledger->item_id = $grn_row->item_id;
+					$item_ledger->quantity = $grn_row->quantity;
+					$item_ledger->rate = $grn_row->purchase_rate;
+					$item_ledger->sale_rate = $grn_row->sale_rate;
+					$item_ledger->company_id =$company_id;
+					$item_ledger->status ='in';
+					$item_ledger->amount=$grn_row->quantity*$grn_row->purchase_rate;
+					$item_ledger->location_id=$location_id;
+					$this->SecondTampGrnRecords->Grns->ItemLedgers->save($item_ledger);
+					if($this->SecondTampGrnRecords->Grns->ItemLedgers->save($item_ledger)){
+						$query = $this->SecondTampGrnRecords->Grns->GrnRows->query();
+						$query->update()
+						->set(['import_to_itemledger' => 'yes'])
+						->where(['GrnRows.id' =>$grn_row->id])
+						->execute();
+					}
+		}
+		
 		Bottom:
 		$totalRecords=$this->SecondTampGrnRecords->find()
 						->where(['user_id'=>$user_id,'company_id'=>$company_id])
@@ -273,6 +319,13 @@ class SecondTampGrnRecordsController extends AppController
 		exit;
 	}
 
+	public function SendToImportStep2()
+	{
+		return $this->redirect(['action' => 'import_step2','controller' =>'Grns']);
+		exit;
+    }
+	
+	
 	public function ProcessData()
 	{
 		$user_id=$this->Auth->User('id');
@@ -462,11 +515,15 @@ class SecondTampGrnRecordsController extends AppController
 
 		if($totalRecords==$processedRecords){ 
 			$data['recallAjax'] = "false";
+			 
 		}else{
 			$data['recallAjax'] = "true";
+			
 		}
 		echo json_encode($data);
 		exit;
 	}
+	
+	
 }
 
