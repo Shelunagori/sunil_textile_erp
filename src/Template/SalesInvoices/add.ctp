@@ -188,7 +188,7 @@ $this->set('title', 'Create Sales Invoice');
 			<input type="hidden" name="gst_amount" class="gst_amount" value="">
 			<input type="hidden" name="gst_figure_tax_percentage" class="gst_figure_tax_percentage calculation" value="">
 			<input type="hidden" name="tot" class="totamount calculation" value="">
-			<input type="hidden" name="gst_value" class="gstValue calculation" value="">
+			<input type="text" name="gst_value" class="gstValue calculation" value="">
 			<input type="hidden" name="discountvalue" class="discountvalue calculation" value="">
 				<?php echo $this->Form->input('item_id', ['empty'=>'-Item Name-', 'options'=>$itemOptions,'label' => false,'class' =>'form-control input-medium attrGet calculation','required'=>'required']); ?>
 				<span class="itemQty" style="color:red;font-size:10px;"></span>
@@ -368,6 +368,7 @@ $this->set('title', 'Create Sales Invoice');
 		var isRoundofType=0;
 		var igst_value=0;
 		var outOfStockValue=0;
+		var s_igst=0;
 		$('#main_table tbody#main_tbody tr.main_tr').each(function()
 		{
 		
@@ -423,9 +424,9 @@ $this->set('title', 'Create Sales Invoice');
 			var divideValue=100;
 			var divideval=divideValue+gst_figure_tax_percentage;
 			var gstAmount=(discountAmount*100)/divideval;
-			var gstValue=(gstAmount*gst_figure_tax_percentage)/100;
+			var gstValue=parseFloat((gstAmount*gst_figure_tax_percentage/100).toFixed(2));
 			$(this).find('.gstAmount').val(gstAmount.toFixed(2));
-			$(this).find('.gstValue').val(gstValue.toFixed(2));
+			$(this).find('.gstValue').val(gstValue);
 
 			
 			var gstValue  = parseFloat($(this).find('.gstValue').val());
@@ -433,18 +434,19 @@ $this->set('title', 'Create Sales Invoice');
 			var is_interstate  = parseFloat($('#is_interstate').val());
 			if(is_interstate=='0')
 			{
-				gst_value=parseFloat(gst_value)+gstValue;
-				s_cgst_value=parseFloat(gst_value/2);
+				gst_value=parseFloat(gst_value.toFixed(2))+parseFloat(gstValue.toFixed(2));
+				s_cgst_value=parseFloat((gst_value/2).toFixed(2));
 				igst_value=0;
-				gst_amount=parseFloat(gst_amount)+parseFloat(gstAmount);
+				gst_amount=parseFloat(gst_amount.toFixed(2))+parseFloat(gstAmount.toFixed(2));
 				total=gst_amount+s_cgst_value+s_cgst_value;
 			    roundOff1=Math.round(total);
 			}else{
-				gst_value=parseFloat(gst_value)+gstValue;
-				igst_value=parseFloat(gst_value);
+				gst_value=parseFloat(gst_value.toFixed(2))+parseFloat(gstValue.toFixed(2));
+				s_igst=parseFloat((gst_value/2).toFixed(2));
+				igst_value=parseFloat(s_igst)+parseFloat(s_igst);
 				s_cgst_value=0;
-				gst_amount=parseFloat(gst_amount)+parseFloat(gstAmount);
-				total=gst_amount+igst_value;
+				gst_amount=parseFloat(gst_amount.toFixed(2))+parseFloat(gstAmount.toFixed(2));
+				total=gst_amount+s_igst+s_igst;
 			    roundOff1=Math.round(total);
 			}
 			if(total<roundOff1)
@@ -463,7 +465,7 @@ $this->set('title', 'Create Sales Invoice');
 				isRoundofType='0';
 			}
 		});
-		$('.amount_after_tax').val(total.toFixed(2));
+		$('.amount_after_tax').val(roundOff1.toFixed(2));
 		$('.amount_before_tax').val(gst_amount.toFixed(2));
 		$('.add_cgst').val(s_cgst_value.toFixed(2));
 		$('.add_sgst').val(s_cgst_value.toFixed(2));
