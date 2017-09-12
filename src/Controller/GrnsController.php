@@ -234,7 +234,8 @@ class GrnsController extends AppController
 	{
 		$this->viewBuilder()->layout('index_layout');
 		$import_csv = $this->Grns->newEntity();
-		$this->set(compact('import_csv'));
+		$units = $this->Grns->Units->find();
+		$this->set(compact('import_csv','units'));
         $this->set('_serialize', ['import_csv']);
 	}
 

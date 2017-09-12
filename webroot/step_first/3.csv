@@ -1,24 +1,101 @@
 item code,quantity,purchase rate,sales rate
-item1,11,100,120
-item2,12,120,150
-item3,13,140,180
-item4,14,160,210
-item5,15,180,240
-item6,16,200,270
-item7,17,220,300
-item8,18,240,330
-item9,19,260,360
-item10,20,280,390
-item11,21,300,420
-item12,22,320,450
-item13,23,340,480
-item14,24,360,510
-item15,25,380,540
-item16,26,400,570
-item17,27,420,600
-item18,28,440,630
-item19,29,460,660
-item20,30,480,690
-item21,31,500,720
-item22,32,520,750
-item23,33,540,780
+bar code 1,1,10,20
+bar code 2,2,20,40
+bar code 3,3,30,60
+bar code 4,4,40,80
+bar code 5,5,50,100
+bar code 6,6,60,120
+bar code 7,7,70,140
+bar code 8,8,80,160
+bar code 9,9,90,180
+bar code 10,10,100,200
+bar code 11,11,110,220
+bar code 12,12,120,240
+bar code 13,13,130,260
+bar code 14,14,140,280
+bar code 15,15,150,300
+bar code 16,16,160,320
+bar code 17,17,170,340
+bar code 18,18,180,360
+bar code 19,19,190,380
+bar code 20,20,200,400
+bar code 21,21,210,420
+bar code 22,22,220,440
+bar code 23,23,230,460
+bar code 24,24,240,480
+bar code 25,25,250,500
+bar code 26,26,260,520
+bar code 27,27,270,540
+bar code 28,28,280,560
+bar code 29,29,290,580
+bar code 30,30,300,600
+bar code 31,31,310,620
+bar code 32,32,320,640
+bar code 33,33,330,660
+bar code 34,34,340,680
+bar code 35,35,350,700
+bar code 36,36,360,720
+bar code 37,37,370,740
+bar code 38,38,380,760
+bar code 39,39,390,780
+bar code 40,40,400,800
+bar code 41,41,410,820
+bar code 42,42,420,840
+bar code 43,43,430,860
+bar code 44,44,440,880
+bar code 45,45,450,900
+bar code 46,46,460,920
+bar code 47,47,470,940
+bar code 48,48,480,960
+bar code 49,49,490,980
+bar code 50,50,500,1000
+bar code 51,51,510,1020
+bar code 52,52,520,1040
+bar code 53,53,530,1060
+bar code 54,54,540,1080
+bar code 55,55,550,1100
+bar code 56,56,560,1120
+bar code 57,57,570,1140
+bar code 58,58,580,1160
+bar code 59,59,590,1180
+bar code 60,60,600,1200
+bar code 61,61,610,1220
+bar code 62,62,620,1240
+bar code 63,63,630,1260
+bar code 64,64,640,1280
+bar code 65,65,650,1300
+bar code 66,66,660,1320
+bar code 67,67,670,1340
+bar code 68,68,680,1360
+bar code 69,69,690,1380
+bar code 70,70,700,1400
+bar code 71,71,710,1420
+bar code 72,72,720,1440
+bar code 73,73,730,1460
+bar code 74,74,740,1480
+bar code 75,75,750,1500
+bar code 76,76,760,1520
+bar code 77,77,770,1540
+bar code 78,78,780,1560
+bar code 79,79,790,1580
+bar code 80,80,800,1600
+bar code 81,81,810,1620
+bar code 82,82,820,1640
+bar code 83,83,830,1660
+bar code 84,84,840,1680
+bar code 85,85,850,1700
+bar code 86,86,860,1720
+bar code 87,87,870,1740
+bar code 88,88,880,1760
+bar code 89,89,890,1780
+bar code 90,90,900,1800
+bar code 91,91,910,1820
+bar code 92,92,920,1840
+bar code 93,93,930,1860
+bar code 94,94,940,1880
+bar code 95,95,950,1900
+bar code 96,96,960,1920
+bar code 97,97,970,1940
+bar code 98,98,980,1960
+bar code 99,99,990,1980
+bar code 100,100,1000,2000
