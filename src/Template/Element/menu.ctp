@@ -70,16 +70,8 @@ echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-circl
 </li>
 <li class="start ">
 	<a href="javascript:;">
-<<<<<<< HEAD
 	<i class="fa fa-square"></i>
 	<span class="title">Inter Location Stock Transfer Vouchers</span>
-=======
-
-	<i class="fa fa-map-marker"></i>
-
-	<span class="title">Inter Location Stock Transfer Vouchers</span>
-
->>>>>>> 6133e3285020df98a7e34a10b3ff0c074b2716e3
 	<span class="arrow "></span>
 	</a>
 	<ul class="sub-menu">
