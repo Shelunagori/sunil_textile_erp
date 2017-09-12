@@ -32,7 +32,6 @@
                <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $intraLocationStockTransferVoucher->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $intraLocationStockTransferVoucher->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $intraLocationStockTransferVoucher->id], ['confirm' => __('Are you sure you want to delete # {0}?', $intraLocationStockTransferVoucher->id)]) ?>
                 </td>
             </tr>
             <?php $i++; endforeach; ?>
