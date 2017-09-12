@@ -196,7 +196,6 @@ class SecondTampGrnRecordsController extends AppController
 			$grn->location_id=$location_id;
             if ($this->SecondTampGrnRecords->Grns->save($grn)) 
 			{
-				$this->Flash->success(__('The grn has been saved.'));
 				return $this->redirect(['action' => 'progress1/'.$grn->id]);
             }
 		}
@@ -335,15 +334,16 @@ class SecondTampGrnRecordsController extends AppController
 			if(empty($SecondTampGrnRecord->item_code)){
 				goto DoNotMarkYesValidToImport;
 			}
+			if(empty($SecondTampGrnRecord->provided_unit)){
+				goto DoNotMarkYesValidToImport;
+			}
 			$item=$this->SecondTampGrnRecords->Companies->Items->find()
 					->where(['Items.item_code'=>$SecondTampGrnRecord->item_code,'company_id'=>$company_id])->first();
 			if(!$item){
 				if(empty($SecondTampGrnRecord->item_name)){
 					goto DoNotMarkYesValidToImport;
 				}
-				if(empty($SecondTampGrnRecord->hsn_code)){
-					goto DoNotMarkYesValidToImport;
-				}
+				
 				$unit=$this->SecondTampGrnRecords->Companies->Items->Units->find()
 						->where(['Units.name LIKE'=>'%'.trim($SecondTampGrnRecord->provided_unit).'%', 'Units.company_id'=>$company_id])
 						->first();

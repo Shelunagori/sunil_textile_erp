@@ -57,6 +57,7 @@ class GrnsTable extends Table
 			'saveStrategy' => 'replace'
         ]);
 		 $this->belongsTo('SecondTampGrnRecords');
+		  $this->belongsTo('Units');
     }
 
     /**

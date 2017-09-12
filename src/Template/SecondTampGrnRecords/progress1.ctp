@@ -37,7 +37,7 @@ $this->set('title', 'Progress Csv');
 <?php
 	$js="
 	$(document).ready(function() {
-		var success_url='".$this->Url->build(['controller'=>'Grns','action'=>'import_step2/'])."';
+		var success_url='".$this->Url->build(['controller'=>'Grns','action'=>'index'])."';
 		process_data_import();
 		function process_data_import(){ 
 			var url='".$this->Url->build(['controller'=>'SecondTampGrnRecords','action'=>'ProcessDataImport/'.$grn_id])."'
