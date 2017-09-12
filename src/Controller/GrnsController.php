@@ -117,7 +117,7 @@ class GrnsController extends AppController
 		$itemOptions=[];
 		foreach($items as $item)
 		{
-			$itemOptions[]=['text' =>$item->name, 'value' => $item->id, 'gst_figure_tax_name'=>@$item->gst_figure->name];
+			$itemOptions[]=['text' =>$item->item_code.' '.$item->name, 'value' => $item->id, 'gst_figure_tax_name'=>@$item->gst_figure->name];
 		}
 		$Voucher_no = $this->Grns->find()->select(['voucher_no'])->where(['company_id'=>$company_id])->order(['voucher_no' => 'DESC'])->first();
 		if($Voucher_no)
@@ -201,7 +201,7 @@ class GrnsController extends AppController
 				
 		$itemOptions=[];
 		foreach($items as $item){
-			$itemOptions[]=['text' =>$item->name, 'value' => $item->id ,'gst_figure_id'=>$item->gst_figure_id, 'gst_figure_tax_name'=>@$item->gst_figure->name];
+			$itemOptions[]=['text' =>$item->item_code.' '.$item->name, 'value' => $item->id ,'gst_figure_id'=>$item->gst_figure_id, 'gst_figure_tax_name'=>@$item->gst_figure->name];
 		}
         //$locations = $this->Grns->Locations->find('list', ['limit' => 200]);
         $companies = $this->Grns->Companies->find('list');
