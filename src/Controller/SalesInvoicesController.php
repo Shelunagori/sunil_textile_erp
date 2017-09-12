@@ -80,6 +80,7 @@ class SalesInvoicesController extends AppController
 			{
 				$salesInvoice->customer_id=0;
 			}
+			
 		   if ($this->SalesInvoices->save($salesInvoice)) {
 		      foreach($salesInvoice->sales_invoice_rows as $sales_invoice_row)
 			   {
@@ -122,18 +123,18 @@ class SalesInvoicesController extends AppController
 								'sales_invoice_id' => $salesInvoice->id
 								])
 						->execute();
-						if($salesInvoice->round_off>0)
+						if(str_replace('-',' ',$salesInvoice->round_off)>0)
 						{
 							$roundData = $this->SalesInvoices->AccountingEntries->query();
 							if($salesInvoice->isRoundofType=='0')
 							{
 							$debit=0;
-							$credit=$salesInvoice->round_off;
+							$credit=str_replace('-',' ',$salesInvoice->round_off);
 							}
 							else if($salesInvoice->isRoundofType=='1')
 							{
 							$credit=0;
-							$debit=$salesInvoice->round_off;
+							$debit=str_replace('-',' ',$salesInvoice->round_off);
 							}
 						$roundData->insert(['ledger_id', 'debit','credit', 'transaction_date', 'company_id', 'sales_invoice_id'])
 								->values([
@@ -150,7 +151,7 @@ class SalesInvoicesController extends AppController
 		   for(@$i=0; $i<2; $i++){
 			   foreach($salesInvoice->sales_invoice_rows as $sales_invoice_row)
 			   {
-			   $gstVal=$sales_invoice_row->gst_value/2;
+			    $gstVal=$sales_invoice_row->gst_value/2;
 			   if($i==0){
 			   $gstLedgers = $this->SalesInvoices->SalesInvoiceRows->Ledgers->find()
 							->where(['Ledgers.gst_figure_id' =>$sales_invoice_row->gst_figure_id,'Ledgers.company_id'=>$company_id, 'Ledgers.input_output'=>'output', 'Ledgers.gst_type'=>'CGST'])->first();
@@ -178,6 +179,8 @@ class SalesInvoicesController extends AppController
 			else if($salesInvoice->is_interstate=='1'){
 				foreach($salesInvoice->sales_invoice_rows as $sales_invoice_row)
 			   {
+			   $gstVal=number_format($sales_invoice_row->gst_value/2, 2);
+			   $gval=$gstVal+$gstVal;
 			   $gstLedgers = $this->SalesInvoices->SalesInvoiceRows->Ledgers->find()
 							->where(['Ledgers.gst_figure_id' =>$sales_invoice_row->gst_figure_id,'Ledgers.company_id'=>$company_id, 'Ledgers.input_output'=>'output', 'Ledgers.gst_type'=>'IGST'])->first();
 			   $ledgerId=$gstLedgers->id;
@@ -186,7 +189,7 @@ class SalesInvoicesController extends AppController
 								->values([
 								'ledger_id' => $ledgerId,
 								'debit' => '',
-								'credit' => $sales_invoice_row->gst_value,
+								'credit' => $gval,
 								'transaction_date' => $salesInvoice->transaction_date,
 								'company_id' => $salesInvoice->company_id,
 								'sales_invoice_id' => $salesInvoice->id
