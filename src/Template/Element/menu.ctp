@@ -17,7 +17,6 @@ echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-home']
 	<ul class="sub-menu">
 		<li><?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-plus-square']).' Create', '/Grns/Add',['escape' => false]); ?></li>
 		<li><?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-list-ul']).' List', '/Grns',['escape' => false]); ?></li>
-		<li><?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-upload']).' Import', '/Grns/importCsv',['escape' => false]); ?></li>
 	</ul>
 </li>
 
@@ -120,6 +119,17 @@ echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-home']
 	<a href="javascript:;">
 	<i class="fa fa-square"></i>
 	<span class="title">Inter Location Stock Transfer Vouchers</span>
+<<<<<<< HEAD
+=======
+=======
+	<i class="fa fa-map-marker"></i>
+<<<<<<< HEAD
+	<span class="title">Inter Location Stock Transfer Vouchers</span>
+=======
+	<span class="title">Intra Location Stock Transfer Vouchers</span>
+>>>>>>> 1fdf2a4b2e77779ad52aaaf21f38578b565744a7
+>>>>>>> origin/master
+>>>>>>> 88b4c62de4eed4279a32917d4a4ddde60e15f20d
 	<span class="arrow "></span>
 	</a>
 	<ul class="sub-menu">

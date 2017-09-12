@@ -26,7 +26,7 @@ $this->set('title', 'Import');
 							</div>
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-6" style="display:none;">
 						<?php 
 						$url=$this->request->webroot.'samplecsv/importGRNSapmleStep1.csv';
 						?>

@@ -12,6 +12,9 @@ $this->set('title', 'Create Grn');
 					<i class="icon-bar-chart font-green-sharp hide"></i>
 					<span class="caption-subject font-green-sharp bold ">Create Goods Recieve Note</span>
 				</div>
+				<div class="actions">
+					<?php echo $this->Html->link('<i class="fa fa-plus"></i> Import','/Grns/ImportCsv',['escape'=>false,'class'=>'btn btn-xs blue']) ?>
+				</div>
 			</div>
 			<div class="portlet-body">
 				<?= $this->Form->create($grn,['onsubmit'=>'return checkValidation()']) ?>

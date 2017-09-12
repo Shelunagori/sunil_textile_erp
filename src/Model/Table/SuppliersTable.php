@@ -41,7 +41,7 @@ class SuppliersTable extends Table
             'foreignKey' => 'state_id',
             'joinType' => 'INNER'
         ]);
-        $this->hasMany('Ledgers', [
+        $this->hasOne('Ledgers', [
             'foreignKey' => 'supplier_id'
         ]);
     }

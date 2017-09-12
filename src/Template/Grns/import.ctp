@@ -14,7 +14,7 @@ $this->set('title', 'Import');
 				</div>
 			</div>
 			<div class="portlet-body">
-				<?= $this->Form->create($FirstTampGrnRecords,['enctype'=>'multipart/form-data']) ?>
+				<?= $this->Form->create($grn,['enctype'=>'multipart/form-data']) ?>
 				<div class="row">
 				    <div class="col-md-6">
 					    <div class="row">

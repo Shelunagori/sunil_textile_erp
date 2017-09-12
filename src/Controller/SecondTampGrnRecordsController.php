@@ -274,7 +274,7 @@ class SecondTampGrnRecordsController extends AppController
 					{
 						$query = $this->SecondTampGrnRecords->Grns->GrnRows->Items->query();
 						$query->update()
-								->set(['Item.sales_rate' => $grn_row->sale_rate])
+								->set(['Items.sales_rate' => $grn_row->sale_rate])
 								->where(['Items.id' =>$grn_row->item_id])
 								->execute();
 			        }
