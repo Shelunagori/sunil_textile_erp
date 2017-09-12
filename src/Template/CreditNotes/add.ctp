@@ -3,7 +3,7 @@
 /**
  * @Author: PHP Poets IT Solutions Pvt. Ltd.
  */
-$this->set('title', 'Create Credit Note');
+$this->set('title', 'Credit Note');
 ?>
 <div class="row">
 	<div class="col-md-12">
@@ -25,7 +25,7 @@ $this->set('title', 'Create Credit Note');
 						</div>
 						<div class="col-md-2">
 							<div class="form-group">
-								<label>Sale Invoice No. <span class="required">*</span></label>
+								<label>Sale Invoice No. for Reference<span class="required">*</span></label>
 								<?php echo $this->Form->control('sales_invoice_no',['class'=>'form-control input-sm ','label'=>false,'placeholder'=>'Sale Invoice No.','type'=>'text']); ?>
 							</div>
 						</div>

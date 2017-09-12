@@ -39,14 +39,14 @@ $this->set('title', 'Sales Invoice List');
 								<td><?= h($i) ?></td>
 								<td><?= h($creditNote->voucher_no) ?></td>
 								<td><?= h($creditNote->transaction_date) ?></td>
-								<td><?= $creditNote->has('party_ledger') ? $this->Html->link($creditNote->party_ledger->name, ['controller' => 'Ledgers', 'action' => 'view', $creditNote->party_ledger->id]) : '' ?></td>
+								<td><?= h($creditNote->party_ledger->name) ?></td>
 								<td><?= $this->Number->format($creditNote->amount_before_tax) ?></td>
 								<td><?= $this->Number->format($creditNote->total_cgst) ?></td>
 								<td><?= $this->Number->format($creditNote->total_sgst) ?></td>
 								<td><?= $this->Number->format($creditNote->total_igst) ?></td>
 								<td><?= $this->Number->format($creditNote->amount_after_tax) ?></td>
 								<td class="actions">
-									<?= $this->Html->link(__('View'), ['action' => 'view', $creditNote->id]) ?>
+									<!--<?= $this->Html->link(__('View'), ['action' => 'view', $creditNote->id]) ?>-->
 									<?= $this->Html->link(__('Edit'), ['action' => 'edit', $creditNote->id]) ?>
 										</td>
 							</tr>

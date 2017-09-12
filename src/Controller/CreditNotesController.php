@@ -22,12 +22,10 @@ class CreditNotesController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
         $this->paginate = [
-            'contain' => ['Companies','SalesLedgers','CreditNoteRows']
+            'contain' => ['Companies','SalesLedgers','PartyLedgers','CreditNoteRows']
         ];
 		$creditNote = $this->CreditNotes->find();
 		$creditNotes = $this->paginate($creditNote);
-        
-			
         $this->set(compact('creditNotes'));
         $this->set('_serialize', ['creditNotes']);
     }
