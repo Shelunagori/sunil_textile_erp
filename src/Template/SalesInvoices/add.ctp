@@ -439,7 +439,6 @@ $this->set('title', 'Create Sales Invoice');
 				gst_amount=parseFloat(gst_amount)+parseFloat(gstAmount);
 				total=gst_amount+s_cgst_value+s_cgst_value;
 			    roundOff1=Math.round(total);
-				
 			}else{
 				gst_value=parseFloat(gst_value)+gstValue;
 				igst_value=parseFloat(gst_value);
