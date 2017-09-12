@@ -25,7 +25,7 @@ $this->set('title', 'Create Sales Invoice');
 						<div class="col-md-3">
 							<div class="form-group">
 								<label>Transaction Date <span class="required">*</span></label>
-								<?php echo $this->Form->control('transaction_date',['class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'placeholder'=>'DD-MM-YYYY','type'=>'text','data-date-start-date'=>@$coreVariable[fyValidFrom],'data-date-end-date'=>@$coreVariable[fyValidTo],'value'=>date('d-m-Y')]); ?>
+								<?php echo $this->Form->control('transaction_date',['class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'placeholder'=>'DD-MM-YYYY','type'=>'text','data-date-start-date'=>@$coreVariable[fyValidFrom],'data-date-end-date'=>@$coreVariable[fyValidTo],'value'=>date('d-m-Y'), 'autofocus'=>'autofocus']); ?>
 							</div>
 						</div>
 						<input type="hidden" name="outOfStock" class="outOfStock" value="0">
@@ -123,7 +123,7 @@ $this->set('title', 'Create Sales Invoice');
 				  
 					
 			</div>
-				<?= $this->Form->button(__('Submit'),['class'=>'btn btn-success']) ?>
+				<?= $this->Form->button(__('Submit'),['class'=>'btn btn-success submit']) ?>
 				<?= $this->Form->end() ?>
 		</div>
 	</div>
@@ -188,11 +188,11 @@ $this->set('title', 'Create Sales Invoice');
 			<input type="hidden" name="gst_amount" class="gst_amount" value="">
 			<input type="hidden" name="gst_figure_tax_percentage" class="gst_figure_tax_percentage calculation" value="">
 			<input type="hidden" name="tot" class="totamount calculation" value="">
-			<input type="text" name="gst_value" class="gstValue calculation" value="">
+			<input type="hidden" name="gst_value" class="gstValue calculation" value="">
 			<input type="hidden" name="discountvalue" class="discountvalue calculation" value="">
-				<?php echo $this->Form->input('item_id', ['empty'=>'-Item Name-', 'options'=>$itemOptions,'label' => false,'class' =>'form-control input-medium attrGet calculation','required'=>'required']); ?>
+				<?php echo $this->Form->input('item_id', ['empty'=>'-Item Name-', 'options'=>$itemOptions,'label' => false,'class' =>'form-control input-medium attrGet','required'=>'required']); ?>
 				<span class="itemQty" style="color:red;font-size:10px;"></span>
-			</td>
+			</td>			
 			<td>
 				<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm calculation quantity rightAligntextClass','id'=>'check','required'=>'required','placeholder'=>'Quantity']); ?>
 			</td>
@@ -485,6 +485,8 @@ $this->set('title', 'Create Sales Invoice');
 		{
 			if(confirm('Are you sure you want to submit!'))
 			{
+			    $('.submit').attr('disabled','disabled');
+	            $('.submit').text('Submiting...');
 				return true;
 			}
 			else

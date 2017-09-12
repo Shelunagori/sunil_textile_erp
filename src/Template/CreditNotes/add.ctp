@@ -25,8 +25,8 @@ $this->set('title', 'Credit Note');
 						</div>
 						<div class="col-md-2">
 							<div class="form-group">
-								<label>Sale Invoice No. for Reference<span class="required">*</span></label>
-								<?php echo $this->Form->control('sales_invoice_no',['class'=>'form-control input-sm ','label'=>false,'placeholder'=>'Sale Invoice No.','type'=>'text']); ?>
+								<label width="10%">Sale Invoice No. for Reference</label>
+								<?php echo $this->Form->control('sales_invoice_no',['class'=>'form-control input-sm ','label'=>false,'placeholder'=>'Sale Invoice No.','type'=>'text', 'autofocus'=>'autofocus']); ?>
 							</div>
 						</div>
 						<div class="col-md-2">
@@ -130,7 +130,7 @@ $this->set('title', 'Credit Note');
 						</div>
 					</div>
 			</div>
-			<?= $this->Form->button(__('Submit'),['class'=>'btn btn-success']) ?>
+			<?= $this->Form->button(__('Submit'),['class'=>'btn btn-success submit']) ?>
 			<?= $this->Form->end() ?>
 		</div>
 	</div>
@@ -463,6 +463,7 @@ $this->set('title', 'Credit Note');
 		}
 		//calculation end
 		//form validation start
+		});
 		function checkValidation() 
 		{  
 			var amount_before_tax  = $('.amount_before_tax').val();
@@ -471,6 +472,8 @@ $this->set('title', 'Credit Note');
 			{
 				if(confirm('Are you sure you want to submit!'))
 				{
+					$('.submit').attr('disabled','disabled');
+					$('.submit').text('Submiting...');
 					return true;
 				}
 				else
@@ -481,9 +484,9 @@ $this->set('title', 'Credit Note');
 			else{
 				   alert('Please enter your data!');
 			}
-		};
+		}
 		//form validation end
-})";
+";
 
 echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 
 ?>

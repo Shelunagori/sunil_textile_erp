@@ -115,7 +115,7 @@ $this->set('title', 'Create Purchase Voucher');
 					</div>
 				</div>
 			</div>
-				<?= $this->Form->button(__('Submit'),['class'=>'btn btn-success']) ?>
+				<?= $this->Form->button(__('Submit'),['class'=>'btn btn-success submit']) ?>
 				<?= $this->Form->end() ?>
 		</div>
 	</div>
@@ -301,6 +301,8 @@ $this->set('title', 'Create Purchase Voucher');
 			{ 
 				if(confirm('Are you sure you want to submit!'))
 				{
+					$('.submit').attr('disabled','disabled');
+					$('.submit').text('Submiting...');
 					return true;
 				}
 				else

@@ -8,6 +8,9 @@ if(!isset($active_menu))
 <?php 
 echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-home']).'Dashboard', '/Users/Dashboard',['escape' => false]).'</li>';
 ?>
+<?php 
+echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-circle']).'Masters', '/Users/masterSetup',['escape' => false]).'</li>';
+?>
 <li class="start ">
 	<a href="javascript:;">
 	<i class="fa fa-building-o"></i>
@@ -17,43 +20,6 @@ echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-home']
 	<ul class="sub-menu">
 		<li><?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-plus-square']).' Create', '/Grns/Add',['escape' => false]); ?></li>
 		<li><?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-list-ul']).' List', '/Grns',['escape' => false]); ?></li>
-	</ul>
-</li>
-
-
-<li class="start ">
-	<a href="javascript:;">
-	<i class="fa fa-user"></i>
-	<span class="title">Credit Note</span>
-	<span class="arrow "></span>
-	</a>
-	<ul class="sub-menu">
-		<li><?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-plus-square']).' Create', '/CreditNotes/Add',['escape' => false]); ?></li>
-		<li><?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-list-ul']).' List', '/CreditNotes',['escape' => false]); ?></li>
-	</ul>
-</li>
-
-<li class="start ">
-	<a href="javascript:;">
-	<i class="fa fa-book"></i>
-	<span class="title">Ledgers</span>
-	<span class="arrow "></span>
-	</a>
-	<ul class="sub-menu">
-		<li><?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-plus-square']).' Create', '/Ledgers/Add',['escape' => false]); ?></li>
-		<li><?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-list-ul']).' List', '/Ledgers',['escape' => false]); ?></li>
-	</ul>
-</li>
-
-<li class="start ">
-	<a href="javascript:;">
-	<i class="fa fa-money"></i>
-	<span class="title">Accounting Group</span>
-	<span class="arrow "></span>
-	</a>
-	<ul class="sub-menu">
-		<li><?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-plus-square']).' Create', '/AccountingGroups/Add',['escape' => false]); ?></li>
-		<li><?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-list-ul']).' List', '/AccountingGroups',['escape' => false]); ?></li>
 	</ul>
 </li>
 
@@ -80,19 +46,6 @@ echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-home']
 		<li><?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-list-ul']).' List', '/PurchaseVouchers',['escape' => false]); ?></li>
 	</ul>
 </li>
-
-<li class="start ">
-	<a href="javascript:;">
-	<i class="fa fa-file"></i>
-	<span class="title">Reports</span>
-	<span class="arrow "></span>
-	</a>
-	<ul class="sub-menu">
-		<li><?php echo $this->Html->link($this->Html->tag('i', '', ['class' => '']).'Trail Balance Report', '/Ledgers/trial_balance',['escape' => false]); ?></li>
-		<li><?php echo $this->Html->link($this->Html->tag('i', '', ['class' => '']).'Account Ledger Report', '/Ledgers/accountLedger',['escape' => false]); ?></li>
-	</ul>
-</li>
-
 <li class="start ">
 	<a href="javascript:;">
 	<i class="fa fa-square"></i>
@@ -119,17 +72,6 @@ echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-home']
 	<a href="javascript:;">
 	<i class="fa fa-square"></i>
 	<span class="title">Inter Location Stock Transfer Vouchers</span>
-<<<<<<< HEAD
-=======
-=======
-	<i class="fa fa-map-marker"></i>
-<<<<<<< HEAD
-	<span class="title">Inter Location Stock Transfer Vouchers</span>
-=======
-	<span class="title">Intra Location Stock Transfer Vouchers</span>
->>>>>>> 1fdf2a4b2e77779ad52aaaf21f38578b565744a7
->>>>>>> origin/master
->>>>>>> 88b4c62de4eed4279a32917d4a4ddde60e15f20d
 	<span class="arrow "></span>
 	</a>
 	<ul class="sub-menu">
@@ -137,6 +79,9 @@ echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-home']
 		<li><?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-list-ul']).' List', '/IntraLocationStockTransferVouchers',['escape' => false]); ?></li>
 	</ul>
 </li>
+<?php 
+echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-edit']).'Reports', '/Users/reportSetup',['escape' => false]).'</li>';
+?>
 <?php 
 echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-lock']).'Logout', '/Users/logout',['escape' => false]).'</li>';
 ?>

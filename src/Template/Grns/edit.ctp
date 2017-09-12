@@ -31,7 +31,7 @@ $this->set('title', 'Edit');
 					<div class="col-md-3">
 						<div class="form-group">
 							<label>Reference No</label>
-							<?php echo $this->Form->control('reference_no', ['label' => false,'class' => 'form-control input-sm ','placeholder'=>'Reference No.']); ?>
+							<?php echo $this->Form->control('reference_no', ['label' => false,'class' => 'form-control input-sm ','placeholder'=>'Reference No.', 'autofocus'=>'autofocus']); ?>
 						</div>	
 					</div>
 				</div>

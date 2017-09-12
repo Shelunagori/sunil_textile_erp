@@ -48,8 +48,8 @@ else if($creditNote->cash_or_credit=="cash")
 						</div>
 						<div class="col-md-2">
 							<div class="form-group">
-								<label>Sale Invoice No. <span class="required">*</span></label>
-								<?php echo $this->Form->control('sales_invoice_no',['class'=>'form-control input-sm ','label'=>false,'placeholder'=>'Sale Invoice No.','type'=>'text', 'value'=>$creditNote->sales_invoice_no]); ?>
+								<label width="10%">Sale Invoice No. for Reference</label>
+								<?php echo $this->Form->control('sales_invoice_no',['class'=>'form-control input-sm ','label'=>false,'placeholder'=>'Sale Invoice No.','type'=>'text', 'value'=>$creditNote->sales_invoice_no, 'autofocus'=>'autofocus']); ?>
 							</div>
 						</div>
 						<div class="col-md-2">
@@ -197,7 +197,7 @@ else if($creditNote->cash_or_credit=="cash")
 						</div>
 					</div>
 			</div>
-			<?= $this->Form->button(__('Submit'),['class'=>'btn btn-success']) ?>
+			<?= $this->Form->button(__('Submit'),['class'=>'btn btn-success submit']) ?>
 			<?= $this->Form->end() ?>
 		</div>
 	</div>
@@ -586,7 +586,7 @@ else if($creditNote->cash_or_credit=="cash")
 			rename_rows();
 		}
 		//calculation end
-		
+		});
 		//form validation start
 		function checkValidation() 
 		{  
@@ -596,6 +596,8 @@ else if($creditNote->cash_or_credit=="cash")
 			{
 				if(confirm('Are you sure you want to submit!'))
 				{
+				    $('.submit').attr('disabled','disabled');
+                    $('.submit').text('Submiting...');
 					return true;
 				}
 				else
@@ -606,10 +608,7 @@ else if($creditNote->cash_or_credit=="cash")
 			else{
 				   alert('Please enter your data!');
 			}
-					
-		};
-		//form validation end
-})";
+		}";
 
 echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 
 ?>

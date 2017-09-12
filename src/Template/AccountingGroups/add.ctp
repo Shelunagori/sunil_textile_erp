@@ -14,7 +14,8 @@ $this->set('title', 'Create Accounting Group');
 				</div>
 			</div>
 			<div class="portlet-body">
-				<?= $this->Form->create($accountingGroup) ?>
+				<?= $this->Form->create($accountingGroup,['onsubmit'=>'return checkValidation()']
+) ?>
 				<div class="row">
 					<div class="col-md-12">
 						<div class="form-group">
@@ -38,7 +39,7 @@ $this->set('title', 'Create Accounting Group');
 						</div>
 					</div>
 				</div>
-				<?= $this->Form->button(__('Submit'),['class'=>'btn btn-success']) ?>
+				<?= $this->Form->button(__('Submit'),['class'=>'btn btn-success submit']) ?>
 				<?= $this->Form->end() ?>
 			</div>
 		</div>
@@ -116,6 +117,11 @@ $this->set('title', 'Create Accounting Group');
 	  }
 	  ComponentsPickers.init();
     });
+	  function checkValidation()
+	{
+	        $('.submit').attr('disabled','disabled');
+	        $('.submit').text('Submiting...');
+    }
 	";
 
 echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 

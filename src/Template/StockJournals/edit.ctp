@@ -161,8 +161,7 @@ $this->set('title', 'Edit Stock Journal');
 						</div>
 				  </div>
 			</div>
-			<?= $this->Form->button(__('Submit'),['class'=>'btn btn-success']) ?>
-			<?= $this->Form->end() ?>
+			<?= $this->Form->button(__('Submit'),['class'=>'btn btn-success submit']) ?>
 		</div>
 	</div>
 </div>
@@ -384,6 +383,8 @@ $this->set('title', 'Edit Stock Journal');
 	   if(total_tr)
 	   {
 		   if(confirm('Are you sure you want to submit!')){
+			$('.submit').attr('disabled','disabled');
+	        $('.submit').text('Submiting...');
 			return true;
 			}else{
 			

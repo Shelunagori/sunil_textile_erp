@@ -51,10 +51,30 @@ $this->set('title', 'Master Setup');
 						</div>
 					</div>
 					<div class="col-md-6">
-						<span class="caption-subject bold ">Items</span>
+						<span class="caption-subject bold ">Ledgers</span>
 						<div class="list-group">
-							<?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-plus-square menuCss']).' Create', '/Items/Add',['escape' => false, 'class'=>'list-group-item']); ?>
-							<?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-list-ul menuCss']).' List', '/Items',['escape' => false, 'class'=>'list-group-item']); ?>
+							<?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-plus-square']).' Create', '/Ledgers/Add',['escape' => false, 'class'=>'list-group-item']); ?>
+							<?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-list-ul']).' List', '/Ledgers',['escape' => false, 'class'=>'list-group-item']); ?>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			
+			<div class="portlet-body">
+				<div class="row">
+					<div class="col-md-6">
+						<span class="caption-subject bold ">Customers</span>
+						<div class="list-group">
+							<?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-plus-square']).' Create', '/Customers/Add',['escape' => false, 'class'=>'list-group-item']); ?>
+							<?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-list-ul']).' List', '/Customers',['escape' => false, 'class'=>'list-group-item']); ?>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<span class="caption-subject bold ">Suppliers</span>
+						<div class="list-group">
+							<?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-plus-square']).' Create', '/Suppliers/Add',['escape' => false, 'class'=>'list-group-item']); ?>
+							<?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-list-ul']).' List', '/Suppliers',['escape' => false, 'class'=>'list-group-item']); ?>
 						</div>
 					</div>
 				</div>
