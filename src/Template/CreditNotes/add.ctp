@@ -3,7 +3,7 @@
 /**
  * @Author: PHP Poets IT Solutions Pvt. Ltd.
  */
-$this->set('title', 'Create Credit Note');
+$this->set('title', 'Credit Note');
 ?>
 <div class="row">
 	<div class="col-md-12">
@@ -25,7 +25,7 @@ $this->set('title', 'Create Credit Note');
 						</div>
 						<div class="col-md-2">
 							<div class="form-group">
-								<label>Sale Invoice No. <span class="required">*</span></label>
+								<label>Sale Invoice No. for Reference<span class="required">*</span></label>
 								<?php echo $this->Form->control('sales_invoice_no',['class'=>'form-control input-sm ','label'=>false,'placeholder'=>'Sale Invoice No.','type'=>'text']); ?>
 							</div>
 						</div>
@@ -196,7 +196,7 @@ $this->set('title', 'Create Credit Note');
 				<input type="hidden" name="tot" class="totamount calculation" value="">
 				<input type="hidden" name="gst_value" class="gstValue calculation" value="">
 				<input type="hidden" name="discountvalue" class="discountvalue calculation" value="">
-				<?php echo $this->Form->input('item_id', ['empty'=>'-Item Name-', 'options'=>$itemOptions,'label' => false,'class' =>'form-control input-sm attrGet calculation','required'=>'required']); ?>
+				<?php echo $this->Form->input('item_id', ['empty'=>'-Item Name-', 'options'=>$itemOptions,'label' => false,'class' =>'form-control input-medium attrGet calculation','required'=>'required']); ?>
 				<span class="itemQty" style="color:red"></span>
 			</td>
 			<td>

@@ -19,14 +19,14 @@ $this->set('title', 'Sales Invoice List');
 						<thead>
 							<tr>
 								<th scope="col">Sr. No.</th>
-								<th scope="col">Sales_invoice_no</th>
-								<th scope="col">Transaction_date</th>
-								<th scope="col">Customer</th>
-								<th scope="col">Amount_before_tax</th>
+								<th scope="col">Voucher No.</th>
+								<th scope="col">Transaction Date</th>
+								<th scope="col">Party</th>
+								<th scope="col">Amount Before Tax</th>
 								<th scope="col">Total CGST</th>
 								<th scope="col">Total SGST</th>
 								<th scope="col">Total IGST</th>
-								<th scope="col">Amount After Tax</th>
+								<th scope="col">net Amount</th>
 								<th scope="col" class="actions"><?= __('Actions') ?></th>
 							</tr>
 						</thead>
@@ -34,20 +34,19 @@ $this->set('title', 'Sales Invoice List');
 							<?php 	$i=0;      
 									foreach ($creditNotes as $creditNote): 
 									$i++;
-									
 							?>
 							<tr>
 								<td><?= h($i) ?></td>
-								<td><?= h($creditNote->sales_invoice_no) ?></td>
+								<td><?= h($creditNote->voucher_no) ?></td>
 								<td><?= h($creditNote->transaction_date) ?></td>
-								<td><?= $creditNote->has('party_ledger') ? $this->Html->link($creditNote->party_ledger->name, ['controller' => 'Ledgers', 'action' => 'view', $creditNote->party_ledger->id]) : '' ?></td>
+								<td><?= h($creditNote->party_ledger->name) ?></td>
 								<td><?= $this->Number->format($creditNote->amount_before_tax) ?></td>
 								<td><?= $this->Number->format($creditNote->total_cgst) ?></td>
 								<td><?= $this->Number->format($creditNote->total_sgst) ?></td>
 								<td><?= $this->Number->format($creditNote->total_igst) ?></td>
 								<td><?= $this->Number->format($creditNote->amount_after_tax) ?></td>
 								<td class="actions">
-									<?= $this->Html->link(__('View'), ['action' => 'view', $creditNote->id]) ?>
+									<!--<?= $this->Html->link(__('View'), ['action' => 'view', $creditNote->id]) ?>-->
 									<?= $this->Html->link(__('Edit'), ['action' => 'edit', $creditNote->id]) ?>
 										</td>
 							</tr>

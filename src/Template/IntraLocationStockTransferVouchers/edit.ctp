@@ -10,7 +10,7 @@ $this->set('title', 'Create Intralocation Transfer Voucher');
 			<div class="portlet-title">
 				<div class="caption">
 					<i class="icon-bar-chart font-green-sharp hide"></i>
-					<span class="caption-subject font-green-sharp bold ">Create Inter Location Transfer Voucher Edit</span>
+					<span class="caption-subject font-green-sharp bold ">Create Inter Location Stock Transfer Voucher Edit</span>
 				</div>
 			</div>
 			<div class="portlet-body">

@@ -131,16 +131,16 @@ $this->set('title', 'Create Grn');
 <table id="sample_table" style="display:none;" width="100%">
 	<tbody>
 		<tr class="main_tr" class="tab">
-			<td width="15%">
+			<td width="">
 				<?php echo $this->Form->input('item_id', ['empty'=>'---Select---','options'=>$itemOptions,'label' => false,'class' => 'form-control input-medium ','required'=>'required']); ?>
 			</td>
-			<td width="25%" >
+			<td width="" >
 				<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm ','placeholder'=>'Qty','required']); ?>
 			</td>
-			<td width="25%">
+			<td width="">
 				<?php echo $this->Form->input('purchase_rate', ['label' => false,'class' => 'form-control input-sm total rightAligntextClass','required'=>'required','placeholder'=>'Purchase Rate','required']); ?>	
 			</td>
-			<td width="25%">
+			<td width="">
 				<?php echo $this->Form->input('sale_rate', ['label' => false,'class' => 'form-control input-sm total rightAligntextClass','required'=>'required','placeholder'=>'Sale Rate','required']); ?>	
 			</td>
 			<td align="center">

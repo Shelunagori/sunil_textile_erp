@@ -124,7 +124,7 @@ else if($creditNote->cash_or_credit=="cash")
 											<input type="hidden" name="discountvalue" class="discountvalue calculation" value="">
 											
 											
-											<?php echo $this->Form->input('creditNoteRow.'.$i.'.item_id', ['empty'=>'-Item Name-', 'options'=>$itemOptions,'label' => false,'class' =>'form-control input-sm attrGet calculation rightAligntextClass','required'=>'required', 'value'=>$creditNoteRow->item_id]); 
+											<?php echo $this->Form->input('creditNoteRow.'.$i.'.item_id', ['empty'=>'-Item Name-', 'options'=>$itemOptions,'label' => false,'class' =>'form-control input-medium attrGet calculation rightAligntextClass','required'=>'required', 'value'=>$creditNoteRow->item_id]); 
 											echo $this->Form->input('creditNoteRow.'.$i.'.id', ['value'=>$creditNoteRow->id,'type'=>'hidden']);	?>
 											<span class="itemQty" style="color:red"></span>
 										</td>
@@ -262,7 +262,7 @@ else if($creditNote->cash_or_credit=="cash")
 				<input type="hidden" name="tot" class="totamount calculation" value="">
 				<input type="hidden" name="gst_value" class="gstValue calculation" value="">
 				<input type="hidden" name="discountvalue" class="discountvalue calculation" value="">
-				<?php echo $this->Form->input('item_id', ['empty'=>'-Item Name-', 'options'=>$itemOptions,'label' => false,'class' =>'form-control input-sm attrGet calculation','required'=>'required']); ?>
+				<?php echo $this->Form->input('item_id', ['empty'=>'-Item Name-', 'options'=>$itemOptions,'label' => false,'class' =>'form-control input-medium attrGet calculation','required'=>'required']); ?>
 				<span class="itemQty" style="color:red"></span>
 			</td>
 			<td>

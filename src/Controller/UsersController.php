@@ -88,7 +88,14 @@ class UsersController extends AppController
         $this->set('user', $user);
         $this->set('_serialize', ['user']);
     }
-
+    public function masterSetup()
+    {        
+    	$this->viewBuilder()->layout('index_layout');
+    }
+	    public function reportSetup()
+    {        
+    	$this->viewBuilder()->layout('index_layout');
+    }
     /**
      * Add method
      *

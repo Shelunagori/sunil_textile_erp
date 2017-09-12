@@ -135,26 +135,25 @@ class SuppliersController extends AppController
         $supplier = $this->Suppliers->get($id, [
             'contain' => ['Ledgers']
         ]); 
-		
+		//pr($supplier);exit;
 		$company_id=$this->Auth->User('session_company_id');
         if ($this->request->is(['patch', 'post', 'put'])) {
             $supplier = $this->Suppliers->patchEntity($supplier, $this->request->getData());
             if ($this->Suppliers->save($supplier)) {
-				$query = $this->Suppliers->Ledgers->query();
-					$query->update()
-						->set(['name' => $supplier->name,'accounting_group_id'=>$supplier->accounting_group_id])
-						->where(['supplier_id' => $id,'company_id'=>$company_id])
-						->execute();
-						
+				$ledger = $this->Suppliers->Ledgers->get($supplier->ledger->id);
+				$ledger->name=$supplier->name;
+				$ledger->accounting_group_id=$supplier->accounting_group_id;
+				$this->Suppliers->Ledgers->save($ledger);
+					
 				//Accounting Entry
 					$query_delete = $this->Suppliers->Ledgers->AccountingEntries->query();
 					$query_delete->delete()
-					->where(['ledger_id' => $supplier->ledgers[0]->id,'company_id'=>$company_id,'is_opening_balance'=>'yes'])
+					->where(['ledger_id' => $supplier->ledger->id,'company_id'=>$company_id,'is_opening_balance'=>'yes'])
 					->execute();
 					
 					$transaction_date=$this->Auth->User('session_company')->books_beginning_from;
 					$AccountingEntry = $this->Suppliers->Ledgers->AccountingEntries->newEntity();
-					$AccountingEntry->ledger_id        = $supplier->ledgers[0]->id;
+					$AccountingEntry->ledger_id        = $supplier->ledger->id;
 					if($supplier->debit_credit=="Dr")
 					{
 						$AccountingEntry->debit        = $supplier->opening_balance_value;
@@ -182,7 +181,7 @@ class SuppliersController extends AppController
 		$accountingGroups[$SundryDebtor->id]=$SundryDebtor->name;
 		ksort($accountingGroups);
 		
-		$account_entry  = $this->Suppliers->Ledgers->AccountingEntries->find()->where(['ledger_id'=>$supplier->ledgers[0]->id,'company_id'=>$company_id])->first();
+		$account_entry  = $this->Suppliers->Ledgers->AccountingEntries->find()->where(['ledger_id'=>$supplier->ledger->id,'company_id'=>$company_id])->first();
 		$states = $this->Suppliers->States->find('list',
 													['keyField' => function ($row) {
 														return $row['id'];
