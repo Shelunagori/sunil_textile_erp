@@ -37,6 +37,7 @@ $this->set('title', 'Progress Csv');
 	$(document).ready(function() {
 		process_data();
 		function process_data(){ 
+			var success_url='".$this->Url->build(['controller'=>'Grns','action'=>'import_step2/'])."';
 			var url='".$this->Url->build(['controller'=>'SecondTampGrnRecords','action'=>'ProcessData'])."'
 			$.ajax({
 				url: url,
@@ -47,8 +48,9 @@ $this->set('title', 'Progress Csv');
 				$('#Processed_text').html(response.percantage+'% Progressed');
 				if(response.recallAjax=='true'){
 					process_data();
+				}else{
+					window.location.href = success_url;
 				}
-				
 			});
 		}
 		

@@ -43,6 +43,7 @@ $this->set('title', 'Progress Csv');
 	$(document).ready(function() {
 		process_data();
 		function process_data(){ 
+			var success_url='".$this->Url->build(['controller'=>'Grns','action'=>'import_csv/'])."';
 			var url='".$this->Url->build(['controller'=>'FirstTampGrnRecords','action'=>'ProcessData'])."'
 			$.ajax({
 				url: url,
@@ -54,11 +55,8 @@ $this->set('title', 'Progress Csv');
 				if(response.status=='true')
 				{
 					process_data();
-				}
-				else
-				{ 
-					$('#Process_div').hide();
-					$('.show_link').show();
+				}else{
+					window.location.href = success_url;
 				}
 				
 			});

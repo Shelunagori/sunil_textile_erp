@@ -5,19 +5,57 @@
 $this->set('title', 'Import');
 ?>
 <?php if($countSecondTampGrnRecords>0){ ?>
-	<span>
-		There is already data processing. 
-		<?php echo $this->Html->link(' Check from here', '/SecondTampGrnRecords',['escape' => false]); ?>
-	</span><br/>
-	<span>
-	
-		<?php echo $notvalid_to_importRecords; ?> Records are not valid to import. 
-		<?php echo $this->Html->link(' Check from here', '/SecondTampGrnRecords/index/invalid',['escape' => false]); ?>
-	</span><br/>
-	<?php if($notvalid_to_importRecords>0) { ?>
-	<span>First fix the invalid records then import command will be appear.<span><br/><?php } else { ?>Your Record is ready to Final Import. <?php echo $this->Html->link('Click here to Import', '/SecondTampGrnRecords/finalImport',['escape' => false]); ?> <?php } ?>
-	</br><span>Delete existing data and start again step 2. <?php echo $this->Html->link('Delete & Start', '/SecondTampGrnRecords/deleteSecondTempRecords',['escape' => false]); ?> <span>
-	<?php goto Bottom; } ?>
+	<div class="row">
+	<div class="col-md-12">
+		<div class="portlet light ">
+			<div class="portlet-title">
+				<div class="caption">
+					<i class="icon-bar-chart font-green-sharp hide"></i>
+					<span class="caption-subject font-green-sharp bold ">Choose the Steps </span>
+				</div>
+			</div>
+			<div class="portlet-body">
+				<?= $this->Form->create($grn) ?>
+				<div class="row">
+					<div class="col-md-6 col-sm-6">
+					<div class="portlet box blue-steel">
+						<div class="portlet-title">
+							<div class="caption">
+								Follow the Instructions Steps given Below
+							</div>
+						</div>
+						<div class="portlet-body">
+							<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 300px;"><div class="scroller" style="height: 300px; overflow: hidden; width: auto;" data-always-visible="1" data-rail-visible="0" data-initialized="1">
+							<b></b><ol class="numbers">
+							<li>
+							<span>
+								Process Data Records . 
+								<?php echo $this->Html->link(' Check from here', '/SecondTampGrnRecords',['escape' => false]); ?>
+							</span><br/>
+							<span></li>
+							</br>
+							<li>
+							<?php echo $notvalid_to_importRecords; ?> Records are not invalid to import. 
+								<?php echo $this->Html->link(' Check from here', '/SecondTampGrnRecords/index/invalid',['escape' => false]); ?>
+							</span></li><br/>
+							<li>
+							<?php if($notvalid_to_importRecords>0) { ?>
+							<span>First fix the invalid records then import command will be appear.<span><br/><?php } else { ?>Your Record is ready to Final Import. <?php echo $this->Html->link('Click here to Import', '/SecondTampGrnRecords/finalImport',['escape' => false]); ?> <?php } ?>
+							</li></br><li><span>Delete existing data and start again step 2. <?php echo $this->Html->link('Delete & Start', '/SecondTampGrnRecords/deleteSecondTempRecords',['escape' => false]); ?> <span></li>
+									<br/>
+								</ol>
+							</div>
+						</div>
+					</div>
+				</div>
+				</div>
+				
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<?php goto Bottom; } ?>
 <div class="row">
 	<div class="col-md-12">
 		<div class="portlet light ">
