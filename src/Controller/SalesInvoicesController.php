@@ -122,18 +122,18 @@ class SalesInvoicesController extends AppController
 								'sales_invoice_id' => $salesInvoice->id
 								])
 						->execute();
-						if($salesInvoice->round_off>0)
+						if(str_replace('-',' ',$salesInvoice->round_off)>0)
 						{
 							$roundData = $this->SalesInvoices->AccountingEntries->query();
 							if($salesInvoice->isRoundofType=='0')
 							{
 							$debit=0;
-							$credit=$salesInvoice->round_off;
+							$credit=str_replace('-',' ',$salesInvoice->round_off);
 							}
 							else if($salesInvoice->isRoundofType=='1')
 							{
 							$credit=0;
-							$debit=$salesInvoice->round_off;
+							$debit=str_replace('-',' ',$salesInvoice->round_off);
 							}
 						$roundData->insert(['ledger_id', 'debit','credit', 'transaction_date', 'company_id', 'sales_invoice_id'])
 								->values([

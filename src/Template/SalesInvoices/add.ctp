@@ -427,13 +427,27 @@ $this->set('title', 'Create Sales Invoice');
 			$(this).find('.gstAmount').val(gstAmount.toFixed(2));
 			$(this).find('.gstValue').val(gstValue.toFixed(2));
 
-			var taxable_value1=parseFloat($(this).find('.discountAmount').val());
-			total=parseFloat(total)+taxable_value1;
-			roundOff1=Math.round(total);
 			
+			var gstValue  = parseFloat($(this).find('.gstValue').val());
 			var gstAmount  = parseFloat($(this).find('.gstAmount').val());
-			gst_amount=parseFloat(gst_amount)+parseFloat(gstAmount);
-			
+			var is_interstate  = parseFloat($('#is_interstate').val());
+			if(is_interstate=='0')
+			{
+				gst_value=parseFloat(gst_value)+gstValue;
+				s_cgst_value=parseFloat(gst_value/2);
+				igst_value=0;
+				gst_amount=parseFloat(gst_amount)+parseFloat(gstAmount);
+				total=gst_amount+s_cgst_value+s_cgst_value;
+			    roundOff1=Math.round(total);
+				
+			}else{
+				gst_value=parseFloat(gst_value)+gstValue;
+				igst_value=parseFloat(gst_value);
+				s_cgst_value=0;
+				gst_amount=parseFloat(gst_amount)+parseFloat(gstAmount);
+				total=gst_amount+igst_value;
+			    roundOff1=Math.round(total);
+			}
 			if(total<roundOff1)
 			{
 				round_of=parseFloat(roundOff1)-parseFloat(total);
@@ -449,25 +463,12 @@ $this->set('title', 'Create Sales Invoice');
 				round_of=parseFloat(total)-parseFloat(roundOff1);
 				isRoundofType='0';
 			}
-			
-			var gstValue  = parseFloat($(this).find('.gstValue').val());
-			var is_interstate  = parseFloat($('#is_interstate').val());
-			if(is_interstate=='0')
-			{
-				gst_value=parseFloat(gst_value)+gstValue;
-				s_cgst_value=parseFloat(gst_value/2);
-				igst_value=0;
-			}else{
-				gst_value=parseFloat(gst_value)+gstValue;
-				igst_value=parseFloat(gst_value);
-				s_cgst_value=0;
-			}
 		});
-		$('.amount_after_tax').val(roundOff1);
+		$('.amount_after_tax').val(total.toFixed(2));
 		$('.amount_before_tax').val(gst_amount.toFixed(2));
 		$('.add_cgst').val(s_cgst_value.toFixed(2));
 		$('.add_sgst').val(s_cgst_value.toFixed(2));
-		$('.add_igst').val(igst_value.toFixed(2));
+		$('.add_igst').val(igst_value.toFixed(2));					
 		$('.roundValue').val(round_of.toFixed(2));
 		$('.isRoundofType').val(isRoundofType);
 		$('.outOfStock').val(outOfStockValue);
