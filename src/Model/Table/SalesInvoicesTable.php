@@ -63,6 +63,16 @@ class SalesInvoicesTable extends Table
             'foreignKey' => 'sales_invoice_id',
             'joinType' => 'INNER'
         ]);
+		$this->belongsTo('PartyLedgers', [
+			'className' => 'Ledgers',
+            'foreignKey' => 'party_ledger_id',
+            'joinType' => 'INNER'
+        ]);
+		$this->belongsTo('SalesLedgers', [
+			'className' => 'Ledgers',
+            'foreignKey' => 'sales_ledger_id',
+            'joinType' => 'INNER'
+        ]);
     }
 
     /**
@@ -127,6 +137,8 @@ class SalesInvoicesTable extends Table
         $rules->add($rules->existsIn(['company_id'], 'Companies'));
         //$rules->add($rules->existsIn(['customer_id'], 'Customers'));
         $rules->add($rules->existsIn(['gst_figure_id'], 'GstFigures'));
+		 $rules->add($rules->existsIn(['party_ledger_id'], 'PartyLedgers'));
+        $rules->add($rules->existsIn(['sales_ledger_id'], 'SalesLedgers'));
 
         return $rules;
     }
