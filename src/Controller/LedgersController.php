@@ -223,15 +223,16 @@ class LedgersController extends AppController
 		$company_id=$this->Auth->User('session_company_id');
 		
 		$from_date = $this->request->query('from_date');
-		$to_date   = $this->request->query('to_date');
+		 $to_date   = $this->request->query('to_date');
+		//exit;
 		if(!empty($from_date) || !empty($to_date))
 		{
 			$from_date = date("Y-m-d",strtotime($from_date));
 			$to_date   = date("Y-m-d",strtotime($to_date));
 		}
 		else
-		{   
-			$from_date = date("Y-m-d",strtotime($this->coreVariable['fyValidFrom']));
+		{ 
+            $from_date = date("Y-m-d",strtotime($this->coreVariable['fyValidFrom']));
 			$toDate    = $this->Ledgers->AccountingEntries->find()->order(['AccountingEntries.transaction_date'=>'DESC'])->First();
 			$to_date   = date("Y-m-d",strtotime($toDate->transaction_date));
 		}

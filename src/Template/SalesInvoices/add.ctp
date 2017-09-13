@@ -190,6 +190,9 @@ $this->set('title', 'Create Sales Invoice');
 			<input type="hidden" name="tot" class="totamount calculation" value="">
 			<input type="hidden" name="gst_value" class="gstValue calculation" value="">
 			<input type="hidden" name="discountvalue" class="discountvalue calculation" value="">
+			<input type="text" name="cgst" class="cgst" value="">
+			<input type="text" name="sgst" class="sgst" value="">
+			<input type="text" name="igst" class="igst" value="">
 				<?php echo $this->Form->input('item_id', ['empty'=>'-Item Name-', 'options'=>$itemOptions,'label' => false,'class' =>'form-control input-medium attrGet','required'=>'required']); ?>
 				<span class="itemQty" style="color:red;font-size:10px;"></span>
 			</td>			
