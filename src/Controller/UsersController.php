@@ -42,6 +42,8 @@ class UsersController extends AppController
 						return $q->where(['FinancialYears.status'=>'open'])->order(['FinancialYears.fy_from'=>'ASC']);
 					}]
 				]);
+				$location=$this->Users->CompanyUsers->Locations->get($user->session_location_id);
+				$location_name=$location->name;
 				$fyValidFrom=$company->financial_years[0]->fy_from;
 				foreach($company->financial_years as $financial_year){
 					$fyValidTo=$financial_year->fy_to;
@@ -50,6 +52,7 @@ class UsersController extends AppController
 				$user->fyValidTo=$fyValidTo;
 				unset($company->financial_years);
 				$user->session_company=$company;
+				$user->location_name=$location_name;
                 $this->Auth->setUser($user);
 				return $this->redirect(['controller'=>'Users','action' => 'Dashboard']);
             }
@@ -92,7 +95,7 @@ class UsersController extends AppController
     {        
     	$this->viewBuilder()->layout('index_layout');
     }
-	    public function reportSetup()
+	    public function reports()
     {        
     	$this->viewBuilder()->layout('index_layout');
     }

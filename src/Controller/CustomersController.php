@@ -90,7 +90,10 @@ class CustomersController extends AppController
 					$AccountingEntry->transaction_date = date("Y-m-d",strtotime($transaction_date));
 					$AccountingEntry->company_id       = $company_id;
 					$AccountingEntry->is_opening_balance = 'yes';
+					if($customer->opening_balance_value){
 					$this->Customers->Ledgers->AccountingEntries->save($AccountingEntry);
+					}
+					
 				}
 
                 $this->Flash->success(__('The customer has been saved.'));
@@ -138,6 +141,7 @@ class CustomersController extends AppController
         $customer = $this->Customers->get($id, [
             'contain' => ['Ledgers']
         ]);
+		
 		$company_id=$this->Auth->User('session_company_id');
         if ($this->request->is(['patch', 'post', 'put'])) {
             $customer = $this->Customers->patchEntity($customer, $this->request->getData());
@@ -169,8 +173,9 @@ class CustomersController extends AppController
 					$AccountingEntry->transaction_date = date("Y-m-d",strtotime($transaction_date));
 					$AccountingEntry->company_id       = $company_id;
 					$AccountingEntry->is_opening_balance = 'yes';
+					if($customer->opening_balance_value){
 					$this->Customers->Ledgers->AccountingEntries->save($AccountingEntry);
-					
+					}
                 $this->Flash->success(__('The customer has been saved.'));
 
                 return $this->redirect(['action' => 'index']);

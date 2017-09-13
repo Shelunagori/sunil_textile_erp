@@ -68,6 +68,7 @@ class AppController extends Controller
 				'company_name' => $this->Auth->User('session_company')->name,
 				'fyValidFrom' => $this->Auth->User('fyValidFrom'),
 				'fyValidTo' => $this->Auth->User('fyValidTo'),
+				'location_name' => $this->Auth->User('location_name'),
 			];
 			$this->coreVariable = $coreVariable;
 			$this->set(compact('coreVariable'));
