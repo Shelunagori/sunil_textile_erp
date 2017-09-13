@@ -2,7 +2,7 @@
 /**
  * @Author: PHP Poets IT Solutions Pvt. Ltd.
  */
-$this->set('title', 'Inter-Location Stock Transfer Vouchers View');
+$this->set('title', 'Inter Location stock Transfer Voucher View');
 ?>
 <style>
 table.fixed { table-layout:fixed; }
@@ -14,7 +14,7 @@ table.fixed td { overflow: hidden; }
 			<div class="portlet-title">
 				<div class="caption">
 					<i class="icon-bar-chart font-green-sharp hide"></i>
-					<span class="caption-subject font-green-sharp bold ">Inter-Location Stock Transfer Vouchers View</span>
+					<span class="caption-subject font-green-sharp bold ">Inter Location stock Transfer Voucher View</span>
 				</div>
 			</div>
 			<div class="portlet-body">

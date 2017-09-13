@@ -4,7 +4,7 @@
 			<div class="portlet-title">
 				<div class="caption">
 					<i class="icon-bar-chart font-green-sharp hide"></i>
-					<span class="caption-subject font-green-sharp bold ">Inter Location Stock Transfer Vouchers</span>
+					<span class="caption-subject font-green-sharp bold ">Inter Location stock Transfer Vouchers</span>
 				</div>
 			</div>
 			<div class="portlet-body">
