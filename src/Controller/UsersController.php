@@ -92,7 +92,7 @@ class UsersController extends AppController
     {        
     	$this->viewBuilder()->layout('index_layout');
     }
-	    public function reportSetup()
+	    public function reports()
     {        
     	$this->viewBuilder()->layout('index_layout');
     }

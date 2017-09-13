@@ -188,7 +188,7 @@ $this->set('title', 'Create Sales Invoice');
 			<input type="hidden" name="gst_amount" class="gst_amount" value="">
 			<input type="hidden" name="gst_figure_tax_percentage" class="gst_figure_tax_percentage calculation" value="">
 			<input type="hidden" name="tot" class="totamount calculation" value="">
-			<input type="hidden" name="gst_value" class="gstValue calculation" value="">
+			<input type="text" name="gst_value" class="gstValue calculation" value="">
 			<input type="hidden" name="discountvalue" class="discountvalue calculation" value="">
 			<input type="text" name="cgst" class="cgst" value="">
 			<input type="text" name="sgst" class="sgst" value="">
