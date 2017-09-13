@@ -8,9 +8,7 @@ if(!isset($active_menu))
 <?php 
 echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-home']).'Dashboard', '/Users/Dashboard',['escape' => false]).'</li>';
 ?>
-<?php 
-echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-circle']).'Masters', '/Users/masterSetup',['escape' => false]).'</li>';
-?>
+
 <li class="start ">
 	<a href="javascript:;">
 	<i class="fa fa-building-o"></i>
@@ -79,6 +77,10 @@ echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-circl
 		<li><?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-list-ul']).' List', '/IntraLocationStockTransferVouchers',['escape' => false]); ?></li>
 	</ul>
 </li>
+
+<?php 
+echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-cogs']).'Masters & Setup', '/Users/masterSetup',['escape' => false]).'</li>';
+?>
 <?php 
 echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-edit']).'Reports', '/Users/reportSetup',['escape' => false]).'</li>';
 ?>
