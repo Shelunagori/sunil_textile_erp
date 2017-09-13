@@ -162,6 +162,8 @@ class FirstTampGrnRecordsController extends AppController
 					$this->redirect(array("controller" => "FirstTampGrnRecords", "action" => "progress"));
 					fclose($f);
 					$records;
+				}else{
+					$this->Flash->error(__('The File Format is incorrect (not CSV type). Please, try again.'));	
 				}
 			}
 		} 
