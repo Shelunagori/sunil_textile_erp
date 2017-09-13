@@ -33,7 +33,7 @@ $this->set('title', 'Edit Supplier');
 								</div>
 								<div class="form-group">
 									<label>GSTIN </label>
-									<?php echo $this->Form->control('gstin',['class'=>'form-control input-sm','placeholder'=>'GSTIN','label'=>false]); ?>
+									<?php echo $this->Form->control('gstin',['class'=>'form-control input-sm gst','placeholder'=>'GSTIN','label'=>false]); ?>
 								</div>
 								<div class="form-group">
 									<label>Mobile </label>
@@ -166,6 +166,20 @@ $this->set('title', 'Edit Supplier');
 	        $('.submit').attr('disabled','disabled');
 	        $('.submit').text('Submiting...');
     }
+	$(document).on('blur', '.gst', function(e)
+    { 
+		var mdl=$(this).val();
+		var numbers = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
+		if(mdl.match(numbers))
+		{
+			
+		}
+		else
+		{
+			$(this).val('');
+			return false;
+		}
+    });
 	";
 
 echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 
