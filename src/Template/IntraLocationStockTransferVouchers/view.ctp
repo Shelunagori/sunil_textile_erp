@@ -41,7 +41,7 @@ table.fixed td { overflow: hidden; }
 					<td colspan="3"><?php echo $intraLocationStockTransferVoucher->narration;?></td>
 				  </tr>
                 </table><br>
-       		    <table id="main_table" class="table table-condensed table-bordered" >
+       		    <table id="main_table" class="table table-condensed table-bordered" style="width:auto;" >
 					<thead>
 					<tr align="center">
 						<td align="left"><b>S.no</b></td>
@@ -62,7 +62,7 @@ table.fixed td { overflow: hidden; }
 								<?php echo $intra_location_stock_transfer_voucher_row->item->name;
 								?>
 							</td>
-							<td>
+							<td class="rightAligntextClass">
 								<?php echo $intra_location_stock_transfer_voucher_row->quantity;?>	
 							</td>
 						</tr>

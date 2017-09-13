@@ -33,7 +33,7 @@ $this->set('title', 'Edit Customer');
 									<?php echo $this->Form->control('accounting_group_id',['class'=>'form-control input-sm select2me','label'=>false,'options' => $accountingGroups,'required'=>'required','value'=>$customer->ledger->accounting_group_id]); ?>
 								</div>
 								<div class="form-group">
-									<label>GSTIN <span class="required">*</span></label>
+									<label>GSTIN </label>
 									<?php echo $this->Form->control('gstin',['class'=>'form-control input-sm','placeholder'=>'Gst In','label'=>false,'autofocus']); ?>
 								</div>
 								<div class="form-group">
