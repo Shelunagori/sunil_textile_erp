@@ -57,7 +57,7 @@ $this->set('title', 'Stock Journal View');
 										<td width="25%">
 											<?php echo $inward->item->name; ?>
 										</td>
-										<td width="15%" align="center">
+										<td width="15%" class="rightAligntextClass">
 											<?php echo $inward->quantity; ?>
 										</td>
 										<td width="20%" class="rightAligntextClass">
@@ -100,7 +100,7 @@ $this->set('title', 'Stock Journal View');
 											<td width="25%">
 												<?php echo $outward->item->name; ?>
 											</td>
-											<td width="15%" align="center">
+											<td width="15%" class="rightAligntextClass">
 												<?php echo $outward->quantity; ?>
 											</td>
 											<td width="20%" class="rightAligntextClass">
