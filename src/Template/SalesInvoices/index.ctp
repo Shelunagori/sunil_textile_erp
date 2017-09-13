@@ -34,7 +34,7 @@ $this->set('title', 'Sales Invoice List');
 								<td><?= h('#'.str_pad($salesInvoice->voucher_no, 4, '0', STR_PAD_LEFT)) ?></td>
 								<td><?= h($salesInvoice->party_ledger->name) ?></td>
 								<td><?= h($salesInvoice->transaction_date) ?></td>
-								<td><?= h($salesInvoice->amount_after_tax) ?></td>
+								<td class="rightAligntextClass"><?= h($salesInvoice->amount_after_tax) ?></td>
 								<td class="actions">
 									
 									<?= $this->Html->link(__('Edit'), ['action' => 'edit', $salesInvoice->id]) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

@@ -49,6 +49,11 @@ class AccountingEntriesTable extends Table
             'foreignKey' => 'purchase_voucher_id',
             'joinType' => 'INNER'
         ]);
+		
+		$this->belongsTo('SalesInvoices', [
+            'foreignKey' => 'sales_invoice_id',
+            'joinType' => 'INNER'
+        ]);
     }
 
     /**

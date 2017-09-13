@@ -371,18 +371,24 @@ class LedgersController extends AppController
 			
 		}
 		if(!empty($ledger_id) || !empty($from_date) || !empty($to_date))
-		$AccountingLedgers = $this->Ledgers->AccountingEntries->find()->where($where)->contain(['Ledgers'])->order(['AccountingEntries.transaction_date'=>'ASC']);
+		$AccountingLedgers = $this->Ledgers->AccountingEntries->find()->where($where)->contain(['Ledgers','SalesInvoices'])->order(['AccountingEntries.transaction_date'=>'ASC']);
 		if(!empty($AccountingLedgers))
 		{ 
 	
 			$credit=0;$debit=0;$opening_balance_yes_credit_total=0;$opening_balance_yes_debit_total=0;
 			$openingBalance_debit=0;$openingBalance_credit=0;
 			foreach($AccountingLedgers as $AccountingLedgers1)
-			{
+			{    
 				if(!empty($AccountingLedgers1->purchase_voucher_id)){
 					@$voucher_type[$AccountingLedgers1->id]='Purchase Vouchers';
 					@$url_link=$this->Ledgers->AccountingEntries->PurchaseVouchers->find()->where(['PurchaseVouchers.id'=>$AccountingLedgers1->purchase_voucher_id])->first();
 					$voucher_no[$AccountingLedgers1->id]=$url_link->voucher_no;
+				}
+				if(!empty($AccountingLedgers1->sales_invoice_id)){
+					@$voucher_type[$AccountingLedgers1->id]='Sales Invoices';
+					@$url_link=$this->Ledgers->AccountingEntries->SalesInvoices->find()->where(['SalesInvoices.id'=>$AccountingLedgers1->sales_invoice_id])->first();
+					$voucher_no[$AccountingLedgers1->id]=$url_link->voucher_no;
+					
 				}
 				if($AccountingLedgers1->is_opening_balance!='yes')
 				{
@@ -390,6 +396,7 @@ class LedgersController extends AppController
 					$debit  += $AccountingLedgers1->debit; 
 				}
 			}
+			
 			$total_credit = $credit+$opening_balance_yes_credit_total;  
 			$total_debit  = $debit+$opening_balance_yes_debit_total; 
 			

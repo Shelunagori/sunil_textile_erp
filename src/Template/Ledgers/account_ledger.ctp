@@ -106,7 +106,7 @@ $this->set('title', 'Account Ledger report');
 								{
 									$total_credit=0;
 									$total_debit=0;
-									pr($AccountingLedgers->toArray());     exit;
+									//pr($AccountingLedgers->toArray());     exit;
 									foreach($AccountingLedgers as $AccountingLedger)
 									{   
 										$id= $AccountingLedger->id
