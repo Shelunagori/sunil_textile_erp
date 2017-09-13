@@ -357,6 +357,9 @@ class GrnsController extends AppController
 					fclose($f);
 					$records;
 				}
+				else{
+					$this->Flash->error(__('The File Format is incorrect (not CSV type). Please, try again.'));	
+				}
 			}
 		} 
 		$this->set(compact('grn', 'countSecondTampGrnRecords', 'notvalid_to_importRecords'));

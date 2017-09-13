@@ -2,7 +2,7 @@
 /**
  * @Author: PHP Poets IT Solutions Pvt. Ltd.
  */
-$this->set('title', 'Create Intralocation Transfer Voucher');
+$this->set('title', 'Create Inter Location stock Transfer Voucher');
 ?>
 <div class="row">
 	<div class="col-md-9">
@@ -10,7 +10,7 @@ $this->set('title', 'Create Intralocation Transfer Voucher');
 			<div class="portlet-title">
 				<div class="caption">
 					<i class="icon-bar-chart font-green-sharp hide"></i>
-					<span class="caption-subject font-green-sharp bold ">Create Inter Location Stock Transfer Voucher Edit</span>
+					<span class="caption-subject font-green-sharp bold ">Create Inter Location stock Transfer Voucher Edit</span>
 				</div>
 			</div>
 			<div class="portlet-body">
