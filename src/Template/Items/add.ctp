@@ -302,10 +302,13 @@ $this->set('title', 'Create Item');
 						url: url,
 						type: 'GET',
 					}).done(function(response) {
+						alert(response);
 						response = $.parseJSON(response);
-						if(response.is_unique=='no')
+						if(response.is_unique=='yes')
 						{
-							$('input[name=provided_item_code]').closest('.form-group').append('<span class=error_unique>Not Unique.</span>');
+							$('input[name=provided_item_code]').closest('.form-group').append('<span class=error_unique>Matched.</span>');
+						}else{
+							$('input[name=provided_item_code]').closest('.form-group').append('<span class=error_unique>Not Matched.</span>');
 						}
 					});
 				}

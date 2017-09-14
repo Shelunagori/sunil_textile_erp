@@ -287,8 +287,16 @@ class ItemsController extends AppController
         $this->set('_serialize', ['uplode_csv']);
     }
 	
-	public function checkUnique($item_code){
-		$data['is_unique'] = "no";
+	public function checkUnique($provided_item_code){
+		
+		$company_id=$this->Auth->User('session_company_id');
+		$itemcode = $this->Items->find()->where(['Items.item_code'=>$provided_item_code,'Items.company_id'=>$company_id]);
+		$exist =$itemcode->count();
+		if(!empty($exist)){
+			$data['is_unique'] = "yes";
+		}else{
+			$data['is_unique'] = "no";
+		}	
 		echo json_encode($data);
 		exit;
 	}
