@@ -33,7 +33,7 @@ $this->set('title', 'Edit Supplier');
 								</div>
 								<div class="form-group">
 									<label>GSTIN </label>
-									<?php echo $this->Form->control('gstin',['class'=>'form-control input-sm gst','placeholder'=>'GSTIN','label'=>false]); ?>
+									<?php echo $this->Form->control('gstin',['class'=>'form-control input-sm gst','placeholder'=>'Eg:22ASDFR0967W6Z5','label'=>false]); ?>
 								</div>
 								<div class="form-group">
 									<label>Mobile </label>
