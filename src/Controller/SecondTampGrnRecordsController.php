@@ -326,7 +326,7 @@ class SecondTampGrnRecordsController extends AppController
 		$location_id=$this->Auth->User('session_location_id');
 		$SecondTampGrnRecords = $this->SecondTampGrnRecords->find()
 								->where(['user_id'=>$user_id,'company_id'=>$company_id,'processed'=>'no'])
-								->limit(10);
+								->limit(5);
 		if($SecondTampGrnRecords->count()==0){
 			goto Bottom;
 		}
@@ -334,12 +334,15 @@ class SecondTampGrnRecordsController extends AppController
 			if(empty($SecondTampGrnRecord->item_code)){
 				goto DoNotMarkYesValidToImport;
 			}
-			if(empty($SecondTampGrnRecord->provided_unit)){
-				goto DoNotMarkYesValidToImport;
-			}
+			
 			$item=$this->SecondTampGrnRecords->Companies->Items->find()
 					->where(['Items.item_code'=>$SecondTampGrnRecord->item_code,'company_id'=>$company_id])->first();
 			if(!$item){
+				
+				if(empty($SecondTampGrnRecord->provided_unit)){
+					goto DoNotMarkYesValidToImport;
+				}
+			
 				if(empty($SecondTampGrnRecord->item_name)){
 					goto DoNotMarkYesValidToImport;
 				}
