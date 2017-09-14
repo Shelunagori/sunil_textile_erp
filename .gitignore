@@ -26,3 +26,6 @@
 /app/Config/core.php
 /app/Config/database.php
 /vendors/*
+
+*.sqlite
+tmp/debug_kit.sqlite

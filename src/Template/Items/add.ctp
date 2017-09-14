@@ -74,19 +74,19 @@ $this->set('title', 'Create Item');
 							<div class="col-md-4">
 								<div class="form-group">
 									<label>Quantity </label>
-									<?php echo $this->Form->control('quantity',['class'=>'form-control input-sm qty calculation reverseCalculation','label'=>false,'placeholder'=>'Quantity']); ?>
+									<?php echo $this->Form->control('quantity',['class'=>' rightAligntextClass form-control input-sm qty calculation reverseCalculation','label'=>false,'placeholder'=>'Quantity']); ?>
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
 									<label>Rate </label>
-									<?php echo $this->Form->control('rate',['class'=>'form-control input-sm rate calculation','label'=>false,'placeholder'=>'Rate']); ?>
+									<?php echo $this->Form->control('rate',['class'=>'rightAligntextClass form-control input-sm rate calculation','label'=>false,'placeholder'=>'Rate']); ?>
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
 									<label>Value </label>
-									<?php echo $this->Form->control('amount',['class'=>'form-control input-sm amt reverseCalculation','label'=>false,'placeholder'=>'Value']); ?>
+									<?php echo $this->Form->control('amount',['class'=>'rightAligntextClass form-control input-sm amt reverseCalculation','label'=>false,'placeholder'=>'Value']); ?>
 								</div>
 							</div>
 						</div>
@@ -94,7 +94,7 @@ $this->set('title', 'Create Item');
 							<div class="col-md-4">
 								<div class="form-group">
 									<label>Sales Rate </label>
-									<?php echo $this->Form->control('sales_rate',['class'=>'form-control input-sm','label'=>false,'placeholder'=>'Sales Rate','required'=>'required']); ?>
+									<?php echo $this->Form->control('sales_rate',['class'=>'rightAligntextClass form-control input-sm','label'=>false,'placeholder'=>'Sales Rate','required'=>'required']); ?>
 								</div>
 							</div>
 						</div>
@@ -126,7 +126,7 @@ $this->set('title', 'Create Item');
 							<div class="col-md-4">
 								<div class="form-group hide_gst">
 									<label style="font-size: 10px;">Amount </label>
-									<?php echo $this->Form->control('gst_amount',['class'=>'form-control input-sm removeAddRequired','label'=>false,'placeholder'=>'Amount','required'=>'required']); ?>
+									<?php echo $this->Form->control('gst_amount',['class'=>'rightAligntextClass form-control input-sm removeAddRequired','label'=>false,'placeholder'=>'Amount','required'=>'required']); ?>
 								</div>
 							</div>
 							<div class="col-md-4">
@@ -302,10 +302,13 @@ $this->set('title', 'Create Item');
 						url: url,
 						type: 'GET',
 					}).done(function(response) {
+						alert(response);
 						response = $.parseJSON(response);
-						if(response.is_unique=='no')
+						if(response.is_unique=='yes')
 						{
-							$('input[name=provided_item_code]').closest('.form-group').append('<span class=error_unique>Not Unique.</span>');
+							$('input[name=provided_item_code]').closest('.form-group').append('<span class=error_unique>Matched.</span>');
+						}else{
+							$('input[name=provided_item_code]').closest('.form-group').append('<span class=error_unique>Not Matched.</span>');
 						}
 					});
 				}

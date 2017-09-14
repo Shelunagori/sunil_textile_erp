@@ -20,7 +20,7 @@ $this->set('title', 'Account Ledger report');
 							<div class="form-group">
 								<label>Ledgers</label>
 								<?php 
-								echo $this->Form->input('ledger_id', ['options'=>$ledgers,'label' => false,'class' => 'form-control input-sm select2me' 'value'=>]); 
+								echo $this->Form->input('ledger_id', ['options'=>$ledgers,'label' => false,'class' => 'form-control input-sm select2me' ,'value'=>'']); 
 								?>
 							</div>
 						</div>

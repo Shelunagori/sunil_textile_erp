@@ -1,3 +1,9 @@
+<style>
+
+.rightAligntextClasses{
+	text-align:right !important;
+}
+</style>
 <?php
 /**
  * @Author: PHP Poets IT Solutions Pvt. Ltd.
@@ -45,7 +51,7 @@ $this->set('title', 'Create Stock Journal');
 											<thead>
 												<tr><td align="center" colspan="6">Inward</td></tr>
 												<tr align="center">
-													<td><label>Sr<label></td>
+													<td ><label>Sr<label></td>
 													<td><label>Item<label></td>
 													<td><label>Qty<label></td>
 													<td><label>Rate<label></td>
@@ -61,7 +67,7 @@ $this->set('title', 'Create Stock Journal');
 													<td colspan="4" >	
 														<button type="button" class="add_inward btn btn-default input-sm"><i class="fa fa-plus"></i> Add row</button>
 													</td>
-													<td width="25%"><?php echo $this->Form->input('inward_amount_total', ['label' => false,'class' => 'form-control input-sm','id'=>'total_inward','placeholder'=>'Total','type'=>'text']); ?></td>
+													<td width="25%"><?php echo $this->Form->input('inward_amount_total', ['label' => false,'class' => 'form-control input-sm rightAligntextClass','id'=>'total_inward','placeholder'=>'Total','type'=>'text']); ?></td>
 													<td></td>
 												</tr>
 											</tfoot>
@@ -88,7 +94,7 @@ $this->set('title', 'Create Stock Journal');
 													<td colspan="4">
 														<button type="button" class="add_outward btn btn-default input-sm"><i class="fa fa-plus"></i> Add row</button>
 													</td>
-													<td width="25%"><?php echo $this->Form->input('outward_amount_total', ['label' => false,'class' => 'form-control input-sm','id'=>'total_outward','placeholder'=>'Total']); ?></td>
+													<td width="25%"><?php echo $this->Form->input('outward_amount_total', ['label' => false,'class' => 'form-control rightAligntextClass input-sm','id'=>'total_outward','placeholder'=>'Total']); ?></td>
 													<td></td>
 												</tr>
 											</tfoot>
@@ -274,7 +280,7 @@ $this->set('title', 'Create Stock Journal');
       });
 	  
 		ComponentsPickers.init();
-    });
+    
 	
 	$('.add_inward').click(function(){
 				add_row_inward();
@@ -282,17 +288,19 @@ $this->set('title', 'Create Stock Journal');
 		});
 		
 	
-		function add_row_inward(){
+	
+			
+	$('.add_outward').click(function(){
+				add_row_outward();
+		});
+		});
+		
+			function add_row_inward(){
 				var tr=$('#sample_table tbody tr.main_tr').clone();
 				$('#main_table tbody#main_tbody').append(tr);
 				
 				rename_inward_rows();
 			}
-			
-	$('.add_outward').click(function(){
-				add_row_outward();
-		});
-		
 	function add_row_outward(){
 				var tr=$('#sample_table tbody tr.main_tr').clone();
 				$('#main_table2 tbody#main_tbody2').append(tr);
@@ -355,19 +363,19 @@ echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 ?>
 <table id="sample_table" style="display:none;" width="100%">
 	<tbody>
-		<tr class="main_tr" class="tab">
+		<tr class="main_tr" class="tab ">
 			<td width="7%"></td>
 			<td>
 				<?php echo $this->Form->input('item_id', ['empty'=>'--Select--','options'=>$items,'label' => false,'class' => 'form-control input-medium','required'=>'required']); ?>
 			</td>
-			<td width="15%">
-				<?php echo $this->Form->input('quantity', ['label' => false,'class' => '','id'=>'check','required'=>'required','placeholder'=>'Qty']); ?>
+			<td width="15%" align="right">
+				<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control ','id'=>'check','required'=>'required','placeholder'=>'Qty','style'=>'text-align:right;']); ?>
 			</td>
-			<td width="20%">
-				<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm rightAligntextClass','required'=>'required','placeholder'=>'Rate']); ?>
+			<td width="20%" >
+				<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm rightAligntextClasses','required'=>'required','placeholder'=>'Rate','style'=>'text-align:right;']); ?>
 			</td>
-			<td width="25%">
-				<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm rightAligntextClass','required'=>'required','placeholder'=>'Amount']); ?>	
+			<td width="25%" >
+				<?php echo $this->Form->input('amount', ['label' => false,'class' => 'form-control input-sm rightAligntextClasses','required'=>'required','placeholder'=>'Amount','style'=>'text-align:right;']); ?>	
 			</td>
 			<td align="center">
 				<a class="btn btn-danger delete-tr btn-xs" href="#" role="button" style="margin-bottom: 5px;"><i class="fa fa-times"></i></a>

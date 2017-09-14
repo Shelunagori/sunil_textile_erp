@@ -63,7 +63,7 @@ class StockGroupsController extends AppController
             if ($this->StockGroups->save($stockGroup)) {
                 $this->Flash->success(__('The stock group has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'add']);
             }
             $this->Flash->error(__('The stock group could not be saved. Please, try again.'));
         }

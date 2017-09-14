@@ -68,7 +68,7 @@ class SecondTampGrnRecordsController extends AppController
             if ($this->SecondTampGrnRecords->save($secondTampGrnRecord)) {
                 $this->Flash->success(__('The second tamp grn record has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'add']);
             }
             $this->Flash->error(__('The second tamp grn record could not be saved. Please, try again.'));
         }
@@ -238,7 +238,7 @@ class SecondTampGrnRecordsController extends AppController
 		$location_id=$this->Auth->User('session_location_id');
 		$SecondTampGrnRecords = $this->SecondTampGrnRecords->find()
 								->where(['user_id'=>$user_id,'company_id'=>$company_id,'import_to_grn'=>'no'])
-								->limit(10);
+								->limit(5);
 		
 		if($SecondTampGrnRecords->count()==0){
 			goto Bottom;
@@ -326,7 +326,7 @@ class SecondTampGrnRecordsController extends AppController
 		$location_id=$this->Auth->User('session_location_id');
 		$SecondTampGrnRecords = $this->SecondTampGrnRecords->find()
 								->where(['user_id'=>$user_id,'company_id'=>$company_id,'processed'=>'no'])
-								->limit(10);
+								->limit(5);
 		if($SecondTampGrnRecords->count()==0){
 			goto Bottom;
 		}
@@ -334,12 +334,15 @@ class SecondTampGrnRecordsController extends AppController
 			if(empty($SecondTampGrnRecord->item_code)){
 				goto DoNotMarkYesValidToImport;
 			}
-			if(empty($SecondTampGrnRecord->provided_unit)){
-				goto DoNotMarkYesValidToImport;
-			}
+			
 			$item=$this->SecondTampGrnRecords->Companies->Items->find()
 					->where(['Items.item_code'=>$SecondTampGrnRecord->item_code,'company_id'=>$company_id])->first();
 			if(!$item){
+				
+				if(empty($SecondTampGrnRecord->provided_unit)){
+					goto DoNotMarkYesValidToImport;
+				}
+			
 				if(empty($SecondTampGrnRecord->item_name)){
 					goto DoNotMarkYesValidToImport;
 				}
@@ -480,8 +483,6 @@ class SecondTampGrnRecordsController extends AppController
 					->where(['SecondTampGrnRecords.id' =>$SecondTampGrnRecord->id])
 					->execute();
 			}
-				
-				
 			
 			$query = $this->SecondTampGrnRecords->query();
 			$query->update()

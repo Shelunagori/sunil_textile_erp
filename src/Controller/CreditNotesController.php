@@ -212,7 +212,7 @@ class CreditNotesController extends AppController
 		   }
            $this->Flash->success(__('The credit note has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'add']);
             }
             $this->Flash->error(__('The credit note could not be saved. Please, try again.'));
         }

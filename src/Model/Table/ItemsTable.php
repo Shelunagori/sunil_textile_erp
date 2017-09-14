@@ -31,6 +31,14 @@ class ItemsTable extends Table
      */
     public function initialize(array $config)
     {
+		 $this->addBehavior('Timestamp', [
+            'events' => [
+                'Model.beforeSave' => [
+                    'created_on' => 'new',
+                    'edited_on' => 'always',
+                ]
+            ]
+        ]);
         parent::initialize($config);
 
         $this->setTable('items');

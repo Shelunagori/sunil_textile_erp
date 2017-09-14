@@ -82,7 +82,7 @@ class LedgersController extends AppController
 				
                 $this->Flash->success(__('The ledger has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'add']);
             }
             $this->Flash->error(__('The ledger could not be saved. Please, try again.'));
         }
