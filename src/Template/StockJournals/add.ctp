@@ -61,7 +61,7 @@ $this->set('title', 'Create Stock Journal');
 													<td colspan="4" >	
 														<button type="button" class="add_inward btn btn-default input-sm"><i class="fa fa-plus"></i> Add row</button>
 													</td>
-													<td width="25%"><?php echo $this->Form->input('inward_amount_total', ['label' => false,'class' => 'form-control input-sm','id'=>'total_inward','placeholder'=>'Total','type'=>'text']); ?></td>
+													<td width="25%"><?php echo $this->Form->input('inward_amount_total', ['label' => false,'class' => 'form-control input-sm rightAligntextClass','id'=>'total_inward','placeholder'=>'Total','type'=>'text']); ?></td>
 													<td></td>
 												</tr>
 											</tfoot>
@@ -88,7 +88,7 @@ $this->set('title', 'Create Stock Journal');
 													<td colspan="4">
 														<button type="button" class="add_outward btn btn-default input-sm"><i class="fa fa-plus"></i> Add row</button>
 													</td>
-													<td width="25%"><?php echo $this->Form->input('outward_amount_total', ['label' => false,'class' => 'form-control input-sm','id'=>'total_outward','placeholder'=>'Total']); ?></td>
+													<td width="25%"><?php echo $this->Form->input('outward_amount_total', ['label' => false,'class' => 'form-control rightAligntextClass input-sm','id'=>'total_outward','placeholder'=>'Total']); ?></td>
 													<td></td>
 												</tr>
 											</tfoot>
@@ -361,7 +361,7 @@ echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom'));
 				<?php echo $this->Form->input('item_id', ['empty'=>'--Select--','options'=>$items,'label' => false,'class' => 'form-control input-medium','required'=>'required']); ?>
 			</td>
 			<td width="15%">
-				<?php echo $this->Form->input('quantity', ['label' => false,'class' => '','id'=>'check','required'=>'required','placeholder'=>'Qty']); ?>
+				<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'rightAligntextClass','id'=>'check','required'=>'required','placeholder'=>'Qty']); ?>
 			</td>
 			<td width="20%">
 				<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm rightAligntextClass','required'=>'required','placeholder'=>'Rate']); ?>

@@ -16,7 +16,7 @@ $this->set('title', 'View');
 			<div class="portlet-body">
 				<?= $this->Form->create($grn) ?>
 				<div class="row">
-					<div class="col-md-2">
+					<div class="col-md-3">
 						<label>Voucher No :<?php echo '#'.str_pad($grn->voucher_no, 4, '0', STR_PAD_LEFT); ?></label>
 					</div>
 					<div class="col-md-4 form-group">
