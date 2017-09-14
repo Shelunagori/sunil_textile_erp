@@ -45,6 +45,7 @@ foreach($partyOptions as $partyOption)
 								<?php echo $this->Form->control('transaction_date',['class'=>'form-control input-sm date-picker','data-date-format'=>'dd-mm-yyyy','label'=>false,'placeholder'=>'DD-MM-YYYY','type'=>'text','data-date-start-date'=>@$coreVariable[fyValidFrom],'data-date-end-date'=>@$coreVariable[fyValidTo],'value'=>$salesInvoice->transaction_date, 'autofocus'=>'autofocus']); ?>
 							</div>
 						</div>
+						<input type="hidden" name="party_state_id" class="ps" value="<?php echo $party_state_id;?>">
                         <input type="hidden" name="outOfStock" class="outOfStock" value="false">
 						<input type="hidden" name="company_id" class="company_id" value="<?php echo $company_id;?>">
 						<input type="hidden" name="location_id" class="location_id" value="<?php echo $location_id;?>">
@@ -95,6 +96,9 @@ foreach($partyOptions as $partyOption)
                                          $i=0;		
 								         foreach($salesInvoice->sales_invoice_rows as $salesInvoiceRow)
 									     {
+									if(@$party_state_id!=$state_id){if($party_state_id>0){ $exactgst=$salesInvoiceRow->gst_value;}
+									else if($party_state_id==0){$exactgst=$salesInvoiceRow->gst_value/2;}else if(!$party_state_id){$exactgst=$salesInvoiceRow->gst_value/2;}
+									}else if(@$party_state_id==$state_id) { $exactgst=$salesInvoiceRow->gst_value/2;}
 							     ?>
 								<tr class="main_tr" class="tab">
 									<td>
@@ -105,6 +109,7 @@ foreach($partyOptions as $partyOption)
 										<input type="hidden" name="" class="gst_figure_tax_percentage calculation" value="<?php echo $salesInvoiceRow->gst_figure->tax_percentage;?>">
 										<input type="hidden" name="" class="totamount calculation" value="">
 										<input type="hidden" name="salesInvoiceRow<?php echo $i;?>gst_value" class="gstValue calculation" value="<?php echo $salesInvoiceRow->gst_value;?>">
+										<input type="hidden" name="exactgst_value" class="exactgst_value calculation" value="<?php $exactgst;?>">
 										<input type="hidden" name="" class="discountvalue calculation" value="">
 																
 										<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.item_id', ['empty'=>'-Item Name-','options'=>$itemOptions,'label' => false,'class' => 'form-control input-sm attrGet calculation','required'=>'required','value'=>$salesInvoiceRow->item->id]);
@@ -150,9 +155,7 @@ foreach($partyOptions as $partyOption)
 						<?php echo $this->Form->input('amount_before_tax', ['label' => false,'class' => 'form-control input-sm amount_before_tax rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
 						</td>
 						</tr>
-						<?php 
 						
-						if($party_state_id==$state_id){?>
 						<tr id="add_cgst">
 						<td colspan="6" align="right"><b>Total CGST</b>
 						</td>
@@ -167,8 +170,6 @@ foreach($partyOptions as $partyOption)
 						<?php echo $this->Form->input('total_sgst', ['label' => false,'class' => 'form-control input-sm add_sgst rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
 						</td>
 						</tr>
-						<?php } else if($party_state_id!=$state_id){ ?>
-						
 						<tr id="add_igst" style="">
 						<td colspan="6" align="right"><b>Total IGST</b>
 						</td>
@@ -176,8 +177,7 @@ foreach($partyOptions as $partyOption)
 						<?php echo $this->Form->input('total_igst', ['label' => false,'class' => 'form-control input-sm add_igst rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
 						</td>
 						</tr>
-						<?php }?>
-					
+				
 						<tr>
 						<td colspan="6" align="right"><b>Round OFF</b>
 						</td>
@@ -264,6 +264,7 @@ foreach($partyOptions as $partyOption)
 			<input type="hidden" name="" class="totamount calculation" value="">
 			<input type="hidden" name="gst_value" class="gstValue calculation" value="">
             <input type="hidden" name="" class="discountvalue calculation" value="">
+			<input type="hidden" name="exactgst_value" class="exactgst_value calculation" value="">
 				<?php echo $this->Form->input('item_id', ['empty'=>'-Item Name-','options'=>$itemOptions,'label' => false,'class' => 'form-control input-sm attrGet calculation','required'=>'required']); ?>
 			<span class="itemQty" style="color:red;font-size:10px;"></span>
 			</td>
@@ -326,6 +327,7 @@ foreach($partyOptions as $partyOption)
 		
 		$('.party_ledger_id').die().live('change',function(){
 			var customer_state_id=$('option:selected', this).attr('party_state_id');
+			if(!customer_state_id){customer_state_id=0;}
 			var state_id=$('.state_id').val();
 			if(customer_state_id!=state_id)
 			{
@@ -364,7 +366,7 @@ foreach($partyOptions as $partyOption)
 			//$(this).closest('tr').find('.output_igst_ledger_id').val(output_igst_ledger_id);
 		});
 		
-		$('.cashCredit').die().live('change',function(){
+		/* $('.cashCredit').die().live('change',function(){
 			var cashcredit=$(this).val();
 			if(cashcredit=='credit')
 			{
@@ -380,7 +382,7 @@ foreach($partyOptions as $partyOption)
 				$('#is_interstate').val('0');
 				$('.customer_id').removeAttr('required');
 			}
-		});
+		}); */
 		$('.delete-tr').die().live('click',function() 
 		{
 			$(this).closest('tr').remove();
@@ -425,7 +427,48 @@ foreach($partyOptions as $partyOption)
 		forward_total_amount();
 	});
 	$( document ).ready( forward_total_amount );
+	$( document ).ready( partyOnLoad );
 		
+		function partyOnLoad()
+		{
+			var customer_state_id=$('.ps').val();
+			var state_id=$('.state_id').val();
+			if(customer_state_id!=state_id)
+			{
+			if(customer_state_id>0)
+			{
+				$('#gstDisplay').html('IGST');
+				$('#add_igst').show();
+				$('#add_cgst').hide();
+				$('#add_sgst').hide();
+				$('#is_interstate').val('1');
+			}
+			else if(!customer_state_id)
+			{
+				$('#gstDisplay').html('GST');
+				$('#add_cgst').show();
+				$('#add_sgst').show();
+				$('#add_igst').hide();
+				$('#is_interstate').val('0');
+			}
+			else if(customer_state_id==0)
+			{
+				$('#gstDisplay').html('GST');
+				$('#add_cgst').show();
+				$('#add_sgst').show();
+				$('#add_igst').hide();
+				$('#is_interstate').val('0');
+			}
+			}
+			else if(customer_state_id==state_id){
+				$('#gstDisplay').html('GST');
+				$('#add_cgst').show();
+				$('#add_sgst').show();
+				$('#add_igst').hide();
+				$('#is_interstate').val('0');
+			}
+		}
+			
 		function forward_total_amount()
 		{
 			var total  = 0;
@@ -437,6 +480,10 @@ foreach($partyOptions as $partyOption)
 			var isRoundofType=0;
 			var igst_value=0;
 			var outOfStockValue=0;
+			var s_igst=0;
+			var newsgst=0;
+			var newigst=0;
+			var exactgstvalue=0;		
 			$('#main_table tbody#main_tbody tr.main_tr').each(function()
 			{
 			
@@ -498,13 +545,32 @@ foreach($partyOptions as $partyOption)
 				$(this).find('.gstAmount').val(gstAmount.toFixed(2));
 				$(this).find('.gstValue').val(gstValue.toFixed(2));
 
-				var taxable_value1=parseFloat($(this).find('.discountAmount').val());
-				total=parseFloat(total)+taxable_value1;
-				roundOff1=Math.round(total);
 				
+				
+				var gstValue  = parseFloat($(this).find('.gstValue').val());
 				var gstAmount  = parseFloat($(this).find('.gstAmount').val());
-				gst_amount=parseFloat(gst_amount)+parseFloat(gstAmount);
-				
+				var is_interstate  = parseFloat($('#is_interstate').val());
+				if(is_interstate=='0')
+				{
+					 exactgstvalue=round(gstValue/2,2);
+					 $(this).find('.exactgst_value').val(exactgstvalue);
+					var add_cgst  = $(this).find('.exactgst_value').val();
+					if(!add_cgst){add_cgst=0;}
+					//alert(add_cgst);
+					newsgst=round(parseFloat(newsgst)+parseFloat(add_cgst), 2);
+					gst_amount=parseFloat(gst_amount.toFixed(2))+parseFloat(gstAmount.toFixed(2));
+					total=gst_amount+newsgst+newsgst;
+					roundOff1=Math.round(total);
+				}else{
+					 exactgstvalue=round(gstValue,2);
+					 $(this).find('.exactgst_value').val(exactgstvalue);
+					var add_igst  = parseFloat($(this).find('.exactgst_value').val());
+					if(!add_igst){add_igst=0;}
+					newigst=round(parseFloat(newigst)+parseFloat(add_igst), 2);
+					gst_amount=parseFloat(gst_amount.toFixed(2))+parseFloat(gstAmount.toFixed(2));
+					total=gst_amount+newigst;
+					roundOff1=Math.round(total);
+				}
 				if(total<roundOff1)
 				{
 					round_of=parseFloat(roundOff1)-parseFloat(total);
@@ -521,30 +587,16 @@ foreach($partyOptions as $partyOption)
 					isRoundofType='0';
 				}
 				
-				var gstValue  = parseFloat($(this).find('.gstValue').val());
-				var is_interstate  = parseFloat($('#is_interstate').val());
-				if(is_interstate=='0')
-				{
-					gst_value=parseFloat(gst_value)+gstValue;
-					s_cgst_value=parseFloat(gst_value/2);
-					igst_value=0;
-				}
-				else{
-					gst_value=parseFloat(gst_value)+gstValue;
-					igst_value=parseFloat(gst_value);
-					s_cgst_value=0;
-				}
-				
 			});
-				$('.amount_after_tax').val(roundOff1);
-				$('.amount_before_tax').val(gst_amount.toFixed(2));
-				$('.add_cgst').val(s_cgst_value.toFixed(2));
-				$('.add_sgst').val(s_cgst_value.toFixed(2));
-				$('.add_igst').val(igst_value.toFixed(2));
-				$('.roundValue').val(round_of.toFixed(2));
-				$('.isRoundofType').val(isRoundofType);
-				$('.outOfStock').val(outOfStockValue);
-		rename_rows();
+			$('.amount_after_tax').val(roundOff1.toFixed(2));
+			$('.amount_before_tax').val(gst_amount.toFixed(2));
+			$('.add_cgst').val(newsgst);
+			$('.add_sgst').val(newsgst);
+			$('.add_igst').val(newigst);					
+			$('.roundValue').val(round_of.toFixed(2));
+			$('.isRoundofType').val(isRoundofType);
+			$('.outOfStock').val(outOfStockValue);
+			rename_rows();
 		}
 		
 function checkValidation() 

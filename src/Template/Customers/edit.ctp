@@ -34,7 +34,7 @@ $this->set('title', 'Edit Customer');
 								</div>
 								<div class="form-group">
 									<label>GSTIN </label>
-									<?php echo $this->Form->control('gstin',['class'=>'form-control input-sm gst','placeholder'=>'Gst In','label'=>false,'autofocus']); ?>
+									<?php echo $this->Form->control('gstin',['class'=>'form-control input-sm gst','placeholder'=>'Eg:22ASDFR0967W6Z5','label'=>false,'autofocus']); ?>
 								</div>
 								<div class="form-group">
 									<label>Mobile </label>

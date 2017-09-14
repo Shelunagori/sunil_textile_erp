@@ -176,17 +176,17 @@ public function creditNoteBill($id=null)
 								'credit_note_id' => $creditNote->id
 								])
 						->execute();
-						if($creditNote->round_off>0)
+						if(str_replace('-',' ',$creditNote->round_off)>0)
 						{
 						 $roundData = $this->CreditNotes->AccountingEntries->query();
 						if($creditNote->isRoundofType=='0')
 						{
-						 $debit=$creditNote->round_off;
+						 $debit=str_replace('-',' ',$creditNote->round_off);
 						 $credit=0;
 						}
 						else if($creditNote->isRoundofType=='1')
 						{
-						 $credit=$creditNote->round_off;
+						 $credit=str_replace('-',' ',$creditNote->round_off);
 						 $debit=0;
 						}
 						 $roundData->insert(['ledger_id', 'debit','credit', 'transaction_date', 'company_id', 'credit_note_id'])
@@ -371,17 +371,22 @@ public function creditNoteBill($id=null)
 				$deleteResult = $deleteItemLedger->delete()
 					->where(['credit_note_id' => $creditNote->id])
 					->execute();
+					$deleteAccountEntries = $this->CreditNotes->AccountingEntries->query();
+					$result = $deleteAccountEntries->delete()
+						->where(['AccountingEntries.credit_note_id' => $id])
+						->execute();
 				//item ledger entry start
 				foreach($creditNote->credit_note_rows as $credit_note_row)
 				{
+				$exactRate=$credit_note_row->taxable_value/$credit_note_row->quantity;
 					$stockData = $this->CreditNotes->ItemLedgers->query();
 					$stockData->insert(['item_id', 'transaction_date','quantity', 'rate', 'amount', 'status', 'company_id', 'credit_note_id', 'credit_note_row_id', 'location_id'])
 						->values([
 						'item_id' => $credit_note_row->item_id,
 						'transaction_date' => $creditNote->transaction_date,
 						'quantity' => $credit_note_row->quantity,
-						'rate' => $credit_note_row->rate,
-						'amount' => $credit_note_row->net_amount,
+						'rate' => $exactRate,
+						'amount' => $credit_note_row->taxable_value,
 						'status' => 'in',
 						'company_id' => $creditNote->company_id,
 						'credit_note_id' => $creditNote->id,
@@ -389,6 +394,20 @@ public function creditNoteBill($id=null)
 						'location_id'=> $location_id
 						])
 					->execute();
+					/* 
+					$stockData = $this->CreditNotes->ItemLedgers->query();
+				    $result = $stockData->update()
+                    ->set(['item_id' => $credit_note_row->item_id, 'transaction_date' => $creditNote->transaction_date, 'quantity' => $credit_note_row->quantity,
+					'rate' => $exactRate,
+						'amount' => $credit_note_row->taxable_value,
+						'status' => 'in',
+						'company_id' => $creditNote->company_id,
+						'credit_note_id' => $creditNote->id,
+						'credit_note_row_id' => $credit_note_row->id,
+						'location_id'=> $location_id])
+                    ->where(['ItemLedgers.credit_note_row_id' => $credit_note_row->id])
+                    ->execute(); */
+					
 				}
 				$partyData = $this->CreditNotes->AccountingEntries->query();
 						$partyData->insert(['ledger_id', 'debit','credit', 'transaction_date', 'company_id', 'credit_note_id'])
@@ -412,18 +431,18 @@ public function creditNoteBill($id=null)
 								'credit_note_id' => $creditNote->id
 								])
 						->execute();
-						if($creditNote->round_off>0)
+						if(str_replace('-',' ',$creditNote->round_off)>0)
 						{
-						$roundData = $this->CreditNotes->AccountingEntries->query();
+						 $roundData = $this->CreditNotes->AccountingEntries->query();
 						if($creditNote->isRoundofType=='0')
 						{
-						$debit=$creditNote->round_off;
-						$credit=0;
+						 $debit=str_replace('-',' ',$creditNote->round_off);
+						 $credit=0;
 						}
 						else if($creditNote->isRoundofType=='1')
 						{
-						$credit=$creditNote->round_off;
-						$debit=0;
+						 $credit=str_replace('-',' ',$creditNote->round_off);
+						 $debit=0;
 						}
 						$roundData->insert(['ledger_id', 'debit','credit', 'transaction_date', 'company_id', 'credit_note_id'])
 								->values([

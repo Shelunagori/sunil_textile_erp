@@ -316,7 +316,7 @@ class GrnsController extends AppController
 				$arr_ext = array('csv'); 									   
 				if (in_array($ext, $arr_ext)) 
 				{
-                  move_uploaded_file($csv['tmp_name'], WWW_ROOT . '/step_second/'.$user_id.'.'.$ext);
+                  //move_uploaded_file($csv['tmp_name'], WWW_ROOT . '/step_second/'.$user_id.'.'.$ext);
 				  
 				  $f = fopen($csv['tmp_name'], 'r') or die("ERROR OPENING DATA");
 					$records=0;

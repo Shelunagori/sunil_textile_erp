@@ -75,7 +75,8 @@ class CreditNotesTable extends Table
             'joinType' => 'INNER'
         ]);
         $this->hasMany('CreditNoteRows', [
-            'foreignKey' => 'credit_note_id'
+            'foreignKey' => 'credit_note_id',
+			'saveStrategy'=>'replace'
         ]);
     }
 
