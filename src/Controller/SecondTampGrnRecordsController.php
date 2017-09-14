@@ -480,8 +480,6 @@ class SecondTampGrnRecordsController extends AppController
 					->where(['SecondTampGrnRecords.id' =>$SecondTampGrnRecord->id])
 					->execute();
 			}
-				
-				
 			
 			$query = $this->SecondTampGrnRecords->query();
 			$query->update()
