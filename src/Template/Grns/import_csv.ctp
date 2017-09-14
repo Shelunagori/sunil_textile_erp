@@ -98,7 +98,7 @@ $this->set('title', 'Import CSV');
 								</div>
 							</div>
 							<div class="portlet-body">
-								<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: auto;"><div class="scroller" style="height: auto; overflow: hidden; width: auto;" data-always-visible="1" data-rail-visible="0" data-initialized="1">
+								<div class="table-scrollable">
 								<table class="table table-bordered" width="100%">
 									<thead><tr>
 										<th>Item Code </th>
@@ -136,7 +136,7 @@ $this->set('title', 'Import CSV');
 									</tr>
 									</tbody>
 								</table>
-								</div>
+								
 								</div>
 							</div>
 						</div>

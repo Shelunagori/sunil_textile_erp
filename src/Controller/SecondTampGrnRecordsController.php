@@ -238,7 +238,7 @@ class SecondTampGrnRecordsController extends AppController
 		$location_id=$this->Auth->User('session_location_id');
 		$SecondTampGrnRecords = $this->SecondTampGrnRecords->find()
 								->where(['user_id'=>$user_id,'company_id'=>$company_id,'import_to_grn'=>'no'])
-								->limit(10);
+								->limit(5);
 		
 		if($SecondTampGrnRecords->count()==0){
 			goto Bottom;

@@ -59,7 +59,7 @@ $this->set('title', 'Edit');
 										?>
 									</td>
 									<td width="25%" >
-										<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm ','placeholder'=>'Qty','required','value'=>$grnrow->quantity]); ?>
+										<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm rightAligntextClass','placeholder'=>'Qty','required','value'=>$grnrow->quantity]); ?>
 									</td>
 									<td width="25%">
 										<?php echo $this->Form->input('purchase_rate', ['label' => false,'class' => 'form-control input-sm total rightAligntextClass','required'=>'required','placeholder'=>'Purchase Rate','required','value'=>$grnrow->purchase_rate]); ?>	
@@ -154,7 +154,7 @@ $this->set('title', 'Edit');
 				<?php echo $this->Form->input('item_id', ['empty'=>'---Select---','options'=>$itemOptions,'label' => false,'class' => 'form-control input-medium ','required'=>'required']); ?>
 			</td>
 			<td width="25%" >
-				<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm ','placeholder'=>'Qty','required']); ?>
+				<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm rightAligntextClass','placeholder'=>'Qty','required']); ?>
 			</td>
 			<td width="25%">
 				<?php echo $this->Form->input('purchase_rate', ['label' => false,'class' => 'form-control input-sm total rightAligntextClass','required'=>'required','placeholder'=>'Purchase Rate','required']); ?>	
