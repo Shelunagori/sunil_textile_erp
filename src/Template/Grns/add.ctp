@@ -135,7 +135,7 @@ $this->set('title', 'Create Grn');
 				<?php echo $this->Form->input('item_id', ['empty'=>'---Select---','options'=>$itemOptions,'label' => false,'class' => 'form-control input-medium ','required'=>'required']); ?>
 			</td>
 			<td width="" >
-				<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm ','placeholder'=>'Qty','required']); ?>
+				<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm rightAligntextClass','placeholder'=>'Qty','required']); ?>
 			</td>
 			<td width="">
 				<?php echo $this->Form->input('purchase_rate', ['label' => false,'class' => 'form-control input-sm total rightAligntextClass','required'=>'required','placeholder'=>'Purchase Rate','required']); ?>	
