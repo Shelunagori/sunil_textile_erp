@@ -20,7 +20,7 @@ $this->set('title', 'Account Ledger report');
 							<div class="form-group">
 								<label>Ledgers</label>
 								<?php 
-								echo $this->Form->input('ledger_id', ['options'=>$ledgers,'label' => false,'class' => 'form-control input-sm select2me']); 
+								echo $this->Form->input('ledger_id', ['options'=>$ledgers,'label' => false,'class' => 'form-control input-sm select2me' 'value'=>]); 
 								?>
 							</div>
 						</div>
@@ -106,14 +106,15 @@ $this->set('title', 'Account Ledger report');
 								{
 									$total_credit=0;
 									$total_debit=0;
+									//pr($AccountingLedgers->toArray());     exit;
 									foreach($AccountingLedgers as $AccountingLedger)
-									{
+									{   
 										$id= $AccountingLedger->id
 						?>
 							<tr>
 								<td><?php echo date("d-m-Y",strtotime($AccountingLedger->transaction_date)); ?></td>
-								<td><?php echo @$voucher_type[$id]; ?></td>
-								<td><?php echo @$voucher_no[$id]; ?></td>
+								<td><?php echo $voucher_type[$id]; ?></td>
+								<td class="rightAligntextClass"><?php echo $voucher_no[$id]; ?></td>
 								<td style="text-align:right";>
 								<?php 
 									if(!empty($AccountingLedger->debit))

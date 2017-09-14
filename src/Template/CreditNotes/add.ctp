@@ -195,6 +195,7 @@ $this->set('title', 'Credit Note');
 				<input type="hidden" name="gst_figure_tax_percentage" class="gst_figure_tax_percentage calculation" value="">
 				<input type="hidden" name="tot" class="totamount calculation" value="">
 				<input type="hidden" name="gst_value" class="gstValue calculation" value="">
+				<input type="hidden" name="exactgst_value" class="exactgst_value calculation" value="">
 				<input type="hidden" name="discountvalue" class="discountvalue calculation" value="">
 				<?php echo $this->Form->input('item_id', ['empty'=>'-Item Name-', 'options'=>$itemOptions,'label' => false,'class' =>'form-control input-medium attrGet calculation','required'=>'required']); ?>
 				<span class="itemQty" style="color:red"></span>
@@ -355,6 +356,10 @@ $this->set('title', 'Credit Note');
 			var isRoundofType=0;
 			var igst_value=0;
 			var outOfStockValue=0;
+			var s_igst=0;
+			var newsgst=0;
+			var newigst=0;
+			var exactgstvalue=0;
 			$('#main_table tbody#main_tbody tr.main_tr').each(function()
 			{
 			    var outdata=$(this).closest('tr').find('.outStock').val();
@@ -413,13 +418,30 @@ $this->set('title', 'Credit Note');
 				$(this).find('.gstAmount').val(gstAmount.toFixed(2));
 				$(this).find('.gstValue').val(gstValue.toFixed(2));
 
-				var taxable_value1=parseFloat($(this).find('.discountAmount').val());
-				total=parseFloat(total)+taxable_value1;
-				roundOff1=Math.round(total);
-				
+				var gstValue  = parseFloat($(this).find('.gstValue').val());
 				var gstAmount  = parseFloat($(this).find('.gstAmount').val());
-				gst_amount=parseFloat(gst_amount)+parseFloat(gstAmount);
-				
+				var is_interstate  = parseFloat($('#is_interstate').val());
+				if(is_interstate=='0')
+				{
+					 exactgstvalue=round(gstValue/2,2);
+					 $(this).find('.exactgst_value').val(exactgstvalue);
+					var add_cgst  = $(this).find('.exactgst_value').val();
+					if(!add_cgst){add_cgst=0;}
+					//alert(add_cgst);
+					newsgst=round(parseFloat(newsgst)+parseFloat(add_cgst), 2);
+					gst_amount=parseFloat(gst_amount.toFixed(2))+parseFloat(gstAmount.toFixed(2));
+					total=gst_amount+newsgst+newsgst;
+					roundOff1=Math.round(total);
+				}else{
+					 exactgstvalue=round(gstValue,2);
+					 $(this).find('.exactgst_value').val(exactgstvalue);
+					var add_igst  = parseFloat($(this).find('.exactgst_value').val());
+					if(!add_igst){add_igst=0;}
+					newigst=round(parseFloat(newigst)+parseFloat(add_igst), 2);
+					gst_amount=parseFloat(gst_amount.toFixed(2))+parseFloat(gstAmount.toFixed(2));
+					total=gst_amount+newigst;
+					roundOff1=Math.round(total);
+				}
 				if(total<roundOff1)
 				{
 					round_of=parseFloat(roundOff1)-parseFloat(total);
@@ -427,7 +449,7 @@ $this->set('title', 'Credit Note');
 				}
 				if(total>roundOff1)
 				{
-					round_of=parseFloat(total)-parseFloat(roundOff1);
+					round_of=parseFloat(roundOff1)-parseFloat(total);
 					isRoundofType='1';
 				}
 				if(total==roundOff1)
@@ -435,31 +457,16 @@ $this->set('title', 'Credit Note');
 					round_of=parseFloat(total)-parseFloat(roundOff1);
 					isRoundofType='0';
 				}
-				
-				var gstValue  = parseFloat($(this).find('.gstValue').val());
-				var is_interstate  = parseFloat($('#is_interstate').val());
-				if(is_interstate=='0')
-				{
-					gst_value=parseFloat(gst_value)+gstValue;
-					s_cgst_value=parseFloat(gst_value/2);
-					igst_value=0;
-				}
-				else{
-					gst_value=parseFloat(gst_value)+gstValue;
-					igst_value=parseFloat(gst_value);
-					s_cgst_value=0;
-				}
-				
-			});
-			$('.amount_after_tax').val(roundOff1);
-			$('.amount_before_tax').val(gst_amount.toFixed(2));
-			$('.add_cgst').val(s_cgst_value.toFixed(2));
-			$('.add_sgst').val(s_cgst_value.toFixed(2));
-			$('.add_igst').val(igst_value.toFixed(2));
-			$('.roundValue').val(round_of.toFixed(2));
-			$('.isRoundofType').val(isRoundofType);
-			$('.outOfStock').val(outOfStockValue);
-			rename_rows();
+		});
+		$('.amount_after_tax').val(roundOff1.toFixed(2));
+		$('.amount_before_tax').val(gst_amount.toFixed(2));
+		$('.add_cgst').val(newsgst);
+		$('.add_sgst').val(newsgst);
+		$('.add_igst').val(newigst);					
+		$('.roundValue').val(round_of.toFixed(2));
+		$('.isRoundofType').val(isRoundofType);
+		$('.outOfStock').val(outOfStockValue);
+		rename_rows();
 		}
 		//calculation end
 		//form validation start

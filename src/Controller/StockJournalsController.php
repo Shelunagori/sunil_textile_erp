@@ -111,7 +111,7 @@ class StockJournalsController extends AppController
 					}
                 $this->Flash->success(__('The stock journal has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'add']);
             }
             $this->Flash->error(__('The stock journal could not be saved. Please, try again.'));
         }

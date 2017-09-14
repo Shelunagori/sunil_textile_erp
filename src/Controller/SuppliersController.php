@@ -89,11 +89,13 @@ class SuppliersController extends AppController
 					$AccountingEntry->transaction_date = date("Y-m-d",strtotime($transaction_date));
 					$AccountingEntry->company_id       = $company_id;
 					$AccountingEntry->is_opening_balance = 'yes';
+					if($supplier->opening_balance_value){
 					$this->Suppliers->Ledgers->AccountingEntries->save($AccountingEntry);
+					}
 				}
                 $this->Flash->success(__('The supplier has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'add']);
             }
             $this->Flash->error(__('The supplier could not be saved. Please, try again.'));
         }
@@ -166,7 +168,9 @@ class SuppliersController extends AppController
 					$AccountingEntry->transaction_date = date("Y-m-d",strtotime($transaction_date));
 					$AccountingEntry->company_id       = $company_id;
 					$AccountingEntry->is_opening_balance = 'yes';
+					if($supplier->opening_balance_value){
 					$this->Suppliers->Ledgers->AccountingEntries->save($AccountingEntry);
+					}
                 $this->Flash->success(__('The supplier has been saved.'));
 
                 return $this->redirect(['action' => 'index']);

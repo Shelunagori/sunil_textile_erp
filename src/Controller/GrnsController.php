@@ -107,7 +107,7 @@ class GrnsController extends AppController
 					}
 				}
                 $this->Flash->success(__('The grn has been saved.'));
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'add']);
             }
             $this->Flash->error(__('The grn could not be saved. Please, try again.'));
         }
@@ -316,7 +316,7 @@ class GrnsController extends AppController
 				$arr_ext = array('csv'); 									   
 				if (in_array($ext, $arr_ext)) 
 				{
-                  move_uploaded_file($csv['tmp_name'], WWW_ROOT . '/step_second/'.$user_id.'.'.$ext);
+                  //move_uploaded_file($csv['tmp_name'], WWW_ROOT . '/step_second/'.$user_id.'.'.$ext);
 				  
 				  $f = fopen($csv['tmp_name'], 'r') or die("ERROR OPENING DATA");
 					$records=0;
@@ -356,6 +356,9 @@ class GrnsController extends AppController
                     "action" => "progress"));
 					fclose($f);
 					$records;
+				}
+				else{
+					$this->Flash->error(__('The File Format is incorrect (not CSV type). Please, try again.'));	
 				}
 			}
 		} 

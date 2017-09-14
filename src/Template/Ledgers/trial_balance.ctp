@@ -84,6 +84,8 @@ $this->set('title', 'Trial balance report');
 							$transactionCreditTotal=0;
 							$closingBalanceDebitTotal=0;
 							$closingBalanceCreditTotal=0;
+							$total1=0;
+							$total2=0;
 							foreach($TrialBalances as  $TrialBalance)
 							{ 
 								    $closing_credit=0;
@@ -197,18 +199,18 @@ $this->set('title', 'Trial balance report');
 							</th>
 						</tr>
 						<tr>
-							<th scope="col" >Opening Stock</th>
+							<th scope="col" >Closing Stock</th>
 							<th style="text-align:right";>
 								<?php 
+								
 								if(@$coreVariable['fyValidFrom']<$from_date)
 								{
 									if($totalDebit>0)
 									{ 
 									   echo @$totalDebit;
-									   $openingBalanceDebitTotal +=round($totalDebit,2);
-									   $total1 +=$totalDebit;
+											$openingBalanceDebitTotal +=round($totalDebit,2);
+											$total1 +=$totalDebit;
 									}
-									
 								} 
 								?>
 							</th>
@@ -228,7 +230,7 @@ $this->set('title', 'Trial balance report');
 							</th>
 							<th style="text-align:right";>
 								<?php 
-								  if(@$coreVariable[fyValidFrom]>$from_date && @$coreVariable[fyValidFrom]<$to_date)
+								  if(@$coreVariable[fyValidFrom]>$from_date && @$coreVariable[fyValidFrom]<$to_date || @$coreVariable[fyValidFrom]==$from_date || @$coreVariable[fyValidFrom]==$to_date)
 								  { 
 									if($totalDebit>0)
 									{
@@ -242,7 +244,7 @@ $this->set('title', 'Trial balance report');
 							</th>
 							<th style="text-align:right";>
 								<?php 
-								if(@$coreVariable[fyValidFrom]>$from_date && @$coreVariable[fyValidFrom]<$to_date)
+								if(@$coreVariable[fyValidFrom]>$from_date && @$coreVariable[fyValidFrom]<$to_date || @$coreVariable[fyValidFrom]==$from_date || @$coreVariable[fyValidFrom]==$to_date)
 								{
 									if($totalDebit<0)
 									{
@@ -285,11 +287,11 @@ $this->set('title', 'Trial balance report');
 							</th>
 							<th style="text-align:right";>
 							<?php 
-							   if(@$coreVariable[fyValidFrom]>$from_date && @$coreVariable[fyValidFrom]<$to_date)
+							   if(@$coreVariable[fyValidFrom]>$from_date && @$coreVariable[fyValidFrom]<$to_date || @$coreVariable[fyValidFrom]==$from_date || @$coreVariable[fyValidFrom]==$to_date)
 								{ 
 									if($transactionDebitTotal>$transactionCreditTotal)
 									{
-										$cedit_diff1 =$transactionDebitTotal-$transactionCreditTotal;
+										$cedit_diff1 =$transactionDebitTotal-$transactionCreditTotal; 
 									}
 									if($transactionDebitTotal<$transactionCreditTotal)
 									{
@@ -301,7 +303,7 @@ $this->set('title', 'Trial balance report');
 							</th>
 							<th style="text-align:right";>
 							<?php 
-								if(@$coreVariable[fyValidFrom]>$from_date && @$coreVariable[fyValidFrom]<$to_date)
+								if(@$coreVariable[fyValidFrom]>$from_date && @$coreVariable[fyValidFrom]<$to_date || @$coreVariable[fyValidFrom]==$from_date || @$coreVariable[fyValidFrom]==$to_date)
 								{
 									echo @$cedit_diff1;
 								}
@@ -313,66 +315,32 @@ $this->set('title', 'Trial balance report');
 							<th scope="col">Total</th>
 							<th scope="col" style="text-align:right";>
 							<?php 
-								if(!empty($total1))
-								{
-									if($total1>$total2)
-									{
-										$debit = @$total1-$total2;
-									}
-									else{
-										$credit = @$total2-$total1;
-									}
-									
-										echo $total1=@$total1+@$credit;
-									
-								}
+								echo @$total1+@$debit_diff;
 							?>
 							</th>
 							<th scope="col" style="text-align:right";>
 							<?php 
-								if(!empty($total2))
-								{
-									echo $total2=@$total2+@$debit;
-									
-								}
+								echo @$total2+@$cedit_diff;
 							?>
 							</th>
 							<th scope="col" style="text-align:right";>
 							<?php 
-								if(!empty($total3))
-								{
-									if($total3>$total4)
-									{ 
-										$debit1 = $total3-$total4;
-									}
-									else
-									{ 
-										$credit1 = $total4-$total3;
-									}
-									
-										echo $total3=@$total3+@$credit1;
-									
-								}
+								echo @$total3+@$debit_diff1;
 							?>
 							</th>
 							<th scope="col" style="text-align:right";>
 							<?php
-								if(!empty($total4))
-								{
-									
-										echo $total4=@$total4+@$debit1;
-									
-								}
+								echo @$total4+@$cedit_diff1;
 							?>
 							</th>
 							<th scope="col" style="text-align:right";>
 							<?php 
-								echo @$total1+@$total3;
+								echo @$total5;
 							?>
 							</th>
 							<th scope="col" style="text-align:right";>
 							<?php 
-								echo @$total2+@$total4;
+								echo @$total6;
 							?>
 							</th>
 						</tr>

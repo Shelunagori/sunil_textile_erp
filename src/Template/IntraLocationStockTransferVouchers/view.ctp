@@ -2,7 +2,7 @@
 /**
  * @Author: PHP Poets IT Solutions Pvt. Ltd.
  */
-$this->set('title', 'Inter-Location Stock Transfer Vouchers View');
+$this->set('title', 'Inter Location stock Transfer Voucher View');
 ?>
 <style>
 table.fixed { table-layout:fixed; }
@@ -14,7 +14,7 @@ table.fixed td { overflow: hidden; }
 			<div class="portlet-title">
 				<div class="caption">
 					<i class="icon-bar-chart font-green-sharp hide"></i>
-					<span class="caption-subject font-green-sharp bold ">Inter-Location Stock Transfer Vouchers View</span>
+					<span class="caption-subject font-green-sharp bold ">Inter Location stock Transfer Voucher View</span>
 				</div>
 			</div>
 			<div class="portlet-body">
@@ -41,7 +41,7 @@ table.fixed td { overflow: hidden; }
 					<td colspan="3"><?php echo $intraLocationStockTransferVoucher->narration;?></td>
 				  </tr>
                 </table><br>
-       		    <table id="main_table" class="table table-condensed table-bordered" >
+       		    <table id="main_table" class="table table-condensed table-bordered" style="width:auto;" >
 					<thead>
 					<tr align="center">
 						<td align="left"><b>S.no</b></td>
@@ -62,7 +62,7 @@ table.fixed td { overflow: hidden; }
 								<?php echo $intra_location_stock_transfer_voucher_row->item->name;
 								?>
 							</td>
-							<td>
+							<td class="rightAligntextClass">
 								<?php echo $intra_location_stock_transfer_voucher_row->quantity;?>	
 							</td>
 						</tr>

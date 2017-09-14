@@ -63,7 +63,7 @@ class AccountingGroupsController extends AppController
             if ($this->AccountingGroups->save($accountingGroup)) {
                 $this->Flash->success(__('The accounting group has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'add']);
             }
             $this->Flash->error(__('The accounting group could not be saved. Please, try again.'));
         }

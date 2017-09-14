@@ -33,8 +33,8 @@ $this->set('title', 'Edit Customer');
 									<?php echo $this->Form->control('accounting_group_id',['class'=>'form-control input-sm select2me','label'=>false,'options' => $accountingGroups,'required'=>'required','value'=>$customer->ledger->accounting_group_id]); ?>
 								</div>
 								<div class="form-group">
-									<label>GSTIN <span class="required">*</span></label>
-									<?php echo $this->Form->control('gstin',['class'=>'form-control input-sm','placeholder'=>'Gst In','label'=>false,'autofocus']); ?>
+									<label>GSTIN </label>
+									<?php echo $this->Form->control('gstin',['class'=>'form-control input-sm gst','placeholder'=>'Eg:22ASDFR0967W6Z5','label'=>false,'autofocus']); ?>
 								</div>
 								<div class="form-group">
 									<label>Mobile </label>
@@ -168,6 +168,21 @@ $this->set('title', 'Edit Customer');
 	        $('.submit').attr('disabled','disabled');
 	        $('.submit').text('Submiting...');
     }
+	$(document).on('blur', '.gst', function(e)
+    { 
+		var mdl=$(this).val();
+		var numbers = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
+		if(mdl.match(numbers))
+		{
+			
+		}
+		else
+		{
+			$(this).val('');
+			return false;
+		}
+    });
+	";
 	";
 
 echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 

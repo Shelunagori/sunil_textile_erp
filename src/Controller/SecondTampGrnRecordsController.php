@@ -68,7 +68,7 @@ class SecondTampGrnRecordsController extends AppController
             if ($this->SecondTampGrnRecords->save($secondTampGrnRecord)) {
                 $this->Flash->success(__('The second tamp grn record has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'add']);
             }
             $this->Flash->error(__('The second tamp grn record could not be saved. Please, try again.'));
         }
@@ -273,7 +273,7 @@ class SecondTampGrnRecordsController extends AppController
 					{
 						$query = $this->SecondTampGrnRecords->Grns->GrnRows->Items->query();
 						$query->update()
-								->set(['Items.sales_rate' => $grn_row->sale_rate])
+								->set(['sales_rate' => $grn_row->sale_rate])
 								->where(['Items.id' =>$grn_row->item_id])
 								->execute();
 			        }
@@ -480,8 +480,6 @@ class SecondTampGrnRecordsController extends AppController
 					->where(['SecondTampGrnRecords.id' =>$SecondTampGrnRecord->id])
 					->execute();
 			}
-				
-				
 			
 			$query = $this->SecondTampGrnRecords->query();
 			$query->update()
@@ -526,7 +524,7 @@ class SecondTampGrnRecordsController extends AppController
 		$query = $this->SecondTampGrnRecords->query();
 				$query->delete()->where(['user_id'=> $user_id,'company_id'=>$company_id])->execute();
 				
-		return $this->redirect(['action' => 'import_step2','controller' =>'Grns']);
+		return $this->redirect(['action' => 'import_csv','controller' =>'Grns']);
            
 		
 	}

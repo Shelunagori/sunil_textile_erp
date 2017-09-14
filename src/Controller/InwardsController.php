@@ -59,7 +59,7 @@ class InwardsController extends AppController
             if ($this->Inwards->save($inward)) {
                 $this->Flash->success(__('The inward has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'add']);
             }
             $this->Flash->error(__('The inward could not be saved. Please, try again.'));
         }

@@ -66,11 +66,15 @@ License: You must have a valid license purchased only from themeforest(the above
 				<!-- BEGIN LOGO -->
 				<div class="page-logo" style="padding-left:2px;">
 					<a href="javascript:" style="margin-top: 5px;font-size: 16px;font-weight: bold;color: white;text-decoration: none;line-height: 15px;">
-						<span style="font-size:13px;"><?php echo $coreVariable['company_name']; ?></span><br/>
+						<span style="font-size:13px;"><?php echo $coreVariable['company_name']; ?></span> (<span style="font-size:13px;"><?php echo $coreVariable['location_name']; ?>)</span><br/>
+						
 						<span style="font-size:10px;">(<?php echo $coreVariable['fyValidFrom']; ?> to <?php echo $coreVariable['fyValidTo']; ?>)</span>
 					</a>
 					<div class="menu-toggler sidebar-toggler hide">
 						<!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
+					</div>
+					<div class="top-menu">
+					
 					</div>
 				</div>
 				<!-- END LOGO -->
@@ -162,6 +166,24 @@ License: You must have a valid license purchased only from themeforest(the above
 				e.preventDefault();
 			});
 		});
+		function round(value, exp) {
+		  if (typeof exp === 'undefined' || +exp === 0)
+			return Math.round(value);
+
+		  value = +value;
+		  exp = +exp;
+
+		  if (isNaN(value) || !(typeof exp === 'number' && exp % 1 === 0))
+			return NaN;
+
+		  // Shift
+		  value = value.toString().split('e');
+		  value = Math.round(+(value[0] + 'e' + (value[1] ? (+value[1] + exp) : exp)));
+
+		  // Shift back
+		  value = value.toString().split('e');
+		  return +(value[0] + 'e' + (value[1] ? (+value[1] - exp) : -exp));
+		}
 		</script>
 		<?= $this->fetch('scriptBottom')?>
 		<!-- END JAVASCRIPTS -->

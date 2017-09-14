@@ -82,7 +82,7 @@ echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'icon-home']
 echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-cogs']).'Masters & Setup', '/Users/masterSetup',['escape' => false]).'</li>';
 ?>
 <?php 
-echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-edit']).'Reports', '/Users/reportSetup',['escape' => false]).'</li>';
+echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-edit']).'Reports', '/Users/reports',['escape' => false]).'</li>';
 ?>
 <?php 
 echo '<li>'.$this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-lock']).'Logout', '/Users/logout',['escape' => false]).'</li>';
