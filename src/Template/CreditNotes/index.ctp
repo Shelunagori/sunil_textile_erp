@@ -46,8 +46,8 @@ $this->set('title', 'Sales Invoice List');
 								<td class="rightAligntextClass"><?= $this->Number->format($creditNote->total_igst) ?></td>
 								<td class="rightAligntextClass"><?= $this->Number->format($creditNote->amount_after_tax) ?></td>
 								<td class="actions">
-									<!--<?= $this->Html->link(__('View'), ['action' => 'view', $creditNote->id]) ?>-->
-									<?= $this->Html->link(__('Edit'), ['action' => 'edit', $creditNote->id]) ?>
+									<?= $this->Html->link(__('Edit'), ['action' => 'edit', $creditNote->id]) ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<?= $this->Html->link(__('View Bill'), ['action' => 'credit_note_bill', $creditNote->id]) ?>
 										</td>
 							</tr>
 							<?php endforeach; ?>

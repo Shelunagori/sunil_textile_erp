@@ -97,9 +97,9 @@ class CreditNotesTable extends Table
             ->requirePresence('voucher_no', 'create')
             ->notEmpty('voucher_no');
 
-        $validator
+       /*  $validator
             ->requirePresence('sales_invoice_no', 'create')
-            ->notEmpty('sales_invoice_no');
+            ->notEmpty('sales_invoice_no'); */
 
         $validator
             ->date('transaction_date')
