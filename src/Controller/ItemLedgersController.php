@@ -59,7 +59,7 @@ class ItemLedgersController extends AppController
             if ($this->ItemLedgers->save($itemLedger)) {
                 $this->Flash->success(__('The item ledger has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'add']);
             }
             $this->Flash->error(__('The item ledger could not be saved. Please, try again.'));
         }

@@ -75,7 +75,7 @@ class UnitsController extends AppController
             if ($this->Units->save($unit)) {
                 $this->Flash->success(__('The unit has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'add']);
             }
             $this->Flash->error(__('The unit could not be saved. Please, try again.'));
         }

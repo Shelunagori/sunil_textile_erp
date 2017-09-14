@@ -68,7 +68,7 @@ class SecondTampGrnRecordsController extends AppController
             if ($this->SecondTampGrnRecords->save($secondTampGrnRecord)) {
                 $this->Flash->success(__('The second tamp grn record has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'add']);
             }
             $this->Flash->error(__('The second tamp grn record could not be saved. Please, try again.'));
         }

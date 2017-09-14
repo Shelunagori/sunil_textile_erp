@@ -107,7 +107,7 @@ class GrnsController extends AppController
 					}
 				}
                 $this->Flash->success(__('The grn has been saved.'));
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'add']);
             }
             $this->Flash->error(__('The grn could not be saved. Please, try again.'));
         }

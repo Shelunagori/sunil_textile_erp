@@ -59,7 +59,7 @@ class LocationsController extends AppController
             if ($this->Locations->save($location)) {
                 $this->Flash->success(__('The location has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'add']);
             }
             $this->Flash->error(__('The location could not be saved. Please, try again.'));
         }

@@ -198,7 +198,7 @@ class SalesInvoicesController extends AppController
 			   }
 		   }
 		    $this->Flash->success(__('The sales invoice has been saved.'));
-            return $this->redirect(['action' => 'index']);
+            return $this->redirect(['action' => 'add']);
 		 }
 		 $this->Flash->error(__('The sales invoice could not be saved. Please, try again.'));
 		}

@@ -59,7 +59,7 @@ class OutwardsController extends AppController
             if ($this->Outwards->save($outward)) {
                 $this->Flash->success(__('The outward has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'add']);
             }
             $this->Flash->error(__('The outward could not be saved. Please, try again.'));
         }

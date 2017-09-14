@@ -106,7 +106,7 @@ class IntraLocationStockTransferVouchersController extends AppController
 				}
 					$this->Flash->success(__('The intra location stock transfer voucher has been saved.'));
 
-					return $this->redirect(['action' => 'index']);
+					return $this->redirect(['action' => 'add']);
 					
 				
             }
