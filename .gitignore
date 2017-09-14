@@ -28,3 +28,4 @@
 /vendors/*
 
 *.sqlite
+tmp/debug_kit.sqlite

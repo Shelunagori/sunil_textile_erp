@@ -46,46 +46,6 @@ class CreditNotesController extends AppController
         $this->set('creditNote', $creditNote);
         $this->set('_serialize', ['creditNote']);
     }
-	
-public function creditNoteBill($id=null)
-    {
-	
-	    $this->viewBuilder()->layout('');
-		$company_id=$this->Auth->User('session_company_id');
-		$stateDetails=$this->Auth->User('session_company');
-		$state_id=$stateDetails->state_id;
-		$invoiceBills= $this->CreditNotes->find()
-		->where(['CreditNotes.id'=>$id])
-		->contain(['Companies'=>['States'],'CreditNoteRows'=>['Items'=>['Sizes'], 'GstFigures']]);
-	
-	    foreach($invoiceBills->toArray() as $data){
-		foreach($data->s_invoice_rows as $credit_note_row){
-		$item_id=$credit_note_row->item_id;
-		$accountingEntries= $this->SalesInvoices->AccountingEntries->find()
-		->where(['AccountingEntries.credit_note_id'=>$data->id]);
-		$credit_note_row->accountEntries=$accountingEntries->toArray();
-		
-			$partyDetail= $this->CreditNotes->SalesInvoiceRows->Ledgers->find()
-			->where(['id'=>$data->party_ledger_id])->first();
-		    $partyCustomerid=$partyDetail->customer_id;
-			if($partyCustomerid>0)
-			{
-				$partyDetails= $this->SalesInvoices->Customers->find()
-				->where(['Customers.id'=>$partyCustomerid])
-				->contain(['States'])->first();
-				$data->partyDetails=$partyDetails;
-			}
-			else
-			{
-				$partyDetails=(object)['name'=>'Cash Customer', 'state_id'=>$state_id];
-				$data->partyDetails=$partyDetails;
-			}
-		}
-		}
-		$this->set(compact('invoiceBills'));
-        $this->set('_serialize', ['invoiceBills']);
-    }	
-	
 
     /**
      * Add method
@@ -594,4 +554,43 @@ public function creditNoteBill($id=null)
 
         return $this->redirect(['action' => 'index']);
     }
+	
+	public function creditNoteBill($id=null)
+    {
+	    $this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
+		$stateDetails=$this->Auth->User('session_company');
+		$state_id=$stateDetails->state_id;
+		$invoiceBills= $this->CreditNotes->find()
+		->where(['CreditNotes.id'=>$id])
+		->contain(['Companies'=>['States'],'CreditNoteRows'=>['Items'=>['Sizes'], 'GstFigures']]);
+	
+	    foreach($invoiceBills->toArray() as $data){
+		foreach($data->credit_note_rows as $credit_note_row){
+		$item_id=$credit_note_row->item_id;
+		$accountingEntries= $this->CreditNotes->AccountingEntries->find()
+		->where(['AccountingEntries.credit_note_id'=>$data->id]);
+		$credit_note_row->accountEntries=$accountingEntries->toArray();
+		
+			$partyDetail= $this->CreditNotes->CreditNoterows->Ledgers->find()
+			->where(['id'=>$data->party_ledger_id])->first();
+		    $partyCustomerid=$partyDetail->customer_id;
+			if($partyCustomerid>0)
+			{
+				$partyDetails= $this->CreditNotes->Customers->find()
+				->where(['Customers.id'=>$partyCustomerid])
+				->contain(['States'])->first();
+				$data->partyDetails=$partyDetails;
+			}
+			else
+			{
+				$partyDetails=(object)['name'=>'Cash Customer', 'state_id'=>$state_id];
+				$data->partyDetails=$partyDetails;
+			}
+		}
+		}
+		$this->set(compact('invoiceBills'));
+        $this->set('_serialize', ['invoiceBills']);
+    }
+		
 }

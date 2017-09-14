@@ -232,10 +232,11 @@ class LedgersController extends AppController
 		}
 		else
 		{ 
-            $from_date = date("Y-m-d",strtotime($this->coreVariable['fyValidFrom']));
-			$toDate    = $this->Ledgers->AccountingEntries->find()->order(['AccountingEntries.transaction_date'=>'DESC'])->First();
-			$to_date   = date("Y-m-d",strtotime($toDate->transaction_date));
+			 $from_date = date("Y-m-d",strtotime($this->coreVariable['fyValidFrom']));
+			 $toDate    = $this->Ledgers->AccountingEntries->find()->order(['AccountingEntries.transaction_date'=>'DESC'])->First();
+			@$to_date   = date("Y-m-d",strtotime($toDate->transaction_date));
 		}
+		//if($toDate){
 			$query = $this->Ledgers->AccountingEntries->find();
 				$CaseDebitOpeningBalance = $query->newExpr()
 					->addCase(
@@ -272,6 +273,7 @@ class LedgersController extends AppController
 				->autoFields(true)
 				->contain(['Ledgers']);
 				$TrialBalances = ($query);
+			
 				
 				$debitAmount = $this->Ledgers->Companies->ItemLedgers->find();
 				$debitAmount->select(['total_debit' => $debitAmount->func()->sum('ItemLedgers.amount')])

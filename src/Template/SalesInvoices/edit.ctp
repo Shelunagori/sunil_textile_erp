@@ -269,7 +269,7 @@ foreach($partyOptions as $partyOption)
 			<span class="itemQty" style="color:red;font-size:10px;"></span>
 			</td>
 			<td>
-				<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-medium calculation quantity rightAligntextClass','id'=>'check','required'=>'required','placeholder'=>'Quantity']); ?>
+				<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-medium calculation quantity rightAligntextClass','id'=>'check','required'=>'required','placeholder'=>'Quantity', 'value'=>1]); ?>
 			</td>
 			<td>
 				<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm calculation rate rightAligntextClass','required'=>'required','placeholder'=>'Rate', 'readonly'=>'readonly']); ?>

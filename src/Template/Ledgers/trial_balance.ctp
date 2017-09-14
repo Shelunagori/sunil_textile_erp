@@ -166,7 +166,7 @@ $this->set('title', 'Trial balance report');
 								if(!empty($transactionDebitTotal))
 								{
 									echo @$transactionDebitTotal;
-									$total3 =@$transactionDebitTotal;
+									@$total3 =@$transactionDebitTotal;
 								}
 							?>
 							</th>
@@ -236,7 +236,7 @@ $this->set('title', 'Trial balance report');
 									{
 										echo @$totalDebit;
 										$transactionDebitTotal +=round($totalDebit,2);
-										$total3 +=$totalDebit;
+										@$total3 +=$totalDebit;
 									}
 									
 								  } 
