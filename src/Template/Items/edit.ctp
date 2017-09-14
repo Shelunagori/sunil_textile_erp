@@ -75,19 +75,19 @@ $this->set('title', 'Edit Item');
 								<div class="form-group">
 									<label>Quantity </label>
 									<?php 
-									echo $this->Form->control('quantity',['class'=>'form-control input-sm qty calculation reverseCalculation','label'=>false,'placeholder'=>'Quantity','value'=>@$item->item_ledgers[0]->quantity]); ?>
+									echo $this->Form->control('quantity',['class'=>'rightAligntextClass form-control input-sm qty calculation reverseCalculation','label'=>false,'placeholder'=>'Quantity','value'=>@$item->item_ledgers[0]->quantity]); ?>
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
 									<label>Rate </label>
-									<?php echo $this->Form->control('rate',['class'=>'form-control input-sm rate calculation','label'=>false,'placeholder'=>'Rate','value'=>@$item->item_ledgers[0]->rate]); ?>
+									<?php echo $this->Form->control('rate',['class'=>'rightAligntextClass form-control input-sm rate calculation','label'=>false,'placeholder'=>'Rate','value'=>@$item->item_ledgers[0]->rate]); ?>
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
 									<label>Value </label>
-									<?php echo $this->Form->control('amount',['class'=>'form-control input-sm amt reverseCalculation','label'=>false,'placeholder'=>'Value','value'=>@$item->item_ledgers[0]->amount]); ?>
+									<?php echo $this->Form->control('amount',['class'=>'rightAligntextClass form-control input-sm amt reverseCalculation','label'=>false,'placeholder'=>'Value','value'=>@$item->item_ledgers[0]->amount]); ?>
 								</div>
 							</div>
 						</div>
@@ -95,7 +95,7 @@ $this->set('title', 'Edit Item');
 							<div class="col-md-4">
 								<div class="form-group">
 									<label>Sales Rate </label>
-									<?php echo $this->Form->control('sales_rate',['class'=>'form-control input-sm','label'=>false,'placeholder'=>'Sales Rate','required'=>'required']); ?>
+									<?php echo $this->Form->control('sales_rate',['class'=>'rightAligntextClass form-control input-sm','label'=>false,'placeholder'=>'Sales Rate','required'=>'required']); ?>
 								</div>
 							</div>
 						</div>
@@ -136,7 +136,7 @@ $this->set('title', 'Edit Item');
 								<div class="form-group hide_gst" <?php echo @$style;?>>
 									<label style="font-size: 10px;">Amount </label>
 									<?php 
-									echo $this->Form->control('gst_amount',['class'=>'form-control input-sm ','label'=>false,'placeholder'=>'Amount']); ?>
+									echo $this->Form->control('gst_amount',['class'=>'rightAligntextClass form-control input-sm ','label'=>false,'placeholder'=>'Amount']); ?>
 								</div>
 							</div>
 							<div class="col-md-4">

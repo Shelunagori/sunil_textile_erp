@@ -79,7 +79,7 @@ $this->set('title', 'Edit Supplier');
 										{
 											$value = @$account_entry->credit;
 										}
-										echo $this->Form->control('opening_balance_value',['class'=>'form-control input-sm','label'=>false,'value'=>@$value]);
+										echo $this->Form->control('opening_balance_value',['class'=>'rightAligntextClass form-control input-sm','label'=>false,'value'=>@$value,'placeholder'=>'Opening Balance']);
 									?>
 								</div>
 							</div>

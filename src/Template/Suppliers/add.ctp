@@ -69,7 +69,7 @@ $this->set('title', 'Create Supplier');
 							<div class="col-md-3" style="padding-right: 0px;">
 								<div class="form-group" >
 									<label>Opening balance value</label>
-									<?php echo $this->Form->control('opening_balance_value',['class'=>'form-control input-sm','label'=>false]);
+									<?php echo $this->Form->control('opening_balance_value',['class'=>'rightAligntextClass form-control input-sm','label'=>false,'placeholder'=>'Opening Balance']);
 									?>
 								</div>
 							</div>
