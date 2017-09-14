@@ -40,17 +40,17 @@ $this->set('title', 'Grn Records');
 						<tr>
 							<td><?= h(++$page_no) ?></td>
 							<td><?= h($secondTampGrnRecord->item_code) ?></td>
-							<td><?= $this->Number->format($secondTampGrnRecord->quantity) ?></td>
-							<td><?= $this->Number->format($secondTampGrnRecord->purchase_rate) ?></td>
-							<td><?= $this->Number->format($secondTampGrnRecord->sales_rate) ?></td>
+							<td class="rightAligntextClass"><?= $this->Number->format($secondTampGrnRecord->quantity) ?></td>
+							<td class="rightAligntextClass"><?= $this->Number->format($secondTampGrnRecord->purchase_rate) ?></td>
+							<td class="rightAligntextClass"><?= $this->Number->format($secondTampGrnRecord->sales_rate) ?></td>
 							<td><?= h($secondTampGrnRecord->is_addition_item_data_required) ?></td>
 							<td><?= h($secondTampGrnRecord->item_name) ?></td>
 							<td><?= h($secondTampGrnRecord->hsn_code) ?></td>
 							<td><?= h(@$secondTampGrnRecord->unit->name) ?></td>
 							<td><?= h($secondTampGrnRecord->gst_rate_fixed_or_fluid) ?></td>
-							<td><?= h(@$secondTampGrnRecord->FirstGstFigures->tax_percentage) ?></td>
-							<td><?= h(@$secondTampGrnRecord->amount_in_ref_of_gst_rate) ?></td>
-							<td><?= h(@$secondTampGrnRecord->SecondGstFigures->tax_percentage) ?></td>
+							<td class="rightAligntextClass"><?= h(@$secondTampGrnRecord->FirstGstFigures->tax_percentage) ?></td>
+							<td class="rightAligntextClass"><?= h(@$secondTampGrnRecord->amount_in_ref_of_gst_rate) ?></td>
+							<td class="rightAligntextClass"><?= h(@$secondTampGrnRecord->SecondGstFigures->tax_percentage) ?></td>
 							<td class="actions">
 								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $secondTampGrnRecord->id]) ?>
 								<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $secondTampGrnRecord->id], ['confirm' => __('Are you sure you want to delete # {0}?', $secondTampGrnRecord->id)]) ?>
