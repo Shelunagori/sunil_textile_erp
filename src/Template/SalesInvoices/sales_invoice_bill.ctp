@@ -7,21 +7,16 @@
 		foreach($data->sales_invoice_rows as $sales_invoice_row){?>
 			<?php }}?>
 			
-			
 <div style="width:300px; border:1px solid #333">
-
-		<table style=" font-family:arial, sans-serif; font-size:10px; padding-left:2px;padding-right:2px" width='100%' border='0'>
-   <tr><td class="strongClass"  height="40px" style="font-size:14px; text-align:center" colspan="4">  <strong>GST INVOICE</strong>
+		<table style=" font-family:arial, sans-serif; padding-left:2px;padding-right:2px" width='100%' border='0'>
+		<tr><td class="strongClass"  height="40px" style="font-size:14px; text-align:center" colspan="4"><strong>GST INVOICE</strong>
 		</td></tr>
-		
 		<?php foreach($invoiceBills->toArray() as $data){
 		foreach($data->sales_invoice_rows as $sales_invoice_row){?>
 			<?php }}?>
 		<tr><td colspan="4"><?=@$data->company->name?></td></tr>
 		<tr><td colspan="4"><?=@$data->company->address?></td></tr>
 		<tr><td colspan="4"><?=@$data->company->state->name?></td></tr>
-		
-		
 		
 		<tr><td colspan="4"></td></tr>
 		<tr><td colspan="4"></td></tr>
@@ -96,7 +91,15 @@
 		?>
 		<tr>
 		<td><?=$sales_invoice_row->item->name ?></td>
-		<td><?=@$sales_invoice_row->item->size->name ?></td>
+		<td><?php
+if(!empty($sales_invoice_row->item->size->name))
+{
+echo @$sales_invoice_row->item->size->name;
+}
+else{
+echo '-';
+}
+		?></td>
 		<td><?=$sales_invoice_row->quantity ?></td>
 		<td><?=$sales_invoice_row->rate ?></td>
 		</tr>
