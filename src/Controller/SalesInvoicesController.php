@@ -518,9 +518,40 @@ public function salesInvoiceBill($id=null)
 				$partyDetails=(object)['name'=>'Cash Customer', 'state_id'=>$state_id];
 				$data->partyDetails=$partyDetails;
 			}
+			if(@$data->company->state_id==$data->partyDetails->state_id){
+				$taxable_type='CGST/SGST';
+			}else{
+				$taxable_type='IGST';
+			}
+			
 		}
 		}
-		$this->set(compact('invoiceBills'));
+		//pr($id);exit;
+		$query = $this->SalesInvoices->SalesInvoiceRows->find();
+		
+		$totalTaxableAmt = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['sales_invoice_id']),
+				$query->newExpr()->add(['taxable_value']),
+				'integer'
+			);
+		$totalgstAmt = $query->newExpr()
+			->addCase(
+				$query->newExpr()->add(['sales_invoice_id']),
+				$query->newExpr()->add(['gst_value']),
+				'integer'
+			);
+		$query->select([
+			'total_taxable_amount' => $query->func()->sum($totalTaxableAmt),
+			'total_gst_amount' => $query->func()->sum($totalgstAmt),'sales_invoice_id','item_id'
+		])
+		->where(['SalesInvoiceRows.sales_invoice_id' => $id])
+		->group('gst_figure_id')
+		->autoFields(true)
+		->contain(['GstFigures']);
+        $sale_invoice_rows = ($query);
+		
+		$this->set(compact('invoiceBills','taxable_type','sale_invoice_rows'));
         $this->set('_serialize', ['invoiceBills']);
     }	
 	
