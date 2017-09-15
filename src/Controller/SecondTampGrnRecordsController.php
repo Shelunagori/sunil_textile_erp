@@ -326,18 +326,18 @@ class SecondTampGrnRecordsController extends AppController
 		$location_id=$this->Auth->User('session_location_id');
 		$SecondTampGrnRecords = $this->SecondTampGrnRecords->find()
 								->where(['user_id'=>$user_id,'company_id'=>$company_id,'processed'=>'no'])
-								->limit(5);
+								->limit(1);
 		if($SecondTampGrnRecords->count()==0){
 			goto Bottom;
 		}
 		foreach($SecondTampGrnRecords as $SecondTampGrnRecord){
-			if(empty($SecondTampGrnRecord->item_code)){
-				goto DoNotMarkYesValidToImport;
-			}
 			
 			$item=$this->SecondTampGrnRecords->Companies->Items->find()
 					->where(['Items.item_code'=>$SecondTampGrnRecord->item_code,'company_id'=>$company_id])->first();
 			if(!$item){
+				if(empty($SecondTampGrnRecord->hsn_code)){
+					goto DoNotMarkYesValidToImport;
+				}
 				
 				if(empty($SecondTampGrnRecord->provided_unit)){
 					goto DoNotMarkYesValidToImport;
@@ -439,7 +439,14 @@ class SecondTampGrnRecordsController extends AppController
 				
 				$item=$this->SecondTampGrnRecords->Companies->Items->newEntity();
 				$item->name=$SecondTampGrnRecord->item_name;
-				$item->item_code=$SecondTampGrnRecord->item_code;
+				if(!empty($SecondTampGrnRecord->item_code)){
+					$item->item_code=$SecondTampGrnRecord->item_code;
+					$data_to_encode = strtoupper($SecondTampGrnRecord->item_code);
+				}else{
+					$item->item_code=strtoupper(uniqid());
+					$data_to_encode = strtoupper(uniqid());
+				}
+				
 				$item->hsn_code=$SecondTampGrnRecord->hsn_code;
 				$item->unit_id=$unit->id;
 				$item->company_id=$company_id;
@@ -451,8 +458,8 @@ class SecondTampGrnRecordsController extends AppController
 				$item->sales_rate=$SecondTampGrnRecord->sales_rate;
 				$item->sales_rate_update_on=date("Y-m-d",strtotime($transaction_date));
 				$item->location_id=$location_id;
-				$item->item_code=strtoupper($SecondTampGrnRecord->item_code);
-				$data_to_encode = strtoupper($SecondTampGrnRecord->item_code);
+				//$item->item_code=strtoupper($SecondTampGrnRecord->item_code);
+				
 				if($this->SecondTampGrnRecords->Companies->Items->save($item)){
 					
 					$barcode = new BarcodeHelper(new \Cake\View\View());
