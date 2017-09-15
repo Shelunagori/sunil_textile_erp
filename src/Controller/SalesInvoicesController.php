@@ -596,6 +596,7 @@ public function salesInvoiceBill($id=null)
 				   $available_stock=$itemLedger->total_in;
 				   $stock_issue=$itemLedger->total_out;
 				 @$remaining=number_format($available_stock-$stock_issue, 2);
+				 $mainstock=str_replace(',','',$remaining);
 				 $stock='current stock is '. $remaining. ' ' .$itemUnit;
 				 if($remaining>0)
 				 {
@@ -604,7 +605,7 @@ public function salesInvoiceBill($id=null)
 				 else{
 				 $stockType='true';
 				 }
-				 $h=array('text'=>$stock, 'type'=>$stockType, 'itemid'=>$itemLedger->item_id);
+				 $h=array('text'=>$stock, 'type'=>$stockType, 'mainStock'=>$mainstock);
 				 echo  $f=json_encode($h);
 			  }
 		  }
