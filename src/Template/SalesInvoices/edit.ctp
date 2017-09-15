@@ -103,7 +103,7 @@ foreach($partyOptions as $partyOption)
 								<tr class="main_tr" class="tab">
 									<td>
 										<input type="hidden" name="salesInvoiceRow<?php echo $i;?>id" class="id" value="<?php echo $salesInvoiceRow->id; ?>">
-										<input type="text" name="" class="outStock" value="0">
+										<input type="hidden" name="" class="outStock" value="0">
 										<input type="hidden" name="gst_amount" class="gst_amount" value="">	
 										<input type="hidden" name="salesInvoiceRow<?php echo $i;?>gst_figure_id" class="gst_figure_id" value="<?php echo $salesInvoiceRow->gst_figure_id;?>">
 										<input type="hidden" name="" class="gst_figure_tax_percentage calculation" value="<?php echo $salesInvoiceRow->gst_figure->tax_percentage;?>">
@@ -111,7 +111,7 @@ foreach($partyOptions as $partyOption)
 										<input type="hidden" name="salesInvoiceRow<?php echo $i;?>gst_value" class="gstValue calculation" value="<?php echo $salesInvoiceRow->gst_value;?>">
 										<input type="hidden" name="exactgst_value" class="exactgst_value calculation" value="<?php $exactgst;?>">
 										<input type="hidden" name="" class="discountvalue calculation" value="">
-										<input type="text" name="" class="totStock " value="0">
+										<input type="hidden" name="" class="totStock " value="0">
 																
 										<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.item_id', ['empty'=>'-Item Name-','options'=>$itemOptions,'label' => false,'class' => 'form-control input-sm attrGet calculation','required'=>'required','value'=>$salesInvoiceRow->item->id]);
 										echo $this->Form->input('salesInvoiceRow.'.$i.'.id', ['value'=>$salesInvoiceRow->id,'type'=>'hidden']);	?>
@@ -258,8 +258,8 @@ foreach($partyOptions as $partyOption)
 	<tbody>
 		<tr class="main_tr" class="tab">
 			<td>
-			<input type="text" name="" class="outStock" value="0">
-			<input type="text" name="" class="totStock " value="0">
+			<input type="hidden" name="" class="outStock" value="0">
+			<input type="hidden" name="" class="totStock " value="0">
 			<input type="hidden" name="gst_amount" class="gst_amount" value="">
 			<input type="hidden" name="gst_figure_id" class="gst_figure_id" value="">
 			<input type="hidden" name="" class="gst_figure_tax_percentage calculation" value="">

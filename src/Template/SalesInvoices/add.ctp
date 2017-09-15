@@ -183,8 +183,8 @@ $this->set('title', 'Create Sales Invoice');
 	<tbody>
 		<tr class="main_tr" class="tab">
 			<td>
-				<input type="text" name="" class="outStock" value="0">
-				<input type="text" name="" class="totStock " value="0">
+				<input type="hidden" name="" class="outStock" value="0">
+				<input type="hidden" name="" class="totStock " value="0">
 				<input type="hidden" name="gst_figure_id" class="gst_figure_id" value="">
 				<input type="hidden" name="gst_amount" class="gst_amount" value="">
 				<input type="hidden" name="gst_figure_tax_percentage" class="gst_figure_tax_percentage calculation" value="">
@@ -242,12 +242,13 @@ $this->set('title', 'Create Sales Invoice');
 			var fetch=$.parseJSON(response);
 			var text=fetch.text;
 			var type=fetch.type;
-			var itemid=fetch.itemid;
+			var mainStock=fetch.mainStock;
+			//var itemid=fetch.itemid;
 			itemQ.find('.itemQty').html(text);
-			var suffix = text.match(/\d+/);
-			itemQ.find('.totStock').val(suffix);
-            itemQ.find('.totStock').addClass('itemid'+itemid);
-			itemQ.find('.totStock').attr('itemattr','itemid'+itemid);
+			//var suffix = text.match(/\d+/);
+			itemQ.find('.totStock').val(mainStock);
+           // itemQ.find('.totStock').addClass('itemid'+itemid);
+			//itemQ.find('.totStock').attr('itemattr','itemid'+itemid);
 			if(type=='true')
 			{
 				itemQ.find('.outStock').val(1);
@@ -298,7 +299,7 @@ $this->set('title', 'Create Sales Invoice');
 			//$(this).closest('tr').find('.output_igst_ledger_id').val(output_igst_ledger_id);
 		});
 		
-		$('.quantity').die().on('keyup',function(){
+		/* $('.quantity').die().on('keyup',function(){
 			var quantity=$(this).val();
 			var totStock=$(this).closest('tr').find('.totStock').val();
 			if(totStock < quantity)
@@ -307,7 +308,7 @@ $this->set('title', 'Create Sales Invoice');
 				$(this).closest('tr').find('.quantity').val('');
 			}
 		}); 
-		
+		 */
 		$('.delete-tr').die().live('click',function() 
 		{
 			$(this).closest('tr').remove();
@@ -526,8 +527,6 @@ $this->set('title', 'Create Sales Invoice');
 		{
 			return false;
 		}
-		
-		
 	}";
 
 echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 
