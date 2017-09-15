@@ -21,10 +21,12 @@ class AccountingGroupsController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
+        $company_id=$this->Auth->User('session_company_id');
+		$this->viewBuilder()->layout('index_layout');
         $this->paginate = [
             'contain' => ['NatureOfGroups', 'ParentAccountingGroups', 'Companies']
         ];
-        $accountingGroups = $this->paginate($this->AccountingGroups);
+        $accountingGroups = $this->paginate($this->AccountingGroups->find()->where(['AccountingGroups.company_id'=>$company_id]));
 
         $this->set(compact('accountingGroups'));
         $this->set('_serialize', ['accountingGroups']);
@@ -67,7 +69,7 @@ class AccountingGroupsController extends AppController
             }
             $this->Flash->error(__('The accounting group could not be saved. Please, try again.'));
         }
-        $natureOfGroups = $this->AccountingGroups->NatureOfGroups->find('list');
+        $natureOfGroups = $this->AccountingGroups->NatureOfGroups->find('list')->where(['company_id'=.$company_id]);
         $parentAccountingGroups = $this->AccountingGroups->ParentAccountingGroups->find('list');
         $this->set(compact('accountingGroup', 'natureOfGroups', 'parentAccountingGroups'));
         $this->set('_serialize', ['accountingGroup']);
@@ -95,7 +97,7 @@ class AccountingGroupsController extends AppController
             }
             $this->Flash->error(__('The accounting group could not be saved. Please, try again.'));
         }
-        $natureOfGroups = $this->AccountingGroups->NatureOfGroups->find('list');
+        $natureOfGroups = $this->AccountingGroups->NatureOfGroups->find('list')->where(['company_id'=.$company_id]);
         $parentAccountingGroups = $this->AccountingGroups->ParentAccountingGroups->find('list');
         $this->set(compact('accountingGroup', 'natureOfGroups', 'parentAccountingGroups'));
         $this->set('_serialize', ['accountingGroup']);
