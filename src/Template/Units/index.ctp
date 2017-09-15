@@ -31,7 +31,6 @@ $this->set('title', 'Unit');
 							<td><?= h($Unit->name) ?></td>
 							<td class="actions">
 								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $Unit->id]) ?>
-								<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $Unit->id], ['confirm' => __('Are you sure you want to delete # {0}?', $Unit->id)]) ?>
 							</td>
 						</tr>
 						<?php endforeach; ?>

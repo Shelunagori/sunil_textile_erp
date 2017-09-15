@@ -65,6 +65,12 @@ class CompaniesTable extends Table
 		$this->hasMany('GstFigures', [
             'foreignKey' => 'company_id'
         ]);
+		$this->hasMany('Ledgers', [
+            'foreignKey' => 'company_id'
+        ]);
+		$this->hasMany('AccountingGroups', [
+            'foreignKey' => 'company_id'
+        ]);
     }
 
     /**
@@ -93,7 +99,7 @@ class CompaniesTable extends Table
             ->requirePresence('books_beginning_from', 'create')
             ->notEmpty('books_beginning_from');
 
-        $validator
+        /* $validator
             ->requirePresence('address', 'create')
             ->notEmpty('address');
 
@@ -120,7 +126,7 @@ class CompaniesTable extends Table
 
         $validator
             ->requirePresence('pan', 'create')
-            ->notEmpty('pan');
+            ->notEmpty('pan'); */
 
         return $validator;
     }
