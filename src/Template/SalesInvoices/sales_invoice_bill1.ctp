@@ -86,10 +86,7 @@ margin-bottom: 0;
 		$igst=0;
 		$totalAmount=0;
 		
-		foreach($data->sales_invoice_rows as $sales_invoice_row){ ?>
-		
-		<tr><td colspan="4" style="border-top:1px dashed;"></td></tr>
-		<?php
+		foreach($data->sales_invoice_rows as $sales_invoice_row){
 			if(@$data->company->state_id==$data->partyDetails->state_id){
 			$gst_type=$sales_invoice_row->gst_figure->tax_percentage;
 			$gst_perc=$gst_type/2;
@@ -106,6 +103,7 @@ margin-bottom: 0;
 			$igst+=$gst;
 			}
 		?>
+		<tr><td colspan="4" style="border-top:1px dashed;"></td></tr>
 		<tr>
 			<td><?=$sales_invoice_row->item->name ?></td>
 			<td><?php
@@ -170,35 +168,35 @@ margin-bottom: 0;
 <thead>
 	<?php if($taxable_type!= 'IGST') { ?>
 	<tr>
-		<td align="center">Taxable Value</td>
-		<td align="center">CGST (%)</td>
-		<td align="center">CGST Amount</td>
-		<td align="center">SGST (%)</td>
-		<td align="center">SGST Amount</td>
+		<td>Taxable Value</td>
+		<td>CGST (%)</td>
+		<td>CGST Amount</td>
+		<td>SGST (%)</td>
+		<td>SGST Amount</td>
 	</tr>
 </thead>
 <tbody>
 	<?php } else { ?>
 	<tr>
-		<td align="center">Taxable Value</td>
-		<td align="center">IGST(%)</td>
-		<td align="center">IGST Amount</td>
+		<td>Taxable Value</td>
+		<td>IGST(%)</td>
+		<td>IGST Amount</td>
 	</tr>
 	<?php } ?>
 	<?php foreach($sale_invoice_rows as $sale_invoice_row){
 	if($taxable_type!= 'IGST') { ?>
 	<tr>
-		<td  style="text-align:right;"><?php echo number_format($sale_invoice_row->total_taxable_amount,2) ?></td>
-		<td style="text-align:right;"> <?= h($sale_invoice_row->gst_figure->tax_percentage/2) .'%' ?></td>
-		<td style="text-align:right;"><?php echo number_format($sale_invoice_row->total_gst_amount,2) ?></td>
+		<td style="text-align:right;"><?= h($sale_invoice_row->total_taxable_amount) ?></td>
 		<td style="text-align:right;"><?= h($sale_invoice_row->gst_figure->tax_percentage/2) .'%' ?></td>
-		<td style="text-align:right;"><?php echo number_format($sale_invoice_row->total_gst_amount/2,2) ?></td>
+		<td style="text-align:right;"><?= h($sale_invoice_row->total_gst_amount/2) ?></td>
+		<td style="text-align:right;"><?= h($sale_invoice_row->gst_figure->tax_percentage/2) .'%' ?></td>
+		<td style="text-align:right;"><?= h($sale_invoice_row->total_gst_amount/2) ?></td>
 	</tr>
 	<?php } else { ?>
 	<tr>
-		<td style="text-align:right;"><?php echo number_format($sale_invoice_row->total_taxable_amount,2) ?></td>
+		<td style="text-align:right;"><?= h($sale_invoice_row->total_taxable_amount) ?></td>
 		<td style="text-align:right;"><?= h($sale_invoice_row->gst_figure->tax_percentage).'%' ?></td>
-		<td style="text-align:right;"><?php echo number_format($sale_invoice_row->total_gst_amount,2) ?></td>
+		<td style="text-align:right;"><?= h($sale_invoice_row->total_gst_amount) ?></td>
 	</tr>
 	<?php } } ?>
 </tbody>
