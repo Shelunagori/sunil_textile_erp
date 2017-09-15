@@ -217,6 +217,7 @@ class SalesInvoicesController extends AppController
         $partyParentGroups = $this->SalesInvoices->SalesInvoiceRows->Ledgers->AccountingGroups->find()
 						->where(['AccountingGroups.company_id'=>$company_id, 'AccountingGroups.sale_invoice_party'=>'1']);
 		$partyGroups=[];
+		
 		foreach($partyParentGroups as $partyParentGroup)
 		{
 			$accountingGroups = $this->SalesInvoices->SalesInvoiceRows->Ledgers->AccountingGroups
@@ -572,7 +573,7 @@ public function salesInvoiceBill($id=null)
 				 else{
 				 $stockType='true';
 				 }
-				 $h=array('text'=>$stock, 'type'=>$stockType);
+				 $h=array('text'=>$stock, 'type'=>$stockType, 'itemid'=>$itemLedger->item_id);
 				 echo  $f=json_encode($h);
 			  }
 		  }
