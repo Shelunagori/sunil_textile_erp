@@ -2,7 +2,7 @@
 /**
  * @Author: PHP Poets IT Solutions Pvt. Ltd.
  */
-$this->set('title', 'Unit');
+$this->set('title', 'Shades');
 ?>
 <div class="row">
 	<div class="col-md-6">
@@ -10,7 +10,7 @@ $this->set('title', 'Unit');
 			<div class="portlet-title">
 				<div class="caption">
 					<i class="icon-bar-chart font-green-sharp hide"></i>
-					<span class="caption-subject font-green-sharp bold ">Units List</span>
+					<span class="caption-subject font-green-sharp bold ">Shades List</span>
 				</div>
 			</div>
 			<div class="portlet-body">
@@ -24,14 +24,14 @@ $this->set('title', 'Unit');
 					</thead>
 					<tbody>
 						<?php $i=0;
-								foreach ($Units as $Unit): 
+								foreach ($shades as $shade): 
 								$i++;?>
 						<tr>
 							<td><?php echo $i; ?></td>
-							<td><?= h($Unit->name) ?></td>
+							<td><?= h($shade->name) ?></td>
 							<td class="actions">
-								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $Unit->id]) ?>
-								<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $Unit->id], ['confirm' => __('Are you sure you want to delete # {0}?', $Unit->id)]) ?>
+								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $shade->id]) ?>
+								<?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $shade->id], ['confirm' => __('Are you sure you want to delete # {0}?', $shade->id)]) ?>
 							</td>
 						</tr>
 						<?php endforeach; ?>

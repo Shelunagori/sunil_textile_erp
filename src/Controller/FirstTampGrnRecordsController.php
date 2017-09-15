@@ -192,16 +192,25 @@ class FirstTampGrnRecordsController extends AppController
 		$count = $FirstTampGrnRecords->count();
 		foreach($FirstTampGrnRecords as $FirstTampGrnRecord)
 		{
-			$CheckItem = $this->FirstTampGrnRecords->Companies->Items->exists(['Items.item_code'=>$FirstTampGrnRecord->item_code,'Items.company_id'=>$company_id]);
-			$query = $this->FirstTampGrnRecords->query();
-			if(!$CheckItem)
-			{
-				
+			if(!empty($FirstTampGrnRecord->item_code)){
+				$CheckItem = $this->FirstTampGrnRecords->Companies->Items->exists(['Items.item_code'=>$FirstTampGrnRecord->item_code,'Items.company_id'=>$company_id]);
+				$query = $this->FirstTampGrnRecords->query();
+				if(!$CheckItem)
+				{
+					
+					$query->update()
+						->set(['is_addition_item_data_required' => 'Yes'])
+						->where(['FirstTampGrnRecords.id' =>$FirstTampGrnRecord->id])
+						->execute();
+				}
+			}else{
+				$query = $this->FirstTampGrnRecords->query();
 				$query->update()
-					->set(['is_addition_item_data_required' => 'Yes'])
-					->where(['FirstTampGrnRecords.id' =>$FirstTampGrnRecord->id])
-					->execute();
+						->set(['is_addition_item_data_required' => 'Yes'])
+						->where(['FirstTampGrnRecords.id' =>$FirstTampGrnRecord->id])
+						->execute();
 			}
+			
 			
 				$query->update()
 					->set(['processed' => 'Yes'])

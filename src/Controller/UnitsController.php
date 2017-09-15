@@ -20,29 +20,13 @@ class UnitsController extends AppController
      */
     public function index($id=null)
     {
+		
 		$this->viewBuilder()->layout('index_layout');
-		if(!empty($id)){ 
-			$unit = $this->Units->get($id, [
-            'contain' => []
-			]);
-		}else{
-			 $unit = $this->Units->newEntity();
-		}
-		
-		if ($this->request->is(['patch', 'post', 'put'])) {
-            $unit = $this->Units->patchEntity($unit, $this->request->getData());
-            if ($this->Units->save($unit)) {
-                $this->Flash->success(__('The unit has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The unit could not be saved. Please, try again.'));
-        }
-		
-        $units = $this->paginate($this->Units);
-
-        $this->set(compact('units','unit'));
-        $this->set('_serialize', ['units']);
+		$company_id=$this->Auth->User('session_company_id');
+        $Units = $this->paginate($this->Units->find()->where(['company_id'=>$company_id])->contain([]));
+       
+        $this->set(compact('Units'));
+        $this->set('_serialize', ['Units']);
     }
 
     /**
@@ -54,6 +38,8 @@ class UnitsController extends AppController
      */
     public function view($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
         $unit = $this->Units->get($id, [
             'contain' => ['Items']
         ]);
@@ -69,8 +55,11 @@ class UnitsController extends AppController
      */
     public function add()
     {
+		$this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
         $unit = $this->Units->newEntity();
-        if ($this->request->is('post')) {
+        $this->request->data['company_id'] =$company_id;
+		if ($this->request->is('post')) {
             $unit = $this->Units->patchEntity($unit, $this->request->getData());
             if ($this->Units->save($unit)) {
                 $this->Flash->success(__('The unit has been saved.'));
@@ -92,10 +81,13 @@ class UnitsController extends AppController
      */
     public function edit($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
         $unit = $this->Units->get($id, [
             'contain' => []
         ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
+        $this->request->data['company_id'] =$company_id;
+		if ($this->request->is(['patch', 'post', 'put'])) {
             $unit = $this->Units->patchEntity($unit, $this->request->getData());
             if ($this->Units->save($unit)) {
                 $this->Flash->success(__('The unit has been saved.'));
@@ -117,6 +109,8 @@ class UnitsController extends AppController
      */
     public function delete($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
         $this->request->allowMethod(['post', 'delete']);
         $unit = $this->Units->get($id);
         if ($this->Units->delete($unit)) {
