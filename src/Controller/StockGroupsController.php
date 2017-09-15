@@ -21,10 +21,11 @@ class StockGroupsController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-        $this->paginate = [
+		$company_id=$this->Auth->User('session_company_id');
+		$this->paginate = [
             'contain' => ['ParentStockGroups', 'Companies']
         ];
-        $stockGroups = $this->paginate($this->StockGroups);
+        $stockGroups = $this->paginate($this->StockGroups->find()->where(['StockGroups.company_id'=>$company_id]));
 
         $this->set(compact('stockGroups'));
         $this->set('_serialize', ['stockGroups']);

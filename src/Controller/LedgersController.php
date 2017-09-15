@@ -21,10 +21,11 @@ class LedgersController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-        $this->paginate = [
+		$company_id=$this->Auth->User('session_company_id');
+		$this->paginate = [
             'contain' => ['AccountingGroups', 'Companies']
         ];
-        $ledgers = $this->paginate($this->Ledgers->find());
+        $ledgers = $this->paginate($this->Ledgers->find()->where(['Ledgers.company_id'=>$company_id]));
         //pr($ledgers->toArray());exit;
         $this->set(compact('ledgers'));
         $this->set('_serialize', ['ledgers']);
@@ -39,6 +40,8 @@ class LedgersController extends AppController
      */
     public function view($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
         $ledger = $this->Ledgers->get($id, [
             'contain' => ['AccountingGroups', 'Suppliers', 'Customers', 'AccountingEntries']
         ]);
@@ -110,8 +113,8 @@ class LedgersController extends AppController
 		$accountingGroups = $this->Ledgers->AccountingGroups->find('list')->where(['id NOT IN'=>$alldebtors]);
 		
 			
-        $suppliers = $this->Ledgers->Suppliers->find('list');
-        $customers = $this->Ledgers->Customers->find('list');
+        $suppliers = $this->Ledgers->Suppliers->find('list')->where(['company_id'=>$company_id]);
+        $customers = $this->Ledgers->Customers->find('list')->where(['company_id'=>$company_id]);
         $this->set(compact('ledger', 'accountingGroups',  'suppliers', 'customers'));
         $this->set('_serialize', ['ledger']);
     }
@@ -186,8 +189,8 @@ class LedgersController extends AppController
 		$datacreditor[]=$SundryCredior->id;
 		$alldebtors=array_merge($datadebtor,$debtorArray,$datacreditor,$creditorArray);
 		$accountingGroups = $this->Ledgers->AccountingGroups->find('list')->where(['id NOT IN'=>$alldebtors]);
-		$suppliers = $this->Ledgers->Suppliers->find('list');
-        $customers = $this->Ledgers->Customers->find('list');
+		$suppliers = $this->Ledgers->Suppliers->find('list')->where(['company_id'=>$company_id]);
+        $customers = $this->Ledgers->Customers->find('list')->where(['company_id'=>$company_id]);
         $this->set(compact('ledger', 'accountingGroups', 'suppliers', 'customers'));
         $this->set('_serialize', ['ledger']);
     }
@@ -233,7 +236,7 @@ class LedgersController extends AppController
 		else
 		{ 
 			 $from_date = date("Y-m-d",strtotime($this->coreVariable['fyValidFrom']));
-			 $toDate    = $this->Ledgers->AccountingEntries->find()->order(['AccountingEntries.transaction_date'=>'DESC'])->First();
+			 $toDate    = $this->Ledgers->AccountingEntries->find()->where(['company_id'=>$company_id])->order(['AccountingEntries.transaction_date'=>'DESC'])->First();
 			@$to_date   = date("Y-m-d",strtotime($toDate->transaction_date));
 		}
 		//if($toDate){
@@ -340,7 +343,7 @@ class LedgersController extends AppController
 								return $q->find('children', ['for' => 1])->find('threaded')->contain(['ParentAccountingGroups']);
 							}]]);
 			$TrialBalances = ($query);
-			pr($TrialBalances->toArray());exit;
+
 		$this->set(compact('ledger','from_date','to_date','TrialBalances'));
         $this->set('_serialize', ['ledger']);
 	}

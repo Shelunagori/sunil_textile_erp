@@ -20,10 +20,12 @@ class ItemLedgersController extends AppController
      */
     public function index()
     {
+		$this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
         $this->paginate = [
             'contain' => ['Items']
         ];
-        $itemLedgers = $this->paginate($this->ItemLedgers);
+        $itemLedgers = $this->paginate($this->ItemLedgers->find()->where(['ItemLedgers.company_id'=>$company_id]));
 
         $this->set(compact('itemLedgers'));
         $this->set('_serialize', ['itemLedgers']);
@@ -53,6 +55,8 @@ class ItemLedgersController extends AppController
      */
     public function add()
     {
+		$this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
         $itemLedger = $this->ItemLedgers->newEntity();
         if ($this->request->is('post')) {
             $itemLedger = $this->ItemLedgers->patchEntity($itemLedger, $this->request->getData());
@@ -63,7 +67,7 @@ class ItemLedgersController extends AppController
             }
             $this->Flash->error(__('The item ledger could not be saved. Please, try again.'));
         }
-        $items = $this->ItemLedgers->Items->find('list');
+        $items = $this->ItemLedgers->Items->find('list')->where(['company_id'=>$company_id]);
         $this->set(compact('itemLedger', 'items'));
         $this->set('_serialize', ['itemLedger']);
     }
@@ -77,6 +81,8 @@ class ItemLedgersController extends AppController
      */
     public function edit($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
         $itemLedger = $this->ItemLedgers->get($id, [
             'contain' => []
         ]);
@@ -89,7 +95,7 @@ class ItemLedgersController extends AppController
             }
             $this->Flash->error(__('The item ledger could not be saved. Please, try again.'));
         }
-        $items = $this->ItemLedgers->Items->find('list');
+        $items = $this->ItemLedgers->Items->find('list')->where(['company_id'=>$company_id]);
         $this->set(compact('itemLedger', 'items'));
         $this->set('_serialize', ['itemLedger']);
     }

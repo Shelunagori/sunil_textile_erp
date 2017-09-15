@@ -21,10 +21,11 @@ class SalesInvoicesController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-		 $this->paginate = [
+		$company_id=$this->Auth->User('session_company_id');
+		$this->paginate = [
             'contain' => ['Companies', 'PartyLedgers', 'SalesLedgers']
         ];
-		$salesInvoice = $this->SalesInvoices->find();
+		$salesInvoice = $this->SalesInvoices->find()->where(['SalesInvoices.company_id'=>$company_id]);
 		$salesInvoices = $this->paginate($salesInvoice);
 		
         $this->set(compact('salesInvoices'));
@@ -493,14 +494,14 @@ public function salesInvoiceBill($id=null)
 		$stateDetails=$this->Auth->User('session_company');
 		$state_id=$stateDetails->state_id;
 		$invoiceBills= $this->SalesInvoices->find()
-		->where(['SalesInvoices.id'=>$id])
+		->where(['SalesInvoices.id'=>$id,'SalesInvoices.company_id'=>$company_id])
 		->contain(['Companies'=>['States'],'SalesInvoiceRows'=>['Items'=>['Sizes'], 'GstFigures']]);
 	
 	    foreach($invoiceBills->toArray() as $data){
 		foreach($data->sales_invoice_rows as $sales_invoice_row){
 		$item_id=$sales_invoice_row->item_id;
 		$accountingEntries= $this->SalesInvoices->AccountingEntries->find()
-		->where(['AccountingEntries.sales_invoice_id'=>$data->id]);
+		->where(['AccountingEntries.sales_invoice_id'=>$data->id,'AccountingEntries.company_id'=>$company_id]);
 		$sales_invoice_row->accountEntries=$accountingEntries->toArray();
 		
 			$partyDetail= $this->SalesInvoices->SalesInvoiceRows->Ledgers->find()

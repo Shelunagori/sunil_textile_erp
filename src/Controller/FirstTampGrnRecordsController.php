@@ -20,6 +20,8 @@ class FirstTampGrnRecordsController extends AppController
      */
     public function index()
     {
+		$this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
         $this->paginate = [
             'contain' => ['Users']
         ];
@@ -38,6 +40,8 @@ class FirstTampGrnRecordsController extends AppController
      */
     public function view($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
         $firstTampGrnRecord = $this->FirstTampGrnRecords->get($id, [
             'contain' => ['Users']
         ]);
@@ -53,6 +57,8 @@ class FirstTampGrnRecordsController extends AppController
      */
     public function add()
     {
+		$this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
         $firstTampGrnRecord = $this->FirstTampGrnRecords->newEntity();
         if ($this->request->is('post')) {
             $firstTampGrnRecord = $this->FirstTampGrnRecords->patchEntity($firstTampGrnRecord, $this->request->getData());
@@ -77,6 +83,8 @@ class FirstTampGrnRecordsController extends AppController
      */
     public function edit($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
         $firstTampGrnRecord = $this->FirstTampGrnRecords->get($id, [
             'contain' => []
         ]);
@@ -103,6 +111,7 @@ class FirstTampGrnRecordsController extends AppController
      */
     public function delete($id = null)
     {
+		
         $this->request->allowMethod(['post', 'delete']);
         $firstTampGrnRecord = $this->FirstTampGrnRecords->get($id);
         if ($this->FirstTampGrnRecords->delete($firstTampGrnRecord)) {
@@ -200,21 +209,21 @@ class FirstTampGrnRecordsController extends AppController
 					
 					$query->update()
 						->set(['is_addition_item_data_required' => 'Yes'])
-						->where(['FirstTampGrnRecords.id' =>$FirstTampGrnRecord->id])
+						->where(['FirstTampGrnRecords.id' =>$FirstTampGrnRecord->id,'company_id'=>$company_id])
 						->execute();
 				}
 			}else{
 				$query = $this->FirstTampGrnRecords->query();
 				$query->update()
 						->set(['is_addition_item_data_required' => 'Yes'])
-						->where(['FirstTampGrnRecords.id' =>$FirstTampGrnRecord->id])
+						->where(['FirstTampGrnRecords.id' =>$FirstTampGrnRecord->id,'company_id'=>$company_id])
 						->execute();
 			}
 			
 			
 				$query->update()
 					->set(['processed' => 'Yes'])
-					->where(['FirstTampGrnRecords.id' =>$FirstTampGrnRecord->id])
+					->where(['FirstTampGrnRecords.id' =>$FirstTampGrnRecord->id,'company_id'=>$company_id])
 					->execute();
 					
 		}
