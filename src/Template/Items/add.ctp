@@ -41,7 +41,7 @@ $this->set('title', 'Create Item');
 							<div class="col-md-6">
 								<div class="form-group">
 									<label>Unit <span class="required">*</span></label>
-									<?php echo $this->Form->control('unit_id',['class'=>'form-control input-sm select2me','label'=>false,'empty'=>'-Unit-', 'options' => $units,'required'=>'required']); ?>
+									<?php echo $this->Form->control('unit_id',['class'=>'form-control input-sm select2me','label'=>false, 'options' => $units,'required'=>'required']); ?>
 								</div>
 							</div>
 							<div class="col-md-6">
