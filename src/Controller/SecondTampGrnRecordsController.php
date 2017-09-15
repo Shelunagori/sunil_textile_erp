@@ -72,7 +72,7 @@ class SecondTampGrnRecordsController extends AppController
             }
             $this->Flash->error(__('The second tamp grn record could not be saved. Please, try again.'));
         }
-        $users = $this->SecondTampGrnRecords->Users->find('list');
+        $users = $this->SecondTampGrnRecords->Users->find('list', ['limit' => 200]);
         $this->set(compact('secondTampGrnRecord', 'users'));
         $this->set('_serialize', ['secondTampGrnRecord']);
     }
@@ -146,7 +146,7 @@ class SecondTampGrnRecordsController extends AppController
             }
             $this->Flash->error(__('The second tamp grn record could not be saved. Please, try again.'));
         }
-		$units = $this->SecondTampGrnRecords->Units->find('list')->where(['company_id'=>$company_id]);
+		$units = $this->SecondTampGrnRecords->Units->find('list');
         $users = $this->SecondTampGrnRecords->Users->find('list');
 		$gstFigures = $this->SecondTampGrnRecords->GstFigures->find('list')->where(['GstFigures.company_id'=>$company_id]);
         $this->set(compact('secondTampGrnRecord', 'users','units','gstFigures'));

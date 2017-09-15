@@ -21,11 +21,10 @@ class PurchaseVouchersController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-		$company_id=$this->Auth->User('session_company_id');
-		$this->paginate = [
+        $this->paginate = [
             'contain' => ['Companies']
         ];
-        $purchaseVouchers = $this->paginate($this->PurchaseVouchers->find()->where(['PurchaseVouchers.company_id'=>$company_id]));
+        $purchaseVouchers = $this->paginate($this->PurchaseVouchers);
 
         $this->set(compact('purchaseVouchers'));
         $this->set('_serialize', ['purchaseVouchers']);

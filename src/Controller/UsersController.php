@@ -25,9 +25,8 @@ class UsersController extends AppController
 	
     public function login()
     {
-		$this->viewBuilder()->layout('index_layout');
-		$company_id=$this->Auth->User('session_company_id');		
-		if ($this->request->is('post')) 
+		$this->viewBuilder()->layout('login');
+        if ($this->request->is('post')) 
 		{
             $user = $this->Auth->identify();
             if ($user) 
@@ -70,7 +69,7 @@ class UsersController extends AppController
      */
     public function index()
     {
-        $users = $this->paginate($this->Users->find()->where(['company_id'=>$company_id]));
+        $users = $this->paginate($this->Users);
 
         $this->set(compact('users'));
         $this->set('_serialize', ['users']);

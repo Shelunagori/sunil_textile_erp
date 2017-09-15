@@ -21,11 +21,10 @@ class SuppliersController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-		$company_id=$this->Auth->User('session_company_id');
-		$this->paginate = [
+        $this->paginate = [
             'contain' => ['States']
         ];
-        $suppliers = $this->paginate($this->Suppliers->find()->where(['Suppliers.company_id'=>$company_id]));
+        $suppliers = $this->paginate($this->Suppliers->find());
 
         $this->set(compact('suppliers'));
         $this->set('_serialize', ['suppliers']);

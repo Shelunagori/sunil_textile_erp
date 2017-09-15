@@ -20,12 +20,10 @@ class LocationsController extends AppController
      */
     public function index()
     {
-		$this->viewBuilder()->layout('index_layout');
-		$company_id=$this->Auth->User('session_company_id');
         $this->paginate = [
             'contain' => ['Companies']
         ];
-        $locations = $this->paginate($this->Locations->find()->where(['company_id'=>$company_id]));
+        $locations = $this->paginate($this->Locations);
 
         $this->set(compact('locations'));
         $this->set('_serialize', ['locations']);

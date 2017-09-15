@@ -20,8 +20,6 @@ class InwardsController extends AppController
      */
     public function index()
     {
-		$this->viewBuilder()->layout('index_layout');
-		$company_id=$this->Auth->User('session_company_id');
         $this->paginate = [
             'contain' => ['Items', 'StockJournals']
         ];
@@ -40,8 +38,6 @@ class InwardsController extends AppController
      */
     public function view($id = null)
     {
-		$this->viewBuilder()->layout('index_layout');
-		$company_id=$this->Auth->User('session_company_id');
         $inward = $this->Inwards->get($id, [
             'contain' => ['Items', 'StockJournals']
         ]);
@@ -57,8 +53,6 @@ class InwardsController extends AppController
      */
     public function add()
     {
-		$this->viewBuilder()->layout('index_layout');
-		$company_id=$this->Auth->User('session_company_id');
         $inward = $this->Inwards->newEntity();
         if ($this->request->is('post')) {
             $inward = $this->Inwards->patchEntity($inward, $this->request->getData());
@@ -69,8 +63,8 @@ class InwardsController extends AppController
             }
             $this->Flash->error(__('The inward could not be saved. Please, try again.'));
         }
-        $items = $this->Inwards->Items->find('list')->where(['company_id'=>$company_id]);
-        $stockJournals = $this->Inwards->StockJournals->find('list')->where(['company_id'=>$company_id]);
+        $items = $this->Inwards->Items->find('list');
+        $stockJournals = $this->Inwards->StockJournals->find('list');
         $this->set(compact('inward', 'items', 'stockJournals'));
         $this->set('_serialize', ['inward']);
     }
@@ -84,8 +78,6 @@ class InwardsController extends AppController
      */
     public function edit($id = null)
     {
-		$this->viewBuilder()->layout('index_layout');
-		$company_id=$this->Auth->User('session_company_id');
         $inward = $this->Inwards->get($id, [
             'contain' => []
         ]);
@@ -98,8 +90,8 @@ class InwardsController extends AppController
             }
             $this->Flash->error(__('The inward could not be saved. Please, try again.'));
         }
-        $items = $this->Inwards->Items->find('list')->where(['company_id'=>$company_id]);
-        $stockJournals = $this->Inwards->StockJournals->find('list')->where(['company_id'=>$company_id]);
+        $items = $this->Inwards->Items->find('list');
+        $stockJournals = $this->Inwards->StockJournals->find('list');
         $this->set(compact('inward', 'items', 'stockJournals'));
         $this->set('_serialize', ['inward']);
     }

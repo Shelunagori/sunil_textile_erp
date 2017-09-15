@@ -21,11 +21,10 @@ class CreditNotesController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-		$company_id=$this->Auth->User('session_company_id');
         $this->paginate = [
             'contain' => ['Companies','SalesLedgers','PartyLedgers','CreditNoteRows']
         ];
-		$creditNote = $this->CreditNotes->find()->where(['CreditNotes.company_id'=>$company_id]);
+		$creditNote = $this->CreditNotes->find();
 		$creditNotes = $this->paginate($creditNote);
         $this->set(compact('creditNotes'));
         $this->set('_serialize', ['creditNotes']);
@@ -40,8 +39,6 @@ class CreditNotesController extends AppController
      */
     public function view($id = null)
     {
-		$this->viewBuilder()->layout('index_layout');
-		$company_id=$this->Auth->User('session_company_id');
         $creditNote = $this->CreditNotes->get($id, [
             'contain' => ['Companies', 'PartyLedgers', 'SalesLedgers', 'CreditNoteRows']
         ]);
@@ -565,14 +562,14 @@ class CreditNotesController extends AppController
 		$stateDetails=$this->Auth->User('session_company');
 		$state_id=$stateDetails->state_id;
 		$invoiceBills= $this->CreditNotes->find()
-		->where(['CreditNotes.id'=>$id,'CreditNotes.company_id'=>$company_id])
+		->where(['CreditNotes.id'=>$id])
 		->contain(['Companies'=>['States'],'CreditNoteRows'=>['Items'=>['Sizes'], 'GstFigures']]);
 	
 	    foreach($invoiceBills->toArray() as $data){
 		foreach($data->credit_note_rows as $credit_note_row){
 		$item_id=$credit_note_row->item_id;
 		$accountingEntries= $this->CreditNotes->AccountingEntries->find()
-		->where(['AccountingEntries.credit_note_id'=>$data->id,'AccountingEntries.company_id'=>$company_id]);
+		->where(['AccountingEntries.credit_note_id'=>$data->id]);
 		$credit_note_row->accountEntries=$accountingEntries->toArray();
 		
 			$partyDetail= $this->CreditNotes->CreditNoterows->Ledgers->find()
@@ -581,7 +578,7 @@ class CreditNotesController extends AppController
 			if($partyCustomerid>0)
 			{
 				$partyDetails= $this->CreditNotes->Customers->find()
-				->where(['Customers.id'=>$partyCustomerid,'Customers.company_id'=>$company_id])
+				->where(['Customers.id'=>$partyCustomerid])
 				->contain(['States'])->first();
 				$data->partyDetails=$partyDetails;
 			}

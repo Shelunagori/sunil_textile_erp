@@ -20,12 +20,10 @@ class OutwardsController extends AppController
      */
     public function index()
     {
-		$this->viewBuilder()->layout('index_layout');
-		$company_id=$this->Auth->User('session_company_id');
         $this->paginate = [
             'contain' => ['Items', 'StockJournals']
         ];
-        $outwards = $this->paginate($this->Outwards->find()->where(['Outwards.company_id'=>$company_id]));
+        $outwards = $this->paginate($this->Outwards);
 
         $this->set(compact('outwards'));
         $this->set('_serialize', ['outwards']);
@@ -55,8 +53,6 @@ class OutwardsController extends AppController
      */
     public function add()
     {
-		$this->viewBuilder()->layout('index_layout');
-		$company_id=$this->Auth->User('session_company_id');
         $outward = $this->Outwards->newEntity();
         if ($this->request->is('post')) {
             $outward = $this->Outwards->patchEntity($outward, $this->request->getData());
@@ -67,8 +63,8 @@ class OutwardsController extends AppController
             }
             $this->Flash->error(__('The outward could not be saved. Please, try again.'));
         }
-        $items = $this->Outwards->Items->find('list')->where(['company_id'=>$company_id]);
-        $stockJournals = $this->Outwards->StockJournals->find('list')->where(['company_id'=>$company_id]);
+        $items = $this->Outwards->Items->find('list');
+        $stockJournals = $this->Outwards->StockJournals->find('list');
         $this->set(compact('outward', 'items', 'stockJournals'));
         $this->set('_serialize', ['outward']);
     }
@@ -82,9 +78,7 @@ class OutwardsController extends AppController
      */
     public function edit($id = null)
     {
-        $this->viewBuilder()->layout('index_layout');
-		$company_id=$this->Auth->User('session_company_id');
-		$outward = $this->Outwards->get($id, [
+        $outward = $this->Outwards->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -96,8 +90,8 @@ class OutwardsController extends AppController
             }
             $this->Flash->error(__('The outward could not be saved. Please, try again.'));
         }
-        $items = $this->Outwards->Items->find('list')->where(['company_id'=>$company_id]);
-        $stockJournals = $this->Outwards->StockJournals->find('list')->where(['company_id'=>$company_id]);
+        $items = $this->Outwards->Items->find('list');
+        $stockJournals = $this->Outwards->StockJournals->find('list');
         $this->set(compact('outward', 'items', 'stockJournals'));
         $this->set('_serialize', ['outward']);
     }

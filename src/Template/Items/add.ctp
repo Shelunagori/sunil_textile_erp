@@ -94,7 +94,7 @@ $this->set('title', 'Create Item');
 							<div class="col-md-4">
 								<div class="form-group">
 									<label>Sales Rate </label>
-									<?php echo $this->Form->control('sales_rate',['class'=>'rightAligntextClass form-control input-sm','type'=>'text','label'=>false,'placeholder'=>'Sales Rate','required'=>'required']); ?>
+									<?php echo $this->Form->control('sales_rate',['class'=>'rightAligntextClass form-control input-sm','label'=>false,'placeholder'=>'Sales Rate','required'=>'required']); ?>
 								</div>
 							</div>
 						</div>
@@ -126,7 +126,7 @@ $this->set('title', 'Create Item');
 							<div class="col-md-4">
 								<div class="form-group hide_gst">
 									<label style="font-size: 10px;">Amount </label>
-									<?php echo $this->Form->control('gst_amount',['class'=>'rightAligntextClass form-control input-sm removeAddRequired','type'=>'text','label'=>false,'placeholder'=>'Amount','required'=>'required']); ?>
+									<?php echo $this->Form->control('gst_amount',['class'=>'rightAligntextClass form-control input-sm removeAddRequired','label'=>false,'placeholder'=>'Amount','required'=>'required']); ?>
 								</div>
 							</div>
 							<div class="col-md-4">
@@ -302,6 +302,7 @@ $this->set('title', 'Create Item');
 						url: url,
 						type: 'GET',
 					}).done(function(response) {
+						alert(response);
 						response = $.parseJSON(response);
 						if(response.is_unique=='yes')
 						{

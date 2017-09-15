@@ -95,7 +95,7 @@ $this->set('title', 'Edit Item');
 							<div class="col-md-4">
 								<div class="form-group">
 									<label>Sales Rate </label>
-									<?php echo $this->Form->control('sales_rate',['class'=>'rightAligntextClass form-control input-sm','type'=>'text','label'=>false,'placeholder'=>'Sales Rate','required'=>'required']); ?>
+									<?php echo $this->Form->control('sales_rate',['class'=>'rightAligntextClass form-control input-sm','label'=>false,'placeholder'=>'Sales Rate','required'=>'required']); ?>
 								</div>
 							</div>
 						</div>
@@ -136,7 +136,7 @@ $this->set('title', 'Edit Item');
 								<div class="form-group hide_gst" <?php echo @$style;?>>
 									<label style="font-size: 10px;">Amount </label>
 									<?php 
-									echo $this->Form->control('gst_amount',['class'=>'rightAligntextClass form-control input-sm ','type'=>'text','label'=>false,'placeholder'=>'Amount']); ?>
+									echo $this->Form->control('gst_amount',['class'=>'rightAligntextClass form-control input-sm ','label'=>false,'placeholder'=>'Amount']); ?>
 								</div>
 							</div>
 							<div class="col-md-4">
@@ -296,16 +296,13 @@ $this->set('title', 'Edit Item');
 						type: 'GET',
 					}).done(function(response) {
 						response = $.parseJSON(response);
-						if(response.is_unique=='yes')
+						if(response.is_unique=='no')
 						{
-							$('input[name=provided_item_code]').closest('.form-group').append('<span class=error_unique>Matched.</span>');
-						}else{
-							$('input[name=provided_item_code]').closest('.form-group').append('<span class=error_unique>Not Matched.</span>');
+							$('input[name=provided_item_code]').closest('.form-group').append('<span class=error_unique>Not Unique.</span>');
 						}
 					});
 				}
 			}
-			
 		}
 		
 ComponentsPickers.init();

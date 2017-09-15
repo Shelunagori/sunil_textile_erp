@@ -21,12 +21,10 @@ class CustomersController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-		$company_id=$this->Auth->User('session_company_id');
-		$this->viewBuilder()->layout('index_layout');
 		 $this->paginate = [
             'contain' => ['States']
         ];
-        $customers = $this->paginate($this->Customers->find()->where(['Customers.company_id'=>$company_id]));
+        $customers = $this->paginate($this->Customers->find());
 
         $this->set(compact('customers'));
         $this->set('_serialize', ['customers']);
@@ -41,8 +39,6 @@ class CustomersController extends AppController
      */
     public function view($id = null)
     {
-		$this->viewBuilder()->layout('index_layout');
-		$company_id=$this->Auth->User('session_company_id');
         $customer = $this->Customers->get($id, [
             'contain' => ['States', 'Ledgers']
         ]);

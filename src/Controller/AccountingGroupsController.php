@@ -21,12 +21,11 @@ class AccountingGroupsController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-		$company_id=$this->Auth->User('session_company_id');
         $this->paginate = [
             'contain' => ['NatureOfGroups', 'ParentAccountingGroups', 'Companies']
         ];
-        $accountingGroups = $this->paginate($this->AccountingGroups->find()->where(['AccountingGroups.company_id'=>$company_id]));
-		
+        $accountingGroups = $this->paginate($this->AccountingGroups);
+
         $this->set(compact('accountingGroups'));
         $this->set('_serialize', ['accountingGroups']);
     }

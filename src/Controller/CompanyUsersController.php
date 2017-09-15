@@ -23,7 +23,7 @@ class CompanyUsersController extends AppController
         $this->paginate = [
             'contain' => ['Companies', 'Users']
         ];
-        $companyUsers = $this->paginate($this->CompanyUsers->find()->where(['CompanyUsers.company_id'=>$company_id]));
+        $companyUsers = $this->paginate($this->CompanyUsers);
 
         $this->set(compact('companyUsers'));
         $this->set('_serialize', ['companyUsers']);
