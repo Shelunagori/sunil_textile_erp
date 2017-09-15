@@ -2,7 +2,7 @@
 /**
  * @Author: PHP Poets IT Solutions Pvt. Ltd.
  */
-$this->set('title', 'Unit');
+$this->set('title', 'Size');
 ?>
 <div class="row">
 	<div class="col-md-6">
@@ -10,7 +10,7 @@ $this->set('title', 'Unit');
 			<div class="portlet-title">
 				<div class="caption">
 					<i class="icon-bar-chart font-green-sharp hide"></i>
-					<span class="caption-subject font-green-sharp bold ">Units List</span>
+					<span class="caption-subject font-green-sharp bold ">Sizes List</span>
 				</div>
 			</div>
 			<div class="portlet-body">
@@ -24,13 +24,13 @@ $this->set('title', 'Unit');
 					</thead>
 					<tbody>
 						<?php $i=0;
-								foreach ($Units as $Unit): 
+								foreach ($Sizes as $size): 
 								$i++;?>
 						<tr>
 							<td><?php echo $i; ?></td>
-							<td><?= h($Unit->name) ?></td>
+							<td><?= h($size->name) ?></td>
 							<td class="actions">
-								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $Unit->id]) ?>
+								<?= $this->Html->link(__('Edit'), ['action' => 'edit', $size->id]) ?>
 							</td>
 						</tr>
 						<?php endforeach; ?>
