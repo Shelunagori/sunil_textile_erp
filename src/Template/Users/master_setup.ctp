@@ -29,6 +29,27 @@ $this->set('title', 'Master Setup');
 							<?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-list-ul menuCss']).' List', '/Items',['escape' => false, 'class'=>'list-group-item']); ?>
 						</div>
 					</div>
+					<div class="col-md-6">
+						<span class="caption-subject bold ">Shades</span>
+						<div class="list-group">
+							<?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-plus-square menuCss']).' Create', '/Shades/Add',['escape' => false, 'class'=>'list-group-item']); ?>
+							<?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-list-ul menuCss']).' List', '/Shades',['escape' => false, 'class'=>'list-group-item']); ?>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<span class="caption-subject bold ">Units</span>
+						<div class="list-group">
+							<?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-plus-square menuCss']).' Create', '/Units/Add',['escape' => false, 'class'=>'list-group-item']); ?>
+							<?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-list-ul menuCss']).' List', '/Units',['escape' => false, 'class'=>'list-group-item']); ?>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<span class="caption-subject bold ">Sizes</span>
+						<div class="list-group">
+							<?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-plus-square menuCss']).' Create', '/Sizes/Add',['escape' => false, 'class'=>'list-group-item']); ?>
+							<?php echo $this->Html->link($this->Html->tag('i', '', ['class' => 'fa fa-list-ul menuCss']).' List', '/Sizes',['escape' => false, 'class'=>'list-group-item']); ?>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
