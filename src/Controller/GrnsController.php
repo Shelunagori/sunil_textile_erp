@@ -350,6 +350,8 @@ class GrnsController extends AppController
 							$second_tamp_grn_records->first_gst_rate = @$data[9];
 							$second_tamp_grn_records->amount_in_ref_of_gst_rate = @$data[10];
 							$second_tamp_grn_records->second_gst_rate = @$data[11];
+							$second_tamp_grn_records->shade = @$data[12];
+							$second_tamp_grn_records->size = @$data[13];
 							$second_tamp_grn_records->processed      = 'no'; 
 							$second_tamp_grn_records->user_id        = $user_id;
 							$second_tamp_grn_records->company_id = $company_id;
