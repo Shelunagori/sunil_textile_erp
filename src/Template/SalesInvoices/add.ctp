@@ -88,18 +88,18 @@ $this->set('title', 'Create Sales Invoice');
 						</tr>
 									
 						<tr id="add_sgst">
-						<td colspan="6" align="right"><b>Total SGST</b>
-						</td>
-						<td colspan="2">
-						<?php echo $this->Form->input('total_sgst', ['label' => false,'class' => 'form-control input-sm add_sgst rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
-						</td>
+							<td colspan="6" align="right"><b>Total SGST</b>
+							</td>
+							<td colspan="2">
+								<?php echo $this->Form->input('total_sgst', ['label' => false,'class' => 'form-control input-sm add_sgst rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
+							</td>
 						</tr>
 						<tr id="add_igst" style="display:none">
-						<td colspan="6" align="right"><b>Total IGST</b>
-						</td>
-						<td colspan="2">
-						<?php echo $this->Form->input('total_igst', ['label' => false,'class' => 'form-control input-sm add_igst rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
-						</td>
+							<td colspan="6" align="right"><b>Total IGST</b>
+							</td>
+							<td colspan="2">
+								<?php echo $this->Form->input('total_igst', ['label' => false,'class' => 'form-control input-sm add_igst rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
+							</td>
 						</tr>
 						<tr>
 						<td colspan="6" align="right"><b>Round OFF</b>
@@ -183,15 +183,15 @@ $this->set('title', 'Create Sales Invoice');
 	<tbody>
 		<tr class="main_tr" class="tab">
 			<td>
-			<input type="text" name="" class="outStock" value="0">
-			<input type="text" name="" class="totStock " value="0">
-			<input type="hidden" name="gst_figure_id" class="gst_figure_id" value="">
-			<input type="hidden" name="gst_amount" class="gst_amount" value="">
-			<input type="hidden" name="gst_figure_tax_percentage" class="gst_figure_tax_percentage calculation" value="">
-			<input type="hidden" name="tot" class="totamount calculation" value="">
-			<input type="hidden" name="gst_value" class="gstValue calculation" value="">
-			<input type="hidden" name="exactgst_value" class="exactgst_value calculation" value="">
-			<input type="hidden" name="discountvalue" class="discountvalue calculation" value="">
+				<input type="text" name="" class="outStock" value="0">
+				<input type="text" name="" class="totStock " value="0">
+				<input type="hidden" name="gst_figure_id" class="gst_figure_id" value="">
+				<input type="hidden" name="gst_amount" class="gst_amount" value="">
+				<input type="hidden" name="gst_figure_tax_percentage" class="gst_figure_tax_percentage calculation" value="">
+				<input type="hidden" name="tot" class="totamount calculation" value="">
+				<input type="hidden" name="gst_value" class="gstValue calculation" value="">
+				<input type="hidden" name="exactgst_value" class="exactgst_value calculation" value="">
+				<input type="hidden" name="discountvalue" class="discountvalue calculation" value="">
 				<?php echo $this->Form->input('item_id', ['empty'=>'-Item Name-', 'options'=>$itemOptions,'label' => false,'class' =>'form-control input-medium attrGet','required'=>'required']); ?>
 				<span class="itemQty" style="color:red;font-size:10px;"></span>
 			</td>			
@@ -485,52 +485,47 @@ $this->set('title', 'Create Sales Invoice');
 		
 	function checkValidation() 
 	{  
-		var amount_before_tax  = $('.amount_before_tax').val();
-		var amount_after_tax = $('.amount_after_tax').val();
-		var outOfStock = $('.outOfStock').val();
-		var totStock1=0;
-		var quantity1=0;
-		var add=0;
+		var amount_before_tax  = parseFloat($('.amount_before_tax').val());
+		if(!amount_before_tax || amount_before_tax==0){
+			alert('Error: zero amount invoice can not be generated.');
+			return false;
+		}
+		
+		var StockDB=[]; var StockInput = {};
 		$('#main_table tbody#main_tbody tr.main_tr').each(function()
 		{
-			var itemattr=$(this).closest('tr').find('.totStock').attr('itemattr');
-			var attrGet=$(this).closest('tr').find('.attrGet').val();
-			
-		        $('.'+itemattr+'').each(function()
-				{
-				   totStock1=$(this).closest('tr').find('.totStock').val();
-				   quantity1=parseFloat(quantity1)+parseFloat($(this).closest('tr').find('.quantity').val());
-				});
-				
-				if(totStock1<quantity1)
-				{
-				alert('Pleasecheckyou have added item quantity more than stock');
-				return false;
-				}
+			var stock=$(this).find('td:nth-child(1) input.totStock').val();
+			var item_id=$(this).find('td:nth-child(1) select.attrGet option:selected').val();
+			var quantity=parseFloat($(this).find('td:nth-child(2) input.quantity').val());
+			var existingQty=parseFloat(StockInput[item_id]);
+			if(!existingQty){ existingQty=0; }
+			StockInput[item_id] = quantity+existingQty;
+			StockDB[item_id] = stock;
 		});
-		//return false;
 		
-					if(amount_before_tax && amount_after_tax && outOfStock==0)
-					{
-						if(confirm('Are you sure you want to submit!'))
-						{
-							$('.submit').attr('disabled','disabled');
-							$('.submit').text('Submiting...');
-							return true;
-						}
-						else
-						{
-							return false;
-						}
-					 }
-					else if(outOfStock>0) {
-					alert('Please check, you have added out of stock data!');
-					return false;
-					}
+		var c=1;
+		$('#main_table tbody#main_tbody tr.main_tr').each(function()
+		{
+			var item_id=$(this).find('td:nth-child(1) select.attrGet option:selected').val();
+			if(StockInput[item_id]>StockDB[item_id]){
+				c=0;
+			}
+		});
+		if(c==0){
+			alert('Error: Stock is going in minus.');
+			return false;
+		}
 		
-		
-		
-		
+		if(confirm('Are you sure you want to submit!'))
+		{
+			$('.submit').attr('disabled','disabled');
+			$('.submit').text('Submiting...');
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 		
 		
 	}";

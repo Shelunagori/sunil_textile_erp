@@ -59,6 +59,7 @@ class GrnsController extends AppController
     {
 		$this->viewBuilder()->layout('index_layout');
 		$company_id=$this->Auth->User('session_company_id');
+		$location_id=$this->Auth->User('session_location_id');
         $grn = $this->Grns->newEntity();
 		$this->request->data['company_id'] =$company_id;
         if ($this->request->is('post')) 
@@ -74,6 +75,7 @@ class GrnsController extends AppController
 			{
 				$grn->voucher_no = 1;
 			} 
+			$grn->location_id =$location_id;
             if ($this->Grns->save($grn)) 
 			{
 				//Create Item_Ledger//
@@ -87,7 +89,8 @@ class GrnsController extends AppController
 					$item_ledger->quantity = $grn_row->quantity;
 					$item_ledger->rate = $grn_row->purchase_rate;
 					$item_ledger->sale_rate = $grn_row->sale_rate;
-					$item_ledger->company_id =$company_id;
+					$item_ledger->company_id  =$company_id;
+					$item_ledger->location_id =$location_id;
 					$item_ledger->status ='in';
 					$item_ledger->amount=$grn_row->quantity*$grn_row->purchase_rate;
 					$this->Grns->ItemLedgers->save($item_ledger);
@@ -146,6 +149,7 @@ class GrnsController extends AppController
 	
 		$this->viewBuilder()->layout('index_layout');
 		$company_id=$this->Auth->User('session_company_id');
+		$location_id=$this->Auth->User('session_location_id');
         $grn = $this->Grns->get($id, [
             'contain' => ['GrnRows']
         ]);
@@ -154,7 +158,7 @@ class GrnsController extends AppController
         if ($this->request->is(['patch', 'post', 'put'])) {
             $grn = $this->Grns->patchEntity($grn, $this->request->getData());
 			$grn->transaction_date = date("Y-m-d",strtotime($this->request->getData()['transaction_date']));
-			
+			$grn->location_id =$location_id;
             if ($this->Grns->save($grn)) 
 			{
 				$query = $this->Grns->ItemLedgers->query();
@@ -170,6 +174,7 @@ class GrnsController extends AppController
 					$item_ledger->rate = $grn_row->purchase_rate;
 					$item_ledger->sale_rate = $grn_row->sale_rate;
 					$item_ledger->company_id =$company_id;
+					$item_ledger->location_id =$location_id;
 					$item_ledger->status ='in';
 					$item_ledger->amount=$grn_row->quantity*$grn_row->purchase_rate;
 					$this->Grns->ItemLedgers->save($item_ledger);
@@ -347,6 +352,8 @@ class GrnsController extends AppController
 							$second_tamp_grn_records->first_gst_rate = @$data[9];
 							$second_tamp_grn_records->amount_in_ref_of_gst_rate = @$data[10];
 							$second_tamp_grn_records->second_gst_rate = @$data[11];
+							$second_tamp_grn_records->shade = @$data[12];
+							$second_tamp_grn_records->size = @$data[13];
 							$second_tamp_grn_records->processed      = 'no'; 
 							$second_tamp_grn_records->user_id        = $user_id;
 							$second_tamp_grn_records->company_id = $company_id;
