@@ -553,7 +553,7 @@ public function salesInvoiceBill($id=null)
 			'total_in' => $query->func()->sum($totalInCase),
 			'total_out' => $query->func()->sum($totalOutCase),'id','item_id'
 		])
-		->where(['ItemLedgers.item_id' => $itemId, 'ItemLedgers.company_id' => $company_id])
+		->where(['ItemLedgers.item_id' => $itemId, 'ItemLedgers.company_id' => $company_id, 'ItemLedgers.location_id' => $location_id])
 		->group('item_id')
 		->autoFields(true)
 		->contain(['Items']);
