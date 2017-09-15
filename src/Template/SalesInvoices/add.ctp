@@ -183,7 +183,8 @@ $this->set('title', 'Create Sales Invoice');
 	<tbody>
 		<tr class="main_tr" class="tab">
 			<td>
-			<input type="hidden" name="" class="outStock" value="0">
+			<input type="text" name="" class="outStock" value="0">
+			<input type="text" name="" class="totStock " value="0">
 			<input type="hidden" name="gst_figure_id" class="gst_figure_id" value="">
 			<input type="hidden" name="gst_amount" class="gst_amount" value="">
 			<input type="hidden" name="gst_figure_tax_percentage" class="gst_figure_tax_percentage calculation" value="">
@@ -228,6 +229,7 @@ $this->set('title', 'Create Sales Invoice');
 			var sales_rate=$('option:selected', this).attr('sales_rate');
 			$(this).closest('tr').find('.gst_amount').val(gst_amount);
 			$(this).closest('tr').find('.rate').val(sales_rate);
+			$(this).closest('tr').find('.gst_amount').val(gst_amount);
 			
 		var itemId=$(this).val();
 		var url='".$this->Url->build(["controller" => "SalesInvoices", "action" => "ajaxItemQuantity"])."';
@@ -240,7 +242,12 @@ $this->set('title', 'Create Sales Invoice');
 			var fetch=$.parseJSON(response);
 			var text=fetch.text;
 			var type=fetch.type;
+			var itemid=fetch.itemid;
 			itemQ.find('.itemQty').html(text);
+			var suffix = text.match(/\d+/);
+			itemQ.find('.totStock').val(suffix);
+            itemQ.find('.totStock').addClass('itemid'+itemid);
+			itemQ.find('.totStock').attr('itemattr','itemid'+itemid);
 			if(type=='true')
 			{
 				itemQ.find('.outStock').val(1);
@@ -251,7 +258,6 @@ $this->set('title', 'Create Sales Invoice');
 		});	
 		forward_total_amount();
 		});
-		
 		$('.party_ledger_id').die().live('change',function(){
 			var customer_state_id=$('option:selected', this).attr('party_state_id');
 			var state_id=$('.state_id').val();
@@ -292,23 +298,16 @@ $this->set('title', 'Create Sales Invoice');
 			//$(this).closest('tr').find('.output_igst_ledger_id').val(output_igst_ledger_id);
 		});
 		
-		/* $('.cashCredit').die().live('change',function(){
-			var cashcredit=$(this).val();
-			if(cashcredit=='credit')
+		$('.quantity').die().on('keyup',function(){
+			var quantity=$(this).val();
+			var totStock=$(this).closest('tr').find('.totStock').val();
+			if(totStock < quantity)
 			{
-				$('#cusomerIds').show();
-				$('.customer_id').attr('required', 'required');
+				alert('sorry you can not add quantity more than stock');
+				$(this).closest('tr').find('.quantity').val('');
 			}
-			else{
-				$('#cusomerIds').hide();
-				$('#gstDisplay').html('GST');
-				$('#add_cgst').show();
-			    $('#add_sgst').show();
-			    $('#add_igst').hide();
-				$('#is_interstate').val('0');
-				$('.customer_id').removeAttr('required');
-			}
-		}); */
+		}); 
+		
 		$('.delete-tr').die().live('click',function() 
 		{
 			$(this).closest('tr').remove();
@@ -489,23 +488,51 @@ $this->set('title', 'Create Sales Invoice');
 		var amount_before_tax  = $('.amount_before_tax').val();
 		var amount_after_tax = $('.amount_after_tax').val();
 		var outOfStock = $('.outOfStock').val();
-		if(amount_before_tax && amount_after_tax && outOfStock==0)
+		var totStock1=0;
+		var quantity1=0;
+		var add=0;
+		$('#main_table tbody#main_tbody tr.main_tr').each(function()
 		{
-			if(confirm('Are you sure you want to submit!'))
-			{
-			    $('.submit').attr('disabled','disabled');
-	            $('.submit').text('Submiting...');
-				return true;
-			}
-			else
-			{
+			var itemattr=$(this).closest('tr').find('.totStock').attr('itemattr');
+			var attrGet=$(this).closest('tr').find('.attrGet').val();
+			
+		        $('.'+itemattr+'').each(function()
+				{
+				   totStock1=$(this).closest('tr').find('.totStock').val();
+				   quantity1=parseFloat(quantity1)+parseFloat($(this).closest('tr').find('.quantity').val());
+				});
+				
+				if(totStock1<quantity1)
+				{
+				alert('Pleasecheckyou have added item quantity more than stock');
 				return false;
-			}
-		}
-		else if(outOfStock>0) {
-			alert('Please check, you have added out of stock data!');
-			return false;
-		}
+				}
+		});
+		//return false;
+		
+					if(amount_before_tax && amount_after_tax && outOfStock==0)
+					{
+						if(confirm('Are you sure you want to submit!'))
+						{
+							$('.submit').attr('disabled','disabled');
+							$('.submit').text('Submiting...');
+							return true;
+						}
+						else
+						{
+							return false;
+						}
+					 }
+					else if(outOfStock>0) {
+					alert('Please check, you have added out of stock data!');
+					return false;
+					}
+		
+		
+		
+		
+		
+		
 	}";
 
 echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 
