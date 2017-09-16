@@ -47,7 +47,10 @@ margin-bottom: 0;
 		style="text-align:center;font-size:16px; padding-bottom:10px;  padding-top:10px;"><b><span><u>GST INVOICE</u></span></b></td>
 	</tr>
 	<tr>
-		<td colspan="4" style="text-align:center;font-size:14px;"><b>Customer Name: <?=ucwords($data->partyDetails->name)?> (<?=$data->partyDetails->mobile?> )</b></td>
+		<td colspan="4" style="font-size:14px;"><b>Customer Name: <?=ucwords($data->partyDetails->name)?><?php if($data->partyDetails->mobile) { ?>(<?=$data->partyDetails->mobile?> )<?php } ?></b></td>
+	</tr>
+	<tr>
+		<td colspan="4" style="font-size:14px;"><b>Invoice No.: <?= h('#'.str_pad($data->voucher_no, 4, '0', STR_PAD_LEFT)) ?></b></td>
 	</tr>
 	<tr>
 		<td colspan="4"
@@ -190,7 +193,7 @@ margin-bottom: 0;
 	<tr>
 		<td  style="text-align:right;"><?php echo number_format($sale_invoice_row->total_taxable_amount,2) ?></td>
 		<td style="text-align:right;"> <?= h($sale_invoice_row->gst_figure->tax_percentage/2) .'%' ?></td>
-		<td style="text-align:right;"><?php echo number_format($sale_invoice_row->total_gst_amount,2) ?></td>
+		<td style="text-align:right;"><?php echo number_format($sale_invoice_row->total_gst_amount/2,2) ?></td>
 		<td style="text-align:right;"><?= h($sale_invoice_row->gst_figure->tax_percentage/2) .'%' ?></td>
 		<td style="text-align:right;"><?php echo number_format($sale_invoice_row->total_gst_amount/2,2) ?></td>
 	</tr>

@@ -25,18 +25,18 @@ $this->set('title', 'Import');
 									<li>
 										<span>
 											Process Data Records . 
-											<?php echo $this->Html->link(' Check from here', '/SecondTampGrnRecords',['escape' => false,'style'=>'color:green']); ?>
+											<?php echo $this->Html->link(' Check from here', '/SecondTampGrnRecords',['escape' => false]); ?>
 										</span>
 									</li></br>
 									<li>
 										<?php echo $notvalid_to_importRecords; ?><span> Records are invalid to import. 
-											<?php echo $this->Html->link(' Check from here to Fixed', '/SecondTampGrnRecords/index/invalid',['escape' => false,'style'=>'color:green']); ?>
+											<?php echo $this->Html->link(' Check from here to Fixed', '/SecondTampGrnRecords/index/invalid',['escape' => false]); ?>
 										</span>
 									</li><br/>
 									<li>
 										<?php if($notvalid_to_importRecords>0) { ?>
 										<span>First fix the invalid records then import command will be appear.<span><br/><?php } else { ?>Your Record is ready to Final Import. <?php echo $this->Html->link('Click here to Import', '/SecondTampGrnRecords/finalImport',['escape' => false,'style'=>'color:green']); ?> <?php } ?>
-										</li></br><li><span>Delete existing data and start again Step 2. <?php echo $this->Html->link('Delete & Start', '/SecondTampGrnRecords/deleteSecondTempRecords',['escape' => false,'style'=>'color:green']); ?> <span>
+										</li></br><li><span>Delete existing data and start again Step 2. <?php echo $this->Html->link('Delete & Start', '/SecondTampGrnRecords/deleteSecondTempRecords',['escape' => false]); ?> <span>
 									</li>
 										
 								</ol>

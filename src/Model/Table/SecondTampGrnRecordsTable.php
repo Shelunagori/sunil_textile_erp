@@ -50,7 +50,14 @@ class SecondTampGrnRecordsTable extends Table
             'foreignKey' => 'unit_id',
             'joinType' => 'LEFT'
         ]);
-		
+		$this->belongsTo('Sizes', [
+            'foreignKey' => 'size_id',
+            'joinType' => 'LEFT'
+        ]);
+		$this->belongsTo('Shades', [
+            'foreignKey' => 'shade_id',
+            'joinType' => 'LEFT'
+        ]);
 		$this->belongsTo('GstFigures', [
             'foreignKey' => 'gst_figure_id',
             'joinType' => 'LEFT'

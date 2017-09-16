@@ -106,6 +106,9 @@ class SecondTampGrnRecordsController extends AppController
 				$item->hsn_code=$secondTampGrnRecord->hsn_code;
 				$item->unit_id=$secondTampGrnRecord->unit_id;
 				$item->company_id=$company_id;
+				$item->size_id=$secondTampGrnRecord->size_id;
+				$item->shade_id=$secondTampGrnRecord->shade_id;
+				$item->description=$secondTampGrnRecord->description;
 				$item->first_gst_figure_id=$secondTampGrnRecord->first_gst_figure_id;
 				$item->gst_amount=$secondTampGrnRecord->amount_in_ref_of_gst_rate;
 				$item->second_gst_figure_id=$secondTampGrnRecord->second_gst_figure_id;
@@ -147,9 +150,11 @@ class SecondTampGrnRecordsController extends AppController
             $this->Flash->error(__('The second tamp grn record could not be saved. Please, try again.'));
         }
 		$units = $this->SecondTampGrnRecords->Units->find('list');
+		$shades = $this->SecondTampGrnRecords->Shades->find('list');
+        $sizes = $this->SecondTampGrnRecords->Sizes->find('list');
         $users = $this->SecondTampGrnRecords->Users->find('list');
 		$gstFigures = $this->SecondTampGrnRecords->GstFigures->find('list')->where(['GstFigures.company_id'=>$company_id]);
-        $this->set(compact('secondTampGrnRecord', 'users','units','gstFigures'));
+        $this->set(compact('secondTampGrnRecord', 'users','units','shades','sizes','gstFigures'));
         $this->set('_serialize', ['secondTampGrnRecord']);
     }
 	
@@ -360,6 +365,32 @@ class SecondTampGrnRecordsController extends AppController
 				}else{
 					goto DoNotMarkYesValidToImport;
 				}
+				$shade=$this->SecondTampGrnRecords->Companies->Items->Shades->find()
+						->where(['Shades.name LIKE'=>'%'.trim($SecondTampGrnRecord->provided_shade).'%', 'Shades.company_id'=>$company_id])
+						->first();
+				
+				if($shade){
+					$query = $this->SecondTampGrnRecords->query();
+					$query->update()
+						->set(['shade_id' => $shade->id])
+						->where(['SecondTampGrnRecords.id' =>$SecondTampGrnRecord->id])
+						->execute();
+					$shade_id= $shade->id;
+				}
+				
+				$size=$this->SecondTampGrnRecords->Companies->Items->Sizes->find()
+						->where(['Sizes.name LIKE'=>'%'.trim($SecondTampGrnRecord->provided_size).'%', 'Sizes.company_id'=>$company_id])
+						->first();
+						
+						
+				if($size){
+					$query = $this->SecondTampGrnRecords->query();
+					$query->update()
+						->set(['size_id' => $size->id])
+						->where(['SecondTampGrnRecords.id' =>$SecondTampGrnRecord->id])
+						->execute();
+					$size_id= $size->id;
+				}
 				
 				$a=['fix','fluid'];
 				
@@ -456,6 +487,9 @@ class SecondTampGrnRecordsController extends AppController
 				$item->kind_of_gst=$SecondTampGrnRecord->gst_rate_fixed_or_fluid;
 				$item->purchase_rate=$SecondTampGrnRecord->purchase_rate;
 				$item->sales_rate=$SecondTampGrnRecord->sales_rate;
+				$item->shade_id=$shade_id;
+				$item->size_id=$size_id;
+				$item->description=$SecondTampGrnRecord->description;
 				$item->sales_rate_update_on=date("Y-m-d",strtotime($transaction_date));
 				$item->location_id=$location_id;
 				//$item->item_code=strtoupper($SecondTampGrnRecord->item_code);
