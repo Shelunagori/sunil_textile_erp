@@ -21,11 +21,11 @@ class SalesInvoicesController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-		 $this->paginate = [
+		$company_id=$this->Auth->User('session_company_id');
+		$this->paginate = [
             'contain' => ['Companies', 'PartyLedgers', 'SalesLedgers']
         ];
-		$salesInvoice = $this->SalesInvoices->find();
-		$salesInvoices = $this->paginate($salesInvoice);
+		$salesInvoices = $this->paginate($this->SalesInvoices->find()->where(['SalesInvoices.company_id'=>$company_id]));
 		
         $this->set(compact('salesInvoices'));
         $this->set('_serialize', ['salesInvoices']);
@@ -212,7 +212,7 @@ class SalesInvoicesController extends AppController
 					->contain(['FirstGstFigures', 'SecondGstFigures', 'Units']);
 		$itemOptions=[];
 		foreach($items as $item){
-			$itemOptions[]=['text'=>$item->item_code.' '.$item->name, 'value'=>$item->id, 'first_gst_figure_id'=>$item->first_gst_figure_id, 'gst_amount'=>floatval($item->gst_amount), 'sales_rate'=>$item->sales_rate, 'second_gst_figure_id'=>$item->second_gst_figure_id, 'FirstGstFigure'=>$item->FirstGstFigures->tax_percentage, 'SecondGstFigure'=>$item->SecondGstFigures->tax_percentage];
+			$itemOptions[]=['text'=>$item->item_code.' '.$item->name, 'value'=>$item->id,'item_code'=>$item->item_code, 'first_gst_figure_id'=>$item->first_gst_figure_id, 'gst_amount'=>floatval($item->gst_amount), 'sales_rate'=>$item->sales_rate, 'second_gst_figure_id'=>$item->second_gst_figure_id, 'FirstGstFigure'=>$item->FirstGstFigures->tax_percentage, 'SecondGstFigure'=>$item->SecondGstFigures->tax_percentage];
 		}
         $partyParentGroups = $this->SalesInvoices->SalesInvoiceRows->Ledgers->AccountingGroups->find()
 						->where(['AccountingGroups.company_id'=>$company_id, 'AccountingGroups.sale_invoice_party'=>'1']);
@@ -419,8 +419,8 @@ public function edit($id = null)
             $this->Flash->error(__('The sales invoice could not be saved. Please, try again.'));
         }
         $companies = $this->SalesInvoices->Companies->find('list');
-        $customers = $this->SalesInvoices->Customers->find('list');
-        $gstFigures = $this->SalesInvoices->GstFigures->find('list');
+        $customers = $this->SalesInvoices->Customers->find('list')->where(['company_id'=>$company_id]);
+        $gstFigures = $this->SalesInvoices->GstFigures->find('list')->where(['company_id'=>$company_id]);
         $this->set(compact('salesInvoice', 'companies', 'customers', 'gstFigures'));
 
 		$customers = $this->SalesInvoices->Customers->find()
@@ -568,7 +568,7 @@ public function salesInvoiceBill($id=null)
 					->contain(['Units'])->first();
 					$itemUnit=$items->unit->name;
 		
-		$query = $this->SalesInvoices->SalesInvoiceRows->Items->ItemLedgers->find();
+		$query = $this->SalesInvoices->SalesInvoiceRows->Items->ItemLedgers->find()->where(['company_id'=>$company_id]);
 		$totalInCase = $query->newExpr()
 			->addCase(
 				$query->newExpr()->add(['status' => 'In']),

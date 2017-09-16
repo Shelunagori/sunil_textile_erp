@@ -16,107 +16,122 @@ $this->set('title', 'Edit Item');
 			<div class="portlet-body">
 				<?= $this->Form->create($secondTampGrnRecord) ?>
 				<div class="row">
-					<div class="col-md-4">
-						<div class="form-group">
-							<label>Item Name <span class="required">*</span></label>
-							<?php echo $this->Form->control('item_name',['class'=>'form-control input-sm','placeholder'=>'Item Name','label'=>false,'required'=>'required']); ?>
+					<div class="col-md-6">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label>Item Name <span class="required">*</span></label>
+									<?php echo $this->Form->control('item_name',['class'=>'form-control input-sm','placeholder'=>'Item Name','label'=>false,'required'=>'required']); ?>
+								</div>
+							</div>
+								
 						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="form-group">
-							<label>HSN Code </label>
-							<?php echo $this->Form->control('hsn_code',['class'=>'form-control input-sm','label'=>false,'placeholder'=>'HSN Code']); ?>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>HSN Code<span class="required">*</span> </label>
+									<?php echo $this->Form->control('hsn_code',['class'=>'form-control input-sm','label'=>false,'placeholder'=>'HSN Code','required'=>'required']); ?>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Unit <span class="required">*</span></label>
+									<?php echo $this->Form->control('unit_id',['class'=>'form-control input-sm select2me','label'=>false,'empty'=>'-Unit-', 'options' => $units,'required'=>'required']); ?>
+								</div>
+							</div>
 						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="form-group">
-							<label>Unit <span class="required">*</span></label>
-							<?php echo $this->Form->control('unit_id',['class'=>'form-control input-sm select2me','label'=>false,'empty'=>'-Unit-', 'options' => $units,'required'=>'required']); ?>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Shade </label>
+									<?php echo $this->Form->control('shade_id',['class'=>'form-control input-sm select2me','label'=>false,'empty'=>'-Shade-', 'options' => $shades]); ?>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Size </label>
+									<?php echo $this->Form->control('size_id',['class'=>'form-control input-sm select2me','label'=>false,'empty'=>'-Size-', 'options' => $sizes]); ?>
+								</div>
+							</div>
 						</div>
-					</div>
-							
-				</div>
-				<div class="row">
-					<div class="col-md-4">
-						<div class="form-group">
-							<label>Quantity </label>
-							<?php 
-							echo $this->Form->control('quantity',['class'=>'form-control input-sm qty calculation reverseCalculation','label'=>false,'placeholder'=>'Quantity']); ?>
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="form-group">
-							<label>Rate </label>
-							<?php echo $this->Form->control('purchase_rate',['class'=>'form-control input-sm rate calculation','label'=>false,'placeholder'=>'Rate']); ?>
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="form-group">
-							<label>Sales Rate </label>
-							<?php echo $this->Form->control('sales_rate',['class'=>'form-control input-sm','label'=>false,'placeholder'=>'Sales Rate','required'=>'required']); ?>
-						</div>
-					</div>
-				</div>	
-			
-				<span class="caption-subject bold " style="float:center;">Gst Rate</span><hr style="margin: 6px 0;">
-				<div class="row" >
-					<div class="col-md-3">
-						<div class="form-group">
-							<div class="radio-list">
-								<div class="radio-inline" style="padding-left: 0px;">
-									<?php 
-										echo $this->Form->radio(
-										'gst_rate_fixed_or_fluid',
-										[
-											['value' => 'fix', 'text' => 'Fix','class' => 'radio-task kind_of_gst'],
-											['value' => 'fluid', 'text' => 'Fluid','class' => 'radio-task kind_of_gst']
-										]
-										); ?>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Description </label>
+									<?php echo $this->Form->control('description',['class'=>'form-control input-sm','label'=>false,'rows'=>'2']); ?>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>	
-				<div class="row" >
-					<div class="col-md-4">
-						<div class="form-group">
-							<label>Gst Rate Less than or Equal to Amt </label>
-							<?php echo $this->Form->control('first_gst_figure_id',['class'=>'form-control input-sm','label'=>false,'empty'=>'-GST Figure-', 'options' => $gstFigures,'required'=>'required']);
-							
-							if(@$item->kind_of_gst=="fix")
-							{
-								$style="style='display:none;'";
-								$validation="'required'=>'required'";
-							}
-							?>
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="form-group hide_gst" <?php echo @$style;?>>
-							<label style="font-size: 10px;">Amount </label>
-							<?php 
-							echo $this->Form->control('amount_in_ref_of_gst_rate',['class'=>'form-control input-sm removeAddRequired','label'=>false,'placeholder'=>'Amount','required'=>'required']); ?>
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="form-group hide_gst" <?php echo @$style;?>>
-							<label style="font-size: 10px;">Gst Greter than to Amount </label>
-							<?php echo $this->Form->control('second_gst_figure_id',['class'=>'form-control input-sm removeAddRequired','label'=>false,'empty'=>'-GST Figure-', 'options' => $gstFigures,'required'=>'required']); ?>
-						</div>
-					</div>
-				</div>
-				<span class="caption-subject bold " style="float:center;">Barcode</span><hr style="margin: 6px 0;">
-				<div class="row" >
-					<div class="col-md-2">
-						<span>Item Code: <?php echo $secondTampGrnRecord->item_code; ?></span>
-					</div>
-					<div class="col-md-2">
-						<?= $this->Html->Image('barcode/'.$secondTampGrnRecord->item_id.'.png') ?>
-					</div>
-				</div>	
+					<div class="col-md-6">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Sales Rate </label>
+									<?php echo $this->Form->control('sales_rate',['class'=>'form-control input-sm','label'=>false,'placeholder'=>'Sales Rate','required'=>'required']); ?>
+								</div>
+							</div>
+						</div>	
+					
+						<span class="caption-subject bold " style="float:center;">Gst Rate</span><hr style="margin: 6px 0;">
+						<div class="row" >
+							<div class="col-md-3">
+								<div class="form-group">
+									<div class="radio-list">
+										<div class="radio-inline" style="padding-left: 0px;">
+											<?php 
+												echo $this->Form->radio(
+												'gst_rate_fixed_or_fluid',
+												[
+													['value' => 'fix', 'text' => 'Fix','class' => 'radio-task kind_of_gst'],
+													['value' => 'fluid', 'text' => 'Fluid','class' => 'radio-task kind_of_gst']
+												]
+												); ?>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>	
+							<div class="row" >
+								<div class="col-md-4">
+									<div class="form-group">
+										<label>Gst Rate Less than or Equal to Amt </label>
+										<?php echo $this->Form->control('first_gst_figure_id',['class'=>'form-control input-sm','label'=>false,'empty'=>'-GST Figure-', 'options' => $gstFigures,'required'=>'required']);
+										
+										if(@$item->kind_of_gst=="fix")
+										{
+											$style="style='display:none;'";
+											$validation="'required'=>'required'";
+										}
+										?>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group hide_gst" <?php echo @$style;?>>
+										<label >Amount</br></br> </label>
+										<?php 
+										echo $this->Form->control('amount_in_ref_of_gst_rate',['class'=>'form-control input-sm removeAddRequired','label'=>false,'placeholder'=>'Amount','required'=>'required']); ?>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group hide_gst" <?php echo @$style;?>>
+										<label>Gst Greter than to Amount</br></br> </label>
+										<?php echo $this->Form->control('second_gst_figure_id',['class'=>'form-control input-sm removeAddRequired','label'=>false,'empty'=>'-GST Figure-', 'options' => $gstFigures,'required'=>'required']); ?>
+									</div>
+								</div>
+							</div>
+							<span class="caption-subject bold " style="float:center;">Barcode</span><hr style="margin: 6px 0;">
+							<div class="row" >
+								<div class="col-md-6">
+									<span>Item Code: <?php echo $secondTampGrnRecord->item_code; ?></span>
+								</div>
+								<div class="col-md-6">
+									<?= $this->Html->Image('barcode/'.$secondTampGrnRecord->item_id.'.png') ?>
+								</div>
+							</div>	
 				</br>
 				</br>
-		
+			</div>
 			<?= $this->Form->button(__('Submit'),['class'=>'btn btn-success']) ?>
 			<?= $this->Form->end() ?>
 			

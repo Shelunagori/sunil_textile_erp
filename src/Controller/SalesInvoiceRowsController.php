@@ -20,7 +20,9 @@ class SalesInvoiceRowsController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
+        $this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
+		$this->paginate = [
             'contain' => ['SalesInvoices', 'Items', 'GstFigures', 'OutputCgstLedgers', 'OutputSgstLedgers', 'OutputIgstLedgers']
         ];
         $salesInvoiceRows = $this->paginate($this->SalesInvoiceRows);
@@ -53,7 +55,9 @@ class SalesInvoiceRowsController extends AppController
      */
     public function add()
     {
-        $salesInvoiceRow = $this->SalesInvoiceRows->newEntity();
+        $this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
+		$salesInvoiceRow = $this->SalesInvoiceRows->newEntity();
         if ($this->request->is('post')) {
             $salesInvoiceRow = $this->SalesInvoiceRows->patchEntity($salesInvoiceRow, $this->request->getData());
             if ($this->SalesInvoiceRows->save($salesInvoiceRow)) {
@@ -63,12 +67,12 @@ class SalesInvoiceRowsController extends AppController
             }
             $this->Flash->error(__('The sales invoice row could not be saved. Please, try again.'));
         }
-        $salesInvoices = $this->SalesInvoiceRows->SalesInvoices->find('list');
-        $items = $this->SalesInvoiceRows->Items->find('list');
-        $gstFigures = $this->SalesInvoiceRows->GstFigures->find('list');
-        $outputCgstLedgers = $this->SalesInvoiceRows->OutputCgstLedgers->find('list');
-        $outputSgstLedgers = $this->SalesInvoiceRows->OutputSgstLedgers->find('list');
-        $outputIgstLedgers = $this->SalesInvoiceRows->OutputIgstLedgers->find('list');
+        $salesInvoices = $this->SalesInvoiceRows->SalesInvoices->find('list')->where(['company_id'=>$company_id]);
+        $items = $this->SalesInvoiceRows->Items->find('list')->where(['company_id'=>$company_id]);
+        $gstFigures = $this->SalesInvoiceRows->GstFigures->find('list')->where(['company_id'=>$company_id]);
+        $outputCgstLedgers = $this->SalesInvoiceRows->OutputCgstLedgers->find('list')->where(['company_id'=>$company_id]);
+        $outputSgstLedgers = $this->SalesInvoiceRows->OutputSgstLedgers->find('list')->where(['company_id'=>$company_id]);
+        $outputIgstLedgers = $this->SalesInvoiceRows->OutputIgstLedgers->find('list')->where(['company_id'=>$company_id]);
         $this->set(compact('salesInvoiceRow', 'salesInvoices', 'items', 'gstFigures', 'outputCgstLedgers', 'outputSgstLedgers', 'outputIgstLedgers'));
         $this->set('_serialize', ['salesInvoiceRow']);
     }
@@ -82,7 +86,9 @@ class SalesInvoiceRowsController extends AppController
      */
     public function edit($id = null)
     {
-        $salesInvoiceRow = $this->SalesInvoiceRows->get($id, [
+        $this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
+		$salesInvoiceRow = $this->SalesInvoiceRows->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -94,12 +100,12 @@ class SalesInvoiceRowsController extends AppController
             }
             $this->Flash->error(__('The sales invoice row could not be saved. Please, try again.'));
         }
-        $salesInvoices = $this->SalesInvoiceRows->SalesInvoices->find('list');
-        $items = $this->SalesInvoiceRows->Items->find('list');
-        $gstFigures = $this->SalesInvoiceRows->GstFigures->find('list');
-        $outputCgstLedgers = $this->SalesInvoiceRows->OutputCgstLedgers->find('list');
-        $outputSgstLedgers = $this->SalesInvoiceRows->OutputSgstLedgers->find('list');
-        $outputIgstLedgers = $this->SalesInvoiceRows->OutputIgstLedgers->find('list');
+        $salesInvoices = $this->SalesInvoiceRows->SalesInvoices->find('list')->where(['company_id'=>$company_id]);
+        $items = $this->SalesInvoiceRows->Items->find('list')->where(['company_id'=>$company_id]);
+        $gstFigures = $this->SalesInvoiceRows->GstFigures->find('list')->where(['company_id'=>$company_id]);
+        $outputCgstLedgers = $this->SalesInvoiceRows->OutputCgstLedgers->find('list')->where(['company_id'=>$company_id]);
+        $outputSgstLedgers = $this->SalesInvoiceRows->OutputSgstLedgers->find('list')->where(['company_id'=>$company_id]);
+        $outputIgstLedgers = $this->SalesInvoiceRows->OutputIgstLedgers->find('list')->where(['company_id'=>$company_id]);
         $this->set(compact('salesInvoiceRow', 'salesInvoices', 'items', 'gstFigures', 'outputCgstLedgers', 'outputSgstLedgers', 'outputIgstLedgers'));
         $this->set('_serialize', ['salesInvoiceRow']);
     }

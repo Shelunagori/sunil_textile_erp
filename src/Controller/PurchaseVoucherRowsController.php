@@ -20,7 +20,9 @@ class PurchaseVoucherRowsController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
+        $this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
+		$this->paginate = [
             'contain' => ['PurchaseVouchers', 'Ledgers']
         ];
         $purchaseVoucherRows = $this->paginate($this->PurchaseVoucherRows);
@@ -53,7 +55,9 @@ class PurchaseVoucherRowsController extends AppController
      */
     public function add()
     {
-        $purchaseVoucherRow = $this->PurchaseVoucherRows->newEntity();
+        $this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
+		$purchaseVoucherRow = $this->PurchaseVoucherRows->newEntity();
         if ($this->request->is('post')) {
             $purchaseVoucherRow = $this->PurchaseVoucherRows->patchEntity($purchaseVoucherRow, $this->request->getData());
             if ($this->PurchaseVoucherRows->save($purchaseVoucherRow)) {
@@ -63,8 +67,8 @@ class PurchaseVoucherRowsController extends AppController
             }
             $this->Flash->error(__('The purchase voucher row could not be saved. Please, try again.'));
         }
-        $purchaseVouchers = $this->PurchaseVoucherRows->PurchaseVouchers->find('list');
-        $ledgers = $this->PurchaseVoucherRows->Ledgers->find('list');
+        $purchaseVouchers = $this->PurchaseVoucherRows->PurchaseVouchers->find('list')->where(['company_id'=>$company_id]);
+        $ledgers = $this->PurchaseVoucherRows->Ledgers->find('list')->where(['company_id'=>$company_id]);
         $this->set(compact('purchaseVoucherRow', 'purchaseVouchers', 'ledgers'));
         $this->set('_serialize', ['purchaseVoucherRow']);
     }
@@ -78,7 +82,9 @@ class PurchaseVoucherRowsController extends AppController
      */
     public function edit($id = null)
     {
-        $purchaseVoucherRow = $this->PurchaseVoucherRows->get($id, [
+        $this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
+		$purchaseVoucherRow = $this->PurchaseVoucherRows->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -90,8 +96,8 @@ class PurchaseVoucherRowsController extends AppController
             }
             $this->Flash->error(__('The purchase voucher row could not be saved. Please, try again.'));
         }
-        $purchaseVouchers = $this->PurchaseVoucherRows->PurchaseVouchers->find('list');
-        $ledgers = $this->PurchaseVoucherRows->Ledgers->find('list');
+        $purchaseVouchers = $this->PurchaseVoucherRows->PurchaseVouchers->find('list')->where(['company_id'=>$company_id]);
+        $ledgers = $this->PurchaseVoucherRows->Ledgers->find('list')->where(['company_id'=>$company_id]);
         $this->set(compact('purchaseVoucherRow', 'purchaseVouchers', 'ledgers'));
         $this->set('_serialize', ['purchaseVoucherRow']);
     }
