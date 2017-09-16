@@ -113,6 +113,9 @@ $this->set('title', 'Import CSV');
 										<th>First Gst Rate</th>
 										<th>Amount In Ref Of Gst Rate</th>
 										<th>Second Gst Rate</th>
+										<th>Size</th>
+										<th>Shape</th>
+										<th>Description</th>
 									</tr>
 									</thead>
 									<tbody>
@@ -123,16 +126,18 @@ $this->set('title', 'Import CSV');
 										<td>1.Mandatory or cannot be empty. </br>2.Should be Positive Integer or Decimal only. </td>
 										<td>1.If yes then fill all next columns else leave empty.</td>
 										<td>1.Mandatory or cannot be empty. </td>
-										<td>1.Optional. </td>
+										<td>1.Mandatory or cannot be empty. </td>
 										<td>1.Mandatory or cannot be empty </br>2. Should be from given List
 										<ul><?php foreach ($units as $unit) { ?>
 										<li><?= h($unit->name) ?></li>	
 										<?php } ?></ul></td>
 										<td>1.Mandatory or cannot be empty. </br>2.If gst rate  amount vary then fill fulid else fill fix</td>
-										
 										<td>1.Mandatory or cannot be empty. </br>2.Should be Positive Integer or Decimal only. </td>
 										<td>1.If gst rate fix or fluid column is fluid then fill this.</br>2.Should be Positive Integer or Decimal only</td>
 										<td>1.If gst rate fix or fluid column is fluid then fill this. </br>2.Should be Positive Integer or Decimal only.</td>
+										<td>1.Optional.</td>
+										<td>1.Optional.</td>
+										<td>1.Optional.</td>
 									</tr>
 									</tbody>
 								</table>
