@@ -107,6 +107,8 @@ margin-bottom: 0;
 			$gstValue=$sales_invoice_row->gst_value;
 			$gst=$gstValue;
 			$igst+=$gst;
+			
+			$totalAmount+=$sales_invoice_row->quantity*$sales_invoice_row->rate;
 			}
 		?>
 		<tr>
@@ -204,6 +206,21 @@ margin-bottom: 0;
 		<td style="text-align:right;"><?php echo number_format($sale_invoice_row->total_gst_amount,2) ?></td>
 	</tr>
 	<?php } } ?>
+	
 </tbody>
+</table>
+<table border="1"  style="font-size:12px; margin-top:15px; border-collapse: collapse;">
+<tr>
+<td><b>Terms & Condition</b></td></tr>
+<tr>
+<td>
+<li>Cash Memo must be produced for any complaint of exchange.</li>
+<li>All alteration undertaken at customers risk</li>
+<li>Any complaints regarding garments will be forwarded to manufacturer whose decision on subject will be final.</li>
+<li>Any manufacturing defect will be entertained with in 30 days.
+And subject to final decision of company.</li>
+<li>All disputes are subject to Udaipur jurisdiction only. E&OE. </li>
+	</ol></td>
+	</tr>
 </table>
 </div>
