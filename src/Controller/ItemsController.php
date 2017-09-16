@@ -38,10 +38,12 @@ class ItemsController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
+		$this->viewBuilder()->layout('index_layout');
         $this->paginate = [
             'contain' => ['Units', 'StockGroups']
         ];
-        $items = $this->paginate($this->Items->find());
+        $items = $this->paginate($this->Items->find()->where(['Items.company_id'=>$company_id]));
 
         $this->set(compact('items'));
         $this->set('_serialize', ['items']);
@@ -135,10 +137,10 @@ class ItemsController extends AppController
             }
             $this->Flash->error(__('The item could not be saved. Please, try again.'));
         }
-        $units = $this->Items->Units->find('list');
-        $stockGroups = $this->Items->StockGroups->find('list');
-        $shades = $this->Items->Shades->find('list');
-        $sizes = $this->Items->Sizes->find('list');
+        $units = $this->Items->Units->find('list')->where(['company_id'=>$company_id]);
+        $stockGroups = $this->Items->StockGroups->find('list')->where(['company_id'=>$company_id]);
+        $shades = $this->Items->Shades->find('list')->where(['company_id'=>$company_id]);
+        $sizes = $this->Items->Sizes->find('list')->where(['company_id'=>$company_id]);
         $gstFigures = $this->Items->GstFigures->find('list')->where(['GstFigures.company_id'=>$company_id]);
         $this->set(compact('item', 'units', 'stockGroups','sizes','shades','gstFigures'));
         $this->set('_serialize', ['item']);
@@ -204,10 +206,10 @@ class ItemsController extends AppController
 				$this->Flash->error(__('The item could not be saved. Please, try again.'));
 			}
         }
-        $units = $this->Items->Units->find('list');
-        $stockGroups = $this->Items->StockGroups->find('list');
-		$shades = $this->Items->Shades->find('list');
-        $sizes = $this->Items->Sizes->find('list');
+        $units = $this->Items->Units->find('list')->where(['company_id'=>$company_id]);
+        $stockGroups = $this->Items->StockGroups->find('list')->where(['company_id'=>$company_id]);
+		$shades = $this->Items->Shades->find('list')->where(['company_id'=>$company_id]);
+        $sizes = $this->Items->Sizes->find('list')->where(['company_id'=>$company_id]);
 		$gstFigures = $this->Items->GstFigures->find('list')->where(['GstFigures.company_id'=>$company_id]);
         $this->set(compact('item', 'units', 'stockGroups','sizes','shades','gstFigures'));
         $this->set('_serialize', ['item']);
@@ -291,7 +293,7 @@ class ItemsController extends AppController
 		
 		$company_id=$this->Auth->User('session_company_id');
 		$itemcode = $this->Items->find()->where(['Items.item_code'=>$provided_item_code,'Items.company_id'=>$company_id]);
-		pr($itemcode->toArray());    exit;
+		
 		$data['is_unique'] = "yes";
 		echo json_encode($data);
 		

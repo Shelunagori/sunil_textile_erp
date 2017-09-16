@@ -20,7 +20,9 @@ class GrnRowsController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
+		$this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
+		$this->paginate = [
             'contain' => ['Grns', 'Items']
         ];
         $grnRows = $this->paginate($this->GrnRows);
@@ -53,7 +55,9 @@ class GrnRowsController extends AppController
      */
     public function add()
     {
-        $grnRow = $this->GrnRows->newEntity();
+        $this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
+		$grnRow = $this->GrnRows->newEntity();
         if ($this->request->is('post')) {
             $grnRow = $this->GrnRows->patchEntity($grnRow, $this->request->getData());
             if ($this->GrnRows->save($grnRow)) {
@@ -63,8 +67,8 @@ class GrnRowsController extends AppController
             }
             $this->Flash->error(__('The grn row could not be saved. Please, try again.'));
         }
-        $grns = $this->GrnRows->Grns->find('list', ['limit' => 200]);
-        $items = $this->GrnRows->Items->find('list', ['limit' => 200]);
+        $grns = $this->GrnRows->Grns->find('list')->where(['company_id'=>$company_id]);
+        $items = $this->GrnRows->Items->find('list')->where(['company_id'=>$company_id]);
         $this->set(compact('grnRow', 'grns', 'items'));
         $this->set('_serialize', ['grnRow']);
     }
@@ -78,7 +82,9 @@ class GrnRowsController extends AppController
      */
     public function edit($id = null)
     {
-        $grnRow = $this->GrnRows->get($id, [
+        $this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
+		$grnRow = $this->GrnRows->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -90,8 +96,8 @@ class GrnRowsController extends AppController
             }
             $this->Flash->error(__('The grn row could not be saved. Please, try again.'));
         }
-        $grns = $this->GrnRows->Grns->find('list', ['limit' => 200]);
-        $items = $this->GrnRows->Items->find('list', ['limit' => 200]);
+        $grns = $this->GrnRows->Grns->find('list')->where(['company_id'=>$company_id]);
+        $items = $this->GrnRows->Items->find('list')->where(['company_id'=>$company_id]);
         $this->set(compact('grnRow', 'grns', 'items'));
         $this->set('_serialize', ['grnRow']);
     }

@@ -25,7 +25,7 @@ class GrnsController extends AppController
         $this->paginate = [
             'contain' => ['Companies']
         ];
-        $grns = $this->paginate($this->Grns);
+        $grns = $this->paginate($this->Grns->find()->where(['Grns.company_id'=>$company_id]));
 
         $this->set(compact('grns'));
         $this->set('_serialize', ['grns']);
@@ -238,8 +238,9 @@ class GrnsController extends AppController
 	public function importCsv()
 	{
 		$this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
 		$import_csv = $this->Grns->newEntity();
-		$units = $this->Grns->Units->find();
+		$units = $this->Grns->Units->find()->where(['company_id'=>$company_id]);
 		$this->set(compact('import_csv','units'));
         $this->set('_serialize', ['import_csv']);
 	}
@@ -350,8 +351,9 @@ class GrnsController extends AppController
 							$second_tamp_grn_records->first_gst_rate = @$data[9];
 							$second_tamp_grn_records->amount_in_ref_of_gst_rate = @$data[10];
 							$second_tamp_grn_records->second_gst_rate = @$data[11];
-							$second_tamp_grn_records->shade = @$data[12];
-							$second_tamp_grn_records->size = @$data[13];
+							$second_tamp_grn_records->provided_shade = @$data[12];
+							$second_tamp_grn_records->provided_size = @$data[13];
+							$second_tamp_grn_records->description = @$data[14];
 							$second_tamp_grn_records->processed      = 'no'; 
 							$second_tamp_grn_records->user_id        = $user_id;
 							$second_tamp_grn_records->company_id = $company_id;

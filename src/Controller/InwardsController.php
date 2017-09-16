@@ -20,10 +20,12 @@ class InwardsController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
+        $this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
+		$this->paginate = [
             'contain' => ['Items', 'StockJournals']
         ];
-        $inwards = $this->paginate($this->Inwards);
+        $inwards = $this->paginate($this->Inwards->find());
 
         $this->set(compact('inwards'));
         $this->set('_serialize', ['inwards']);
@@ -38,7 +40,9 @@ class InwardsController extends AppController
      */
     public function view($id = null)
     {
-        $inward = $this->Inwards->get($id, [
+		$this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
+		$inward = $this->Inwards->get($id, [
             'contain' => ['Items', 'StockJournals']
         ]);
 
@@ -53,7 +57,9 @@ class InwardsController extends AppController
      */
     public function add()
     {
-        $inward = $this->Inwards->newEntity();
+        $this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
+		$inward = $this->Inwards->newEntity();
         if ($this->request->is('post')) {
             $inward = $this->Inwards->patchEntity($inward, $this->request->getData());
             if ($this->Inwards->save($inward)) {
@@ -63,8 +69,8 @@ class InwardsController extends AppController
             }
             $this->Flash->error(__('The inward could not be saved. Please, try again.'));
         }
-        $items = $this->Inwards->Items->find('list');
-        $stockJournals = $this->Inwards->StockJournals->find('list');
+        $items = $this->Inwards->Items->find('list')->where(['company_id'=>$company_id]);
+        $stockJournals = $this->Inwards->StockJournals->find('list')->where(['company_id'=>$company_id]);
         $this->set(compact('inward', 'items', 'stockJournals'));
         $this->set('_serialize', ['inward']);
     }
@@ -78,7 +84,9 @@ class InwardsController extends AppController
      */
     public function edit($id = null)
     {
-        $inward = $this->Inwards->get($id, [
+        $this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
+		$inward = $this->Inwards->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -90,8 +98,8 @@ class InwardsController extends AppController
             }
             $this->Flash->error(__('The inward could not be saved. Please, try again.'));
         }
-        $items = $this->Inwards->Items->find('list');
-        $stockJournals = $this->Inwards->StockJournals->find('list');
+        $items = $this->Inwards->Items->find('list')->where(['company_id'=>$company_id]);
+        $stockJournals = $this->Inwards->StockJournals->find('list')->where(['company_id'=>$company_id]);
         $this->set(compact('inward', 'items', 'stockJournals'));
         $this->set('_serialize', ['inward']);
     }

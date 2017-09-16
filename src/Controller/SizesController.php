@@ -67,7 +67,7 @@ class SizesController extends AppController
             }
             $this->Flash->error(__('The size could not be saved. Please, try again.'));
         }
-        $companies = $this->Sizes->Companies->find('list', ['limit' => 200]);
+        $companies = $this->Sizes->Companies->find('list');
         $this->set(compact('size', 'companies'));
         $this->set('_serialize', ['size']);
     }
@@ -95,7 +95,7 @@ class SizesController extends AppController
             }
             $this->Flash->error(__('The size could not be saved. Please, try again.'));
         }
-        $companies = $this->Sizes->Companies->find('list', ['limit' => 200]);
+        $companies = $this->Sizes->Companies->find('list');
         $this->set(compact('size', 'companies'));
         $this->set('_serialize', ['size']);
     }

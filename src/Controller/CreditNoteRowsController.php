@@ -53,6 +53,8 @@ class CreditNoteRowsController extends AppController
      */
     public function add()
     {
+		$this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
         $creditNoteRow = $this->CreditNoteRows->newEntity();
         if ($this->request->is('post')) {
             $creditNoteRow = $this->CreditNoteRows->patchEntity($creditNoteRow, $this->request->getData());
@@ -63,9 +65,9 @@ class CreditNoteRowsController extends AppController
             }
             $this->Flash->error(__('The credit note row could not be saved. Please, try again.'));
         }
-        $creditNotes = $this->CreditNoteRows->CreditNotes->find('list', ['limit' => 200]);
-        $items = $this->CreditNoteRows->Items->find('list', ['limit' => 200]);
-        $gstFigures = $this->CreditNoteRows->GstFigures->find('list', ['limit' => 200]);
+        $creditNotes = $this->CreditNoteRows->CreditNotes->find('list')->where(['company_id'=>$company_id]);
+        $items = $this->CreditNoteRows->Items->find('list')->where(['company_id'=>$company_id]);
+        $gstFigures = $this->CreditNoteRows->GstFigures->find('list')->where(['company_id'=>$company_id]);
         $this->set(compact('creditNoteRow', 'creditNotes', 'items', 'gstFigures'));
         $this->set('_serialize', ['creditNoteRow']);
     }
@@ -79,6 +81,8 @@ class CreditNoteRowsController extends AppController
      */
     public function edit($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
         $creditNoteRow = $this->CreditNoteRows->get($id, [
             'contain' => []
         ]);
@@ -91,9 +95,9 @@ class CreditNoteRowsController extends AppController
             }
             $this->Flash->error(__('The credit note row could not be saved. Please, try again.'));
         }
-        $creditNotes = $this->CreditNoteRows->CreditNotes->find('list', ['limit' => 200]);
-        $items = $this->CreditNoteRows->Items->find('list', ['limit' => 200]);
-        $gstFigures = $this->CreditNoteRows->GstFigures->find('list', ['limit' => 200]);
+        $creditNotes = $this->CreditNoteRows->CreditNotes->find('list')->where(['company_id'=>$company_id]);
+        $items = $this->CreditNoteRows->Items->find('list')->where(['company_id'=>$company_id]);
+        $gstFigures = $this->CreditNoteRows->GstFigures->find('list')->where(['company_id'=>$company_id]);
         $this->set(compact('creditNoteRow', 'creditNotes', 'items', 'gstFigures'));
         $this->set('_serialize', ['creditNoteRow']);
     }

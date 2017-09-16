@@ -47,7 +47,10 @@ margin-bottom: 0;
 		style="text-align:center;font-size:16px; padding-bottom:10px;  padding-top:10px;"><b><span><u>GST INVOICE</u></span></b></td>
 	</tr>
 	<tr>
-		<td colspan="4" style="text-align:center;font-size:14px;"><b>Customer Name: <?=ucwords($data->partyDetails->name)?> (<?=$data->partyDetails->mobile?> )</b></td>
+		<td colspan="4" style="font-size:14px;"><b>Customer Name: <?=ucwords($data->partyDetails->name)?><?php if($data->partyDetails->mobile) { ?>(<?=$data->partyDetails->mobile?> )<?php } ?></b></td>
+	</tr>
+	<tr>
+		<td colspan="4" style="font-size:14px;"><b>Invoice No.: <?= h('#'.str_pad($data->voucher_no, 4, '0', STR_PAD_LEFT)) ?></b></td>
 	</tr>
 	<tr>
 		<td colspan="4"
@@ -104,6 +107,8 @@ margin-bottom: 0;
 			$gstValue=$sales_invoice_row->gst_value;
 			$gst=$gstValue;
 			$igst+=$gst;
+			
+			$totalAmount+=$sales_invoice_row->quantity*$sales_invoice_row->rate;
 			}
 		?>
 		<tr>
@@ -190,7 +195,7 @@ margin-bottom: 0;
 	<tr>
 		<td  style="text-align:right;"><?php echo number_format($sale_invoice_row->total_taxable_amount,2) ?></td>
 		<td style="text-align:right;"> <?= h($sale_invoice_row->gst_figure->tax_percentage/2) .'%' ?></td>
-		<td style="text-align:right;"><?php echo number_format($sale_invoice_row->total_gst_amount,2) ?></td>
+		<td style="text-align:right;"><?php echo number_format($sale_invoice_row->total_gst_amount/2,2) ?></td>
 		<td style="text-align:right;"><?= h($sale_invoice_row->gst_figure->tax_percentage/2) .'%' ?></td>
 		<td style="text-align:right;"><?php echo number_format($sale_invoice_row->total_gst_amount/2,2) ?></td>
 	</tr>
@@ -201,6 +206,21 @@ margin-bottom: 0;
 		<td style="text-align:right;"><?php echo number_format($sale_invoice_row->total_gst_amount,2) ?></td>
 	</tr>
 	<?php } } ?>
+	
 </tbody>
+</table>
+<table border="1"  style="font-size:12px; margin-top:15px; border-collapse: collapse;">
+<tr>
+<td><b>Terms & Condition</b></td></tr>
+<tr>
+<td>
+<li>Cash Memo must be produced for any complaint of exchange.</li>
+<li>All alteration undertaken at customers risk</li>
+<li>Any complaints regarding garments will be forwarded to manufacturer whose decision on subject will be final.</li>
+<li>Any manufacturing defect will be entertained with in 30 days.
+And subject to final decision of company.</li>
+<li>All disputes are subject to Udaipur jurisdiction only. E&OE. </li>
+	</ol></td>
+	</tr>
 </table>
 </div>
