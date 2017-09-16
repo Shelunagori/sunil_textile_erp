@@ -25,8 +25,7 @@ class SalesInvoicesController extends AppController
 		$this->paginate = [
             'contain' => ['Companies', 'PartyLedgers', 'SalesLedgers']
         ];
-		$salesInvoice = $this->SalesInvoices->find();
-		$salesInvoices = $this->paginate($salesInvoice->find()->where(['SalesInvoices.company_id'=>$company_id]));
+		$salesInvoices = $this->paginate($this->SalesInvoices->find()->where(['SalesInvoices.company_id'=>$company_id]));
 		
         $this->set(compact('salesInvoices'));
         $this->set('_serialize', ['salesInvoices']);
