@@ -20,10 +20,12 @@ class FirstTampGrnRecordsController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
+		$this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
+		$this->paginate = [
             'contain' => ['Users']
         ];
-        $firstTampGrnRecords = $this->paginate($this->FirstTampGrnRecords);
+        $firstTampGrnRecords = $this->paginate($this->FirstTampGrnRecords->find()->where(['FirstTampGrnRecords.company_id'=>$company_id]));
 
         $this->set(compact('firstTampGrnRecords'));
         $this->set('_serialize', ['firstTampGrnRecords']);
@@ -53,7 +55,9 @@ class FirstTampGrnRecordsController extends AppController
      */
     public function add()
     {
-        $firstTampGrnRecord = $this->FirstTampGrnRecords->newEntity();
+		$this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
+		$firstTampGrnRecord = $this->FirstTampGrnRecords->newEntity();
         if ($this->request->is('post')) {
             $firstTampGrnRecord = $this->FirstTampGrnRecords->patchEntity($firstTampGrnRecord, $this->request->getData());
             if ($this->FirstTampGrnRecords->save($firstTampGrnRecord)) {
@@ -63,7 +67,7 @@ class FirstTampGrnRecordsController extends AppController
             }
             $this->Flash->error(__('The first tamp grn record could not be saved. Please, try again.'));
         }
-        $users = $this->FirstTampGrnRecords->Users->find('list', ['limit' => 200]);
+        $users = $this->FirstTampGrnRecords->Users->find('list')->where(['company_id'=>$company_id]);
         $this->set(compact('firstTampGrnRecord', 'users'));
         $this->set('_serialize', ['firstTampGrnRecord']);
     }
@@ -77,7 +81,9 @@ class FirstTampGrnRecordsController extends AppController
      */
     public function edit($id = null)
     {
-        $firstTampGrnRecord = $this->FirstTampGrnRecords->get($id, [
+        $this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
+		$firstTampGrnRecord = $this->FirstTampGrnRecords->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -89,7 +95,7 @@ class FirstTampGrnRecordsController extends AppController
             }
             $this->Flash->error(__('The first tamp grn record could not be saved. Please, try again.'));
         }
-        $users = $this->FirstTampGrnRecords->Users->find('list', ['limit' => 200]);
+        $users = $this->FirstTampGrnRecords->Users->find('list')->where(['company_id'=>$company_id]);
         $this->set(compact('firstTampGrnRecord', 'users'));
         $this->set('_serialize', ['firstTampGrnRecord']);
     }

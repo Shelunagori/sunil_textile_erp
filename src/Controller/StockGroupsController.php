@@ -21,10 +21,11 @@ class StockGroupsController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-        $this->paginate = [
+		$company_id=$this->Auth->User('session_company_id');
+		$this->paginate = [
             'contain' => ['ParentStockGroups', 'Companies']
         ];
-        $stockGroups = $this->paginate($this->StockGroups);
+        $stockGroups = $this->paginate($this->StockGroups->find()->where(['StockGroups.company_id'=>$company_id]));
 
         $this->set(compact('stockGroups'));
         $this->set('_serialize', ['stockGroups']);
@@ -67,7 +68,7 @@ class StockGroupsController extends AppController
             }
             $this->Flash->error(__('The stock group could not be saved. Please, try again.'));
         }
-        $parentStockGroups = $this->StockGroups->ParentStockGroups->find('list');
+        $parentStockGroups = $this->StockGroups->ParentStockGroups->find('list')->where(['company_id'=>$company_id]);
         $this->set(compact('stockGroup', 'parentStockGroups'));
         $this->set('_serialize', ['stockGroup']);
     }
@@ -95,7 +96,7 @@ class StockGroupsController extends AppController
             }
             $this->Flash->error(__('The stock group could not be saved. Please, try again.'));
         }
-        $parentStockGroups = $this->StockGroups->ParentStockGroups->find('list');
+        $parentStockGroups = $this->StockGroups->ParentStockGroups->find('list')->where(['company_id'=>$company_id]);
         $companies = $this->StockGroups->Companies->find('list');
         $this->set(compact('stockGroup', 'parentStockGroups', 'companies'));
         $this->set('_serialize', ['stockGroup']);

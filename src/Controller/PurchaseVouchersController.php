@@ -21,10 +21,11 @@ class PurchaseVouchersController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-        $this->paginate = [
+		$company_id=$this->Auth->User('session_company_id');
+		$this->paginate = [
             'contain' => ['Companies']
         ];
-        $purchaseVouchers = $this->paginate($this->PurchaseVouchers);
+        $purchaseVouchers = $this->paginate($this->PurchaseVouchers->find()->where(['PurchaseVouchers.company_id'=>$company_id]));
 
         $this->set(compact('purchaseVouchers'));
         $this->set('_serialize', ['purchaseVouchers']);
@@ -109,7 +110,7 @@ class PurchaseVouchersController extends AppController
 			$voucher_no=1;
 		} 
 
-		$ledgers = $this->PurchaseVouchers->PurchaseVoucherRows->Ledgers->find('list');
+		$ledgers = $this->PurchaseVouchers->PurchaseVoucherRows->Ledgers->find('list')->where(['company_id'=>$company_id]);
 		$accountGroupCredits = $this->PurchaseVouchers->PurchaseVoucherRows->Ledgers->AccountingGroups->find()->where(['purchase_voucher_party'=>1,'company_id'=>$company_id]);
 		foreach($accountGroupCredits as $accountGroupCredit)
 		{
@@ -198,7 +199,7 @@ class PurchaseVouchersController extends AppController
             }
             $this->Flash->error(__('The purchase voucher could not be saved. Please, try again.'));
         }
-		$ledgers = $this->PurchaseVouchers->PurchaseVoucherRows->Ledgers->find('list');
+		$ledgers = $this->PurchaseVouchers->PurchaseVoucherRows->Ledgers->find('list')->where(['company_id'=>$company_id]);
 		$accountGroupCredits = $this->PurchaseVouchers->PurchaseVoucherRows->Ledgers->AccountingGroups->find()->where(['purchase_voucher_party'=>1,'company_id'=>$company_id]);
 		foreach($accountGroupCredits as $accountGroupCredit)
 		{

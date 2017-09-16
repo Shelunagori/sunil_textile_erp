@@ -25,7 +25,7 @@ class GrnsController extends AppController
         $this->paginate = [
             'contain' => ['Companies']
         ];
-        $grns = $this->paginate($this->Grns);
+        $grns = $this->paginate($this->Grns->find()->where(['Grns.company_id'=>$company_id]));
 
         $this->set(compact('grns'));
         $this->set('_serialize', ['grns']);
@@ -238,8 +238,9 @@ class GrnsController extends AppController
 	public function importCsv()
 	{
 		$this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
 		$import_csv = $this->Grns->newEntity();
-		$units = $this->Grns->Units->find();
+		$units = $this->Grns->Units->find()->where(['company_id'=>$company_id]);
 		$this->set(compact('import_csv','units'));
         $this->set('_serialize', ['import_csv']);
 	}

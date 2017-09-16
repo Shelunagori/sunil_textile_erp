@@ -20,10 +20,12 @@ class LocationsController extends AppController
      */
     public function index()
     {
-        $this->paginate = [
+        $this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
+		$this->paginate = [
             'contain' => ['Companies']
         ];
-        $locations = $this->paginate($this->Locations);
+        $locations = $this->paginate($this->Locations->find()->where(['Locations.company_id'=>$company_id]));
 
         $this->set(compact('locations'));
         $this->set('_serialize', ['locations']);
@@ -53,6 +55,8 @@ class LocationsController extends AppController
      */
     public function add()
     {
+		$this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
         $location = $this->Locations->newEntity();
         if ($this->request->is('post')) {
             $location = $this->Locations->patchEntity($location, $this->request->getData());
@@ -63,7 +67,7 @@ class LocationsController extends AppController
             }
             $this->Flash->error(__('The location could not be saved. Please, try again.'));
         }
-        $companies = $this->Locations->Companies->find('list', ['limit' => 200]);
+        $companies = $this->Locations->Companies->find('list');
         $this->set(compact('location', 'companies'));
         $this->set('_serialize', ['location']);
     }
@@ -77,7 +81,9 @@ class LocationsController extends AppController
      */
     public function edit($id = null)
     {
-        $location = $this->Locations->get($id, [
+        $this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
+		$location = $this->Locations->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -89,7 +95,7 @@ class LocationsController extends AppController
             }
             $this->Flash->error(__('The location could not be saved. Please, try again.'));
         }
-        $companies = $this->Locations->Companies->find('list', ['limit' => 200]);
+        $companies = $this->Locations->Companies->find('list');
         $this->set(compact('location', 'companies'));
         $this->set('_serialize', ['location']);
     }

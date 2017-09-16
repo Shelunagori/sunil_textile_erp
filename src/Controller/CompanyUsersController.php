@@ -20,10 +20,12 @@ class CompanyUsersController extends AppController
      */
     public function index()
     {
+		$this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
         $this->paginate = [
             'contain' => ['Companies', 'Users']
         ];
-        $companyUsers = $this->paginate($this->CompanyUsers);
+        $companyUsers = $this->paginate($this->CompanyUsers->find()->where(['CompanyUsers.company_id'=>$company_id]));
 
         $this->set(compact('companyUsers'));
         $this->set('_serialize', ['companyUsers']);
@@ -53,6 +55,8 @@ class CompanyUsersController extends AppController
      */
     public function add()
     {
+		$this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
         $companyUser = $this->CompanyUsers->newEntity();
         if ($this->request->is('post')) {
             $companyUser = $this->CompanyUsers->patchEntity($companyUser, $this->request->getData());
@@ -63,8 +67,8 @@ class CompanyUsersController extends AppController
             }
             $this->Flash->error(__('The company user could not be saved. Please, try again.'));
         }
-        $companies = $this->CompanyUsers->Companies->find('list');
-        $users = $this->CompanyUsers->Users->find('list');
+        $companies = $this->CompanyUsers->Companies->find('list')->where(['id'=>$company_id]);
+        $users = $this->CompanyUsers->Users->find('list')->where(['company_id'=>$company_id]);
         $this->set(compact('companyUser', 'companies', 'users'));
         $this->set('_serialize', ['companyUser']);
     }
@@ -78,6 +82,8 @@ class CompanyUsersController extends AppController
      */
     public function edit($id = null)
     {
+		$this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
         $companyUser = $this->CompanyUsers->get($id, [
             'contain' => []
         ]);
@@ -90,8 +96,8 @@ class CompanyUsersController extends AppController
             }
             $this->Flash->error(__('The company user could not be saved. Please, try again.'));
         }
-        $companies = $this->CompanyUsers->Companies->find('list');
-        $users = $this->CompanyUsers->Users->find('list');
+        $companies = $this->CompanyUsers->Companies->find('list')=>(['id'=>$company_id]);
+        $users = $this->CompanyUsers->Users->find('list')->where(['company_id'=>$company_id]);
         $this->set(compact('companyUser', 'companies', 'users'));
         $this->set('_serialize', ['companyUser']);
     }

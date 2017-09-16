@@ -21,10 +21,11 @@ class CompaniesController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-        $this->paginate = [
+		$company_id=$this->Auth->User('session_company_id');
+		$this->paginate = [
             'contain' => ['States']
         ];
-        $companies = $this->paginate($this->Companies);
+        $companies = $this->paginate($this->Companies->find()->where(['Companies.id'=>$company_id]));
 
         $this->set(compact('companies'));
         $this->set('_serialize', ['companies']);

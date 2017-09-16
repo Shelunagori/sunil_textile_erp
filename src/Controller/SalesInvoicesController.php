@@ -21,11 +21,12 @@ class SalesInvoicesController extends AppController
     public function index()
     {
 		$this->viewBuilder()->layout('index_layout');
-		 $this->paginate = [
+		$company_id=$this->Auth->User('session_company_id');
+		$this->paginate = [
             'contain' => ['Companies', 'PartyLedgers', 'SalesLedgers']
         ];
 		$salesInvoice = $this->SalesInvoices->find();
-		$salesInvoices = $this->paginate($salesInvoice);
+		$salesInvoices = $this->paginate($salesInvoice->find()->where(['SalesInvoices.company_id'=>$company_id]));
 		
         $this->set(compact('salesInvoices'));
         $this->set('_serialize', ['salesInvoices']);
@@ -419,8 +420,8 @@ public function edit($id = null)
             $this->Flash->error(__('The sales invoice could not be saved. Please, try again.'));
         }
         $companies = $this->SalesInvoices->Companies->find('list');
-        $customers = $this->SalesInvoices->Customers->find('list');
-        $gstFigures = $this->SalesInvoices->GstFigures->find('list');
+        $customers = $this->SalesInvoices->Customers->find('list')->where(['company_id'=>$company_id]);
+        $gstFigures = $this->SalesInvoices->GstFigures->find('list')->where(['company_id'=>$company_id]);
         $this->set(compact('salesInvoice', 'companies', 'customers', 'gstFigures'));
 
 		$customers = $this->SalesInvoices->Customers->find()
@@ -568,7 +569,7 @@ public function salesInvoiceBill($id=null)
 					->contain(['Units'])->first();
 					$itemUnit=$items->unit->name;
 		
-		$query = $this->SalesInvoices->SalesInvoiceRows->Items->ItemLedgers->find();
+		$query = $this->SalesInvoices->SalesInvoiceRows->Items->ItemLedgers->find()->where(['company_id'=>$company_id]);
 		$totalInCase = $query->newExpr()
 			->addCase(
 				$query->newExpr()->add(['status' => 'In']),

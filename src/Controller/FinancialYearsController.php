@@ -20,7 +20,9 @@ class FinancialYearsController extends AppController
      */
     public function index()
     {
-        $financialYears = $this->paginate($this->FinancialYears);
+		$this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
+		$financialYears = $this->paginate($this->FinancialYears->find()->where(['FinancialYears.company_id'=>$company_id]));
 
         $this->set(compact('financialYears'));
         $this->set('_serialize', ['financialYears']);
@@ -50,7 +52,9 @@ class FinancialYearsController extends AppController
      */
     public function add()
     {
-        $financialYear = $this->FinancialYears->newEntity();
+		$this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
+		$financialYear = $this->FinancialYears->newEntity();
         if ($this->request->is('post')) {
             $financialYear = $this->FinancialYears->patchEntity($financialYear, $this->request->getData());
             if ($this->FinancialYears->save($financialYear)) {
@@ -73,7 +77,9 @@ class FinancialYearsController extends AppController
      */
     public function edit($id = null)
     {
-        $financialYear = $this->FinancialYears->get($id, [
+        $this->viewBuilder()->layout('index_layout');
+		$company_id=$this->Auth->User('session_company_id');
+		$financialYear = $this->FinancialYears->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
