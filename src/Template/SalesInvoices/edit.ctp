@@ -47,6 +47,7 @@ foreach($partyOptions as $partyOption)
 						</div>
 						<input type="hidden" name="party_state_id" class="ps" value="<?php echo $party_state_id;?>">
                         <input type="hidden" name="outOfStock" class="outOfStock" value="false">
+						
 						<input type="hidden" name="company_id" class="company_id" value="<?php echo $company_id;?>">
 						<input type="hidden" name="location_id" class="location_id" value="<?php echo $location_id;?>">
 						<input type="hidden" name="state_id" class="state_id" value="<?php echo $state_id;?>">
@@ -96,6 +97,7 @@ foreach($partyOptions as $partyOption)
                                          $i=0;		
 								         foreach($salesInvoice->sales_invoice_rows as $salesInvoiceRow)
 									     {
+										 
 									if(@$party_state_id!=$state_id){if($party_state_id>0){ $exactgst=$salesInvoiceRow->gst_value;}
 									else if($party_state_id==0){$exactgst=$salesInvoiceRow->gst_value/2;}else if(!$party_state_id){$exactgst=$salesInvoiceRow->gst_value/2;}
 									}else if(@$party_state_id==$state_id) { $exactgst=$salesInvoiceRow->gst_value/2;}
@@ -104,6 +106,8 @@ foreach($partyOptions as $partyOption)
 									<td>
 										<input type="hidden" name="salesInvoiceRow<?php echo $i;?>id" class="id" value="<?php echo $salesInvoiceRow->id; ?>">
 										<input type="hidden" name="" class="outStock" value="0">
+										<input type="hidden" name="" class="totStock " value="0">
+										<input type="hidden" name="" class="exactQty " value="<?php echo $salesInvoiceRow->quantity;?>">
 										<input type="hidden" name="gst_amount" class="gst_amount" value="">	
 										<input type="hidden" name="salesInvoiceRow<?php echo $i;?>gst_figure_id" class="gst_figure_id" value="<?php echo $salesInvoiceRow->gst_figure_id;?>">
 										<input type="hidden" name="" class="gst_figure_tax_percentage calculation" value="<?php echo $salesInvoiceRow->gst_figure->tax_percentage;?>">
@@ -111,7 +115,6 @@ foreach($partyOptions as $partyOption)
 										<input type="hidden" name="salesInvoiceRow<?php echo $i;?>gst_value" class="gstValue calculation" value="<?php echo $salesInvoiceRow->gst_value;?>">
 										<input type="hidden" name="exactgst_value" class="exactgst_value calculation" value="<?php $exactgst;?>">
 										<input type="hidden" name="" class="discountvalue calculation" value="">
-										<input type="hidden" name="" class="totStock " value="0">
 																
 										<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.item_id', ['empty'=>'-Item Name-','options'=>$itemOptions,'label' => false,'class' => 'form-control input-sm attrGet calculation','required'=>'required','value'=>$salesInvoiceRow->item->id]);
 										echo $this->Form->input('salesInvoiceRow.'.$i.'.id', ['value'=>$salesInvoiceRow->id,'type'=>'hidden']);	?>
@@ -121,19 +124,19 @@ foreach($partyOptions as $partyOption)
 									<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.quantity', ['label' => false,'class' => 'form-control input-medium calculation quantity rightAligntextClass','id'=>'check','required'=>'required','placeholder'=>'Quantity', 'value'=>$salesInvoiceRow->quantity]); ?>
 								</td>
 								<td>
-									<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.rate', ['label' => false,'class' => 'form-control input-sm calculation rate rightAligntextClass','required'=>'required','placeholder'=>'Rate','value'=>$salesInvoiceRow->rate, 'readonly'=>'readonly']); ?>
+									<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.rate', ['label' => false,'class' => 'form-control input-sm calculation rate rightAligntextClass','required'=>'required','placeholder'=>'Rate','value'=>$salesInvoiceRow->rate, 'readonly'=>'readonly', 'tabindex'=>'-1']); ?>
 								</td>
 								<td>
 									<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.discount_percentage', ['label' => false,'class' => 'form-control input-sm calculation discount rightAligntextClass','placeholder'=>'Dis.', 'value'=>$salesInvoiceRow->discount_percentage]); ?>	
 								</td>
 								<td>
-								<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.taxable_value', ['label' => false,'class' => 'form-control input-sm gstAmount reverse_total_amount rightAligntextClass','required'=>'required', 'placeholder'=>'Amount', 'value'=>$salesInvoiceRow->taxable_value, 'readonly'=>'readonly']); ?>	
+								<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.taxable_value', ['label' => false,'class' => 'form-control input-sm gstAmount reverse_total_amount rightAligntextClass','required'=>'required', 'placeholder'=>'Amount', 'value'=>$salesInvoiceRow->taxable_value, 'readonly'=>'readonly', 'tabindex'=>'-1']); ?>	
 								</td>
 								<td>
-									<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.gst_figure_tax_name', ['label' => false,'class' => 'form-control input-sm gst_figure_tax_name rightAligntextClass', 'readonly'=>'readonly','required'=>'required','placeholder'=>'', 'value'=>$salesInvoiceRow->gst_figure->name]); ?>	
+									<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.gst_figure_tax_name', ['label' => false,'class' => 'form-control input-sm gst_figure_tax_name rightAligntextClass', 'readonly'=>'readonly','required'=>'required','placeholder'=>'', 'value'=> $salesInvoiceRow->gst_figure->name, 'tabindex'=>'-1']); ?>	
 								</td>
 								<td>
-									<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.net_amount', ['label' => false,'class' => 'form-control input-sm discountAmount calculation rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'Taxable Value', 'value'=>$salesInvoiceRow->net_amount]); ?>	
+									<?php echo $this->Form->input('salesInvoiceRow.'.$i.'.net_amount', ['label' => false,'class' => 'form-control input-sm discountAmount calculation rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'Taxable Value', 'value'=>$salesInvoiceRow->net_amount, 'tabindex'=>'-1']); ?>	
 								</td>
 															
 								<td align="center">
@@ -153,7 +156,7 @@ foreach($partyOptions as $partyOption)
 						<td colspan="6" align="right"><b>Amt Before Tax</b>
 						</td>
 						<td colspan="2">
-						<?php echo $this->Form->input('amount_before_tax', ['label' => false,'class' => 'form-control input-sm amount_before_tax rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
+						<?php echo $this->Form->input('amount_before_tax', ['label' => false,'class' => 'form-control input-sm amount_before_tax rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'', 'tabindex'=>'-1']); ?>	
 						</td>
 						</tr>
 						
@@ -161,21 +164,21 @@ foreach($partyOptions as $partyOption)
 						<td colspan="6" align="right"><b>Total CGST</b>
 						</td>
 						<td colspan="2">
-						<?php echo $this->Form->input('total_cgst', ['label' => false,'class' => 'form-control input-sm add_cgst rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
+						<?php echo $this->Form->input('total_cgst', ['label' => false,'class' => 'form-control input-sm add_cgst rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'', 'tabindex'=>'-1']); ?>	
 						</td>
 						</tr>
 						<tr id="add_sgst">
 						<td colspan="6" align="right"><b>Total SGST</b>
 						</td>
 						<td colspan="2">
-						<?php echo $this->Form->input('total_sgst', ['label' => false,'class' => 'form-control input-sm add_sgst rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
+						<?php echo $this->Form->input('total_sgst', ['label' => false,'class' => 'form-control input-sm add_sgst rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'', 'tabindex'=>'-1']); ?>	
 						</td>
 						</tr>
 						<tr id="add_igst" style="">
 						<td colspan="6" align="right"><b>Total IGST</b>
 						</td>
 						<td colspan="2">
-						<?php echo $this->Form->input('total_igst', ['label' => false,'class' => 'form-control input-sm add_igst rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
+						<?php echo $this->Form->input('total_igst', ['label' => false,'class' => 'form-control input-sm add_igst rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'', 'tabindex'=>'-1']); ?>	
 						</td>
 						</tr>
 				
@@ -183,7 +186,7 @@ foreach($partyOptions as $partyOption)
 						<td colspan="6" align="right"><b>Round OFF</b>
 						</td>
 						<td colspan="2">
-						<?php echo $this->Form->input('round_off', ['label' => false,'class' => 'form-control input-sm roundValue rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
+						<?php echo $this->Form->input('round_off', ['label' => false,'class' => 'form-control input-sm roundValue rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'', 'tabindex'=>'-1']); ?>	
 						</td>
 						</tr>
 									
@@ -191,7 +194,7 @@ foreach($partyOptions as $partyOption)
 						<td colspan="6" align="right"><b>Amt After Tax</b>
 						</td>
 						<td colspan="2">
-						<?php echo $this->Form->input('amount_after_tax', ['label' => false,'class' => 'form-control input-sm amount_after_tax rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
+						<?php echo $this->Form->input('amount_after_tax', ['label' => false,'class' => 'form-control input-sm amount_after_tax rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'', 'tabindex'=>'-1']); ?>	
 						</td>
 						</tr>
 					</tfoot>
@@ -260,6 +263,7 @@ foreach($partyOptions as $partyOption)
 			<td>
 			<input type="hidden" name="" class="outStock" value="0">
 			<input type="hidden" name="" class="totStock " value="0">
+			<input type="hidden" name="" class="exactQty " value="0">
 			<input type="hidden" name="gst_amount" class="gst_amount" value="">
 			<input type="hidden" name="gst_figure_id" class="gst_figure_id" value="">
 			<input type="hidden" name="" class="gst_figure_tax_percentage calculation" value="">
@@ -274,19 +278,19 @@ foreach($partyOptions as $partyOption)
 				<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-medium calculation quantity rightAligntextClass','id'=>'check','required'=>'required','placeholder'=>'Quantity', 'value'=>1]); ?>
 			</td>
 			<td>
-				<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm calculation rate rightAligntextClass','required'=>'required','placeholder'=>'Rate', 'readonly'=>'readonly']); ?>
+				<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm calculation rate rightAligntextClass','required'=>'required','placeholder'=>'Rate', 'readonly'=>'readonly', 'tabindex'=>'-1']); ?>
 			</td>
 			<td>
 				<?php echo $this->Form->input('discount_percentage', ['label' => false,'class' => 'form-control input-sm calculation discount rightAligntextClass','placeholder'=>'Dis.','value'=>0]); ?>	
 			</td>
 			<td>
-				<?php echo $this->Form->input('taxable_value', ['label' => false,'class' => 'form-control input-sm gstAmount reverse_total_amount rightAligntextClass','required'=>'required','placeholder'=>'Amount', 'readonly'=>'readonly']); ?>
+				<?php echo $this->Form->input('taxable_value', ['label' => false,'class' => 'form-control input-sm gstAmount reverse_total_amount rightAligntextClass','required'=>'required','placeholder'=>'Amount', 'readonly'=>'readonly', 'tabindex'=>'-1']); ?>
 			</td>
 			<td>
-				<?php echo $this->Form->input('gst_figure_tax_name', ['label' => false,'class' => 'form-control input-sm gst_figure_tax_name rightAligntextClass', 'readonly'=>'readonly','required'=>'required','placeholder'=>'']); ?>	
+				<?php echo $this->Form->input('gst_figure_tax_name', ['label' => false,'class' => 'form-control input-sm gst_figure_tax_name rightAligntextClass', 'readonly'=>'readonly','required'=>'required','placeholder'=>'', 'tabindex'=>'-1']); ?>	
 			</td>
 			<td>
-				<?php echo $this->Form->input('net_amount', ['label' => false,'class' => 'form-control input-sm discountAmount calculation rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'Taxable Value']); ?>	
+				<?php echo $this->Form->input('net_amount', ['label' => false,'class' => 'form-control input-sm discountAmount calculation rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'Taxable Value', 'tabindex'=>'-1']); ?>	
 			</td>
 			<td align="center">
 				<a class="btn btn-danger delete-tr btn-xs" href="#" role="button" style="margin-bottom: 5px;"><i class="fa fa-times"></i></a>
@@ -315,7 +319,9 @@ foreach($partyOptions as $partyOption)
 			var fetch=$.parseJSON(response);
 			var text=fetch.text;
 			var type=fetch.type;
+			var mainStock=fetch.mainStock;
 			itemQ.find('.itemQty').html(text);
+			itemQ.find('.totStock').val(mainStock);
 		if(type=='true')
 		{
 		 itemQ.find('.outStock').val(1);
@@ -365,18 +371,8 @@ foreach($partyOptions as $partyOption)
 				$('#add_igst').hide();
 				$('#is_interstate').val('0');
 			}
-			//$(this).closest('tr').find('.output_igst_ledger_id').val(output_igst_ledger_id);
 		});
 		
-		$('.quantity').die().live('keyup',function(){
-			var quantity=$(this).val();
-			var totStock=$(this).closest('tr').find('.totStock').val();
-			if(totStock < quantity)
-			{
-				alert('sorry you can not add quantity more than stock');
-				$(this).closest('tr').find('.quantity').val('');
-			}
-		}); 
 		$('.delete-tr').die().live('click',function() 
 		{
 			$(this).closest('tr').remove();
@@ -384,6 +380,10 @@ foreach($partyOptions as $partyOption)
 		});
 		ComponentsPickers.init();
 	});
+	/* $('.quantity').die().live('keyup',function(){
+			var quantity=$(this).val();
+			$(this).closest('tr').find('.exactQty').val(quantity);
+	}); */
 	$('.add_row').click(function(){
 		add_row();
     }) ;
@@ -393,6 +393,39 @@ foreach($partyOptions as $partyOption)
 		$('#main_table tbody#main_tbody').append(tr);
 		rename_rows();
 		forward_total_amount();
+	}
+	$( document ).ready( stockLoad );
+	function stockLoad()
+	{
+	$('#main_table tbody#main_tbody tr.main_tr').each(function(){ 
+		var itemQ=$(this).closest('tr');
+		var gst_amount=$('option:selected', this).attr('gst_amount');
+		var itemId=$('option:selected', this).attr('value');
+		var sales_rate=$('option:selected', this).attr('sales_rate');
+		$(this).closest('tr').find('.gst_amount').val(gst_amount);
+		$(this).closest('tr').find('.rate').val(sales_rate);
+		//var itemId=$(this).val();
+		var url='".$this->Url->build(["controller" => "SalesInvoices", "action" => "ajaxItemQuantity"])."';
+		url=url+'/'+itemId
+		$.ajax({
+			url: url,
+			type: 'GET'
+		}).done(function(response) {
+			var fetch=$.parseJSON(response);
+			var text=fetch.text;
+			var type=fetch.type;
+			var mainStock=fetch.mainStock;
+			itemQ.find('.itemQty').html(text);
+			itemQ.find('.totStock').val(mainStock);
+			if(type=='true')
+			{
+			 itemQ.find('.outStock').val(1);
+			}
+			else{
+			 itemQ.find('.outStock').val(0);
+			}
+		});	
+		});
 	}
 	function rename_rows()
 	{
@@ -593,7 +626,54 @@ foreach($partyOptions as $partyOption)
 			rename_rows();
 		}
 		
-function checkValidation() 
+	function checkValidation() 
+	{  
+		var amount_before_tax  = parseFloat($('.amount_before_tax').val());
+		if(!amount_before_tax || amount_before_tax==0){
+			alert('Error: zero amount invoice can not be generated.');
+			return false;
+		}
+		
+		var StockDB=[]; var StockInput = {};
+		$('#main_table tbody#main_tbody tr.main_tr').each(function()
+		{
+			var stock=$(this).find('td:nth-child(1) input.totStock').val();
+			var item_id=$(this).find('td:nth-child(1) select.attrGet option:selected').val();
+			var actualQuantity=parseFloat($(this).find('td:nth-child(2) input.quantity').val());
+			var exactQty=parseFloat($(this).find('td:nth-child(1) input.exactQty').val());
+			var existingQty=parseFloat(StockInput[item_id]);
+			var quantity=parseFloat(actualQuantity)-parseFloat(exactQty);
+			if(!existingQty){ existingQty=0; }
+			StockInput[item_id] = quantity+existingQty;
+			StockDB[item_id] = stock;
+		});
+		
+		var c=1;
+		$('#main_table tbody#main_tbody tr.main_tr').each(function()
+		{
+			var item_id=$(this).find('td:nth-child(1) select.attrGet option:selected').val();
+			if(StockInput[item_id]>StockDB[item_id]){
+				c=0;
+			}
+		});
+		if(c==0){
+			alert('Error: Stock is going in minus.');
+			return false;
+		}
+		
+		if(confirm('Are you sure you want to submit!'))
+		{
+			$('.submit').attr('disabled','disabled');
+			$('.submit').text('Submiting...');
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+/* function checkValidation() 
 	{  
 		var amount_before_tax  = $('.amount_before_tax').val();
 		var amount_after_tax = $('.amount_after_tax').val();
@@ -616,7 +696,7 @@ function checkValidation()
 			   return false;
 		}
 
-	}";
+	} */";
 
 echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 
 ?>

@@ -48,6 +48,18 @@ $this->set('title', 'Create Sales Invoice');
 							</div>
 						</div> 
 					</div>
+					
+					<div class="row">
+						<div class="col-md-3">
+								<?php echo $this->Form->input('itembarcode',['class'=>'form-control input-sm itembarcode','label'=>false,'required'=>'required', 'placeholder'=>'Item Code/Bar Code']);
+								?>
+						</div>
+						<div class="col-md-1" align="left">
+								<button type="button" class="go btn blue-madison input-sm">Go</button>
+						</div> 
+					</div>
+					
+					
 					<br>
 				   <div class="row">
 				  <div class="table-responsive">
@@ -76,14 +88,14 @@ $this->set('title', 'Create Sales Invoice');
 						<td colspan="6" align="right"><b>Amt Before Tax</b>
 						</td>
 						<td colspan="2">
-						<?php echo $this->Form->input('amount_before_tax', ['label' => false,'class' => 'form-control input-sm amount_before_tax rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
+						<?php echo $this->Form->input('amount_before_tax', ['label' => false,'class' => 'form-control input-sm amount_before_tax rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'', 'tabindex'=>'-1']); ?>	
 						</td>
 						</tr>
 						<tr id="add_cgst">
 						<td colspan="6" align="right"><b>Total CGST</b>
 						</td>
 						<td colspan="2">
-						<?php echo $this->Form->input('total_cgst', ['label' => false,'class' => 'form-control input-sm add_cgst rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
+						<?php echo $this->Form->input('total_cgst', ['label' => false,'class' => 'form-control input-sm add_cgst rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'', 'tabindex'=>'-1']); ?>	
 						</td>
 						</tr>
 									
@@ -91,21 +103,21 @@ $this->set('title', 'Create Sales Invoice');
 							<td colspan="6" align="right"><b>Total SGST</b>
 							</td>
 							<td colspan="2">
-								<?php echo $this->Form->input('total_sgst', ['label' => false,'class' => 'form-control input-sm add_sgst rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
+								<?php echo $this->Form->input('total_sgst', ['label' => false,'class' => 'form-control input-sm add_sgst rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'', 'tabindex'=>'-1']); ?>	
 							</td>
 						</tr>
 						<tr id="add_igst" style="display:none">
 							<td colspan="6" align="right"><b>Total IGST</b>
 							</td>
 							<td colspan="2">
-								<?php echo $this->Form->input('total_igst', ['label' => false,'class' => 'form-control input-sm add_igst rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
+								<?php echo $this->Form->input('total_igst', ['label' => false,'class' => 'form-control input-sm add_igst rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'', 'tabindex'=>'-1']); ?>	
 							</td>
 						</tr>
 						<tr>
 						<td colspan="6" align="right"><b>Round OFF</b>
 						</td>
 						<td colspan="2">
-						<?php echo $this->Form->input('round_off', ['label' => false,'class' => 'form-control input-sm roundValue rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
+						<?php echo $this->Form->input('round_off', ['label' => false,'class' => 'form-control input-sm roundValue rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'', 'tabindex'=>'-1']); ?>	
 						</td>
 						</tr>
 									
@@ -113,7 +125,7 @@ $this->set('title', 'Create Sales Invoice');
 						<td colspan="6" align="right"><b>Amt After Tax</b>
 						</td>
 						<td colspan="2">
-						<?php echo $this->Form->input('amount_after_tax', ['label' => false,'class' => 'form-control input-sm amount_after_tax rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'']); ?>	
+						<?php echo $this->Form->input('amount_after_tax', ['label' => false,'class' => 'form-control input-sm amount_after_tax rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'', 'tabindex'=>'-1']); ?>	
 						</td>
 						</tr>
 					</tfoot>
@@ -192,26 +204,26 @@ $this->set('title', 'Create Sales Invoice');
 				<input type="hidden" name="gst_value" class="gstValue calculation" value="">
 				<input type="hidden" name="exactgst_value" class="exactgst_value calculation" value="">
 				<input type="hidden" name="discountvalue" class="discountvalue calculation" value="">
-				<?php echo $this->Form->input('item_id', ['empty'=>'-Item Name-', 'options'=>$itemOptions,'label' => false,'class' =>'form-control input-medium attrGet','required'=>'required']); ?>
+				<?php echo $this->Form->input('item_id', ['empty'=>'-Item Name-', 'options'=>$itemOptions,'label' => false,'class' =>'form-control input-medium attrGet bottomSelect','required'=>'required']); ?>
 				<span class="itemQty" style="color:red;font-size:10px;"></span>
 			</td>			
 			<td>
 				<?php echo $this->Form->input('quantity', ['label' => false,'class' => 'form-control input-sm calculation quantity rightAligntextClass','id'=>'check','required'=>'required','placeholder'=>'Quantity', 'value'=>1]); ?>
 			</td>
 			<td>
-				<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm calculation rate rightAligntextClass','required'=>'required','placeholder'=>'Rate', 'readonly'=>'readonly']); ?>
+				<?php echo $this->Form->input('rate', ['label' => false,'class' => 'form-control input-sm calculation rate rightAligntextClass','required'=>'required','placeholder'=>'Rate', 'readonly'=>'readonly', 'tabindex'=>'-1']); ?>
 			</td>
 			<td>
 				<?php echo $this->Form->input('discount_percentage', ['label' => false,'class' => 'form-control input-sm calculation discount rightAligntextClass','placeholder'=>'Dis.','value'=>0]); ?>	
 			</td>
 			<td>
-				<?php echo $this->Form->input('taxable_value', ['label' => false,'class' => 'form-control input-sm gstAmount reverse_total_amount rightAligntextClass','required'=>'required','placeholder'=>'Amount', 'readonly'=>'readonly']); ?>
+				<?php echo $this->Form->input('taxable_value', ['label' => false,'class' => 'form-control input-sm gstAmount reverse_total_amount rightAligntextClass','required'=>'required','placeholder'=>'Amount', 'readonly'=>'readonly', 'tabindex'=>'-1']); ?>
 			</td>
 			<td>
-				<?php echo $this->Form->input('gst_figure_tax_name', ['label' => false,'class' => 'form-control input-sm gst_figure_tax_name rightAligntextClass', 'readonly'=>'readonly','required'=>'required','placeholder'=>'GST']); ?>	
+				<?php echo $this->Form->input('gst_figure_tax_name', ['label' => false,'class' => 'form-control input-sm gst_figure_tax_name rightAligntextClass', 'readonly'=>'readonly','required'=>'required','placeholder'=>'GST', 'tabindex'=>'-1']); ?>	
 			</td>
 			<td>
-				<?php echo $this->Form->input('net_amount', ['label' => false,'class' => 'form-control input-sm discountAmount calculation rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'Taxable Value']); ?>					
+				<?php echo $this->Form->input('net_amount', ['label' => false,'class' => 'form-control input-sm discountAmount calculation rightAligntextClass','required'=>'required', 'readonly'=>'readonly','placeholder'=>'Taxable Value', 'tabindex'=>'-1']); ?>					
 			</td>
 			<td align="center">
 				<a class="btn btn-danger delete-tr btn-xs dlt" href="#" role="button" style="margin-bottom: 5px;"><i class="fa fa-times"></i></a>
@@ -243,12 +255,8 @@ $this->set('title', 'Create Sales Invoice');
 			var text=fetch.text;
 			var type=fetch.type;
 			var mainStock=fetch.mainStock;
-			//var itemid=fetch.itemid;
 			itemQ.find('.itemQty').html(text);
-			//var suffix = text.match(/\d+/);
 			itemQ.find('.totStock').val(mainStock);
-           // itemQ.find('.totStock').addClass('itemid'+itemid);
-			//itemQ.find('.totStock').attr('itemattr','itemid'+itemid);
 			if(type=='true')
 			{
 				itemQ.find('.outStock').val(1);
@@ -259,6 +267,22 @@ $this->set('title', 'Create Sales Invoice');
 		});	
 		forward_total_amount();
 		});
+		
+		$('.go').die().live('click',function(){
+			var Inputitemcode=$('.itembarcode').val();
+			if(Inputitemcode){
+				var item_id=$('select.bottomSelect option[item_code='+Inputitemcode+']').val();
+				if(item_id){
+					add_row();
+					$('#main_table tbody#main_tbody tr:last select.attrGet').val(item_id).select2();
+				}else{
+					alert('Not found any item of this barcode.');
+				}
+			}
+		});
+		
+		
+		
 		$('.party_ledger_id').die().live('change',function(){
 			var customer_state_id=$('option:selected', this).attr('party_state_id');
 			var state_id=$('.state_id').val();
@@ -299,22 +323,13 @@ $this->set('title', 'Create Sales Invoice');
 			//$(this).closest('tr').find('.output_igst_ledger_id').val(output_igst_ledger_id);
 		});
 		
-		/* $('.quantity').die().on('keyup',function(){
-			var quantity=$(this).val();
-			var totStock=$(this).closest('tr').find('.totStock').val();
-			if(totStock < quantity)
-			{
-				alert('sorry you can not add quantity more than stock');
-				$(this).closest('tr').find('.quantity').val('');
-			}
-		}); 
-		 */
 		$('.delete-tr').die().live('click',function() 
 		{
 			$(this).closest('tr').remove();
 			rename_rows();
 		});
 		ComponentsPickers.init();
+
 	});
 	$('.add_row').click(function(){
 		add_row();
@@ -357,7 +372,11 @@ $this->set('title', 'Create Sales Invoice');
 	{
 		forward_total_amount();
 	});
-	
+	$('.itembarcode').die().keypress(function(e)
+	{
+	 if(e.which === 32) 
+        return false;
+	});
 	function forward_total_amount()
 	{
 		var total  = 0;
@@ -483,7 +502,7 @@ $this->set('title', 'Create Sales Invoice');
 		$('.outOfStock').val(outOfStockValue);
 		rename_rows();
 	}
-		
+	
 	function checkValidation() 
 	{  
 		var amount_before_tax  = parseFloat($('.amount_before_tax').val());
@@ -516,7 +535,6 @@ $this->set('title', 'Create Sales Invoice');
 			alert('Error: Stock is going in minus.');
 			return false;
 		}
-		
 		if(confirm('Are you sure you want to submit!'))
 		{
 			$('.submit').attr('disabled','disabled');
@@ -527,6 +545,10 @@ $this->set('title', 'Create Sales Invoice');
 		{
 			return false;
 		}
+	}
+	function onkeypress()
+	{
+	alert();
 	}";
 
 echo $this->Html->scriptBlock($js, array('block' => 'scriptBottom')); 
